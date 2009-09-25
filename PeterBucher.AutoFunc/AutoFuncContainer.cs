@@ -8,15 +8,30 @@ using PeterBucher.AutoFunc.Mapping;
 
 namespace PeterBucher.AutoFunc
 {
+    /// <summary>
+    /// Represents the implementation for a inversion of control container.
+    /// </summary>
     public class AutoFuncContainer : IContainer
     {
+        /// <summary>
+        /// Holds an dictionary with registered types and their corresponding mapping.
+        /// </summary>
         private readonly IDictionary<Type, IMappingItem> _mappings;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AutoFuncContainer" />.
+        /// </summary>
         public AutoFuncContainer()
         {
             this._mappings = new Dictionary<Type, IMappingItem>();
         }
 
+        /// <summary>
+        /// Registers an contract with its implementationtype.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
+        /// <returns>An instance of <see cref="ILifecycleFluent"  /> that exposes methods for lifecycle altering.</returns>
         public ILifecycleFluent Register<TContract, TImplementation>()
         {
             Type typeOfContract = typeof(TContract);
@@ -35,6 +50,20 @@ namespace PeterBucher.AutoFunc
             throw new Exception("mapping for this contract allready registered");
         }
 
+        /// <summary>
+        /// Resolves an contract (include subcontracts).
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>The resolved instance as <see cref="TContract" />.</returns>
+        public TContract Resolve<TContract>()
+        {
+            return (TContract)this.Resolve(typeof(TContract));
+        }
+
+        /// <summary>
+        /// Resolves an contract (include subcontracts).
+        /// </summary>
+        /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract)
         {
             IMappingItem mappingItem = _mappings.Where(m => m.Key.Equals(typeOfContract)).SingleOrDefault().Value;
@@ -53,11 +82,11 @@ namespace PeterBucher.AutoFunc
             return this.CreateInstanceFromType(mappingItem.ImplementationType);
         }
 
-        public TContract Resolve<TContract>()
-        {
-            return (TContract)this.Resolve(typeof(TContract));
-        }
-
+        /// <summary>
+        /// Creates an instance of argument type.
+        /// </summary>
+        /// <param name="implementationType">The implementation type.</param>
+        /// <returns>The instance of given type.</returns>
         private object CreateInstanceFromType(Type implementationType)
         {
             ConstructorInfo[] constructors = implementationType.GetConstructors();
