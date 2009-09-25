@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Linq;
 using System.Reflection;
+
 using PeterBucher.AutoFunc.Fluent;
 using PeterBucher.AutoFunc.Mapping;
 

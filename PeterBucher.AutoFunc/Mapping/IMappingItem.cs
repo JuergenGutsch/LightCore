@@ -1,4 +1,5 @@
 ﻿using System;
+
 using PeterBucher.AutoFunc.Fluent;
 
 namespace PeterBucher.AutoFunc.Mapping
