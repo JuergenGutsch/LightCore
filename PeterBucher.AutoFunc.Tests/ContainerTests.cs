@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterBucher.AutoFunc.Tests.TestData;
+
+using PeterBucher.AutoFunc.Tests.TestTypes;
 
 namespace PeterBucher.AutoFunc.Tests
 {

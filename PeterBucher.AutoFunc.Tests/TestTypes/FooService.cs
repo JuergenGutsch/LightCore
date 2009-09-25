@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PeterBucher.AutoFunc.Tests.TestData
+namespace PeterBucher.AutoFunc.Tests.TestTypes
 {
     public class FooService : IFooService
     {

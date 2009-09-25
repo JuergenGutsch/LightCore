@@ -39,12 +39,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
-    <Compile Include="TestData\FooService.cs" />
-    <Compile Include="TestData\IFooService.cs" />
-    <Compile Include="TestData\FooRepository.cs" />
-    <Compile Include="TestData\IFooRepository.cs" />
-    <Compile Include="TestData\ILogger.cs" />
-    <Compile Include="TestData\Logger.cs" />
+    <Compile Include="TestTypes\FooService.cs" />
+    <Compile Include="TestTypes\IFooService.cs" />
+    <Compile Include="TestTypes\FooRepository.cs" />
+    <Compile Include="TestTypes\IFooRepository.cs" />
+    <Compile Include="TestTypes\ILogger.cs" />
+    <Compile Include="TestTypes\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">

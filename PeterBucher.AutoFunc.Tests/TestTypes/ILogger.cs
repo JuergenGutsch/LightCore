@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Tests.TestData
+﻿namespace PeterBucher.AutoFunc.Tests.TestTypes
 {
     public interface ILogger
     {
