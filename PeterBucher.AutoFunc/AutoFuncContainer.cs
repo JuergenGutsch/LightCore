@@ -37,6 +37,7 @@ namespace PeterBucher.AutoFunc
             Type typeOfContract = typeof(TContract);
             MappingItem mappingItem;
 
+            // If the type is not already registered, register it.
             if (!this._mappings.ContainsKey(typeOfContract))
             {
                 Type typeofImplementation = typeof(TImplementation);
@@ -44,10 +45,11 @@ namespace PeterBucher.AutoFunc
 
                 this._mappings.Add(typeOfContract, mappingItem);
 
+                // Return a new instance of <see cref="ILifecycleFluent" /> for supporting the AsXYZ methods.
                 return mappingItem.LifecycleFluent;
             }
 
-            throw new Exception("mapping for this contract allready registered");
+            throw new MappingAlreadyRegisteredException("mapping for this contract allready registered");
         }
 
         /// <summary>
@@ -66,14 +68,21 @@ namespace PeterBucher.AutoFunc
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract)
         {
-            IMappingItem mappingItem = _mappings.Where(m => m.Key.Equals(typeOfContract)).SingleOrDefault().Value;
+            Func<KeyValuePair<Type, IMappingItem>, bool> selector = m => m.Key.Equals(typeOfContract);
+
+            if(!this._mappings.Any(selector))
+            {
+                throw new MappingNotFoundException("mapping " + typeOfContract.Name + " not found");
+            }
+
+            IMappingItem mappingItem = this._mappings.Where(selector).Single().Value;
 
             switch (mappingItem.Lifecycle)
             {
                 case Lifecycle.Singleton:
                     if (mappingItem.Instance == null)
                     {
-                        this.CreateInstanceFromType(mappingItem.ImplementationType);
+                        mappingItem.Instance = this.CreateInstanceFromType(mappingItem.ImplementationType);
                     }
 
                     return mappingItem.Instance;

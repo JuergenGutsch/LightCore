@@ -20,9 +20,9 @@ namespace PeterBucher.AutoFunc.Mapping
         Lifecycle Lifecycle { get; set; }
 
         /// <summary>
-        /// Gets the current instance of this mapping.
+        /// Gets and sets the current instance of this mapping.
         /// </summary>
-        object Instance { get; }
+        object Instance { get; set; }
 
         /// <summary>
         /// Gets the current fluent interface instance.

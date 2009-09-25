@@ -53,7 +53,7 @@ namespace PeterBucher.AutoFunc.Mapping
         }
 
         /// <summary>
-        /// Gets the current instance of this mapping.
+        /// Gets and sets the current instance of this mapping.
         /// </summary>
         public object Instance
         {

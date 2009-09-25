@@ -31,15 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFuncContainer.cs" />
     <Compile Include="Fluent\LifecycleFluent.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\ILifecycleFluent.cs" />
+    <Compile Include="MappingAlreadyRegisteredException.cs" />
+    <Compile Include="MappingNotFoundException.cs" />
     <Compile Include="Mapping\IMappingItem.cs" />
     <Compile Include="Lifecycle.cs" />
     <Compile Include="Mapping\MappingItem.cs" />
