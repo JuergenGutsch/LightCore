@@ -111,10 +111,11 @@ namespace PeterBucher.AutoFunc
                     return parameters == null || parameters.Count() == 0;
                 }).First();
 
-            List<object> parameterResults = new List<object>();
+            var parameterResults = new List<object>();
 
             foreach (var parameter in constructorWithDependencies.GetParameters())
             {
+                // Recursive call to this.Resolve().
                 parameterResults.Add(this.Resolve(parameter.ParameterType));
             }
 
