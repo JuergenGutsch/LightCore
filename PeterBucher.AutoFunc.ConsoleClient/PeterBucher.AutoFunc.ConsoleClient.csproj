@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{14D79127-D7D7-402A-8C42-4A5FC698C8CF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc</AssemblyName>
+    <RootNamespace>PeterBucher.AutoFunc.ConsoleClient</RootNamespace>
+    <AssemblyName>PeterBucher.AutoFunc.ConsoleClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,19 +31,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFuncContainer.cs" />
-    <Compile Include="Fluent\LifecycleFluent.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="Fluent\ILifecycleFluent.cs" />
-    <Compile Include="Mapping\IMappingItem.cs" />
-    <Compile Include="Lifecycle.cs" />
-    <Compile Include="Mapping\MappingItem.cs" />
+    <Compile Include="Screens\ScreenBase.cs" />
+    <Compile Include="Screens\WelcomeScreen.cs" />
+    <Compile Include="Writers\ConsoleWriter.cs" />
+    <Compile Include="IScreen.cs" />
+    <Compile Include="IWriter.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Writers\DebugWindowWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
+      <Name>PeterBucher.AutoFunc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,7 +14,7 @@ namespace PeterBucher.AutoFunc
     public class AutoFuncContainer : IContainer
     {
         /// <summary>
-        /// Holds an dictionary with registered types and their corresponding mapping.
+        /// Holds a dictionary with registered types and their corresponding mapping.
         /// </summary>
         private readonly IDictionary<Type, IMappingItem> _mappings;
 
@@ -27,7 +27,7 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Registers an contract with its implementationtype.
+        /// Registers a contract with its implementationtype.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
@@ -51,7 +51,7 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Resolves an contract (include subcontracts).
+        /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <returns>The resolved instance as <see cref="TContract" />.</returns>
@@ -61,7 +61,7 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Resolves an contract (include subcontracts).
+        /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract)

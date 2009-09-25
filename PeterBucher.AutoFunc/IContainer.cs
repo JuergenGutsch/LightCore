@@ -8,7 +8,7 @@ namespace PeterBucher.AutoFunc
     public interface IContainer
     {
         /// <summary>
-        /// Registers an contract with its implementationtype.
+        /// Registers a contract with its implementationtype.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
@@ -16,7 +16,7 @@ namespace PeterBucher.AutoFunc
         ILifecycleFluent Register<TContract, TImplementation>();
         
         /// <summary>
-        /// Resolves an contract (include subcontracts).
+        /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <returns>The resolved instance as <see cref="TContract" />.</returns>
