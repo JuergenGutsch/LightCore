@@ -42,6 +42,7 @@ namespace PeterBucher.AutoFunc.Tests
         {
             IContainer container = new AutoFuncContainer();
             container.Register<IFooRepository, FooRepository>();
+            container.Register<ILogger, Logger>();
 
             IFooRepository fooRepository = container.Resolve<IFooRepository>();
 
@@ -54,6 +55,7 @@ namespace PeterBucher.AutoFunc.Tests
         {
             IContainer container = new AutoFuncContainer();
             container.Register<IFooRepository, FooRepository>();
+            container.Register<ILogger, Logger>();
 
             var rep1 = container.Resolve<IFooRepository>();
             var rep2 = container.Resolve<IFooRepository>();
@@ -66,6 +68,7 @@ namespace PeterBucher.AutoFunc.Tests
         {
             IContainer container = new AutoFuncContainer();
             container.Register<IFooRepository, FooRepository>().AsSingleton();
+            container.Register<ILogger, Logger>();
 
             var rep1 = container.Resolve<IFooRepository>();
             var rep2 = container.Resolve<IFooRepository>();
@@ -74,9 +77,18 @@ namespace PeterBucher.AutoFunc.Tests
         }
 
         [TestMethod]
-        public void FooTest()
+        public void ResolveUp_a_object_tree_works()
         {
-            
+            IContainer container = new AutoFuncContainer();
+            container.Register<IFooRepository, FooRepository>();
+            container.Register<IFooService, FooService>();
+            container.Register<ILogger, Logger>();
+
+            var instance = container.Resolve<IFooService>();
+
+            Assert.IsNotNull(instance);
+            Assert.IsTrue(instance.GetFoos().Count() > 0);
+            Assert.IsNotNull(instance.Logger);
         }
     }
 }

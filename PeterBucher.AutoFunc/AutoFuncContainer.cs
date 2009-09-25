@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Reflection;
 using PeterBucher.AutoFunc.Fluent;
 using PeterBucher.AutoFunc.Mapping;
 
@@ -34,9 +35,8 @@ namespace PeterBucher.AutoFunc
             throw new Exception("mapping for this contract allready registered");
         }
 
-        public TContract Resolve<TContract>()
+        private object Resolve(Type typeOfContract)
         {
-            Type typeOfContract = typeof(TContract);
             IMappingItem mappingItem = _mappings.Where(m => m.Key.Equals(typeOfContract)).SingleOrDefault().Value;
 
             switch (mappingItem.Lifecycle)
@@ -44,18 +44,43 @@ namespace PeterBucher.AutoFunc
                 case Lifecycle.Singleton:
                     if (mappingItem.Instance == null)
                     {
-                        this.CreateInstanceFromType<TContract>(mappingItem.ImplementationType);
+                        this.CreateInstanceFromType(mappingItem.ImplementationType);
                     }
 
-                    return (TContract)mappingItem.Instance;
+                    return mappingItem.Instance;
             }
 
-            return this.CreateInstanceFromType<TContract>(mappingItem.ImplementationType);
+            return this.CreateInstanceFromType(mappingItem.ImplementationType);
         }
 
-        private TContract CreateInstanceFromType<TContract>(Type implementationType)
+        public TContract Resolve<TContract>()
         {
-            return (TContract)Activator.CreateInstance(implementationType);
+            return (TContract)this.Resolve(typeof(TContract));
+        }
+
+        private object CreateInstanceFromType(Type implementationType)
+        {
+            ConstructorInfo[] constructors = implementationType.GetConstructors();
+            if (constructors.Length == 0 || constructors.Length == 1 && constructors[0].GetParameters() == null)
+            {
+                return Activator.CreateInstance(implementationType);
+            }
+
+            ConstructorInfo constructorWithDependencies = constructors.OrderByDescending(
+                delegate(ConstructorInfo c)
+                {
+                    var parameters = c.GetParameters();
+                    return parameters == null || parameters.Count() == 0;
+                }).First();
+
+            List<object> parameterResults = new List<object>();
+
+            foreach (var parameter in constructorWithDependencies.GetParameters())
+            {
+                parameterResults.Add(this.Resolve(parameter.ParameterType));
+            }
+
+            return constructorWithDependencies.Invoke(parameterResults.ToArray());
         }
     }
 }

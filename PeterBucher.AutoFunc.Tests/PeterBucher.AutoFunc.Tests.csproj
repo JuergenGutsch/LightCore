@@ -42,8 +42,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
+    <Compile Include="TestData\FooService.cs" />
+    <Compile Include="TestData\IFooService.cs" />
     <Compile Include="TestData\FooRepository.cs" />
     <Compile Include="TestData\IFooRepository.cs" />
+    <Compile Include="TestData\ILogger.cs" />
+    <Compile Include="TestData\Logger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">

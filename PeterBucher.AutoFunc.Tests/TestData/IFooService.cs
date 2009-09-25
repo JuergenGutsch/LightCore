@@ -2,7 +2,7 @@
 
 namespace PeterBucher.AutoFunc.Tests.TestData
 {
-    public interface IFooRepository
+    public interface IFooService
     {
         ILogger Logger { get; }
         IEnumerable<string> GetFoos();

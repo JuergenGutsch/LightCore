@@ -2,13 +2,15 @@
 
 namespace PeterBucher.AutoFunc.Tests.TestData
 {
-    public class FooRepository : IFooRepository
+    public class FooService : IFooService
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
+        private readonly IFooRepository _fooRepository;
 
-        public FooRepository(ILogger logger)
+        public FooService(ILogger logger, IFooRepository fooRepository)
         {
             this._logger = logger;
+            this._fooRepository = fooRepository;
         }
 
         public ILogger Logger
@@ -21,8 +23,7 @@ namespace PeterBucher.AutoFunc.Tests.TestData
 
         public IEnumerable<string> GetFoos()
         {
-            yield return "Foo";
-            yield return "Bar";
+            return this._fooRepository.GetFoos();
         }
     }
 }
