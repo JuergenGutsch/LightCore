@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using PeterBucher.AutoFunc.Exceptions;
+using PeterBucher.AutoFunc.ExtensionMethods;
 
 namespace PeterBucher.AutoFunc
 {
@@ -59,6 +60,47 @@ namespace PeterBucher.AutoFunc
         public TContract ResolveNamed<TContract>(string name)
         {
             return (TContract)this.Resolve(typeof(TContract), name);
+        }
+
+        /// <summary>
+        /// Injects properties to an existing instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        public void InjectProperties(object instance)
+        {
+            Type instanceType = instance.GetType();
+            var properties =
+                instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
+
+            Func<PropertyInfo, bool> isNotValueTypeSelector = p => !p.PropertyType.IsValueType;
+            Func<PropertyInfo, bool> noIndexParametersAvailable = p => p.GetIndexParameters().Length == 0;
+            Func<PropertyInfo, bool> isRegistered = p => this.IsRegistered(p.PropertyType);
+            Func<PropertyInfo, bool> abstractOrInterfaceType =
+                p => p.PropertyType.IsAbstract || p.PropertyType.IsInterface;
+
+            Func<PropertyInfo, bool> validPropertiesSelector =
+                p => isNotValueTypeSelector(p)
+                     && noIndexParametersAvailable(p)
+                     && isRegistered(p)
+                     && abstractOrInterfaceType(p);
+
+            var validProperties = properties.Where(validPropertiesSelector);
+
+            validProperties.ForEach(p =>
+                                        {
+                                            object resolvedValue = this.Resolve(p.PropertyType, null);
+                                            p.SetValue(instance, resolvedValue, null);
+                                        });
+        }
+
+        /// <summary>
+        /// Determines whether a contracttype is registered or not.
+        /// </summary>
+        /// <param name="typeOfContract">The type of contract.</param>
+        /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
+        private bool IsRegistered(Type typeOfContract)
+        {
+            return this._registrations.Any(r => r.Key.ContractType == typeOfContract);
         }
 
         /// <summary>

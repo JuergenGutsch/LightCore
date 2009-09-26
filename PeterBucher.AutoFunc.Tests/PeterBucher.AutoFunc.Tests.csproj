@@ -37,6 +37,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InjectPropertiesTests.cs" />
     <Compile Include="LifeTimeTests.cs" />
     <Compile Include="NamedContractTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

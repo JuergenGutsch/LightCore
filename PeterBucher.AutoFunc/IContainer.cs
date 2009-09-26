@@ -19,5 +19,11 @@
         /// <param name="name">The name given in the registration.</param>
         /// <returns>The resolved instance as <see cref="TContract" />.</returns>
         TContract ResolveNamed<TContract>(string name);
+
+        /// <summary>
+        /// Injects properties to an existing instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        void InjectProperties(object instance);
     }
 }

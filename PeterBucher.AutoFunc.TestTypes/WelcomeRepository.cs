@@ -7,7 +7,7 @@ namespace PeterBucher.AutoFunc.TestTypes
         public IEnumerable<string> GetWelcomeText()
         {
             yield return "Hello ";
-            yield return "Wold, it works!";
+            yield return "World, it works!";
         }
     }
 }
