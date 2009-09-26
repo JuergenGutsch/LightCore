@@ -41,6 +41,16 @@
         }
 
         /// <summary>
+        /// Indicates that the default constructor should be used.
+        /// </summary>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration UseDefaultConstructor()
+        {
+            this._registration.UseDefaultConstructor = true;
+            return this;
+        }
+
+        /// <summary>
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>
+    <ProjectGuid>{A5626363-3530-435B-8DFA-8C074D81CEB8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc</AssemblyName>
+    <RootNamespace>PeterBucher.AutoFunc.Integrations.Web</RootNamespace>
+    <AssemblyName>PeterBucher.AutoFunc.Integrations.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -36,26 +36,26 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Build\RegistrationModule.cs" />
-    <Compile Include="Container.cs" />
-    <Compile Include="Build\ContainerBuilder.cs" />
-    <Compile Include="Exceptions\ResolvingFailedException.cs" />
-    <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
-    <Compile Include="F.cs" />
-    <Compile Include="Fluent\FluentRegistration.cs" />
-    <Compile Include="Fluent\IFluentInterface.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="Fluent\IFluentRegistration.cs" />
-    <Compile Include="Build\IContainerBuilder.cs" />
-    <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
-    <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
-    <Compile Include="Lifetime.cs" />
-    <Compile Include="Registration.cs" />
-    <Compile Include="RegistrationKey.cs" />
+    <Compile Include="IContainerAccessor.cs" />
+    <Compile Include="Mvc\AutoFuncControllerFactory.cs" />
+    <Compile Include="Mvc\AutoFuncControllerRegistrationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
+      <Name>PeterBucher.AutoFunc</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

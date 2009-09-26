@@ -6,7 +6,7 @@ using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
 
-namespace PeterBucher.AutoFunc
+namespace PeterBucher.AutoFunc.Build
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations
@@ -41,27 +41,29 @@ namespace PeterBucher.AutoFunc
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
         public IFluentRegistration Register<TContract, TImplementation>()
         {
-            Type typeOfContract = typeof(TContract);
-            Type typeOfImplementation = typeof(TImplementation);
+            return this.Register(typeof(TContract), typeof(TImplementation));
+        }
+
+        public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
+        {
             var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
 
             // Register the type with default lifetime.
             var registration = new Registration(typeOfContract, typeOfImplementation, key)
-                                   {
-                                       LifeTime = LifeTime.Transient
-                                   };
+            {
+                LifeTime = LifeTime.Transient
+            };
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-                                                {
-                                                    this.AssertRegistrationExists(registration.Key);
-                                                    this._registrations.Add(registration.Key, registration);
-                                                });
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;
         }
-
 
         /// <summary>
         /// Builds the container.
@@ -73,6 +75,15 @@ namespace PeterBucher.AutoFunc
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
 
             return new Container(this._registrations);
+        }
+
+        /// <summary>
+        /// Registers a module with registrations.
+        /// </summary>
+        /// <param name="module">The module.</param>
+        public void RegisterModule(RegistrationModule module)
+        {
+            module.Register(this);
         }
 
         /// <summary>

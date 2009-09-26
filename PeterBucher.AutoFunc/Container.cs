@@ -72,10 +72,10 @@ namespace PeterBucher.AutoFunc
             Func<Type, bool> typeSelector = t => t.Equals(typeOfContract);
             Func<string, bool> nameSelector = n => n == name;
 
-            Func<KeyValuePair<RegistrationKey, Registration>, bool> selector =
+            Func<KeyValuePair<RegistrationKey, Registration>, bool> registrationSelector =
                 r => typeSelector(r.Key.ContractType) && nameSelector(r.Key.Name);
 
-            if (!this._registrations.Any(selector))
+            if (!this._registrations.Any(registrationSelector))
             {
                 string exceptionMessage = string.Format("registration for contract '{0}' and name '{1}' not found",
                                                         typeOfContract.Name, name);
@@ -83,34 +83,41 @@ namespace PeterBucher.AutoFunc
                 throw new RegistrationNotFoundException(exceptionMessage);
             }
 
-            Registration registration = this._registrations.Where(selector).Single().Value;
+            // Select registration.
+            Registration registration = this._registrations.Where(registrationSelector).Single().Value;
 
+            // Handle registration life time and creates an instance on these rules.
             switch (registration.LifeTime)
             {
                 case LifeTime.Singleton:
                     if (registration.Instance == null)
                     {
-                        registration.Instance = this.CreateInstanceFromType(registration.ImplementationType, registration.Arguments);
+                        registration.Instance = this.CreateInstanceFromRegistration(registration);
                     }
 
                     return registration.Instance;
             }
 
-            return this.CreateInstanceFromType(registration.ImplementationType, registration.Arguments);
+            // Implicitly use transient lifetime.
+            return this.CreateInstanceFromRegistration(registration);
         }
 
         /// <summary>
-        /// Creates an instance of argument type.
+        /// Creates an instance of given registration.
         /// </summary>
-        /// <param name="implementationType">The implementation type.</param>
-        /// <param name="arguments">The arguments for creating an instance.</param>
-        /// <returns>The instance of given type.</returns>
-        private object CreateInstanceFromType(Type implementationType, object[] arguments)
+        /// <param name="registration">The registration for creating an instance.</param>
+        /// <returns>The created instance.</returns>
+        private object CreateInstanceFromRegistration(Registration registration)
         {
+            Type implementationType = registration.ImplementationType;
+            object[] arguments = registration.Arguments;
             ConstructorInfo[] constructors = implementationType.GetConstructors();
 
+            bool onlyDefaultConstructorAvailable =
+                constructors.Length == 1 && constructors[0].GetParameters().Length == 0;
+
             // Use the default constructor.
-            if (constructors.Length == 1 && constructors[0].GetParameters().Length == 0)
+            if (onlyDefaultConstructorAvailable || registration.UseDefaultConstructor)
             {
                 return Activator.CreateInstance(implementationType);
             }
@@ -146,7 +153,7 @@ namespace PeterBucher.AutoFunc
             }
 
             // Select the constructor with most parameters (dependencies).
-            ConstructorInfo constructorWithMostParameters = constructors.OrderBy(
+            ConstructorInfo constructorWithMostParameters = constructors.OrderByDescending(
                 delegate(ConstructorInfo c)
                 {
                     var parameters = c.GetParameters();
@@ -157,10 +164,18 @@ namespace PeterBucher.AutoFunc
             return this.InvokeConstructor(constructorWithMostParameters, null);
         }
 
+        /// <summary>
+        /// Invokes a constructor with optional given arguments.
+        /// Automatically detects the right resolved arguments and arguments,
+        /// and injects these into the constructor invocation.
+        /// </summary>
+        /// <param name="constructor">The constructor to invoke.</param>
+        /// <param name="arguments">The optional arguments.</param>
+        /// <returns>The resolved object.</returns>
         private object InvokeConstructor(ConstructorInfo constructor, IEnumerable<object> arguments)
         {
             ParameterInfo[] parameters = constructor.GetParameters();
-            List<object> finalArguments = new List<object>();
+            var finalArguments = new List<object>();
 
             // If there are depdendency parameters, resolve these.
             if (parameters.Any(_dependencyParameterSelector))

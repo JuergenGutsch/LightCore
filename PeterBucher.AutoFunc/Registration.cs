@@ -58,6 +58,15 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
+        /// Gets or sets whether the default constructor should be used, or not.
+        /// </summary>
+        public bool UseDefaultConstructor
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the arguments for object creations.
         /// </summary>
         public object[] Arguments

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using PeterBucher.AutoFunc.Build;
 using PeterBucher.AutoFunc.ConsoleClient.Screens;
 using PeterBucher.AutoFunc.ConsoleClient.Writers;
 

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PeterBucher.AutoFunc.Build;
 using PeterBucher.AutoFunc.Tests.TestTypes;
 
 namespace PeterBucher.AutoFunc.Tests
