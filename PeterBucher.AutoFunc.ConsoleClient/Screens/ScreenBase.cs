@@ -5,7 +5,19 @@
     /// </summary>
     public abstract class ScreenBase : IScreen
     {
+        /// <summary>
+        /// The writer.
+        /// </summary>
         private readonly IWriter _writer;
+
+        /// <summary>
+        /// The text.
+        /// </summary>
+        public string Text
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="ScreenBase" />.
@@ -31,5 +43,13 @@
         /// Executes the screen.
         /// </summary>
         public abstract void Execute();
+
+        /// <summary>
+        /// Writes the <see cref="IScreen.Text" /> property to the current writer.
+        /// </summary>
+        public void WriteText()
+        {
+            this.Writer.WriteLine(this.Text);
+        }
     }
 }

@@ -30,6 +30,17 @@
         }
 
         /// <summary>
+        /// Adds arguments to the registration.
+        /// </summary>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration WithArguments(params object[] arguments)
+        {
+            this._registration.Arguments = arguments;
+            return this;
+        }
+
+        /// <summary>
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>

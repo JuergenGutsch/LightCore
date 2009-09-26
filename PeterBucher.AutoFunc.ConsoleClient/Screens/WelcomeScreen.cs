@@ -9,10 +9,11 @@
         /// Initializes a new instance of <see cref="WelcomeScreen" />.
         /// </summary>
         /// <param name="writer">The writer.</param>
-        public WelcomeScreen(IWriter writer)
+        /// <param name="text">The text.</param>
+        public WelcomeScreen(IWriter writer, string text)
             : base(writer)
         {
-
+            this.Text = text;
         }
 
         /// <summary>

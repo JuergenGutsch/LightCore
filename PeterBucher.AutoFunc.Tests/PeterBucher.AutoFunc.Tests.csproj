@@ -43,14 +43,19 @@
     <Compile Include="ContainerTests.cs" />
     <Compile Include="RegisterTypeTests.cs" />
     <Compile Include="ResolvingTests.cs" />
+    <Compile Include="TestTypes\Bar.cs" />
     <Compile Include="TestTypes\BarRepository.cs" />
+    <Compile Include="TestTypes\Foo.cs" />
     <Compile Include="TestTypes\FooService.cs" />
+    <Compile Include="TestTypes\IBar.cs" />
+    <Compile Include="TestTypes\IFoo.cs" />
     <Compile Include="TestTypes\IFooService.cs" />
     <Compile Include="TestTypes\FooRepository.cs" />
     <Compile Include="TestTypes\IFooRepository.cs" />
     <Compile Include="TestTypes\ILogger.cs" />
     <Compile Include="TestTypes\Logger.cs" />
     <Compile Include="TestTypes\NullLogger.cs" />
+    <Compile Include="WithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">

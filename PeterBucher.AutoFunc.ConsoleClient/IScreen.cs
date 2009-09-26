@@ -6,6 +6,11 @@
     public interface IScreen
     {
         /// <summary>
+        /// The text.
+        /// </summary>
+        string Text { get; set; }
+
+        /// <summary>
         /// The writer.
         /// </summary>
         IWriter Writer { get; }
@@ -14,5 +19,10 @@
         /// Executes the screen.
         /// </summary>
         void Execute();
+
+        /// <summary>
+        /// Writes the <see cref="Text" /> property to the current writer.
+        /// </summary>
+        void WriteText();
     }
 }

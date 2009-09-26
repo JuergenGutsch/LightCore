@@ -49,7 +49,7 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Gets the LifeTime of the registration.
+        /// Gets or sets the LifeTime of the registration.
         /// </summary>
         public LifeTime LifeTime
         {
@@ -58,7 +58,16 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Gets and sets the current instance of this registration.
+        /// Gets or sets the arguments for object creations.
+        /// </summary>
+        public object[] Arguments
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the current instance of this registration.
         /// </summary>
         public object Instance
         {

@@ -21,12 +21,15 @@ namespace PeterBucher.AutoFunc.ConsoleClient
         {
             // Instantiate the container and register some dependencies.
             var builder = new ContainerBuilder();
-            
-            builder.Register<IScreen, WelcomeScreen>();
+
+            builder.Register<IScreen, WelcomeScreen>().WithArguments("Test");
 
             // Uncomment this and comment ConsoleWriter below.
             //container.Register<IWriter, DebugWindowWriter>();
             builder.Register<IWriter, ConsoleWriter>();
+            builder.Register<IScreen, WelcomeScreen>()
+                .WithArguments("Hello World, it works")
+                .WithName("NamedScreen");
 
             var container = builder.Build();
 
@@ -45,6 +48,9 @@ namespace PeterBucher.AutoFunc.ConsoleClient
 
             IWriter writer = screens.First().Writer;
             writer.WriteLine("Hello World, it works!");
+
+            var namedScreen = container.ResolveNamed<IScreen>("NamedScreen");
+            namedScreen.WriteText();
 
             Console.WriteLine("{0}ms for {1} iterations", stopWatch.ElapsedMilliseconds, iterations);
 
