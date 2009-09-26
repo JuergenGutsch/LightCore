@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>
+    <ProjectGuid>{4478482F-075B-4146-B06D-A6B69AFA2816}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc</AssemblyName>
+    <RootNamespace>PeterBucher.AutoFunc.TestTypes</RootNamespace>
+    <AssemblyName>PeterBucher.AutoFunc.TestTypes</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,32 +31,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Build\RegistrationModule.cs" />
-    <Compile Include="Container.cs" />
-    <Compile Include="Build\ContainerBuilder.cs" />
-    <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
-    <Compile Include="Exceptions\ResolvingFailedException.cs" />
-    <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
-    <Compile Include="F.cs" />
-    <Compile Include="Fluent\FluentRegistration.cs" />
-    <Compile Include="Fluent\IFluentInterface.cs" />
-    <Compile Include="IContainer.cs" />
-    <Compile Include="Fluent\IFluentRegistration.cs" />
-    <Compile Include="Build\IContainerBuilder.cs" />
-    <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
-    <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
-    <Compile Include="Lifetime.cs" />
-    <Compile Include="Registration.cs" />
-    <Compile Include="RegistrationKey.cs" />
+    <Compile Include="Bar.cs" />
+    <Compile Include="BarRepository.cs" />
+    <Compile Include="Foo.cs" />
+    <Compile Include="FooRepository.cs" />
+    <Compile Include="FooService.cs" />
+    <Compile Include="IBar.cs" />
+    <Compile Include="IFoo.cs" />
+    <Compile Include="IFooRepository.cs" />
+    <Compile Include="IFooService.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IWelcomeRepository.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="NullLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WelcomeRepository.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

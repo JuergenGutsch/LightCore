@@ -11,9 +11,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Perfor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.WebIntegrationSample", "PeterBucher.AutoFunc.WebIntegrationSample\PeterBucher.AutoFunc.WebIntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Web.Mvc.IntegrationSample", "PeterBucher.AutoFunc.Web.Mvc.IntegrationSample\PeterBucher.AutoFunc.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Integrations.Web", "PeterBucher.AutoFunc.Integrations.Web\PeterBucher.AutoFunc.Integrations.Web.csproj", "{A5626363-3530-435B-8DFA-8C074D81CEB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Integration.Web", "PeterBucher.AutoFunc.Integration.Web\PeterBucher.AutoFunc.Integration.Web.csproj", "{A5626363-3530-435B-8DFA-8C074D81CEB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Web.IntegrationSample", "PeterBucher.AutoFunc.Web.IntegrationSample\PeterBucher.AutoFunc.Web.IntegrationSample.csproj", "{22AD0900-A58F-4D1B-88F1-1B109835F956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.TestTypes", "PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,11 +49,20 @@ Global
 		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
+		{22AD0900-A58F-4D1B-88F1-1B109835F956} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 	EndGlobalSection
 EndGlobal
