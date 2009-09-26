@@ -5,7 +5,7 @@ using PeterBucher.AutoFunc.Tests.TestTypes;
 namespace PeterBucher.AutoFunc.Tests
 {
     [TestClass]
-    public class NamedContracts
+    public class NamedContractTests
     {
         [TestMethod]
         public void Registering_named_service()

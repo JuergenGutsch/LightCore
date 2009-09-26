@@ -37,11 +37,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LifecycleTests.cs" />
-    <Compile Include="NamedContracts.cs" />
+    <Compile Include="LifeTimeTests.cs" />
+    <Compile Include="NamedContractTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
-    <Compile Include="RegisterTypesTests.cs" />
+    <Compile Include="RegisterTypeTests.cs" />
     <Compile Include="ResolvingTests.cs" />
     <Compile Include="TestTypes\BarRepository.cs" />
     <Compile Include="TestTypes\FooService.cs" />

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using PeterBucher.AutoFunc.Exceptions;
+
 namespace PeterBucher.AutoFunc
 {
     /// <summary>
@@ -68,9 +70,9 @@ namespace PeterBucher.AutoFunc
 
             Registration registration = this._registrations.Where(selector).Single().Value;
 
-            switch (registration.Lifecycle)
+            switch (registration.LifeTime)
             {
-                case Lifecycle.Singleton:
+                case LifeTime.Singleton:
                     if (registration.Instance == null)
                     {
                         registration.Instance = this.CreateInstanceFromType(registration.ImplementationType);

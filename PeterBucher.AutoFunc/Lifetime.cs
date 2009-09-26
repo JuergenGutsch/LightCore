@@ -1,9 +1,9 @@
 ﻿namespace PeterBucher.AutoFunc
 {
     /// <summary>
-    /// Represents the lifecycle for a registered type.
+    /// Represents the LifeTime for a registered type.
     /// </summary>
-    public enum Lifecycle
+    public enum LifeTime
     {
         /// <summary>
         /// New object for every resolve request.

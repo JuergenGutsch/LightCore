@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PeterBucher.AutoFunc.Fluent
+﻿namespace PeterBucher.AutoFunc.Fluent
 {
     /// <summary>
     /// Represents the fluent interface for registration.
@@ -22,22 +20,12 @@ namespace PeterBucher.AutoFunc.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to singleton lifecycle.
+        /// Treat the current registration to singleton LifeTime.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration AsSingleton()
         {
-            this._registration.Lifecycle = Lifecycle.Singleton;
-            return this;
-        }
-
-        /// <summary>
-        /// Treat the current registration to transient lifecycle.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration AsTransient()
-        {
-            this._registration.Lifecycle = Lifecycle.Transient;
+            this._registration.LifeTime = LifeTime.Singleton;
             return this;
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace PeterBucher.AutoFunc
+namespace PeterBucher.AutoFunc.Exceptions
 {
     /// <summary>
     /// Thrown when a registration already exists in container.

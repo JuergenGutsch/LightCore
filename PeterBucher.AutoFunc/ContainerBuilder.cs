@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
 
@@ -36,15 +38,18 @@ namespace PeterBucher.AutoFunc
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="PeterBucher.AutoFunc.Fluent.@void"  /> that exposes methods for lifecycle altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
         public IFluentRegistration Register<TContract, TImplementation>()
         {
             Type typeOfContract = typeof(TContract);
             Type typeOfImplementation = typeof(TImplementation);
             var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
 
-            // Register the type.
-            var registration = new Registration(typeOfContract, typeOfImplementation, key);
+            // Register the type with default lifetime.
+            var registration = new Registration(typeOfContract, typeOfImplementation, key)
+                                   {
+                                       LifeTime = LifeTime.Transient
+                                   };
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>

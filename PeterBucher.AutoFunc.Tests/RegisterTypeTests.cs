@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.Tests.TestTypes;
 
 namespace PeterBucher.AutoFunc.Tests
@@ -8,7 +8,7 @@ namespace PeterBucher.AutoFunc.Tests
     /// Summary description for RegisterTypesTests
     /// </summary>
     [TestClass]
-    public class RegisterTypesTests
+    public class RegisterTypeTests
     {
         [TestMethod]
         public void Can_register_types_to_the_container()

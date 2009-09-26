@@ -10,9 +10,12 @@ namespace PeterBucher.AutoFunc
     public class Registration
     {
         /// <summary>
-        /// The lifecycle for the current registration.
+        /// Creates a new instance of <see cref="Registration" />.
         /// </summary>
-        private Lifecycle _lifecycle = Lifecycle.Transient;
+        public Registration()
+        {
+            
+        }
 
         /// <summary>
         /// Creates a new instance of <see cref="Registration" />.
@@ -46,9 +49,9 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Gets the lifecycle of the registration.
+        /// Gets the LifeTime of the registration.
         /// </summary>
-        public Lifecycle Lifecycle
+        public LifeTime LifeTime
         {
             get;
             set;

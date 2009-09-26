@@ -4,14 +4,11 @@ using PeterBucher.AutoFunc.Tests.TestTypes;
 
 namespace PeterBucher.AutoFunc.Tests
 {
-    /// <summary>
-    /// Summary description for LifecycleTests
-    /// </summary>
     [TestClass]
-    public class LifecycleTests
+    public class LifeTimeTests
     {
         [TestMethod]
-        public void Can_handles_default_transient_lifecycle_correct()
+        public void Can_handles_default_transient_lifetime_correct()
         {
             var builder = new ContainerBuilder();
 
@@ -27,7 +24,7 @@ namespace PeterBucher.AutoFunc.Tests
         }
 
         [TestMethod]
-        public void Can_take_care_of_lifecycle_singleton()
+        public void Can_take_care_of_lifetime_singleton()
         {
             var builder = new ContainerBuilder();
 

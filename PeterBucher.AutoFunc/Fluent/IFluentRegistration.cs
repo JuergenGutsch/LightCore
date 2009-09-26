@@ -6,14 +6,9 @@
     public interface IFluentRegistration : IFluentInterface
     {
         /// <summary>
-        /// Treat the current registration to singleton lifecycle.
+        /// Treat the current registration to singleton lifetime.
         /// </summary>
         IFluentRegistration AsSingleton();
-
-        /// <summary>
-        /// Treat the current registration to transient lifecycle.
-        /// </summary>
-        IFluentRegistration AsTransient();
 
         /// <summary>
         /// Gives a name to the registration.

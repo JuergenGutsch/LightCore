@@ -19,7 +19,7 @@ namespace PeterBucher.AutoFunc
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="PeterBucher.AutoFunc.Fluent.@void"  /> that exposes methods for lifecycle altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
         IFluentRegistration Register<TContract, TImplementation>();
     }
 }
