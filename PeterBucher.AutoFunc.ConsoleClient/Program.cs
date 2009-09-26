@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 using PeterBucher.AutoFunc.ConsoleClient.Screens;
 using PeterBucher.AutoFunc.ConsoleClient.Writers;
 
@@ -29,14 +30,10 @@ namespace PeterBucher.AutoFunc.ConsoleClient
 
             var container = builder.Build();
 
-            // Get an instance of curent registered type for this contract.
-
-            Stopwatch stopWatch = new Stopwatch();
-
             int iterations = 1000;
-
             var screens = new List<IScreen>();
 
+            var stopWatch = new Stopwatch();
             stopWatch.Start();
 
             for (int i = 0; i < iterations; i++)
