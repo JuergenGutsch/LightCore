@@ -33,7 +33,6 @@
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
-        /// <returns>The instance itself to get fluent working.</returns>
         public void WithName(string name)
         {
             this._registration.Key.Name = name;
