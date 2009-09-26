@@ -15,9 +15,12 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Can_create_an_instance_from_contract()
         {
-            IContainer container = new Container();
-            container.Register<IFooRepository, FooRepository>();
-            container.Register<ILogger, Logger>();
+            var builder = new ContainerBuilder();
+
+            builder.Register<IFooRepository, FooRepository>();
+            builder.Register<ILogger, Logger>();
+
+            var container = builder.Build();
 
             IFooRepository fooRepository = container.Resolve<IFooRepository>();
 
@@ -28,10 +31,13 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void ResolveUp_a_object_tree_works()
         {
-            IContainer container = new Container();
-            container.Register<IFooRepository, FooRepository>();
-            container.Register<IFooService, FooService>();
-            container.Register<ILogger, Logger>();
+            var builder = new ContainerBuilder();
+
+            builder.Register<IFooRepository, FooRepository>();
+            builder.Register<IFooService, FooService>();
+            builder.Register<ILogger, Logger>();
+
+            var container = builder.Build();
 
             var instance = container.Resolve<IFooService>();
 

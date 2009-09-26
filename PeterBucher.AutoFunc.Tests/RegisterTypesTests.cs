@@ -13,9 +13,33 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Can_register_types_to_the_container()
         {
-            IContainer container = new Container();
-            container.Register<IFooRepository, FooRepository>();
-            container.Register<ILogger, Logger>();
+            var builder = new ContainerBuilder();
+
+            builder.Register<IFooRepository, FooRepository>();
+            builder.Register<ILogger, Logger>();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(RegistrationAlreadyExistsException))]
+        public void Cannot_register_types_twice()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFooRepository, FooRepository>();
+            builder.Register<IFooRepository, FooRepository>();
+
+            var container = builder.Build();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(RegistrationAlreadyExistsException))]
+        public void Cannot_register_twice_with_same_name()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register<IFooRepository, FooRepository>().WithName("foo");
+            builder.Register<IFooRepository, BarRepository>().WithName("foo");
+
+            var contianer = builder.Build();
         }
     }
 }

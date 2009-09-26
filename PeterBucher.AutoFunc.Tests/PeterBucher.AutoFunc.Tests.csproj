@@ -43,6 +43,7 @@
     <Compile Include="ContainerTests.cs" />
     <Compile Include="RegisterTypesTests.cs" />
     <Compile Include="ResolvingTests.cs" />
+    <Compile Include="TestTypes\BarRepository.cs" />
     <Compile Include="TestTypes\FooService.cs" />
     <Compile Include="TestTypes\IFooService.cs" />
     <Compile Include="TestTypes\FooRepository.cs" />

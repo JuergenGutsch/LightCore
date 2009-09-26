@@ -11,7 +11,7 @@
         Transient,
 
         /// <summary>
-        /// One object for all resolve requests.
+        /// One object for all resolve requests in the same container.
         /// </summary>
         Singleton
     }

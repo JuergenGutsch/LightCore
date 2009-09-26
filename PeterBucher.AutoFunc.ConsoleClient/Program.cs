@@ -18,18 +18,21 @@ namespace PeterBucher.AutoFunc.ConsoleClient
         static void Main(string[] args)
         {
             // Instantiate the container and register some dependencies.
-            IContainer container = new Container();
-            container.Register<IScreen, WelcomeScreen>();
+            var builder = new ContainerBuilder();
+            
+            builder.Register<IScreen, WelcomeScreen>();
 
             // Uncomment this and comment ConsoleWriter below.
             //container.Register<IWriter, DebugWindowWriter>();
-            container.Register<IWriter, ConsoleWriter>();
+            builder.Register<IWriter, ConsoleWriter>();
+
+            var container = builder.Build();
 
             // Get an instance of curent registered type for this contract.
 
             Stopwatch stopWatch = new Stopwatch();
 
-            int iterations = 10000;
+            int iterations = 1000;
 
             var screens = new List<IScreen>();
 

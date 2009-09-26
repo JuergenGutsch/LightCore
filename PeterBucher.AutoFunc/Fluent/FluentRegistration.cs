@@ -1,4 +1,6 @@
-﻿namespace PeterBucher.AutoFunc.Fluent
+﻿using System;
+
+namespace PeterBucher.AutoFunc.Fluent
 {
     /// <summary>
     /// Represents the fluent interface for registration.
@@ -44,10 +46,9 @@
         /// </summary>
         /// <param name="name">The registration name.</param>
         /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration Named(string name)
+        public void WithName(string name)
         {
             this._registration.Key.Name = name;
-            return this;
         }
     }
 }

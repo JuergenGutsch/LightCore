@@ -40,9 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container.cs" />
+    <Compile Include="ContainerBuilder.cs" />
+    <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
+    <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\IFluentRegistration.cs" />
+    <Compile Include="IContainerBuilder.cs" />
     <Compile Include="RegistrationAlreadyExistsException.cs" />
     <Compile Include="RegistrationNotFoundException.cs" />
     <Compile Include="Lifecycle.cs" />

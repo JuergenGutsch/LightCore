@@ -30,7 +30,8 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Can_initialize_the_container()
         {
-            IContainer container = new Container();
+            var builder = new ContainerBuilder();
+            var container = builder.Build();
 
             Assert.IsNotNull(container);
         }

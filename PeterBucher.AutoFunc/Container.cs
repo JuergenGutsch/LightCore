@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using PeterBucher.AutoFunc.Fluent;
-
 namespace PeterBucher.AutoFunc
 {
     /// <summary>
@@ -20,38 +18,9 @@ namespace PeterBucher.AutoFunc
         /// <summary>
         /// Initializes a new instance of <see cref="Container" />.
         /// </summary>
-        public Container()
+        internal Container(IDictionary<RegistrationKey, Registration> registrations)
         {
-            this._registrations = new Dictionary<RegistrationKey, Registration>();
-        }
-
-        /// <summary>
-        /// Registers a contract with its implementationtype.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for lifecycle altering.</returns>
-        public IFluentRegistration Register<TContract, TImplementation>()
-        {
-            Type typeOfContract = typeof(TContract);
-            Type typeOfImplementation = typeof(TImplementation);
-            var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
-
-            // If the type is not already registered, register it.
-            if (!this._registrations.ContainsKey(key))
-            {
-                var registration = new Registration(typeOfContract, typeOfImplementation, key);
-
-                this._registrations.Add(key, registration);
-
-                // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-                return registration.FluentRegistration;
-            }
-
-            string exceptionMessage = string.Format("registration for type '{0}' and name '{1}' already exists",
-                                                    typeOfContract.Name, null);
-
-            throw new RegistrationAlreadyExistsException(exceptionMessage);
+            this._registrations = registrations;
         }
 
         /// <summary>

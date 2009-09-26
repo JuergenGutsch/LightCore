@@ -10,9 +10,12 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Registering_named_service()
         {
-            IContainer container = new Container();
-            container.Register<ILogger, Logger>();
-            container.Register<ILogger, NullLogger>().Named("MyNullLogger");
+            var builder = new ContainerBuilder();
+
+            builder.Register<ILogger, Logger>();
+            builder.Register<ILogger, NullLogger>().WithName("MyNullLogger");
+
+            var container = builder.Build();
 
             var namedInstance = container.ResolveNamed<ILogger>("MyNullLogger");
 

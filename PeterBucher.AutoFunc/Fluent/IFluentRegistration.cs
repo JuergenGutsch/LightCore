@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the fluent interface for registration.
     /// </summary>
-    public interface IFluentRegistration
+    public interface IFluentRegistration : IFluentInterface
     {
         /// <summary>
         /// Treat the current registration to singleton lifecycle.
@@ -15,7 +15,11 @@
         /// </summary>
         IFluentRegistration AsTransient();
 
-
-        IFluentRegistration Named(string name);
+        /// <summary>
+        /// Gives a name to the registration.
+        /// </summary>
+        /// <param name="name">The registration name.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        void WithName(string name);
     }
 }
