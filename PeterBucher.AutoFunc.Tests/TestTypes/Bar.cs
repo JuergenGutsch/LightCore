@@ -17,6 +17,11 @@
 
         }
 
+        public Bar(IFoo foo)
+        {
+            this.Foo = foo;
+        }
+
         public Bar(bool arg2)
         {
             this.Arg2 = arg2;

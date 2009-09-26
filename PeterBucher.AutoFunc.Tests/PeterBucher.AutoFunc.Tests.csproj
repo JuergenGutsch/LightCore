@@ -55,6 +55,7 @@
     <Compile Include="TestTypes\ILogger.cs" />
     <Compile Include="TestTypes\Logger.cs" />
     <Compile Include="TestTypes\NullLogger.cs" />
+    <Compile Include="UseDefaultConstructorTests.cs" />
     <Compile Include="WithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
