@@ -1,18 +1,21 @@
 ﻿namespace PeterBucher.AutoFunc.Fluent
 {
     /// <summary>
-    /// Represents the fluent interface for lifecycles.
+    /// Represents the fluent interface for registration.
     /// </summary>
-    public interface ILifecycleFluent
+    public interface IFluentRegistration
     {
         /// <summary>
         /// Treat the current registration to singleton lifecycle.
         /// </summary>
-        void AsSingleton();
+        IFluentRegistration AsSingleton();
 
         /// <summary>
         /// Treat the current registration to transient lifecycle.
         /// </summary>
-        void AsTransient();
+        IFluentRegistration AsTransient();
+
+
+        IFluentRegistration Named(string name);
     }
 }

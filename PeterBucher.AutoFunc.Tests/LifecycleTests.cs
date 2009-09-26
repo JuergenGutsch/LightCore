@@ -13,7 +13,7 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Can_handles_default_transient_lifecycle_correct()
         {
-            IContainer container = new AutoFuncContainer();
+            IContainer container = new Container();
             container.Register<IFooRepository, FooRepository>();
             container.Register<ILogger, Logger>();
 
@@ -26,7 +26,7 @@ namespace PeterBucher.AutoFunc.Tests
         [TestMethod]
         public void Can_take_care_of_lifecycle_singleton()
         {
-            IContainer container = new AutoFuncContainer();
+            IContainer container = new Container();
             container.Register<IFooRepository, FooRepository>().AsSingleton();
             container.Register<ILogger, Logger>();
 

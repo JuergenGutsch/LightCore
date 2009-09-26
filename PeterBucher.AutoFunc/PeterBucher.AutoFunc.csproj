@@ -39,15 +39,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFuncContainer.cs" />
-    <Compile Include="Fluent\LifecycleFluent.cs" />
+    <Compile Include="Container.cs" />
+    <Compile Include="Fluent\FluentRegistration.cs" />
     <Compile Include="IContainer.cs" />
-    <Compile Include="Fluent\ILifecycleFluent.cs" />
-    <Compile Include="MappingAlreadyRegisteredException.cs" />
-    <Compile Include="MappingNotFoundException.cs" />
-    <Compile Include="Mapping\IMappingItem.cs" />
+    <Compile Include="Fluent\IFluentRegistration.cs" />
+    <Compile Include="RegistrationAlreadyExistsException.cs" />
+    <Compile Include="RegistrationNotFoundException.cs" />
     <Compile Include="Lifecycle.cs" />
-    <Compile Include="Mapping\MappingItem.cs" />
+    <Compile Include="Registration.cs" />
+    <Compile Include="RegistrationKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

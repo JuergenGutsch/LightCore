@@ -4,46 +4,46 @@ using System.Runtime.Serialization;
 namespace PeterBucher.AutoFunc
 {
     /// <summary>
-    /// Thrown when a mapping already exists in container.
+    /// Thrown when a mapping not found for resolving a type.
     /// </summary>
     [Serializable]
-    public class MappingAlreadyRegisteredException : Exception
+    public class RegistrationNotFoundException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingAlreadyRegisteredException"/> type.
+        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
-        public MappingAlreadyRegisteredException()
+        public RegistrationNotFoundException()
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingAlreadyRegisteredException"/> type.
+        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        public MappingAlreadyRegisteredException(string message)
+        public RegistrationNotFoundException(string message)
             : base(message)
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingAlreadyRegisteredException"/> type.
+        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception</param>
-        public MappingAlreadyRegisteredException(string message, Exception innerException)
+        public RegistrationNotFoundException(string message, Exception innerException)
             : base(message, innerException)
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MappingAlreadyRegisteredException"/> type.
+        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The context.</param>
-        protected MappingAlreadyRegisteredException(SerializationInfo info, StreamingContext context)
+        protected RegistrationNotFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 

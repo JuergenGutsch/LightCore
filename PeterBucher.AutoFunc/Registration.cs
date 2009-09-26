@@ -2,36 +2,38 @@
 
 using PeterBucher.AutoFunc.Fluent;
 
-namespace PeterBucher.AutoFunc.Mapping
+namespace PeterBucher.AutoFunc
 {
     /// <summary>
-    /// Represents a mapping item.
+    /// Represents a registration.
     /// </summary>
-    public class MappingItem : IMappingItem
+    public class Registration
     {
         /// <summary>
-        /// The lifecycle for the current mapping item.
+        /// The lifecycle for the current registration.
         /// </summary>
         private Lifecycle _lifecycle = Lifecycle.Transient;
 
         /// <summary>
-        /// Creates a new instance of <see cref="MappingItem" />.
+        /// Creates a new instance of <see cref="Registration" />.
         /// </summary>
+        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
         /// <param name="imlementationType">The implementation type as <see cref="Type" />.</param>
-        public MappingItem(Type imlementationType)
+        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</see></param>
+        public Registration(Type contractType, Type imlementationType, RegistrationKey key)
         {
+            this.ContractType = contractType;
             this.ImplementationType = imlementationType;
+            this.Key = key;
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="MappingItem" />.
+        /// Gets the contract type as <see cref="Type" />.
         /// </summary>
-        /// <param name="imlementationType">The implementation type as <see cref="Type" />.</param>
-        /// <param name="lifecycle">The lifecycle.</param>
-        public MappingItem(Type imlementationType, Lifecycle lifecycle)
-            : this(imlementationType)
+        public Type ContractType
         {
-            _lifecycle = lifecycle;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace PeterBucher.AutoFunc.Mapping
         }
 
         /// <summary>
-        /// Gets the lifecycle of the mapping.
+        /// Gets the lifecycle of the registration.
         /// </summary>
         public Lifecycle Lifecycle
         {
@@ -53,7 +55,7 @@ namespace PeterBucher.AutoFunc.Mapping
         }
 
         /// <summary>
-        /// Gets and sets the current instance of this mapping.
+        /// Gets and sets the current instance of this registration.
         /// </summary>
         public object Instance
         {
@@ -62,13 +64,22 @@ namespace PeterBucher.AutoFunc.Mapping
         }
 
         /// <summary>
+        /// Gets the key for this registration.
+        /// </summary>
+        public RegistrationKey Key
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Gets the current fluent interface instance.
         /// </summary>
-        public ILifecycleFluent LifecycleFluent
+        public IFluentRegistration FluentRegistration
         {
             get
             {
-                return new LifecycleFluent(this);
+                return new FluentRegistration(this);
             }
         }
     }

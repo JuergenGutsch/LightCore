@@ -4,18 +4,19 @@ using PeterBucher.AutoFunc.Tests.TestTypes;
 
 namespace PeterBucher.AutoFunc.Tests
 {
-    /// <summary>
-    /// Summary description for RegisterTypesTests
-    /// </summary>
     [TestClass]
-    public class RegisterTypesTests
+    public class NamedContracts
     {
         [TestMethod]
-        public void Can_register_types_to_the_container()
+        public void Registering_named_service()
         {
             IContainer container = new Container();
-            container.Register<IFooRepository, FooRepository>();
             container.Register<ILogger, Logger>();
+            container.Register<ILogger, NullLogger>().Named("MyNullLogger");
+
+            var namedInstance = container.ResolveNamed<ILogger>("MyNullLogger");
+
+            Assert.IsNotNull(namedInstance);
         }
     }
 }
