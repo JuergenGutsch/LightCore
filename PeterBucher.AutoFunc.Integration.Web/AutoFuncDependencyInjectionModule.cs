@@ -50,7 +50,6 @@ namespace PeterBucher.AutoFunc.Integration.Web
 
         #endregion
 
-
         /// <summary>
         /// Executes before the <see cref="IHttpHandler" /> executes.
         /// </summary>

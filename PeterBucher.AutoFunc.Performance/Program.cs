@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+
 using PeterBucher.AutoFunc.Performance.UseCases;
 
 namespace PeterBucher.AutoFunc.Performance

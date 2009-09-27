@@ -29,6 +29,21 @@ namespace PeterBucher.AutoFunc.Tests
         }
 
         [TestMethod]
+        public void Can_resolve_a_registered_abstract_class()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register<ProviderBase, DefaultProvider>();
+
+            var container = builder.Build();
+
+            var instance = container.Resolve<ProviderBase>();
+
+            Assert.IsNotNull(instance);
+            Assert.IsInstanceOfType(instance, typeof (DefaultProvider));
+        }
+
+        [TestMethod]
         public void ResolveUp_a_object_tree_works()
         {
             var builder = new ContainerBuilder();

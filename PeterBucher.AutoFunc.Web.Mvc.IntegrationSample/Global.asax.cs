@@ -46,6 +46,7 @@ namespace PeterBucher.AutoFunc.WebIntegrationSample
 
             var controllerAssembly = Assembly.GetExecutingAssembly();
             var controllerRegistrationModule = new AutoFuncControllerRegistrationModule(controllerAssembly);
+            
             builder.RegisterModule(controllerRegistrationModule);
 
             builder.Register<IFormsAuthentication, FormsAuthenticationService>().UseDefaultConstructor();
