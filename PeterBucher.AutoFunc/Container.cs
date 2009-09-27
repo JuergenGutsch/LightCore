@@ -14,14 +14,14 @@ namespace PeterBucher.AutoFunc
     public class Container : IContainer
     {
         /// <summary>
-        /// Selector for non dependency parameters.
-        /// </summary>
-        private readonly Func<ParameterInfo, bool> _nonDependencyParameterSelector;
-
-        /// <summary>
         /// Selector for dependency parameters.
         /// </summary>
         private readonly Func<ParameterInfo, bool> _dependencyParameterSelector;
+
+        /// <summary>
+        /// Selector for non dependency parameters.
+        /// </summary>
+        private readonly Func<ParameterInfo, bool> _nonDependencyParameterSelector;
 
         /// <summary>
         /// Holds a dictionary with registered registration keys and their corresponding registrations.
@@ -37,8 +37,8 @@ namespace PeterBucher.AutoFunc
             this._registrations = registrations;
 
             // Setup selectors.
-            this._nonDependencyParameterSelector = p => !(p.ParameterType.IsInterface || p.ParameterType.IsAbstract);
-            this._dependencyParameterSelector = F.Not(this._nonDependencyParameterSelector);
+            this._dependencyParameterSelector = p => p.ParameterType.IsInterface || p.ParameterType.IsAbstract;
+            this._nonDependencyParameterSelector = p => !this._dependencyParameterSelector(p);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace PeterBucher.AutoFunc
             if (parameters.Any(_dependencyParameterSelector))
             {
                 var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-                finalArguments.AddRange(this.ResolveDependencyParameters(dependencyParameters));
+                finalArguments.AddRange(dependencyParameters.Convert(p => this.Resolve(p.ParameterType, null)));
 
                 if (arguments != null)
                 {
@@ -241,20 +241,6 @@ namespace PeterBucher.AutoFunc
 
             // There are only non depdency arguments.
             return constructor.Invoke(arguments.ToArray());
-        }
-
-        /// <summary>
-        /// Resolves dependency parameters and yield back.
-        /// </summary>
-        /// <param name="parameters">The parameter whose types should be resolved.</param>
-        /// <returns>The resolved types.</returns>
-        private IEnumerable<object> ResolveDependencyParameters(IEnumerable<ParameterInfo> parameters)
-        {
-            // Resolve up all dependencies (recursive).
-            foreach (var parameter in parameters)
-            {
-                yield return this.Resolve(parameter.ParameterType, null);
-            }
         }
 
         /// <summary>

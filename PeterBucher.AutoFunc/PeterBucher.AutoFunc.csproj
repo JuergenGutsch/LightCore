@@ -45,7 +45,6 @@
     <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
     <Compile Include="Exceptions\ResolvingFailedException.cs" />
     <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
-    <Compile Include="F.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
     <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
