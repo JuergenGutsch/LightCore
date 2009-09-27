@@ -6,7 +6,7 @@ using PeterBucher.AutoFunc.TestTypes;
 
 namespace PeterBucher.AutoFunc.Web.IntegrationSample
 {
-    public partial class _Default : System.Web.UI.Page
+    public partial class _Default : Page
     {
         public string Test
         {
@@ -18,6 +18,13 @@ namespace PeterBucher.AutoFunc.Web.IntegrationSample
         {
             get;
             set;
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            this.Controls.Add(this.LoadControl("~/UserControls/WelcomeUserControl.ascx"));
         }
 
         protected void Page_Load(object sender, EventArgs e)

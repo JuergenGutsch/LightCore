@@ -44,6 +44,12 @@ namespace PeterBucher.AutoFunc.Build
             return this.Register(typeof(TContract), typeof(TImplementation));
         }
 
+        /// <summary>
+        /// Registers a contract with its implementationtype.
+        /// </summary>
+        /// <param name="typeOfContract">The type of the contract.</param>
+        /// <param name="typeOfImplementation">The type of the implementation for the contract</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
             var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
@@ -92,21 +98,23 @@ namespace PeterBucher.AutoFunc.Build
         /// <param name="registrationKey">The registration key to check for.</param>
         private void AssertRegistrationExists(RegistrationKey registrationKey)
         {
-            Func<RegistrationKey, bool>
-                contractTypeSelector = r => r.ContractType == registrationKey.ContractType;
+            Func<RegistrationKey, bool> contractTypeSelector =
+                r => r.ContractType == registrationKey.ContractType;
 
-            Func<RegistrationKey, bool>
-                implementationTypeSelector = r => r.ImplementationType == registrationKey.ImplementationType;
+            Func<RegistrationKey, bool> implementationTypeSelector =
+                r => r.ImplementationType == registrationKey.ImplementationType;
 
-            Func<RegistrationKey, bool>
-                nameSelector = r => r.Name == registrationKey.Name;
+            Func<RegistrationKey, bool> nameSelector =
+                r => r.Name == registrationKey.Name;
 
             Func<RegistrationKey, bool> registrationEqualsSelector =
                 r => contractTypeSelector(r) && implementationTypeSelector(r) && nameSelector(r);
 
-            Func<RegistrationKey, bool> registrationNameEqualsSelector = (r => r.Name != null && r.Name == registrationKey.Name);
+            Func<RegistrationKey, bool> registrationNameEqualsSelector =
+                r => r.Name != null && r.Name == registrationKey.Name;
 
-            Func<RegistrationKey, bool> mainSelector = (r => registrationEqualsSelector(r) || registrationNameEqualsSelector(r));
+            Func<RegistrationKey, bool> mainSelector =
+                r => registrationEqualsSelector(r) || registrationNameEqualsSelector(r);
 
             // Check if the registration key already exists.
             if (this._registrations.Any(r => mainSelector(r.Key)))

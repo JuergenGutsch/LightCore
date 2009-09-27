@@ -9,7 +9,7 @@ using PeterBucher.AutoFunc.ExtensionMethods;
 namespace PeterBucher.AutoFunc
 {
     /// <summary>
-    /// Represents the implementation for a inversion of control container.
+    /// Represents the implementation for an inversion of control container.
     /// </summary>
     public class Container : IContainer
     {
@@ -152,7 +152,6 @@ namespace PeterBucher.AutoFunc
         private object CreateInstanceFromRegistration(Registration registration)
         {
             Type implementationType = registration.ImplementationType;
-            object[] arguments = registration.Arguments;
             ConstructorInfo[] constructors = implementationType.GetConstructors();
 
             bool onlyDefaultConstructorAvailable =
@@ -163,6 +162,8 @@ namespace PeterBucher.AutoFunc
             {
                 return Activator.CreateInstance(implementationType);
             }
+
+            object[] arguments = registration.Arguments;
 
             // Select constructor that matches the given arguments.
             if (arguments != null)

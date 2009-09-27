@@ -1,8 +1,6 @@
 ﻿using System.Web;
 using System.Web.UI;
 
-using PeterBucher.AutoFunc.Integrations.Web;
-
 namespace PeterBucher.AutoFunc.Integration.Web
 {
     public class AutoFuncDependencyInjectionModule : IHttpModule

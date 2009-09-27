@@ -2,7 +2,7 @@
 using System.Web;
 
 using PeterBucher.AutoFunc.Build;
-using PeterBucher.AutoFunc.Integrations.Web;
+using PeterBucher.AutoFunc.Integration.Web;
 using PeterBucher.AutoFunc.TestTypes;
 
 namespace PeterBucher.AutoFunc.Web.IntegrationSample

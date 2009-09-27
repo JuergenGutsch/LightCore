@@ -1,6 +1,4 @@
-﻿using System.Web.Mvc;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PeterBucher.AutoFunc.Build;
 using PeterBucher.AutoFunc.Integration.Web.Mvc;
@@ -16,14 +14,13 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IController, FooController>()
-                .UseDefaultConstructor()
-                .WithName("one");
+            builder.Register<IFoo, Foo>();
+            builder.RegisterModule(new AutoFuncControllerRegistrationModule(typeof (FooController).Assembly));
 
             var container = builder.Build();
             var controllerFactory = new AutoFuncControllerFactory(container);
 
-            var controller = controllerFactory.CreateController(null, "one");
+            var controller = controllerFactory.CreateController(null, "Foo");
 
             Assert.IsNotNull(controller);
         }
@@ -33,15 +30,13 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IController, FooController>()
-                .WithName("one");
-
             builder.Register<IFoo, Foo>();
+            builder.RegisterModule(new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly));
 
             var container = builder.Build();
             var controllerFactory = new AutoFuncControllerFactory(container);
 
-            var controller = controllerFactory.CreateController(null, "one");
+            var controller = controllerFactory.CreateController(null, "Foo");
 
             Assert.IsNotNull(((FooController) controller).Foo);
         }

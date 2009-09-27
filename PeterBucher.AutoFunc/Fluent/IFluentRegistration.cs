@@ -28,6 +28,7 @@
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
-        void WithName(string name);
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration WithName(string name);
     }
 }

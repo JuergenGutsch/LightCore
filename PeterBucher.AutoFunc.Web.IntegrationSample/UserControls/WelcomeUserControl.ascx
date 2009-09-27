@@ -1,0 +1,2 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="WelcomeUserControl.ascx.cs" Inherits="PeterBucher.AutoFunc.Web.IntegrationSample.UserControls.WelcomeUserControl" %>
+<asp:Label ID="lblTest" runat="server" />

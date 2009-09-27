@@ -54,9 +54,11 @@
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
-        public void WithName(string name)
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration WithName(string name)
         {
             this._registration.Key.Name = name;
+            return this;
         }
     }
 }
