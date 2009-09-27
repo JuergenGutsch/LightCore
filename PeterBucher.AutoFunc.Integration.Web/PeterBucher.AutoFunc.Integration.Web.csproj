@@ -54,6 +54,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj">
+      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
+      <Name>PeterBucher.AutoFunc.TestTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>PeterBucher.AutoFunc</Name>

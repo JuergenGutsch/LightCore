@@ -83,7 +83,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PeterBucher.AutoFunc.Integration.Web\PeterBucher.AutoFunc.Integration.Web.csproj">
       <Project>{A5626363-3530-435B-8DFA-8C074D81CEB8}</Project>
-      <Name>PeterBucher.AutoFunc.Integrations.Web</Name>
+      <Name>PeterBucher.AutoFunc.Integration.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>

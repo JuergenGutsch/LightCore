@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using PeterBucher.AutoFunc.Build;
 using PeterBucher.AutoFunc.ExtensionMethods;
 
-namespace PeterBucher.AutoFunc.Integrations.Web.Mvc
+namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.

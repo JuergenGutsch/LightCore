@@ -1,7 +1,8 @@
-﻿using System.Web.Routing;
+﻿using System;
+using System.Web.Routing;
 using System.Web.Mvc;
 
-namespace PeterBucher.AutoFunc.Integrations.Web.Mvc
+namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a controller factory that works with a <see cref="IContainer" / >.
@@ -32,6 +33,11 @@ namespace PeterBucher.AutoFunc.Integrations.Web.Mvc
         /// </returns>
         public IController CreateController(RequestContext requestContext, string controllerName)
         {
+            if(controllerName == null)
+            {
+                throw new ArgumentNullException("controllerName");
+            }
+
             // Returns the resolved controller to the caller.
             return this._container.ResolveNamed<IController>(controllerName.ToLowerInvariant());
         }
