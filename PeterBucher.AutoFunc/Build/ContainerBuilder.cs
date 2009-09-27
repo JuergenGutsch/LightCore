@@ -98,23 +98,17 @@ namespace PeterBucher.AutoFunc.Build
         /// <param name="registrationKey">The registration key to check for.</param>
         private void AssertRegistrationExists(RegistrationKey registrationKey)
         {
-            Func<RegistrationKey, bool> contractTypeSelector =
-                r => r.ContractType == registrationKey.ContractType;
+            var selectors = new List<Func<RegistrationKey, bool>>
+                                {
+                                    r => r.ContractType == registrationKey.ContractType,
+                                    r => r.ImplementationType == registrationKey.ImplementationType,
+                                    r => r.Name == registrationKey.Name
+                                };
 
-            Func<RegistrationKey, bool> implementationTypeSelector =
-                r => r.ImplementationType == registrationKey.ImplementationType;
+            Func<RegistrationKey, bool> registrationEqualsSelector = selectors.Aggregate((current, next) => r => current(r) && next(r));
+            Func<RegistrationKey, bool> registrationNameEqualsSelector = r => r.Name != null && r.Name == registrationKey.Name;
 
-            Func<RegistrationKey, bool> nameSelector =
-                r => r.Name == registrationKey.Name;
-
-            Func<RegistrationKey, bool> registrationEqualsSelector =
-                r => contractTypeSelector(r) && implementationTypeSelector(r) && nameSelector(r);
-
-            Func<RegistrationKey, bool> registrationNameEqualsSelector =
-                r => r.Name != null && r.Name == registrationKey.Name;
-
-            Func<RegistrationKey, bool> mainSelector =
-                r => registrationEqualsSelector(r) || registrationNameEqualsSelector(r);
+            Func<RegistrationKey, bool> mainSelector = r => registrationEqualsSelector(r) || registrationNameEqualsSelector(r);
 
             // Check if the registration key already exists.
             if (this._registrations.Any(r => mainSelector(r.Key)))

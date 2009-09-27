@@ -72,25 +72,18 @@ namespace PeterBucher.AutoFunc
             var properties =
                 instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 
-            Func<PropertyInfo, bool> isNotValueTypeSelector = p => !p.PropertyType.IsValueType;
-            Func<PropertyInfo, bool> noIndexParametersAvailable = p => p.GetIndexParameters().Length == 0;
-            Func<PropertyInfo, bool> isRegistered = p => this.IsRegistered(p.PropertyType);
-            Func<PropertyInfo, bool> abstractOrInterfaceType =
-                p => p.PropertyType.IsAbstract || p.PropertyType.IsInterface;
+            var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
+                                               {
+                                                   p => p.PropertyType.IsAbstract || p.PropertyType.IsInterface,
+                                                   p => !p.PropertyType.IsValueType,
+                                                   p => this.IsRegistered(p.PropertyType),
+                                                   p => p.GetIndexParameters().Length == 0
+                                               };
 
-            Func<PropertyInfo, bool> validPropertiesSelector =
-                p => isNotValueTypeSelector(p)
-                     && noIndexParametersAvailable(p)
-                     && isRegistered(p)
-                     && abstractOrInterfaceType(p);
+            var validProperties = properties.Where(
+                validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
 
-            var validProperties = properties.Where(validPropertiesSelector);
-
-            validProperties.ForEach(p =>
-                                        {
-                                            object resolvedValue = this.Resolve(p.PropertyType, null);
-                                            p.SetValue(instance, resolvedValue, null);
-                                        });
+            validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType, null), null));
         }
 
         /// <summary>
