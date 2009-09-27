@@ -168,31 +168,7 @@ namespace PeterBucher.AutoFunc
             // Select constructor that matches the given arguments.
             if (arguments != null)
             {
-                var constructorCandidates = constructors.Where(
-                    delegate(ConstructorInfo c)
-                    {
-                        var parameters = c.GetParameters();
-                        return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
-                    });
-
-                // Only one constructor with same parameter count.
-                if (constructorCandidates.Count() == 1)
-                {
-                    return this.InvokeConstructor(constructorCandidates.First(), arguments);
-                }
-
-                // Find the right constructor according the parameter types.
-                foreach (var constructor in constructorCandidates.OrderByDescending(c => c.GetParameters().Count()))
-                {
-                    if (ConstructorParameterTypesMatch(constructor.GetParameters().Where(this._nonDependencyParameterSelector).ToArray(), arguments))
-                    {
-                        return this.InvokeConstructor(constructor, arguments);
-                    }
-                }
-
-                // No constructor found.
-                string exceptionMessage = string.Format("constructor for type '{0}' not found", implementationType.Name);
-                throw new ResolvingFailedException(exceptionMessage);
+                return CreateInstanceWithArguments(implementationType, constructors, arguments);
             }
 
             // Select the constructor with most parameters (dependencies).
@@ -205,6 +181,42 @@ namespace PeterBucher.AutoFunc
 
             // Invoke constructor with arguments and return it to the caller.
             return this.InvokeConstructor(constructorWithMostParameters, null);
+        }
+
+        /// <summary>
+        /// Creates an instance with arguments.
+        /// </summary>
+        /// <param name="implementationType">The imlementation type.</param>
+        /// <param name="constructors">The constructor candidates.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns>The created instance.</returns>
+        private object CreateInstanceWithArguments(Type implementationType, ConstructorInfo[] constructors, object[] arguments)
+        {
+            var constructorCandidates = constructors.Where(
+                delegate(ConstructorInfo c)
+                {
+                    var parameters = c.GetParameters();
+                    return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
+                });
+
+            // Only one constructor with same parameter count.
+            if (constructorCandidates.Count() == 1)
+            {
+                return this.InvokeConstructor(constructorCandidates.First(), arguments);
+            }
+
+            // Find the right constructor according the parameter types.
+            foreach (var constructor in constructorCandidates.OrderByDescending(c => c.GetParameters().Count()))
+            {
+                if (ConstructorParameterTypesMatch(constructor.GetParameters().Where(this._nonDependencyParameterSelector).ToArray(), arguments))
+                {
+                    return this.InvokeConstructor(constructor, arguments);
+                }
+            }
+
+            // No constructor found.
+            string exceptionMessage = string.Format("constructor for type '{0}' not found", implementationType.Name);
+            throw new ResolvingFailedException(exceptionMessage);
         }
 
         /// <summary>
@@ -224,7 +236,7 @@ namespace PeterBucher.AutoFunc
             if (parameters.Any(_dependencyParameterSelector))
             {
                 var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-                finalArguments.AddRange(this.ResolveDependendyParameters(dependencyParameters));
+                finalArguments.AddRange(this.ResolveDependencyParameters(dependencyParameters));
 
                 if (arguments != null)
                 {
@@ -238,7 +250,12 @@ namespace PeterBucher.AutoFunc
             return constructor.Invoke(arguments.ToArray());
         }
 
-        private IEnumerable<object> ResolveDependendyParameters(IEnumerable<ParameterInfo> parameters)
+        /// <summary>
+        /// Resolves dependency parameters and yield back.
+        /// </summary>
+        /// <param name="parameters">The parameter whose types should be resolved.</param>
+        /// <returns>The resolved types.</returns>
+        private IEnumerable<object> ResolveDependencyParameters(IEnumerable<ParameterInfo> parameters)
         {
             // Resolve up all dependencies (recursive).
             foreach (var parameter in parameters)

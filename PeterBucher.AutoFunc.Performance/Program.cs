@@ -9,7 +9,7 @@ namespace PeterBucher.AutoFunc.Performance
     {
         static void Main(string[] args)
         {
-            int iterations = 100;
+            int iterations = 1000;
 
             Console.WriteLine("Running {0} iterations for each use case.", iterations);
 
