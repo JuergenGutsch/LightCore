@@ -3,6 +3,9 @@ using System.Web.UI;
 
 namespace PeterBucher.AutoFunc.Integration.Web
 {
+    /// <summary>
+    /// Represents a <see cref="IHttpModule" /> for property injection on ASP.NET WebForms.
+    /// </summary>
     public class AutoFuncDependencyInjectionModule : IHttpModule
     {
         /// <summary>
@@ -47,20 +50,32 @@ namespace PeterBucher.AutoFunc.Integration.Web
 
         #endregion
 
+
+        /// <summary>
+        /// Executes before the <see cref="IHttpHandler" /> executes.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The eventargs.</param>
         private void _application_PreRequestHandlerExecute(object sender, System.EventArgs e)
         {
             object handler = this._application.Context.CurrentHandler;
 
+            // Inject properties on current handler.
             _container.InjectProperties(handler);
 
             var page = handler as Page;
 
             if (page != null)
             {
+                // Inject properties on all controls.
                 page.PreLoad += (s, a) => this.InjectPropertiesOnControls(page);
             }
         }
 
+        /// <summary>
+        /// Inject properties on a <see cref="Control" /> recursive.
+        /// </summary>
+        /// <param name="parent">The parent control.</param>
         private void InjectPropertiesOnControls(Control parent)
         {
             if (parent.Controls != null)

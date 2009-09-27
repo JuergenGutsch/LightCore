@@ -9,7 +9,7 @@ namespace PeterBucher.AutoFunc.Tests
     public class InjectPropertiesTests
     {
         [TestMethod]
-        public void Foo()
+        public void Inject_properties_works()
         {
             var builder = new ContainerBuilder();
 
