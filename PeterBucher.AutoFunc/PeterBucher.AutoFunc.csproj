@@ -35,13 +35,11 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Build\RegistrationModule.cs" />
+    <Compile Include="Builder\RegistrationModule.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="Build\ContainerBuilder.cs" />
+    <Compile Include="Builder\ContainerBuilder.cs" />
     <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
     <Compile Include="Exceptions\ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
@@ -50,7 +48,7 @@
     <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\IFluentRegistration.cs" />
-    <Compile Include="Build\IContainerBuilder.cs" />
+    <Compile Include="Builder\IContainerBuilder.cs" />
     <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
     <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
     <Compile Include="Lifetime.cs" />

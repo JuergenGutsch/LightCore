@@ -1,26 +1,22 @@
-﻿using System;
+﻿
 using System.Web.Routing;
 using System.Web.Mvc;
 
 namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 {
     /// <summary>
-    /// Represents a controller factory that works with a <see cref="IContainer" / >.
+    /// Represents a default controller factory that works with a <see cref="IContainer" / >.
     /// </summary>
-    public class AutoFuncControllerFactory : IControllerFactory
+    public class AutoFuncControllerFactory : AutoFuncControllerFactoryBase
     {
-        /// <summary>
-        /// The container.
-        /// </summary>
-        private readonly IContainer _container;
-
         /// <summary>
         /// Initializes a new instance of <see cref="AutoFuncControllerFactory" />.
         /// </summary>
         /// <param name="container">The container.</param>
         public AutoFuncControllerFactory(IContainer container)
+            : base(container)
         {
-            this._container = container;
+
         }
 
         /// <summary>
@@ -31,24 +27,10 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
         /// <returns>
         /// The controller.
         /// </returns>
-        public IController CreateController(RequestContext requestContext, string controllerName)
+        protected override IController CreateControllerCore(RequestContext requestContext, string controllerName)
         {
-            if(controllerName == null)
-            {
-                throw new ArgumentNullException("controllerName");
-            }
-
             // Returns the resolved controller to the caller.
-            return this._container.ResolveNamed<IController>(controllerName.ToLowerInvariant());
-        }
-
-        /// <summary>
-        /// Releases the controller.
-        /// </summary>
-        /// <param name="controller">The controller.</param>
-        public void ReleaseController(IController controller)
-        {
-            // do nothing.
+            return this.Container.ResolveNamed<IController>(controllerName.ToLowerInvariant());
         }
     }
 }

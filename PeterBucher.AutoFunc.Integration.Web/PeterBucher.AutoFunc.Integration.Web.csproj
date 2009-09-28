@@ -35,10 +35,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.ServiceModel">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -50,7 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFuncDependencyInjectionModule.cs" />
-    <Compile Include="ExtensionMethods\IFluentRegistrationExtensions.cs" />
+    <Compile Include="ExtensionMethods\FluentRegistrationExtensions.cs" />
+    <Compile Include="Mvc\AutoFuncControllerFactoryBase.cs" />
     <Compile Include="Reuse\HttpRequestReuseStrategy.cs" />
     <Compile Include="IContainerAccessor.cs" />
     <Compile Include="Mvc\AutoFuncControllerFactory.cs" />
@@ -58,10 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj">
-      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
-      <Name>PeterBucher.AutoFunc.TestTypes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>PeterBucher.AutoFunc</Name>

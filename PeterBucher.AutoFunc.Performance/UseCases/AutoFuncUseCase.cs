@@ -1,4 +1,4 @@
-﻿using PeterBucher.AutoFunc.Build;
+﻿using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.Performance.Domain;
 
 namespace PeterBucher.AutoFunc.Performance.UseCases

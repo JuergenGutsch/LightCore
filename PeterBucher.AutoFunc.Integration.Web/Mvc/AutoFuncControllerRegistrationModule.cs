@@ -4,8 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 
-using PeterBucher.AutoFunc.Build;
+using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.ExtensionMethods;
+using PeterBucher.AutoFunc.Integration.Web.Reuse;
+using PeterBucher.AutoFunc.Reuse;
 
 namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 {
@@ -18,6 +20,24 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
         /// The assembly from the controller implementation types.
         /// </summary>
         private readonly List<Assembly> _controllerAssembly;
+
+        private IReuseStrategy _reuseStrategy = new HttpRequestReuseStrategy();
+
+        /// <summary>
+        /// Gets or sets the reuse strategy to use for all controllers.
+        /// </summary>
+        public IReuseStrategy ReuseStrategy
+        {
+            get
+            {
+                return this._reuseStrategy;
+            }
+
+            set
+            {
+                this._reuseStrategy = value;
+            }
+        }
 
         protected AutoFuncControllerRegistrationModule()
         {
@@ -87,6 +107,7 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 
             controllerTypes.ForEach(t => containerBuilder
                                              .Register(typeOfIController, t)
+                                             .ScopedTo(this._reuseStrategy)
                                              .WithName(this.GetControllerName(t.Name)));
         }
 

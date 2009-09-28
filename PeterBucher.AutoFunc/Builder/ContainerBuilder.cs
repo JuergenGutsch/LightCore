@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
 using PeterBucher.AutoFunc.Properties;
 using PeterBucher.AutoFunc.Reuse;
 
-namespace PeterBucher.AutoFunc.Build
+namespace PeterBucher.AutoFunc.Builder
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations
@@ -67,10 +66,10 @@ namespace PeterBucher.AutoFunc.Build
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-            {
-                this.AssertRegistrationExists(registration.Key);
-                this._registrations.Add(registration.Key, registration);
-            });
+                                                {
+                                                    this.AssertRegistrationExists(registration.Key);
+                                                    this._registrations.Add(registration.Key, registration);
+                                                });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;

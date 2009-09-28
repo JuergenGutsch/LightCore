@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Build
+﻿namespace PeterBucher.AutoFunc.Builder
 {
     /// <summary>
     /// Represents an abstract registration module for implemenenting custom registrations.

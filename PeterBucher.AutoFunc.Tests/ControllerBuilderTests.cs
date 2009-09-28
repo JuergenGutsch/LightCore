@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using PeterBucher.AutoFunc.Build;
+using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.TestTypes;
 

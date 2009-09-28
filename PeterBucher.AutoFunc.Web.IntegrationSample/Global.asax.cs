@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web;
-
-using PeterBucher.AutoFunc.Build;
+using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.Integration.Web;
 using PeterBucher.AutoFunc.TestTypes;
 

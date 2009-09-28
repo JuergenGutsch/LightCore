@@ -2,8 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-
-using PeterBucher.AutoFunc.Build;
+using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.Integration.Web;
 using PeterBucher.AutoFunc.Integration.Web.Mvc;
 using PeterBucher.AutoFunc.WebIntegrationSample.Controllers;

@@ -1,7 +1,8 @@
 ﻿using System;
+
 using PeterBucher.AutoFunc.Fluent;
 
-namespace PeterBucher.AutoFunc.Build
+namespace PeterBucher.AutoFunc.Builder
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations

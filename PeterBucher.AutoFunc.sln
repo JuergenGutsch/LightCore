@@ -17,9 +17,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Integr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Web.IntegrationSample", "PeterBucher.AutoFunc.Web.IntegrationSample\PeterBucher.AutoFunc.Web.IntegrationSample.csproj", "{22AD0900-A58F-4D1B-88F1-1B109835F956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.TestTypes", "PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Tests.Integration.Web", "PeterBucher.AutoFunc.Tests.Integration.Web\PeterBucher.AutoFunc.Tests.Integration.Web.csproj", "{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.TestTypes", "PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,14 +55,14 @@ Global
 		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

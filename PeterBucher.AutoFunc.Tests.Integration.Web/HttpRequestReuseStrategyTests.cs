@@ -4,8 +4,7 @@ using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-
-using PeterBucher.AutoFunc.Build;
+using PeterBucher.AutoFunc.Builder;
 using PeterBucher.AutoFunc.Integration.Web.Reuse;
 using PeterBucher.AutoFunc.TestTypes;
 
