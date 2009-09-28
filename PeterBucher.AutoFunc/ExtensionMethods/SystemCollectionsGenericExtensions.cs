@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PeterBucher.AutoFunc.ExtensionMethods
 {
+    /// <summary>
+    /// Represents extensionmethods for System.Collection.Generic namespace.
+    /// </summary>
     public static class SystemCollectionsGenericExtensions
     {
         /// <summary>

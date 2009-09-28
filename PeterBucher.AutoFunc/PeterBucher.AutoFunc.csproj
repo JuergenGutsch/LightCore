@@ -43,8 +43,9 @@
     <Compile Include="Container.cs" />
     <Compile Include="Build\ContainerBuilder.cs" />
     <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
-    <Compile Include="Exceptions\ResolvingFailedException.cs" />
+    <Compile Include="Exceptions\ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
+    <Compile Include="ExtensionMethods\SystemExtensions.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
     <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
@@ -56,6 +57,17 @@
     <Compile Include="Registration.cs" />
     <Compile Include="RegistrationKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

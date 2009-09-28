@@ -5,6 +5,7 @@ using System.Reflection;
 
 using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
+using PeterBucher.AutoFunc.Properties;
 
 namespace PeterBucher.AutoFunc
 {
@@ -112,10 +113,8 @@ namespace PeterBucher.AutoFunc
 
             if (!this._registrations.Any(registrationSelector))
             {
-                string exceptionMessage = string.Format("registration for contract '{0}' and name '{1}' not found",
-                                                        typeOfContract.Name, name);
-
-                throw new RegistrationNotFoundException(exceptionMessage);
+                throw new RegistrationNotFoundException(
+                    Resources.RegistrationForContractAndNameNotFound.FormatWith(typeOfContract.Name, name));
             }
 
             // Select registration.
@@ -208,8 +207,7 @@ namespace PeterBucher.AutoFunc
             }
 
             // No constructor found.
-            string exceptionMessage = string.Format("constructor for type '{0}' not found", implementationType.Name);
-            throw new ResolvingFailedException(exceptionMessage);
+            throw new ResolutionFailedException(Resources.ConstructorNotFoundFormat.FormatWith(implementationType.Name));
         }
 
         /// <summary>

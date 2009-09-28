@@ -5,6 +5,7 @@ using System.Linq;
 using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
+using PeterBucher.AutoFunc.Properties;
 
 namespace PeterBucher.AutoFunc.Build
 {
@@ -113,10 +114,10 @@ namespace PeterBucher.AutoFunc.Build
             // Check if the registration key already exists.
             if (this._registrations.Any(r => mainSelector(r.Key)))
             {
-                string exceptionMessage = string.Format("registration for type '{0}' and name '{1}' already exists",
-                                                        registrationKey.ContractType.Name, null);
-
-                throw new RegistrationAlreadyExistsException(exceptionMessage);
+                throw new RegistrationAlreadyExistsException(
+                    Resources.RegistrationForContractAndNameAlreadyExists.FormatWith(
+                        registrationKey.ContractType,
+                        registrationKey.Name));
             }
         }
     }
