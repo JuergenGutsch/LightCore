@@ -121,19 +121,7 @@ namespace PeterBucher.AutoFunc
             Registration registration = this._registrations.Where(registrationSelector).Single().Value;
 
             // Handle registration life time and creates an instance on these rules.
-            switch (registration.LifeTime)
-            {
-                case LifeTime.Singleton:
-                    if (registration.Instance == null)
-                    {
-                        registration.Instance = this.CreateInstanceFromRegistration(registration);
-                    }
-
-                    return registration.Instance;
-            }
-
-            // Implicitly use transient lifetime.
-            return this.CreateInstanceFromRegistration(registration);
+            return registration.ReuseStrategy.HandleReuse(() => this.CreateInstanceFromRegistration(registration));
         }
 
         /// <summary>

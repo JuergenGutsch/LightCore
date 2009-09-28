@@ -9,16 +9,14 @@ namespace PeterBucher.AutoFunc.Tests
     public class InjectPropertiesTests
     {
         [TestMethod]
-        public void Inject_properties_works()
+        public void Container_can_inject_properties()
         {
             var builder = new ContainerBuilder();
-
             builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
-
+            
             var bar = new Bar();
-
             container.InjectProperties(bar);
 
             Assert.IsNotNull(bar.Foo);

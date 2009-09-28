@@ -35,10 +35,14 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Routing">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -46,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoFuncDependencyInjectionModule.cs" />
+    <Compile Include="ExtensionMethods\IFluentRegistrationExtensions.cs" />
+    <Compile Include="Reuse\HttpRequestReuseStrategy.cs" />
     <Compile Include="IContainerAccessor.cs" />
     <Compile Include="Mvc\AutoFuncControllerFactory.cs" />
     <Compile Include="Mvc\AutoFuncControllerRegistrationModule.cs" />

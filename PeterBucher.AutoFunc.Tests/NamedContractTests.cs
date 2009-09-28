@@ -8,7 +8,7 @@ namespace PeterBucher.AutoFunc.Tests
     public class NamedContractTests
     {
         [TestMethod]
-        public void Registering_named_service()
+        public void Container_can_resolve_named_registration()
         {
             var builder = new ContainerBuilder();
 

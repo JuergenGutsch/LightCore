@@ -6,6 +6,7 @@ using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
 using PeterBucher.AutoFunc.Properties;
+using PeterBucher.AutoFunc.Reuse;
 
 namespace PeterBucher.AutoFunc.Build
 {
@@ -56,10 +57,13 @@ namespace PeterBucher.AutoFunc.Build
             var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, typeOfImplementation, key)
+            var registration = new Registration(typeOfContract, typeOfImplementation, key);
+            
+            // Set the transient reuse strategy as default.
+            if(registration.ReuseStrategy == null)
             {
-                LifeTime = LifeTime.Transient
-            };
+                registration.ReuseStrategy = new TransientReuseStrategy();
+            }
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>

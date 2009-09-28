@@ -10,35 +10,33 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
     public class AutoFuncControllerFactoryTests
     {
         [TestMethod]
-        public void Can_resolve_registered_controller()
+        public void Registered_controller_can_be_resolved_by_name()
         {
             var builder = new ContainerBuilder();
-
-            builder.Register<IFoo, Foo>();
-            builder.RegisterModule(new AutoFuncControllerRegistrationModule(typeof (FooController).Assembly));
-
-            var container = builder.Build();
-            var controllerFactory = new AutoFuncControllerFactory(container);
-
-            var controller = controllerFactory.CreateController(null, "Foo");
-
-            Assert.IsNotNull(controller);
-        }
-
-        [TestMethod]
-        public void Can_Resolve_registered_controller_with_dependencies()
-        {
-            var builder = new ContainerBuilder();
-
             builder.Register<IFoo, Foo>();
             builder.RegisterModule(new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly));
 
             var container = builder.Build();
             var controllerFactory = new AutoFuncControllerFactory(container);
 
-            var controller = controllerFactory.CreateController(null, "Foo");
+            var controller = controllerFactory.CreateController(null, "foo");
 
-            Assert.IsNotNull(((FooController) controller).Foo);
+            Assert.IsNotNull(controller);
+        }
+
+        [TestMethod]
+        public void Registered_controller_and_dependencies_can_be_resolved_by_name()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+            builder.RegisterModule(new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly));
+
+            var container = builder.Build();
+            var controllerFactory = new AutoFuncControllerFactory(container);
+
+            var controller = controllerFactory.CreateController(null, "foo");
+
+            Assert.IsNotNull(((FooController)controller).Foo);
         }
     }
 }

@@ -62,6 +62,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Reuse\SingletonReuseStrategy.cs" />
+    <Compile Include="Reuse\IReuseStrategy.cs" />
+    <Compile Include="Reuse\TransientReuseStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using PeterBucher.AutoFunc.Fluent;
+using PeterBucher.AutoFunc.Reuse;
 
 namespace PeterBucher.AutoFunc
 {
@@ -49,9 +50,9 @@ namespace PeterBucher.AutoFunc
         }
 
         /// <summary>
-        /// Gets or sets the LifeTime of the registration.
+        /// Gets or sets the reuse strategy for the instance creation.
         /// </summary>
-        public LifeTime LifeTime
+        public IReuseStrategy ReuseStrategy
         {
             get;
             set;
