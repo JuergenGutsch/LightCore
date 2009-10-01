@@ -51,7 +51,6 @@
     <Compile Include="Builder\IContainerBuilder.cs" />
     <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
     <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
-    <Compile Include="Lifetime.cs" />
     <Compile Include="Registration.cs" />
     <Compile Include="RegistrationKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

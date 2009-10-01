@@ -21,6 +21,10 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
         /// </summary>
         private readonly List<Assembly> _controllerAssembly;
 
+        /// <summary>
+        /// The <see cref="IReuseStrategy" /> for the registrations.
+        /// TODO: One reuse strategy instance per registration should there!
+        /// </summary>
         private IReuseStrategy _reuseStrategy = new HttpRequestReuseStrategy();
 
         /// <summary>
@@ -39,6 +43,9 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// </summary>
         protected AutoFuncControllerRegistrationModule()
         {
             this._controllerAssembly = new List<Assembly>();

@@ -25,12 +25,12 @@ namespace PeterBucher.AutoFunc.Reuse
         /// Handle the reuse of instances.
         /// One instance per registration.
         /// </summary>
-        /// <param name="resolveNewInstance">The resolve function for a new instance.</param>
-        public object HandleReuse(Func<object> resolveNewInstance)
+        /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
+        public object HandleReuse(Func<object> newInstanceResolver)
         {
             if (this._registration.Instance == null)
             {
-                this._registration.Instance = resolveNewInstance();
+                this._registration.Instance = newInstanceResolver();
             }
 
             return this._registration.Instance;

@@ -1,5 +1,4 @@
-﻿
-using System.Web.Routing;
+﻿using System.Web.Routing;
 using System.Web.Mvc;
 
 namespace PeterBucher.AutoFunc.Integration.Web.Mvc

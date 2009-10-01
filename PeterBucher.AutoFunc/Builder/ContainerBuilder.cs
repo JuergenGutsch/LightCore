@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using PeterBucher.AutoFunc.Exceptions;
 using PeterBucher.AutoFunc.ExtensionMethods;
 using PeterBucher.AutoFunc.Fluent;
@@ -118,7 +119,7 @@ namespace PeterBucher.AutoFunc.Builder
             if (this._registrations.Any(r => mainSelector(r.Key)))
             {
                 throw new RegistrationAlreadyExistsException(
-                    Resources.RegistrationForContractAndNameAlreadyExists.FormatWith(
+                    Resources.RegistrationForContractAndNameAlreadyExistsFormat.FormatWith(
                         registrationKey.ContractType,
                         registrationKey.Name));
             }

@@ -10,7 +10,7 @@ namespace PeterBucher.AutoFunc.Reuse
         /// <summary>
         /// Handle the reuse of instances.
         /// </summary>
-        /// <param name="resolveNewInstance"></param>
-        object HandleReuse(Func<object> resolveNewInstance);
+        /// <param name="newInstanceResolver"></param>
+        object HandleReuse(Func<object> newInstanceResolver);
     }
 }

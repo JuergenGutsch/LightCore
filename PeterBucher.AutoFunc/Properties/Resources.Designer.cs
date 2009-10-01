@@ -72,18 +72,18 @@ namespace PeterBucher.AutoFunc.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; and name &apos;{1}&apos; already exists..
         /// </summary>
-        internal static string RegistrationForContractAndNameAlreadyExists {
+        internal static string RegistrationForContractAndNameAlreadyExistsFormat {
             get {
-                return ResourceManager.GetString("RegistrationForContractAndNameAlreadyExists", resourceCulture);
+                return ResourceManager.GetString("RegistrationForContractAndNameAlreadyExistsFormat", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; and name &apos;{1}&apos; not found..
         /// </summary>
-        internal static string RegistrationForContractAndNameNotFound {
+        internal static string RegistrationForContractAndNameNotFoundFormat {
             get {
-                return ResourceManager.GetString("RegistrationForContractAndNameNotFound", resourceCulture);
+                return ResourceManager.GetString("RegistrationForContractAndNameNotFoundFormat", resourceCulture);
             }
         }
     }

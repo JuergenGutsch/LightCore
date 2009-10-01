@@ -12,10 +12,10 @@ namespace PeterBucher.AutoFunc.Reuse
         /// Handle the reuse of instances.
         /// Every request becomes a new instance.
         /// </summary>
-        /// <param name="resolveNewInstance">The resolve function for a new instance.</param>
-        public object HandleReuse(Func<object> resolveNewInstance)
+        /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
+        public object HandleReuse(Func<object> newInstanceResolver)
         {
-            return resolveNewInstance();
+            return newInstanceResolver();
         }
     }
 }

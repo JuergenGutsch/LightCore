@@ -114,7 +114,7 @@ namespace PeterBucher.AutoFunc
             if (!this._registrations.Any(registrationSelector))
             {
                 throw new RegistrationNotFoundException(
-                    Resources.RegistrationForContractAndNameNotFound.FormatWith(typeOfContract.Name, name));
+                    Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
             }
 
             // Select registration.

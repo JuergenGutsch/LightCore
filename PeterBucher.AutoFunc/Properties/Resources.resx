@@ -120,10 +120,10 @@
   <data name="ConstructorNotFoundFormat" xml:space="preserve">
     <value>Constructor for type '{0}' not found.</value>
   </data>
-  <data name="RegistrationForContractAndNameAlreadyExists" xml:space="preserve">
+  <data name="RegistrationForContractAndNameAlreadyExistsFormat" xml:space="preserve">
     <value>Registration for contract '{0}' and name '{1}' already exists.</value>
   </data>
-  <data name="RegistrationForContractAndNameNotFound" xml:space="preserve">
+  <data name="RegistrationForContractAndNameNotFoundFormat" xml:space="preserve">
     <value>Registration for contract '{0}' and name '{1}' not found.</value>
   </data>
 </root>

@@ -28,8 +28,8 @@ namespace PeterBucher.AutoFunc.Integration.Web.Reuse
         /// Handle the reuse of instances.
         /// One instance per http request (ASP.NET).
         /// </summary>
-        /// <param name="resolveNewInstance">The resolve function for a new instance.</param>
-        public object HandleReuse(Func<object> resolveNewInstance)
+        /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
+        public object HandleReuse(Func<object> newInstanceResolver)
         {
             HttpContextBase context = this.CurrentContext;
 
@@ -42,7 +42,7 @@ namespace PeterBucher.AutoFunc.Integration.Web.Reuse
 
             if (instanceToReturn == null)
             {
-                instanceToReturn = resolveNewInstance();
+                instanceToReturn = newInstanceResolver();
                 context.Items[this._instanceIdentifier] = instanceToReturn;
             }
 
