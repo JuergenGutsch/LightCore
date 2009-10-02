@@ -23,6 +23,21 @@ namespace PeterBucher.AutoFunc.Builder
         void RegisterModule(RegistrationModule module);
 
         /// <summary>
+        /// Registers a contract with an existing instance.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        IFluentRegistration Register<TContract>(TContract instance);
+
+        /// <summary>
+        /// Registers a contract with an activator function.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <param name="activator">The activator as function..</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        IFluentRegistration Register<TContract>(Func<TContract> activator);
+
+        /// <summary>
         /// Registers a contract with its implementationtype.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>

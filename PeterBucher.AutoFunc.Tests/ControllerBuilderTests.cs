@@ -37,5 +37,23 @@ namespace PeterBucher.AutoFunc.Tests
 
             var contianer = builder.Build();
         }
+
+        [TestMethod]
+        public void ContainerBuilder_can_register_instance()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFooRepository>(new FooRepository(new Logger()));
+
+            var container = builder.Build();
+        }
+
+        [TestMethod]
+        public void ContainerBuilder_can_register_activation_functions()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFooRepository>(() => new FooRepository(new Logger()));
+
+            var container = builder.Build();
+        }
     }
 }

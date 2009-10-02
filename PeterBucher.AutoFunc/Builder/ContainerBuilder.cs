@@ -98,6 +98,48 @@ namespace PeterBucher.AutoFunc.Builder
         }
 
         /// <summary>
+        /// Registers a contract with an existing instance.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        public IFluentRegistration Register<TContract>(TContract instance)
+        {
+            var typeOfContract = typeof (TContract);
+
+            var key = new RegistrationKey(typeOfContract, null, null);
+
+            // Register the type with default lifetime.
+            var registration = new Registration(typeOfContract, null, key);
+
+            // Set the transient reuse strategy as default.
+            if (registration.ReuseStrategy == null)
+            {
+                registration.ReuseStrategy = new SingletonReuseStrategy(registration);
+            }
+
+            // Add a register callback for lazy assertion after manipulating in fluent registration api.
+            this._registrationCallbacks.Add(() =>
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return registration.FluentRegistration;
+        }
+
+        /// <summary>
+        /// Registers a contract with an activator function.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <param name="activator">The activator as function..</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        public IFluentRegistration Register<TContract>(Func<TContract> activator)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Asserts whether the registration already exists.
         /// </summary>
         /// <param name="registrationKey">The registration key to check for.</param>
