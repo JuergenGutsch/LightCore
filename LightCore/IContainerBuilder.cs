@@ -43,7 +43,7 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
-        IFluentRegistration Register<TContract, TImplementation>();
+        IFluentRegistration Register<TContract, TImplementation>() where TImplementation : TContract;
 
         /// <summary>
         /// Registers a contract with its implementationtype.

@@ -1,4 +1,5 @@
-﻿using LightCore.TestTypes;
+﻿using System.Threading;
+using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,6 +34,33 @@ namespace LightCore.Tests
             var rep2 = container.Resolve<IFooRepository>();
 
             Assert.IsTrue(ReferenceEquals(rep1, rep2));
+        }
+
+        [TestMethod]
+        public void Singleton_locking_for_threads_works()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<ILogger, Logger>().ScopedToSingleton();
+
+            var container = builder.Build();
+
+            AutoResetEvent are = new AutoResetEvent(false);
+
+            ILogger firstLogger = null;
+
+            ThreadPool.QueueUserWorkItem(s =>
+            {
+                firstLogger = container.Resolve<ILogger>();
+
+                are.Set();
+                Thread.Sleep(300);
+            });
+
+            are.WaitOne();
+
+            ILogger secondLogger = container.Resolve<ILogger>();
+
+            Assert.AreSame(firstLogger, secondLogger);
         }
     }
 }

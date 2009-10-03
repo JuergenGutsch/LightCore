@@ -68,7 +68,7 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract, TImplementation>()
+        public IFluentRegistration Register<TContract, TImplementation>() where TImplementation : TContract
         {
             return this.Register(typeof(TContract), typeof(TImplementation));
         }
@@ -86,7 +86,7 @@ namespace LightCore
             // Register the type with default lifetime.
             var registration = new Registration(typeOfContract, key)
                                    {
-                                       Activator = new ReflectionActivator(typeOfContract, typeOfImplementation)
+                                       Activator = new ReflectionActivator(typeOfImplementation)
                                    };
 
             // Set the transient reuse strategy as default.

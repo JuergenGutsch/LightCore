@@ -24,14 +24,14 @@ namespace LightCore.Activation
         private readonly Func<ParameterInfo, bool> _nonDependencyParameterSelector;
 
         /// <summary>
-        /// The contract type.
-        /// </summary>
-        private readonly Type _contractType;
-
-        /// <summary>
         /// The implementation type.
         /// </summary>
         private readonly Type _implementationType;
+
+        /// <summary>
+        /// A reference to the container to resolve inner dependencies.
+        /// </summary>
+        private IContainer _container;
 
         /// <summary>
         /// Gets or sets whether the default constructor should be used or not.
@@ -42,14 +42,8 @@ namespace LightCore.Activation
             set;
         }
 
-        /// <summary>
-        /// A reference to the container to resolve inner dependencies.
-        /// </summary>
-        private IContainer _container;
-
-        public ReflectionActivator(Type contractType, Type implementationType)
+        public ReflectionActivator(Type implementationType)
         {
-            this._contractType = contractType;
             this._implementationType = implementationType;
 
             // Setup selectors.
@@ -75,7 +69,7 @@ namespace LightCore.Activation
             // Use the default constructor.
             if (onlyDefaultConstructorAvailable || this.UseDefaultConstructor)
             {
-                return System.Activator.CreateInstance(this._implementationType);
+                return Activator.CreateInstance(this._implementationType);
             }
 
             // Select constructor that matches the given arguments.
@@ -92,7 +86,7 @@ namespace LightCore.Activation
                     return parameters != null && parameters.Count() > 0;
                 }).First();
 
-            // Invoke constructor with arguments and return it to the caller.
+            // Invoke constructor with most dependencies and return it to the caller.
             return this.InvokeConstructor(constructorWithMostParameters, null);
         }
 
@@ -103,7 +97,7 @@ namespace LightCore.Activation
         /// <param name="constructors">The constructor candidates.</param>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The created instance.</returns>
-        private object CreateInstanceWithArguments(Type implementationType, ConstructorInfo[] constructors, object[] arguments)
+        private object CreateInstanceWithArguments(Type implementationType, IEnumerable<ConstructorInfo> constructors, object[] arguments)
         {
             var constructorCandidates = constructors.Where(
                 delegate(ConstructorInfo c)
@@ -142,20 +136,20 @@ namespace LightCore.Activation
         private object InvokeConstructor(ConstructorInfo constructor, IEnumerable<object> arguments)
         {
             ParameterInfo[] parameters = constructor.GetParameters();
-            var finalArguments = new List<object>();
 
             // If there are depdendency parameters, resolve these.
             if (parameters.Any(_dependencyParameterSelector))
             {
                 var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-                finalArguments.AddRange(dependencyParameters.Convert(p => this._container.Resolve(p.ParameterType)));
+                var resolvedDependencies = dependencyParameters.Convert(p => this._container.Resolve(p.ParameterType));
 
-                if (arguments != null)
+                // If there are arguments, concat at the end.
+                if(arguments !=null)
                 {
-                    finalArguments.AddRange(arguments);
+                    resolvedDependencies = resolvedDependencies.Concat(arguments);
                 }
 
-                return constructor.Invoke(finalArguments.ToArray());
+                return constructor.Invoke(resolvedDependencies.ToArray());
             }
 
             // There are only non depdency arguments.
