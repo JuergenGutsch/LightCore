@@ -80,7 +80,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration UseDefaultConstructor()
         {
-            this._registration.UseDefaultConstructor = true;
+            this._registration.Activator.UseDefaultConstructor = true;;
             return this;
         }
 

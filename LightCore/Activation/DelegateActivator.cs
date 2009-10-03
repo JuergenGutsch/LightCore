@@ -8,7 +8,19 @@ namespace LightCore.Activation
     /// </summary>
     public class DelegateActivator<TContract> : IActivator
     {
+        /// <summary>
+        /// The activation function as a delegate.
+        /// </summary>
         private readonly Func<IContainer, TContract> _activationFunction;
+
+        /// <summary>
+        /// Gets or sets whether the default constructor should be used or not.
+        /// </summary>
+        public bool UseDefaultConstructor
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="DelegateActivator{TContract}" />.

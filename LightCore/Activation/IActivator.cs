@@ -8,6 +8,15 @@ namespace LightCore.Activation
     public interface IActivator
     {
         /// <summary>
+        /// Gets or sets whether the default constructor should be used or not.
+        /// </summary>
+        bool UseDefaultConstructor
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Activates an instance with given arguments.
         /// </summary>
         /// <param name="container">The container.</param>

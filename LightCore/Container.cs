@@ -119,7 +119,8 @@ namespace LightCore
             IActivator activator = registration.Activator;
 
             // Handle registration reuse and creates an instance on these rules.
-            return registration.ReuseStrategy.HandleReuse(() => activator.ActivateInstance(this, null));
+            return registration.ReuseStrategy
+                .HandleReuse(() => activator.ActivateInstance(this, registration.Arguments));
         }
     }
 }

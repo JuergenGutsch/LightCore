@@ -34,20 +34,23 @@ namespace LightCore.Activation
         private readonly Type _implementationType;
 
         /// <summary>
-        /// A value whether the default constructor should be used or not.
+        /// Gets or sets whether the default constructor should be used or not.
         /// </summary>
-        private readonly bool _useDefaultConstructor;
+        public bool UseDefaultConstructor
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// A reference to the container to resolve inner dependencies.
         /// </summary>
         private IContainer _container;
 
-        public ReflectionActivator(Type contractType, Type implementationType, bool useDefaultConstructor)
+        public ReflectionActivator(Type contractType, Type implementationType)
         {
             this._contractType = contractType;
             this._implementationType = implementationType;
-            this._useDefaultConstructor = useDefaultConstructor;
 
             // Setup selectors.
             this._dependencyParameterSelector = p => p.ParameterType.IsInterface || p.ParameterType.IsAbstract;
@@ -70,7 +73,7 @@ namespace LightCore.Activation
                 constructors.Length == 1 && constructors[0].GetParameters().Length == 0;
 
             // Use the default constructor.
-            if (onlyDefaultConstructorAvailable || this._useDefaultConstructor)
+            if (onlyDefaultConstructorAvailable || this.UseDefaultConstructor)
             {
                 return System.Activator.CreateInstance(this._implementationType);
             }
@@ -84,10 +87,10 @@ namespace LightCore.Activation
             // Select the constructor with most parameters (dependencies).
             ConstructorInfo constructorWithMostParameters = constructors.OrderByDescending(
                 delegate(ConstructorInfo c)
-                    {
-                        var parameters = c.GetParameters();
-                        return parameters != null && parameters.Count() > 0;
-                    }).First();
+                {
+                    var parameters = c.GetParameters();
+                    return parameters != null && parameters.Count() > 0;
+                }).First();
 
             // Invoke constructor with arguments and return it to the caller.
             return this.InvokeConstructor(constructorWithMostParameters, null);
@@ -104,10 +107,10 @@ namespace LightCore.Activation
         {
             var constructorCandidates = constructors.Where(
                 delegate(ConstructorInfo c)
-                    {
-                        var parameters = c.GetParameters();
-                        return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
-                    });
+                {
+                    var parameters = c.GetParameters();
+                    return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
+                });
 
             // Only one constructor with same parameter count.
             if (constructorCandidates.Count() == 1)

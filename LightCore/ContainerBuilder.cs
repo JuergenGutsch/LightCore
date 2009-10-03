@@ -86,7 +86,7 @@ namespace LightCore
             // Register the type with default lifetime.
             var registration = new Registration(typeOfContract, key)
                                    {
-                                       Activator = new ReflectionActivator(typeOfContract, typeOfImplementation, false) // TODO: Default constructor should be read from defferedregistration.
+                                       Activator = new ReflectionActivator(typeOfContract, typeOfImplementation)
                                    };
 
             // Set the transient reuse strategy as default.
