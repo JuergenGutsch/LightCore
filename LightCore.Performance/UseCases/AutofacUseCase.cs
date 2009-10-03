@@ -1,8 +1,8 @@
 ﻿using Autofac;
 
-using PeterBucher.AutoFunc.Performance.Domain;
+using LightCore.Performance.Domain;
 
-namespace PeterBucher.AutoFunc.Performance.UseCases
+namespace LightCore.Performance.UseCases
 {
     public class AutofacUseCase : UseCase
     {
@@ -10,7 +10,7 @@ namespace PeterBucher.AutoFunc.Performance.UseCases
 
         public AutofacUseCase()
         {
-            var builder = new Autofac.ContainerBuilder();
+            var builder = new ContainerBuilder();
             builder.RegisterType<WebApp>()
                 .As<IWebApp>();
 

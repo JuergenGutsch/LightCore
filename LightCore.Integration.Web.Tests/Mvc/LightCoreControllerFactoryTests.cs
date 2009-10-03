@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 
+using LightCore.Builder;
+using LightCore.Integration.Web.Mvc;
+using LightCore.Integration.Web.Reuse;
+using LightCore.TestTypes;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Moq;
 
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Integration.Web.Mvc;
-using PeterBucher.AutoFunc.Integration.Web.Reuse;
-using PeterBucher.AutoFunc.TestTypes;
-
-namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
+namespace LightCore.Integration.Web.Tests.Mvc
 {
     [TestClass]
-    public class AutoFuncControllerFactoryTests
+    public class LightCoreControllerFactoryTests
     {
         [TestMethod]
         public void Registered_controller_instances_are_reused_on_httpcontextstrategy()
@@ -20,41 +21,7 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly);
-
-            var currentItems = new Dictionary<string, object>();
-
-            var currentContext = new Mock<HttpContextBase>();
-            currentContext
-                .Setup(c => c.Items)
-                .Returns(currentItems);
-
-            var requestStrategy = new HttpRequestReuseStrategy
-            {
-                CurrentContext = currentContext.Object
-            };
-
-            registrationModule.ReuseStrategy = requestStrategy;
-
-            builder.RegisterModule(registrationModule);
-
-            var container = builder.Build();
-            var controllerFactory = new AutoFuncControllerFactory(container);
-
-            var controller = controllerFactory.CreateController(null, "foo");
-            var secondController = controllerFactory.CreateController(null, "bar");
-
-            Assert.IsNotNull(controller);
-            Assert.IsNotNull(secondController);
-        }
-
-        [TestMethod]
-        public void Registered_controller_can_be_resolved_by_name()
-        {
-            var builder = new ContainerBuilder();
-            builder.Register<IFoo, Foo>();
-
-            var registrationModule = new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -73,7 +40,41 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
             builder.RegisterModule(registrationModule);
 
             var container = builder.Build();
-            var controllerFactory = new AutoFuncControllerFactory(container);
+            var controllerFactory = new LightCoreControllerFactory(container);
+
+            var controller = controllerFactory.CreateController(null, "foo");
+            var secondController = controllerFactory.CreateController(null, "bar");
+
+            Assert.IsNotNull(controller);
+            Assert.IsNotNull(secondController);
+        }
+
+        [TestMethod]
+        public void Registered_controller_can_be_resolved_by_name()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
+
+            var currentItems = new Dictionary<string, object>();
+
+            var currentContext = new Mock<HttpContextBase>();
+            currentContext
+                .Setup(c => c.Items)
+                .Returns(currentItems);
+
+            var requestStrategy = new HttpRequestReuseStrategy
+                                      {
+                                          CurrentContext = currentContext.Object
+                                      };
+
+            registrationModule.ReuseStrategy = requestStrategy;
+
+            builder.RegisterModule(registrationModule);
+
+            var container = builder.Build();
+            var controllerFactory = new LightCoreControllerFactory(container);
 
             var controller = controllerFactory.CreateController(null, "foo");
 
@@ -86,7 +87,7 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new AutoFuncControllerRegistrationModule(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -96,16 +97,16 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web.Mvc
                 .Returns(currentItems);
 
             var requestStrategy = new HttpRequestReuseStrategy
-            {
-                CurrentContext = currentContext.Object
-            };
+                                      {
+                                          CurrentContext = currentContext.Object
+                                      };
 
             registrationModule.ReuseStrategy = requestStrategy;
 
             builder.RegisterModule(registrationModule);
 
             var container = builder.Build();
-            var controllerFactory = new AutoFuncControllerFactory(container);
+            var controllerFactory = new LightCoreControllerFactory(container);
 
             var controller = controllerFactory.CreateController(null, "foo");
 

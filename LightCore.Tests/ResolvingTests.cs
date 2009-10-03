@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.TestTypes;
+using LightCore.Builder;
+using LightCore.TestTypes;
 
-namespace PeterBucher.AutoFunc.Tests
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace LightCore.Tests
 {
     /// <summary>
     /// Summary description for ResolvingTests

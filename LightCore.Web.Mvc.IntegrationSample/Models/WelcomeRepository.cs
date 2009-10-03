@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PeterBucher.AutoFunc.WebIntegrationSample.Models
+namespace LightCore.Web.Mvc.IntegrationSample.Models
 {
     public class WelcomeRepository : IWelcomeRepository
     {

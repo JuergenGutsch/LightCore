@@ -1,13 +1,13 @@
-﻿using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Performance.Domain;
+﻿using LightCore.Builder;
+using LightCore.Performance.Domain;
 
-namespace PeterBucher.AutoFunc.Performance.UseCases
+namespace LightCore.Performance.UseCases
 {
-    public class AutoFuncUseCase : UseCase
+    public class LightCoreUseCase : UseCase
     {
         private readonly IContainer _container;
 
-        public AutoFuncUseCase()
+        public LightCoreUseCase()
         {
             var builder = new ContainerBuilder();
             builder.Register<IWebApp, WebApp>();

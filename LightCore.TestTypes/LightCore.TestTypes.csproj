@@ -8,8 +8,8 @@
     <ProjectGuid>{4478482F-075B-4146-B06D-A6B69AFA2816}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.TestTypes</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.TestTypes</AssemblyName>
+    <RootNamespace>LightCore.TestTypes</RootNamespace>
+    <AssemblyName>LightCore.TestTypes</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

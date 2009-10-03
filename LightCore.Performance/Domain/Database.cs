@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Performance.Domain
+﻿namespace LightCore.Performance.Domain
 {
     public class Database : IDatabase
     {

@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.ConsoleClient.Screens
+﻿namespace LightCore.ConsoleClient.Screens
 {
     /// <summary>
     /// Represents the welcome screen.

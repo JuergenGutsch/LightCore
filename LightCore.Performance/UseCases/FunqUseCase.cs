@@ -1,6 +1,6 @@
-﻿using PeterBucher.AutoFunc.Performance.Domain;
+﻿using LightCore.Performance.Domain;
 
-namespace PeterBucher.AutoFunc.Performance.UseCases
+namespace LightCore.Performance.UseCases
 {
     public class FunqUseCase : UseCase
     {

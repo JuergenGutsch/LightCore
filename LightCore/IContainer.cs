@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc
+﻿namespace LightCore
 {
     /// <summary>
     /// Represents the contract for a inversion of control container.

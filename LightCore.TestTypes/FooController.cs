@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace PeterBucher.AutoFunc.TestTypes
+namespace LightCore.TestTypes
 {
     public class FooController : Controller
     {

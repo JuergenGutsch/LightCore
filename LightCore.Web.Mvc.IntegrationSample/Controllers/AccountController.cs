@@ -4,7 +4,7 @@ using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace PeterBucher.AutoFunc.WebIntegrationSample.Controllers
+namespace LightCore.Web.Mvc.IntegrationSample.Controllers
 {
 
     [HandleError]

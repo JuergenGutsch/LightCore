@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web;
 
-using PeterBucher.AutoFunc.Reuse;
+using LightCore.Reuse;
 
-namespace PeterBucher.AutoFunc.Integration.Web.Reuse
+namespace LightCore.Integration.Web.Reuse
 {
     /// <summary>
     /// Represents a reuse strategy for one instance per http request (ASP.NET).

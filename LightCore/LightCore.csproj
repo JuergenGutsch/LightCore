@@ -8,8 +8,8 @@
     <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc</AssemblyName>
+    <RootNamespace>LightCore</RootNamespace>
+    <AssemblyName>LightCore</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

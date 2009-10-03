@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PeterBucher.AutoFunc.Web.IntegrationSample {
+namespace LightCore.Web.IntegrationSample {
     
     
     public partial class _Default {

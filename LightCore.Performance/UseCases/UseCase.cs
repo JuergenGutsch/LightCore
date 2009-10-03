@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Performance.UseCases
+﻿namespace LightCore.Performance.UseCases
 {
     public abstract class UseCase
     {

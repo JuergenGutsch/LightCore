@@ -2,13 +2,14 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Integration.Web;
-using PeterBucher.AutoFunc.Integration.Web.Mvc;
-using PeterBucher.AutoFunc.WebIntegrationSample.Controllers;
-using PeterBucher.AutoFunc.WebIntegrationSample.Models;
 
-namespace PeterBucher.AutoFunc.WebIntegrationSample
+using LightCore.Builder;
+using LightCore.Integration.Web;
+using LightCore.Integration.Web.Mvc;
+using LightCore.Web.Mvc.IntegrationSample.Controllers;
+using LightCore.Web.Mvc.IntegrationSample.Models;
+
+namespace LightCore.Web.Mvc.IntegrationSample
 {
     public class MvcApplication : HttpApplication, IContainerAccessor
     {
@@ -23,7 +24,7 @@ namespace PeterBucher.AutoFunc.WebIntegrationSample
             RegisterDependencies();
 
             // Set controller factory.
-            ControllerBuilder.Current.SetControllerFactory(new AutoFuncControllerFactory(_container));
+            ControllerBuilder.Current.SetControllerFactory(new LightCoreControllerFactory(_container));
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -35,7 +36,7 @@ namespace PeterBucher.AutoFunc.WebIntegrationSample
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
-            );
+                );
 
         }
 
@@ -44,7 +45,7 @@ namespace PeterBucher.AutoFunc.WebIntegrationSample
             var builder = new ContainerBuilder();
 
             var controllerAssembly = Assembly.GetExecutingAssembly();
-            var controllerRegistrationModule = new AutoFuncControllerRegistrationModule(controllerAssembly);
+            var controllerRegistrationModule = new LightCoreControllerRegistrationModule(controllerAssembly);
             
             builder.RegisterModule(controllerRegistrationModule);
 

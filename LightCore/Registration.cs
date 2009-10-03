@@ -1,9 +1,9 @@
 ﻿using System;
 
-using PeterBucher.AutoFunc.Fluent;
-using PeterBucher.AutoFunc.Reuse;
+using LightCore.Fluent;
+using LightCore.Reuse;
 
-namespace PeterBucher.AutoFunc
+namespace LightCore
 {
     /// <summary>
     /// Represents a registration.

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using PeterBucher.AutoFunc.Exceptions;
-using PeterBucher.AutoFunc.ExtensionMethods;
-using PeterBucher.AutoFunc.Fluent;
-using PeterBucher.AutoFunc.Properties;
-using PeterBucher.AutoFunc.Reuse;
+using LightCore.Exceptions;
+using LightCore.Fluent;
+using LightCore.Properties;
+using LightCore.Reuse;
 
-namespace PeterBucher.AutoFunc.Builder
+namespace LightCore.Builder
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations
@@ -119,10 +118,10 @@ namespace PeterBucher.AutoFunc.Builder
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-            {
-                this.AssertRegistrationExists(registration.Key);
-                this._registrations.Add(registration.Key, registration);
-            });
+                                                {
+                                                    this.AssertRegistrationExists(registration.Key);
+                                                    this._registrations.Add(registration.Key, registration);
+                                                });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;

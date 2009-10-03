@@ -1,6 +1,6 @@
-﻿using PeterBucher.AutoFunc.Reuse;
+﻿using LightCore.Reuse;
 
-namespace PeterBucher.AutoFunc.Fluent
+namespace LightCore.Fluent
 {
     /// <summary>
     /// Represents the fluent interface for registration.

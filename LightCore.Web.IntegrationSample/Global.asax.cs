@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Web;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Integration.Web;
-using PeterBucher.AutoFunc.TestTypes;
 
-namespace PeterBucher.AutoFunc.Web.IntegrationSample
+using LightCore.Builder;
+using LightCore.Integration.Web;
+using LightCore.TestTypes;
+
+namespace LightCore.Web.IntegrationSample
 {
     public class Global : HttpApplication, IContainerAccessor
     {

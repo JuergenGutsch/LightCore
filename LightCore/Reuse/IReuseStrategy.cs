@@ -1,6 +1,6 @@
 using System;
 
-namespace PeterBucher.AutoFunc.Reuse
+namespace LightCore.Reuse
 {
     /// <summary>
     /// Represents a strategy for reusing instances.

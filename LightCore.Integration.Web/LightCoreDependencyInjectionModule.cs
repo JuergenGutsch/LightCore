@@ -1,12 +1,12 @@
 ﻿using System.Web;
 using System.Web.UI;
 
-namespace PeterBucher.AutoFunc.Integration.Web
+namespace LightCore.Integration.Web
 {
     /// <summary>
     /// Represents a <see cref="IHttpModule" /> for property injection on ASP.NET WebForms.
     /// </summary>
-    public class AutoFuncDependencyInjectionModule : IHttpModule
+    public class LightCoreDependencyInjectionModule : IHttpModule
     {
         /// <summary>
         /// The current application.

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace PeterBucher.AutoFunc.ExtensionMethods
+﻿namespace System.Collections.Generic
 {
     /// <summary>
     /// Represents extensionmethods for System.Collection.Generic namespace.

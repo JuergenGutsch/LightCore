@@ -1,9 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Exceptions;
-using PeterBucher.AutoFunc.TestTypes;
+﻿using LightCore.Builder;
+using LightCore.Exceptions;
+using LightCore.TestTypes;
 
-namespace PeterBucher.AutoFunc.Tests
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace LightCore.Tests
 {
     [TestClass]
     public class ControllerBuilderTests

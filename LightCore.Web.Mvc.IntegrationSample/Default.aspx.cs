@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.UI;
 
-namespace PeterBucher.AutoFunc.WebIntegrationSample
+namespace LightCore.Web.Mvc.IntegrationSample
 {
     public partial class _Default : Page
     {

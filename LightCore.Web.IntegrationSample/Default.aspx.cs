@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web.UI;
+using LightCore.TestTypes;
 
-using PeterBucher.AutoFunc.TestTypes;
-
-namespace PeterBucher.AutoFunc.Web.IntegrationSample
+namespace LightCore.Web.IntegrationSample
 {
     public partial class _Default : Page
     {

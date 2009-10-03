@@ -8,8 +8,8 @@
     <ProjectTypeGuids>{603c0e0b-db56-11dc-be95-000d561079b0};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.Web.Mvc.IntegrationSample</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.Web.Mvc.IntegrationSample</AssemblyName>
+    <RootNamespace>LightCore.Web.Mvc.IntegrationSample</RootNamespace>
+    <AssemblyName>LightCore.Web.Mvc.IntegrationSample</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
@@ -81,13 +81,13 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc.Integration.Web\PeterBucher.AutoFunc.Integration.Web.csproj">
+    <ProjectReference Include="..\LightCore.Integration.Web\LightCore.Integration.Web.csproj">
       <Project>{A5626363-3530-435B-8DFA-8C074D81CEB8}</Project>
-      <Name>PeterBucher.AutoFunc.Integration.Web</Name>
+      <Name>LightCore.Integration.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -7,8 +7,8 @@
     <ProjectGuid>{10415A70-65B2-47CD-860C-6726F5626335}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.Tests</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.Tests</AssemblyName>
+    <RootNamespace>LightCore.Tests</RootNamespace>
+    <AssemblyName>LightCore.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -48,13 +48,13 @@
     <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj">
+    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
       <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
-      <Name>PeterBucher.AutoFunc.TestTypes</Name>
+      <Name>LightCore.TestTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

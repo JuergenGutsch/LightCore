@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PeterBucher.AutoFunc.ConsoleClient.Writers
+namespace LightCore.ConsoleClient.Writers
 {
     /// <summary>
     /// Represents a writer that can write lines out to the console.

@@ -1,8 +1,8 @@
 ﻿using System;
 
-using PeterBucher.AutoFunc.Fluent;
+using LightCore.Fluent;
 
-namespace PeterBucher.AutoFunc.Builder
+namespace LightCore.Builder
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations

@@ -1,18 +1,18 @@
 ﻿using System.Web.Routing;
 using System.Web.Mvc;
 
-namespace PeterBucher.AutoFunc.Integration.Web.Mvc
+namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a default controller factory that works with a <see cref="IContainer" / >.
     /// </summary>
-    public class AutoFuncControllerFactory : AutoFuncControllerFactoryBase
+    public class LightCoreControllerFactory : LightCoreControllerFactoryBase
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerFactory" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerFactory" />.
         /// </summary>
         /// <param name="container">The container.</param>
-        public AutoFuncControllerFactory(IContainer container)
+        public LightCoreControllerFactory(IContainer container)
             : base(container)
         {
 
@@ -20,7 +20,7 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

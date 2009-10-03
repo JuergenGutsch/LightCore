@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PeterBucher.AutoFunc.Web.IntegrationSample.UserControls {
+namespace LightCore.Web.IntegrationSample.UserControls {
     
     
     public partial class WelcomeUserControl {

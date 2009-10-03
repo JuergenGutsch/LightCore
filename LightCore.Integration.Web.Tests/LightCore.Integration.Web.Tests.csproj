@@ -7,8 +7,8 @@
     <ProjectGuid>{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.Tests.Integration.Web</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.Tests.Integration.Web</AssemblyName>
+    <RootNamespace>LightCore.Integration.Web.Tests</RootNamespace>
+    <AssemblyName>LightCore.Integration.Web.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -50,20 +50,20 @@
   <ItemGroup>
     <Compile Include="HttpRequestReuseStrategyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mvc\AutoFuncControllerFactoryTests.cs" />
+    <Compile Include="Mvc\LightCoreControllerFactoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc.Integration.Web\PeterBucher.AutoFunc.Integration.Web.csproj">
+    <ProjectReference Include="..\LightCore.Integration.Web\LightCore.Integration.Web.csproj">
       <Project>{A5626363-3530-435B-8DFA-8C074D81CEB8}</Project>
-      <Name>PeterBucher.AutoFunc.Integration.Web</Name>
+      <Name>LightCore.Integration.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj">
+    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
       <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
-      <Name>PeterBucher.AutoFunc.TestTypes</Name>
+      <Name>LightCore.TestTypes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

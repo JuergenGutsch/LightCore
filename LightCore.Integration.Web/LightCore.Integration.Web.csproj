@@ -8,8 +8,8 @@
     <ProjectGuid>{A5626363-3530-435B-8DFA-8C074D81CEB8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.Integration.Web</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.Integration.Web</AssemblyName>
+    <RootNamespace>LightCore.Integration.Web</RootNamespace>
+    <AssemblyName>LightCore.Integration.Web</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,19 +45,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoFuncDependencyInjectionModule.cs" />
+    <Compile Include="LightCoreDependencyInjectionModule.cs" />
     <Compile Include="ExtensionMethods\FluentRegistrationExtensions.cs" />
-    <Compile Include="Mvc\AutoFuncControllerFactoryBase.cs" />
+    <Compile Include="Mvc\LightCoreControllerFactoryBase.cs" />
     <Compile Include="Reuse\HttpRequestReuseStrategy.cs" />
     <Compile Include="IContainerAccessor.cs" />
-    <Compile Include="Mvc\AutoFuncControllerFactory.cs" />
-    <Compile Include="Mvc\AutoFuncControllerRegistrationModule.cs" />
+    <Compile Include="Mvc\LightCoreControllerFactory.cs" />
+    <Compile Include="Mvc\LightCoreControllerRegistrationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

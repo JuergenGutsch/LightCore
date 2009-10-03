@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PeterBucher.AutoFunc.TestTypes
+namespace LightCore.TestTypes
 {
     public class WelcomeRepository : IWelcomeRepository
     {

@@ -1,9 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using LightCore.Builder;
+using LightCore.TestTypes;
 
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.TestTypes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace PeterBucher.AutoFunc.Tests
+namespace LightCore.Tests
 {
     [TestClass]
     public class ResolvingUseDefaultConstructorTests

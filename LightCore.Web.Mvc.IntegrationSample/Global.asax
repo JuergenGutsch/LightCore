@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="PeterBucher.AutoFunc.WebIntegrationSample.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="LightCore.Web.IntegrationSample.MvcApplication" Language="C#" %>

@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Integration.Web
+﻿namespace LightCore.Integration.Web
 {
     /// <summary>
     /// Represents an accessor for <see cref="IContainer" />.

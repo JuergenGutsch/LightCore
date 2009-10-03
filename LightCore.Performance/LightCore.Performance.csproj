@@ -8,8 +8,8 @@
     <ProjectGuid>{8267A0FD-66DF-46B1-851E-99B8471BF3C2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.Performance</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.Performance</AssemblyName>
+    <RootNamespace>LightCore.Performance</RootNamespace>
+    <AssemblyName>LightCore.Performance</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UseCases\AutofacUseCase.cs" />
-    <Compile Include="UseCases\AutoFuncUseCase.cs" />
+    <Compile Include="UseCases\LightCoreUseCase.cs" />
     <Compile Include="Domain\Authenticator.cs" />
     <Compile Include="Domain\Database.cs" />
     <Compile Include="Domain\ErrorHandler.cs" />
@@ -66,9 +66,9 @@
     <Compile Include="UseCases\UseCase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

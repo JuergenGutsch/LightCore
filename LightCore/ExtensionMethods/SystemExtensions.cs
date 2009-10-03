@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.ExtensionMethods
+﻿namespace System
 {
     /// <summary>
     /// Represents extensionmethods for System namespace.

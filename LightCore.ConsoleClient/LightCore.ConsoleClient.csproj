@@ -8,8 +8,8 @@
     <ProjectGuid>{14D79127-D7D7-402A-8C42-4A5FC698C8CF}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PeterBucher.AutoFunc.ConsoleClient</RootNamespace>
-    <AssemblyName>PeterBucher.AutoFunc.ConsoleClient</AssemblyName>
+    <RootNamespace>LightCore.ConsoleClient</RootNamespace>
+    <AssemblyName>LightCore.ConsoleClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -47,9 +47,9 @@
     <Compile Include="Writers\DebugWindowWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj">
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>PeterBucher.AutoFunc</Name>
+      <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

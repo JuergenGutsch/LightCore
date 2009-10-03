@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace PeterBucher.AutoFunc.Fluent
+namespace LightCore.Fluent
 {
     /// <summary>
     /// Helper interface used to hide the base <see cref="Object"/> 

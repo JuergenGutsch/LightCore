@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using PeterBucher.AutoFunc.Exceptions;
-using PeterBucher.AutoFunc.ExtensionMethods;
-using PeterBucher.AutoFunc.Properties;
+using LightCore.Exceptions;
+using LightCore.Properties;
 
-namespace PeterBucher.AutoFunc
+namespace LightCore
 {
     /// <summary>
     /// Represents the implementation for an inversion of control container.

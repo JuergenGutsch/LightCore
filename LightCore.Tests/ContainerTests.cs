@@ -1,7 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterBucher.AutoFunc.Builder;
+﻿using LightCore.Builder;
 
-namespace PeterBucher.AutoFunc.Tests
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace LightCore.Tests
 {
     [TestClass]
     public class ContainerTests

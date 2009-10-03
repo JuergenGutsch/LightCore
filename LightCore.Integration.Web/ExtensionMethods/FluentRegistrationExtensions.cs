@@ -1,10 +1,10 @@
-﻿using PeterBucher.AutoFunc.Fluent;
-using PeterBucher.AutoFunc.Integration.Web.Reuse;
+﻿using LightCore.Fluent;
+using LightCore.Integration.Web.Reuse;
 
-namespace PeterBucher.AutoFunc.Integration.Web.ExtensionMethods
+namespace LightCore.Integration.Web.ExtensionMethods
 {
     /// <summary>
-    /// Represents extensionmethods for PeterBucher.AutoFunc.Fluent namespace.
+    /// Represents extensionmethods for LightCore.Fluent namespace.
     /// </summary>
     public static class FluentRegistrationExtensions
     {

@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.ConsoleClient
+﻿namespace LightCore.ConsoleClient
 {
     /// <summary>
     /// Represents the contract for a screen.

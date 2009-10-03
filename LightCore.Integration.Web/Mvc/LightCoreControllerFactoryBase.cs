@@ -2,13 +2,13 @@
 using System.Web.Routing;
 using System.Web.Mvc;
 
-namespace PeterBucher.AutoFunc.Integration.Web.Mvc
+namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a base controller factory that works with a <see cref="IContainer" / >.
     /// Can be used as base class for custom implementations.
     /// </summary>
-    public abstract class AutoFuncControllerFactoryBase : IControllerFactory
+    public abstract class LightCoreControllerFactoryBase : IControllerFactory
     {
         /// <summary>
         /// The container.
@@ -20,25 +20,25 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerFactoryBase" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerFactoryBase" />.
         /// </summary>
-        protected AutoFuncControllerFactoryBase()
+        protected LightCoreControllerFactoryBase()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerFactoryBase" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerFactoryBase" />.
         /// </summary>
         /// <param name="container">The container.</param>
-        protected AutoFuncControllerFactoryBase(IContainer container)
+        protected LightCoreControllerFactoryBase(IContainer container)
         {
             this.Container = container;
         }
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>
@@ -56,7 +56,7 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

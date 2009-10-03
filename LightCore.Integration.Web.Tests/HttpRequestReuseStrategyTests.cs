@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 
+using LightCore.Builder;
+using LightCore.Integration.Web.Reuse;
+using LightCore.TestTypes;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.Integration.Web.Reuse;
-using PeterBucher.AutoFunc.TestTypes;
 
-namespace PeterBucher.AutoFunc.Tests.Integration.Web
+namespace LightCore.Integration.Web.Tests
 {
     [TestClass]
     public class HttpRequestReuseStrategyTests
@@ -53,9 +54,9 @@ namespace PeterBucher.AutoFunc.Tests.Integration.Web
                 .Returns(currentItems);
 
             var requestStrategy = new HttpRequestReuseStrategy
-            {
-                CurrentContext = currentContext.Object
-            };
+                                      {
+                                          CurrentContext = currentContext.Object
+                                      };
 
             builder.Register<IFoo, Foo>().ScopedTo(requestStrategy);
 

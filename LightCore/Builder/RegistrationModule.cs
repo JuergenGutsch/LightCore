@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.Builder
+﻿namespace LightCore.Builder
 {
     /// <summary>
     /// Represents an abstract registration module for implemenenting custom registrations.

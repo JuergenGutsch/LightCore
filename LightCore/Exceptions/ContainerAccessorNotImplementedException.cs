@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace PeterBucher.AutoFunc.Exceptions
+namespace LightCore.Exceptions
 {
     /// <summary>
     /// Thrown when the container accessor container accessor is not implemented.

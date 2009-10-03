@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
+using LightCore.TestTypes;
 
-using PeterBucher.AutoFunc.TestTypes;
-
-namespace PeterBucher.AutoFunc.Web.IntegrationSample.UserControls
+namespace LightCore.Web.IntegrationSample.UserControls
 {
     public partial class WelcomeUserControl : System.Web.UI.UserControl
     {

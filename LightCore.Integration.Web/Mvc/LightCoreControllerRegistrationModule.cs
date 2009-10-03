@@ -4,17 +4,16 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.ExtensionMethods;
-using PeterBucher.AutoFunc.Integration.Web.Reuse;
-using PeterBucher.AutoFunc.Reuse;
+using LightCore.Builder;
+using LightCore.Integration.Web.Reuse;
+using LightCore.Reuse;
 
-namespace PeterBucher.AutoFunc.Integration.Web.Mvc
+namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.
     /// </summary>
-    public class AutoFuncControllerRegistrationModule : RegistrationModule
+    public class LightCoreControllerRegistrationModule : RegistrationModule
     {
         /// <summary>
         /// The assembly from the controller implementation types.
@@ -44,48 +43,48 @@ namespace PeterBucher.AutoFunc.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
-        protected AutoFuncControllerRegistrationModule()
+        protected LightCoreControllerRegistrationModule()
         {
             this._controllerAssembly = new List<Assembly>();
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
-        public AutoFuncControllerRegistrationModule(params Assembly[] controllerAssemblies)
+        public LightCoreControllerRegistrationModule(params Assembly[] controllerAssemblies)
             : this()
         {
             this._controllerAssembly.AddRange(controllerAssemblies);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
-        public AutoFuncControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
+        public LightCoreControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
             : this()
         {
             this._controllerAssembly.AddRange(controllerAssemblies);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
-        public AutoFuncControllerRegistrationModule(params string[] assemblyNames)
+        public LightCoreControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
             this._controllerAssembly.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="AutoFuncControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
-        public AutoFuncControllerRegistrationModule(IEnumerable<string> assemblyNames)
+        public LightCoreControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
             this._controllerAssembly.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));

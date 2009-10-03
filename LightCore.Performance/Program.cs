@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-using PeterBucher.AutoFunc.Performance.UseCases;
+using LightCore.Performance.UseCases;
 
-namespace PeterBucher.AutoFunc.Performance
+namespace LightCore.Performance
 {
     class Program
     {
@@ -20,7 +20,8 @@ namespace PeterBucher.AutoFunc.Performance
                                {
                                    new PlainUseCase(),
                                    new FunqUseCase(),
-                                   new AutoFuncUseCase(),
+                                   new 
+                                       LightCoreUseCase(),
                                    new AutofacUseCase()
                                };
 

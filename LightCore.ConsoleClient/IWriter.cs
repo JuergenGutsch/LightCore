@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.ConsoleClient
+﻿namespace LightCore.ConsoleClient
 {
     /// <summary>
     /// Represents the contract for a writer that can write lines out to something.

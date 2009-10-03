@@ -1,25 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc", "PeterBucher.AutoFunc\PeterBucher.AutoFunc.csproj", "{88D8ABC5-3FAE-489C-862B-5740059DDD58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Tests", "LightCore.Tests\LightCore.Tests.csproj", "{10415A70-65B2-47CD-860C-6726F5626335}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Tests", "PeterBucher.AutoFunc.Tests\PeterBucher.AutoFunc.Tests.csproj", "{10415A70-65B2-47CD-860C-6726F5626335}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.ConsoleClient", "LightCore.ConsoleClient\LightCore.ConsoleClient.csproj", "{14D79127-D7D7-402A-8C42-4A5FC698C8CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.ConsoleClient", "PeterBucher.AutoFunc.ConsoleClient\PeterBucher.AutoFunc.ConsoleClient.csproj", "{14D79127-D7D7-402A-8C42-4A5FC698C8CF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Performance", "PeterBucher.AutoFunc.Performance\PeterBucher.AutoFunc.Performance.csproj", "{8267A0FD-66DF-46B1-851E-99B8471BF3C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Performance", "LightCore.Performance\LightCore.Performance.csproj", "{8267A0FD-66DF-46B1-851E-99B8471BF3C2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Web.Mvc.IntegrationSample", "PeterBucher.AutoFunc.Web.Mvc.IntegrationSample\PeterBucher.AutoFunc.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc.IntegrationSample", "LightCore.Web.Mvc.IntegrationSample\LightCore.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Integration.Web", "PeterBucher.AutoFunc.Integration.Web\PeterBucher.AutoFunc.Integration.Web.csproj", "{A5626363-3530-435B-8DFA-8C074D81CEB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Integration.Web", "LightCore.Integration.Web\LightCore.Integration.Web.csproj", "{A5626363-3530-435B-8DFA-8C074D81CEB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Web.IntegrationSample", "PeterBucher.AutoFunc.Web.IntegrationSample\PeterBucher.AutoFunc.Web.IntegrationSample.csproj", "{22AD0900-A58F-4D1B-88F1-1B109835F956}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.IntegrationSample", "LightCore.Web.IntegrationSample\LightCore.Web.IntegrationSample.csproj", "{22AD0900-A58F-4D1B-88F1-1B109835F956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.Tests.Integration.Web", "PeterBucher.AutoFunc.Tests.Integration.Web\PeterBucher.AutoFunc.Tests.Integration.Web.csproj", "{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Integration.Web.Tests", "LightCore.Integration.Web.Tests\LightCore.Integration.Web.Tests.csproj", "{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeterBucher.AutoFunc.TestTypes", "PeterBucher.AutoFunc.TestTypes\PeterBucher.AutoFunc.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.TestTypes", "LightCore.TestTypes\LightCore.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore", "LightCore\LightCore.csproj", "{88D8ABC5-3FAE-489C-862B-5740059DDD58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10415A70-65B2-47CD-860C-6726F5626335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10415A70-65B2-47CD-860C-6726F5626335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10415A70-65B2-47CD-860C-6726F5626335}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -63,6 +59,10 @@ Global
 		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

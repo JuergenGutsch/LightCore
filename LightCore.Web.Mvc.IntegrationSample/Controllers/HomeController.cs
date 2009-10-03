@@ -1,9 +1,9 @@
 ﻿using System.Web.Mvc;
 using System.Linq;
 
-using PeterBucher.AutoFunc.WebIntegrationSample.Models;
+using LightCore.Web.Mvc.IntegrationSample.Models;
 
-namespace PeterBucher.AutoFunc.WebIntegrationSample.Controllers
+namespace LightCore.Web.Mvc.IntegrationSample.Controllers
 {
     [HandleError]
     public class HomeController : Controller

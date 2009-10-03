@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PeterBucher.AutoFunc
+namespace LightCore
 {
     /// <summary>
     /// Represents a registration key.

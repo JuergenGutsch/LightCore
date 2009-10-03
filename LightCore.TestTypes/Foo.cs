@@ -1,4 +1,4 @@
-﻿namespace PeterBucher.AutoFunc.TestTypes
+﻿namespace LightCore.TestTypes
 {
     public class Foo : IFoo
     {

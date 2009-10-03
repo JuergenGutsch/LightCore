@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using PeterBucher.AutoFunc.Builder;
-using PeterBucher.AutoFunc.ConsoleClient.Screens;
-using PeterBucher.AutoFunc.ConsoleClient.Writers;
 
-namespace PeterBucher.AutoFunc.ConsoleClient
+using LightCore.Builder;
+using LightCore.ConsoleClient.Screens;
+using LightCore.ConsoleClient.Writers;
+
+namespace LightCore.ConsoleClient
 {
     /// <summary>
     /// Represents the console test app.
