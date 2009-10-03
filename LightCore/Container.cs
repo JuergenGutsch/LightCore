@@ -106,14 +106,14 @@ namespace LightCore
             Func<KeyValuePair<RegistrationKey, Registration>, bool> registrationSelector =
                 r => typeSelector(r.Key.ContractType) && nameSelector(r.Key.Name);
 
-            if (!this._registrations.Any(registrationSelector))
+            // Select registration.
+            Registration  registration = this._registrations.Where(registrationSelector).SingleOrDefault().Value;
+
+            if (registration == null)
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
             }
-
-            // Select registration.
-            Registration registration = this._registrations.Where(registrationSelector).Single().Value;
 
             // Get the activator.
             IActivator activator = registration.Activator;

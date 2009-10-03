@@ -16,14 +16,14 @@ namespace LightCore.Integration.Web.Mvc
         /// <summary>
         /// The assembly from the controller implementation types.
         /// </summary>
-        private readonly List<Assembly> _controllerAssembly;
+        private readonly List<Assembly> _controllerAssemblies;
 
         /// <summary>
         /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
         /// </summary>
         protected LightCoreControllerRegistrationModule()
         {
-            this._controllerAssembly = new List<Assembly>();
+            this._controllerAssemblies = new List<Assembly>();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace LightCore.Integration.Web.Mvc
         public LightCoreControllerRegistrationModule(params Assembly[] controllerAssemblies)
             : this()
         {
-            this._controllerAssembly.AddRange(controllerAssemblies);
+            this._controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace LightCore.Integration.Web.Mvc
         public LightCoreControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
             : this()
         {
-            this._controllerAssembly.AddRange(controllerAssemblies);
+            this._controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace LightCore.Integration.Web.Mvc
         public LightCoreControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
-            this._controllerAssembly.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
+            this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace LightCore.Integration.Web.Mvc
         public LightCoreControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
-            this._controllerAssembly.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
+            this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace LightCore.Integration.Web.Mvc
         /// <param name="containerBuilder">The container builder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
-            this._controllerAssembly.ForEach(a => this.RegisterControllers(a, containerBuilder));
+            this._controllerAssemblies.ForEach(a => this.RegisterControllers(a, containerBuilder));
         }
 
         /// <summary>

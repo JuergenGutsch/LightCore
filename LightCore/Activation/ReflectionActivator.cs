@@ -29,6 +29,21 @@ namespace LightCore.Activation
         private readonly Type _implementationType;
 
         /// <summary>
+        /// The cached constructors for this type.
+        /// </summary>
+        private ConstructorInfo[] _construcors;
+
+        /// <summary>
+        /// The cached constructor with most parameters for this type.
+        /// </summary>
+        private ConstructorInfo _constructorWithMostParameters;
+
+        /// <summary>
+        /// A cached value that indicates whether only a default constructor is available or not.
+        /// </summary>
+        private bool? _onlyDefaultConstructorAvailable;
+
+        /// <summary>
         /// A reference to the container to resolve inner dependencies.
         /// </summary>
         private IContainer _container;
@@ -42,6 +57,10 @@ namespace LightCore.Activation
             set;
         }
 
+        ///<summary>
+        /// Creates a new instance of <see cref="ReflectionActivator" />.
+        ///</summary>
+        ///<param name="implementationType"></param>
         public ReflectionActivator(Type implementationType)
         {
             this._implementationType = implementationType;
@@ -61,13 +80,19 @@ namespace LightCore.Activation
         {
             this._container = container;
 
-            ConstructorInfo[] constructors = this._implementationType.GetConstructors();
+            if (this._construcors == null)
+            {
+                this._construcors = this._implementationType.GetConstructors();
+            }
 
-            bool onlyDefaultConstructorAvailable =
-                constructors.Length == 1 && constructors[0].GetParameters().Length == 0;
+            if (!this._onlyDefaultConstructorAvailable.HasValue)
+            {
+                this._onlyDefaultConstructorAvailable = this._construcors.Length == 1 &&
+                                                        this._construcors[0].GetParameters().Length == 0;
+            }
 
             // Use the default constructor.
-            if (onlyDefaultConstructorAvailable || this.UseDefaultConstructor)
+            if (this._onlyDefaultConstructorAvailable.Value || this.UseDefaultConstructor)
             {
                 return Activator.CreateInstance(this._implementationType);
             }
@@ -75,19 +100,22 @@ namespace LightCore.Activation
             // Select constructor that matches the given arguments.
             if (arguments != null)
             {
-                return CreateInstanceWithArguments(this._implementationType, constructors, arguments.ToArray());
+                return CreateInstanceWithArguments(this._implementationType, this._construcors, arguments.ToArray());
             }
 
             // Select the constructor with most parameters (dependencies).
-            ConstructorInfo constructorWithMostParameters = constructors.OrderByDescending(
-                delegate(ConstructorInfo c)
-                {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Count() > 0;
-                }).First();
+            if (this._constructorWithMostParameters == null)
+            {
+                this._constructorWithMostParameters = this._construcors.OrderByDescending(
+                    delegate(ConstructorInfo c)
+                    {
+                        var parameters = c.GetParameters();
+                        return parameters != null && parameters.Count() > 0;
+                    }).First();
+            }
 
             // Invoke constructor with most dependencies and return it to the caller.
-            return this.InvokeConstructor(constructorWithMostParameters, null);
+            return this.InvokeConstructor(this._constructorWithMostParameters, null);
         }
 
         /// <summary>
@@ -97,7 +125,7 @@ namespace LightCore.Activation
         /// <param name="constructors">The constructor candidates.</param>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The created instance.</returns>
-        private object CreateInstanceWithArguments(Type implementationType, IEnumerable<ConstructorInfo> constructors, object[] arguments)
+        private object CreateInstanceWithArguments(Type implementationType, ConstructorInfo[] constructors, object[] arguments)
         {
             var constructorCandidates = constructors.Where(
                 delegate(ConstructorInfo c)
@@ -144,7 +172,7 @@ namespace LightCore.Activation
                 var resolvedDependencies = dependencyParameters.Convert(p => this._container.Resolve(p.ParameterType));
 
                 // If there are arguments, concat at the end.
-                if(arguments !=null)
+                if (arguments != null)
                 {
                     resolvedDependencies = resolvedDependencies.Concat(arguments);
                 }
