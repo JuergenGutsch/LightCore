@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using LightCore.Activator;
 using LightCore.Exceptions;
 using LightCore.Properties;
 
@@ -13,16 +13,6 @@ namespace LightCore
     /// </summary>
     public class Container : IContainer
     {
-        /// <summary>
-        /// Selector for dependency parameters.
-        /// </summary>
-        private readonly Func<ParameterInfo, bool> _dependencyParameterSelector;
-
-        /// <summary>
-        /// Selector for non dependency parameters.
-        /// </summary>
-        private readonly Func<ParameterInfo, bool> _nonDependencyParameterSelector;
-
         /// <summary>
         /// Holds a dictionary with registered registration keys and their corresponding registrations.
         /// </summary>
@@ -35,10 +25,6 @@ namespace LightCore
         {
             // Save registrations.
             this._registrations = registrations;
-
-            // Setup selectors.
-            this._dependencyParameterSelector = p => p.ParameterType.IsInterface || p.ParameterType.IsAbstract;
-            this._nonDependencyParameterSelector = p => !this._dependencyParameterSelector(p);
         }
 
         /// <summary>
@@ -49,6 +35,15 @@ namespace LightCore
         public TContract Resolve<TContract>()
         {
             return (TContract)this.Resolve(typeof(TContract), null);
+        }
+
+        /// <summary>
+        /// Resolves a contract (include subcontracts).
+        /// </summary>
+        /// <returns>The resolved instance as <see cref="object" />.</returns>
+        public object Resolve(Type typeOfContract)
+        {
+            return this.Resolve(typeOfContract, null);
         }
 
         /// <summary>
@@ -119,141 +114,11 @@ namespace LightCore
             // Select registration.
             Registration registration = this._registrations.Where(registrationSelector).Single().Value;
 
-            // Handle registration life time and creates an instance on these rules.
-            return registration.ReuseStrategy.HandleReuse(() => this.CreateInstanceFromRegistration(registration));
-        }
+            // Get the activator.
+            IActivator activator = registration.Activator;
 
-        /// <summary>
-        /// Creates an instance of given registration.
-        /// </summary>
-        /// <param name="registration">The registration for creating an instance.</param>
-        /// <returns>The created instance.</returns>
-        private object CreateInstanceFromRegistration(Registration registration)
-        {
-            Type implementationType = registration.ImplementationType;
-            ConstructorInfo[] constructors = implementationType.GetConstructors();
-
-            bool onlyDefaultConstructorAvailable =
-                constructors.Length == 1 && constructors[0].GetParameters().Length == 0;
-
-            // Use the default constructor.
-            if (onlyDefaultConstructorAvailable || registration.UseDefaultConstructor)
-            {
-                return Activator.CreateInstance(implementationType);
-            }
-
-            object[] arguments = registration.Arguments;
-
-            // Select constructor that matches the given arguments.
-            if (arguments != null)
-            {
-                return CreateInstanceWithArguments(implementationType, constructors, arguments);
-            }
-
-            // Select the constructor with most parameters (dependencies).
-            ConstructorInfo constructorWithMostParameters = constructors.OrderByDescending(
-                delegate(ConstructorInfo c)
-                {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Count() > 0;
-                }).First();
-
-            // Invoke constructor with arguments and return it to the caller.
-            return this.InvokeConstructor(constructorWithMostParameters, null);
-        }
-
-        /// <summary>
-        /// Creates an instance with arguments.
-        /// </summary>
-        /// <param name="implementationType">The imlementation type.</param>
-        /// <param name="constructors">The constructor candidates.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The created instance.</returns>
-        private object CreateInstanceWithArguments(Type implementationType, ConstructorInfo[] constructors, object[] arguments)
-        {
-            var constructorCandidates = constructors.Where(
-                delegate(ConstructorInfo c)
-                {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
-                });
-
-            // Only one constructor with same parameter count.
-            if (constructorCandidates.Count() == 1)
-            {
-                return this.InvokeConstructor(constructorCandidates.First(), arguments);
-            }
-
-            // Find the right constructor according the parameter types.
-            foreach (var constructor in constructorCandidates.OrderByDescending(c => c.GetParameters().Count()))
-            {
-                if (ConstructorParameterTypesMatch(constructor.GetParameters().Where(this._nonDependencyParameterSelector).ToArray(), arguments))
-                {
-                    return this.InvokeConstructor(constructor, arguments);
-                }
-            }
-
-            // No constructor found.
-            throw new ResolutionFailedException(Resources.ConstructorNotFoundFormat.FormatWith(implementationType.Name));
-        }
-
-        /// <summary>
-        /// Invokes a constructor with optional given arguments.
-        /// Automatically detects the right resolved arguments and arguments,
-        /// and injects these into the constructor invocation.
-        /// </summary>
-        /// <param name="constructor">The constructor to invoke.</param>
-        /// <param name="arguments">The optional arguments.</param>
-        /// <returns>The resolved object.</returns>
-        private object InvokeConstructor(ConstructorInfo constructor, IEnumerable<object> arguments)
-        {
-            ParameterInfo[] parameters = constructor.GetParameters();
-            var finalArguments = new List<object>();
-
-            // If there are depdendency parameters, resolve these.
-            if (parameters.Any(_dependencyParameterSelector))
-            {
-                var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-                finalArguments.AddRange(dependencyParameters.Convert(p => this.Resolve(p.ParameterType, null)));
-
-                if (arguments != null)
-                {
-                    finalArguments.AddRange(arguments);
-                }
-
-                return constructor.Invoke(finalArguments.ToArray());
-            }
-
-            // There are only non depdency arguments.
-            return constructor.Invoke(arguments.ToArray());
-        }
-
-        /// <summary>
-        /// Checks whether the types of parameter infos and arguments matches.
-        /// Ignores depdency parameters at the beginning (increment the index from begining on).
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns><value>true</value> if the parameter and argument types match, otherwise <value>false</value>.</returns>
-        private bool ConstructorParameterTypesMatch(ParameterInfo[] parameters, object[] arguments)
-        {
-            int startIndex = 0;
-            var depdendencyParameters = parameters.Where(_dependencyParameterSelector);
-
-            if (depdendencyParameters.Any())
-            {
-                startIndex = depdendencyParameters.Count();
-            }
-
-            for (int i = startIndex; i < arguments.Length; i++)
-            {
-                if (parameters[i].ParameterType != arguments[i].GetType())
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            // Handle registration reuse and creates an instance on these rules.
+            return registration.ReuseStrategy.HandleReuse(() => activator.ActivateInstance(this, null));
         }
     }
 }

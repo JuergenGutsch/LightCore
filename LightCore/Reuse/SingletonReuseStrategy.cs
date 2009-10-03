@@ -8,17 +8,16 @@ namespace LightCore.Reuse
     public class SingletonReuseStrategy : IReuseStrategy
     {
         /// <summary>
-        /// The registration, the strategy belongs to.
+        /// The instance.
         /// </summary>
-        private readonly Registration _registration;
+        private object _instance;
 
         /// <summary>
         /// Initializes a new instance of <see cref="SingletonReuseStrategy" />.
         /// </summary>
-        /// <param name="registration">The registration, the strategy belongs to.</param>
-        public SingletonReuseStrategy(Registration registration)
+        public SingletonReuseStrategy()
         {
-            this._registration = registration;
+
         }
 
         /// <summary>
@@ -28,12 +27,12 @@ namespace LightCore.Reuse
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
         public object HandleReuse(Func<object> newInstanceResolver)
         {
-            if (this._registration.Instance == null)
+            if (this._instance == null)
             {
-                this._registration.Instance = newInstanceResolver();
+                this._instance = newInstanceResolver();
             }
 
-            return this._registration.Instance;
+            return this._instance;
         }
     }
 }

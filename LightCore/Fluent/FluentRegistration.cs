@@ -1,4 +1,5 @@
-﻿using LightCore.Reuse;
+﻿using System;
+using LightCore.Reuse;
 
 namespace LightCore.Fluent
 {
@@ -38,18 +39,27 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ScopedToSingleton()
         {
-            this._registration.ReuseStrategy = new SingletonReuseStrategy(this._registration);
+            this._registration.ReuseStrategy = new SingletonReuseStrategy();
             return this;
         }
 
         /// <summary>
         /// Treat the current registration to the passed reuse strategy behaviour.
         /// </summary>
-        /// <param name="reuseStrategy">The reuse strategy.</param>
         /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedTo(IReuseStrategy reuseStrategy)
+        public IFluentRegistration ScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new()
         {
-            this._registration.ReuseStrategy = reuseStrategy;
+            this._registration.ReuseStrategy = new TReuseStrategy();
+            return this;
+        }
+
+        /// <summary>
+        /// Treat the current registration to the passed reuse strategy behaviour function.
+        /// </summary>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration ScopedTo(Func<IReuseStrategy> reuseStrategyFunction)
+        {
+            this._registration.ReuseStrategy = reuseStrategyFunction();
             return this;
         }
 

@@ -8,24 +8,6 @@ namespace LightCore
     public class RegistrationKey
     {
         /// <summary>
-        /// The contract type.
-        /// </summary>
-        public Type ContractType
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// The implementation type.
-        /// </summary>
-        public Type ImplementationType
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// The name for the registration.
         /// </summary>
         public string Name
@@ -35,9 +17,9 @@ namespace LightCore
         }
 
         /// <summary>
-        /// The arguments.
+        /// The contract type.
         /// </summary>
-        public object[] Arguments
+        public Type ContractType
         {
             get;
             set;
@@ -55,13 +37,9 @@ namespace LightCore
         /// Creates a new instance of <see cref="Registration" />.
         /// </summary>
         /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
-        /// <param name="imlementationType">The implementation type as <see cref="Type" />.</param>
-        /// <param name="arguments">The arguments for the registration.</see></param>
-        public RegistrationKey(Type contractType, Type imlementationType, params object[] arguments)
+        public RegistrationKey(Type contractType)
         {
             this.ContractType = contractType;
-            this.ImplementationType = imlementationType;
-            this.Arguments = arguments;
         }
     }
 }

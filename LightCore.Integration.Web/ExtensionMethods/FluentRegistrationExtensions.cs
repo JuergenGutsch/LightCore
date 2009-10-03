@@ -15,7 +15,7 @@ namespace LightCore.Integration.Web.ExtensionMethods
         /// <returns>The instance itself to get fluent working.</returns>
         public static IFluentRegistration ScopedToHttpRequest(this IFluentRegistration source)
         {
-            return source.ScopedTo(new HttpRequestReuseStrategy());
+            return source.ScopedTo<HttpRequestReuseStrategy>();
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Web.Mvc;
 
 using LightCore.Builder;
-using LightCore.Integration.Web.Reuse;
 using LightCore.Reuse;
 
 namespace LightCore.Integration.Web.Mvc
@@ -13,34 +12,12 @@ namespace LightCore.Integration.Web.Mvc
     /// <summary>
     /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.
     /// </summary>
-    public class LightCoreControllerRegistrationModule : RegistrationModule
+    public class LightCoreControllerRegistrationModule<TReuseStrategy> : RegistrationModule where TReuseStrategy : IReuseStrategy, new()
     {
         /// <summary>
         /// The assembly from the controller implementation types.
         /// </summary>
         private readonly List<Assembly> _controllerAssembly;
-
-        /// <summary>
-        /// The <see cref="IReuseStrategy" /> for the registrations.
-        /// TODO: One reuse strategy instance per registration should there!
-        /// </summary>
-        private IReuseStrategy _reuseStrategy = new HttpRequestReuseStrategy();
-
-        /// <summary>
-        /// Gets or sets the reuse strategy to use for all controllers.
-        /// </summary>
-        public IReuseStrategy ReuseStrategy
-        {
-            get
-            {
-                return this._reuseStrategy;
-            }
-
-            set
-            {
-                this._reuseStrategy = value;
-            }
-        }
 
         /// <summary>
         /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
@@ -106,15 +83,26 @@ namespace LightCore.Integration.Web.Mvc
         /// <param name="containerBuilder">The container builder.</param>
         private void RegisterControllers(Assembly controllerAssembly, IContainerBuilder containerBuilder)
         {
-            Type typeOfIController = typeof(IController);
+            Type typeOfController = typeof(IController);
             Type[] allPublicTypes = controllerAssembly.GetExportedTypes();
 
-            var controllerTypes = allPublicTypes.Where(t => typeOfIController.IsAssignableFrom(t) && !t.IsAbstract);
+            var controllerTypes = allPublicTypes.Where(t => typeOfController.IsAssignableFrom(t) && !t.IsAbstract);
 
-            controllerTypes.ForEach(t => containerBuilder
-                                             .Register(typeOfIController, t)
-                                             .ScopedTo(this._reuseStrategy)
-                                             .WithName(this.GetControllerName(t.Name)));
+            if (this.ReuseStrategy == null)
+            {
+                controllerTypes.ForEach(t => containerBuilder
+                                                 .Register(typeOfController, t)
+                                                 .ScopedTo<TReuseStrategy>()
+                                                 .WithName(this.GetControllerName(t.Name)));
+            }
+            else
+            {
+                // Unit testing
+                controllerTypes.ForEach(t => containerBuilder
+                                                 .Register(typeOfController, t)
+                                                 .ScopedTo(this.ReuseStrategy)
+                                                 .WithName(this.GetControllerName(t.Name)));
+            }
         }
 
         /// <summary>

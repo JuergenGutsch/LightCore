@@ -9,6 +9,14 @@ namespace LightCore.Reuse
     public class TransientReuseStrategy : IReuseStrategy
     {
         /// <summary>
+        /// Initializes a new instance of <see cref="TransientReuseStrategy" />.
+        /// </summary>
+        public TransientReuseStrategy()
+        {
+
+        }
+
+        /// <summary>
         /// Handle the reuse of instances.
         /// Every request becomes a new instance.
         /// </summary>

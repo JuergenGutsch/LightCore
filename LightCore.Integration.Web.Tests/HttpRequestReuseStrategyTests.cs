@@ -26,12 +26,10 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var requestStrategy = new HttpRequestReuseStrategy
-                                      {
-                                          CurrentContext = currentContext.Object
-                                      };
-
-            builder.Register<IFoo, Foo>().ScopedTo(requestStrategy);
+            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
+                                                             {
+                                                                 CurrentContext = currentContext.Object
+                                                             });
 
             var container = builder.Build();
 
@@ -53,12 +51,10 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var requestStrategy = new HttpRequestReuseStrategy
-                                      {
-                                          CurrentContext = currentContext.Object
-                                      };
-
-            builder.Register<IFoo, Foo>().ScopedTo(requestStrategy);
+            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
+                                                             {
+                                                                 CurrentContext = currentContext.Object
+                                                             });
 
             var container = builder.Build();
 

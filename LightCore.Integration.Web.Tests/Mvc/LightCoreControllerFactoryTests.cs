@@ -4,6 +4,7 @@ using System.Web;
 using LightCore.Builder;
 using LightCore.Integration.Web.Mvc;
 using LightCore.Integration.Web.Reuse;
+using LightCore.Reuse;
 using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,7 +22,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -30,12 +31,10 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var requestStrategy = new HttpRequestReuseStrategy
-                                      {
-                                          CurrentContext = currentContext.Object
-                                      };
-
-            registrationModule.ReuseStrategy = requestStrategy;
+            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+                                                         {
+                                                             CurrentContext = currentContext.Object
+                                                         };
 
             builder.RegisterModule(registrationModule);
 
@@ -55,7 +54,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule<TransientReuseStrategy>(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -64,12 +63,10 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var requestStrategy = new HttpRequestReuseStrategy
-                                      {
-                                          CurrentContext = currentContext.Object
-                                      };
-
-            registrationModule.ReuseStrategy = requestStrategy;
+            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+                                                         {
+                                                             CurrentContext = currentContext.Object
+                                                         };
 
             builder.RegisterModule(registrationModule);
 
@@ -87,7 +84,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -96,12 +93,10 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var requestStrategy = new HttpRequestReuseStrategy
-                                      {
-                                          CurrentContext = currentContext.Object
-                                      };
-
-            registrationModule.ReuseStrategy = requestStrategy;
+            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+                                                         {
+                                                             CurrentContext = currentContext.Object
+                                                         };
 
             builder.RegisterModule(registrationModule);
 

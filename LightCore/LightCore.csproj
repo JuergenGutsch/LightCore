@@ -35,8 +35,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activator\DelegateActivator.cs" />
+    <Compile Include="Activator\IActivator.cs" />
+    <Compile Include="Activator\ReflectionActivator.cs" />
     <Compile Include="Builder\RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="Builder\ContainerBuilder.cs" />

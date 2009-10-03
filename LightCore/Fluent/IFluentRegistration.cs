@@ -1,4 +1,5 @@
-﻿using LightCore.Reuse;
+﻿using System;
+using LightCore.Reuse;
 
 namespace LightCore.Fluent
 {
@@ -23,9 +24,14 @@ namespace LightCore.Fluent
         /// <summary>
         /// Treat the current registration to the passed reuse strategy behaviour.
         /// </summary>
-        /// <param name="reuseStrategy">The reuse strategy.</param>
         /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration ScopedTo(IReuseStrategy reuseStrategy);
+        IFluentRegistration ScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new();
+
+        /// <summary>
+        /// Treat the current registration to the passed reuse strategy behaviour function.
+        /// </summary>
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration ScopedTo(Func<IReuseStrategy> reuseStrategyFunction);
 
         /// <summary>
         /// Adds arguments to the registration.

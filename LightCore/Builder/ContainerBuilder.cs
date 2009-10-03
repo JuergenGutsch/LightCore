@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using LightCore.Activator;
 using LightCore.Exceptions;
 using LightCore.Fluent;
 using LightCore.Properties;
@@ -74,10 +74,13 @@ namespace LightCore.Builder
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
+            var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, typeOfImplementation, key);
+            var registration = new Registration(typeOfContract, key)
+                                   {
+                                       Activator = new ReflectionActivator(typeOfContract, typeOfImplementation, false) // TODO: Default constructor should be read from defferedregistration.
+                                   };
 
             // Set the transient reuse strategy as default.
             if (registration.ReuseStrategy == null)
@@ -103,17 +106,17 @@ namespace LightCore.Builder
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract>(TContract instance)
         {
-            var typeOfContract = typeof (TContract);
+            var typeOfContract = typeof(TContract);
 
-            var key = new RegistrationKey(typeOfContract, null, null);
+            var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, null, key);
+            var registration = new Registration(typeOfContract, key);
 
             // Set the transient reuse strategy as default.
             if (registration.ReuseStrategy == null)
             {
-                registration.ReuseStrategy = new SingletonReuseStrategy(registration);
+                registration.ReuseStrategy = new SingletonReuseStrategy();
             }
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
@@ -128,14 +131,37 @@ namespace LightCore.Builder
         }
 
         /// <summary>
-        /// Registers a contract with an activator function.
+        /// Registers a contract with an activatorFunction function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="activator">The activator as function..</param>
+        /// <param name="activatorFunction">The activator as function..</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(Func<TContract> activator)
+        public IFluentRegistration Register<TContract>(Func<TContract> activatorFunction)
         {
-            throw new NotImplementedException();
+            var typeOfContract = typeof(TContract);
+
+            var key = new RegistrationKey(typeOfContract);
+
+            var registration = new Registration(typeOfContract, key)
+                                   {
+                                       Activator = new DelegateActivator<TContract>(activatorFunction)
+                                   };
+
+            // Set the transient reuse strategy as default.
+            if (registration.ReuseStrategy == null)
+            {
+                registration.ReuseStrategy = new TransientReuseStrategy();
+            }
+
+            // Add a register callback for lazy assertion after manipulating in fluent registration api.
+            this._registrationCallbacks.Add(() =>
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return registration.FluentRegistration;
         }
 
         /// <summary>
@@ -147,7 +173,7 @@ namespace LightCore.Builder
             var selectors = new List<Func<RegistrationKey, bool>>
                                 {
                                     r => r.ContractType == registrationKey.ContractType,
-                                    r => r.ImplementationType == registrationKey.ImplementationType,
+                                    //r => r.ImplementationType == registrationKey.ImplementationType,
                                     r => r.Name == registrationKey.Name
                                 };
 

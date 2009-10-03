@@ -1,5 +1,5 @@
 ﻿using System;
-
+using LightCore.Activator;
 using LightCore.Fluent;
 using LightCore.Reuse;
 
@@ -11,24 +11,12 @@ namespace LightCore
     public class Registration
     {
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Gets the key for this registration.
         /// </summary>
-        public Registration()
+        public RegistrationKey Key
         {
-            
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
-        /// </summary>
-        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
-        /// <param name="imlementationType">The implementation type as <see cref="Type" />.</param>
-        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</see></param>
-        public Registration(Type contractType, Type imlementationType, RegistrationKey key)
-        {
-            this.ContractType = contractType;
-            this.ImplementationType = imlementationType;
-            this.Key = key;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -41,12 +29,12 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Gets the implementation type as <see cref="Type" />.
+        /// Gets or sets the activator for an instance.
         /// </summary>
-        public Type ImplementationType
+        public IActivator Activator
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>
@@ -77,24 +65,6 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Gets or sets the current instance of this registration.
-        /// </summary>
-        public object Instance
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets the key for this registration.
-        /// </summary>
-        public RegistrationKey Key
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
         /// Gets the current fluent interface instance.
         /// </summary>
         public IFluentRegistration FluentRegistration
@@ -103,6 +73,25 @@ namespace LightCore
             {
                 return new FluentRegistration(this);
             }
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Registration" />.
+        /// </summary>
+        public Registration()
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Registration" />.
+        /// </summary>
+        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
+        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</see></param>
+        public Registration(Type contractType, RegistrationKey key)
+        {
+            this.ContractType = contractType;
+            this.Key = key;
         }
     }
 }

@@ -8,6 +8,7 @@ using LightCore.Integration.Web;
 using LightCore.Integration.Web.Mvc;
 using LightCore.Web.Mvc.IntegrationSample.Controllers;
 using LightCore.Web.Mvc.IntegrationSample.Models;
+using LightCore.Integration.Web.Reuse;
 
 namespace LightCore.Web.Mvc.IntegrationSample
 {
@@ -45,8 +46,8 @@ namespace LightCore.Web.Mvc.IntegrationSample
             var builder = new ContainerBuilder();
 
             var controllerAssembly = Assembly.GetExecutingAssembly();
-            var controllerRegistrationModule = new LightCoreControllerRegistrationModule(controllerAssembly);
-            
+            var controllerRegistrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(controllerAssembly);
+
             builder.RegisterModule(controllerRegistrationModule);
 
             builder.Register<IFormsAuthentication, FormsAuthenticationService>().UseDefaultConstructor();
