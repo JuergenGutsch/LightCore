@@ -1,5 +1,4 @@
-﻿using LightCore.Builder;
-using LightCore.TestTypes;
+﻿using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,7 +11,7 @@ namespace LightCore.Tests
         public void DelegateActivator_can_return_an_instance_from_given_instance()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(() => new Foo());
+            builder.Register<IFoo>(c => new Foo());
 
             var container = builder.Build();
 
@@ -25,7 +24,7 @@ namespace LightCore.Tests
         public void DelegateActivator_can_return_same_object_with_singleton_reuse_scope()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(() => new Foo()).ScopedToSingleton();
+            builder.Register<IFoo>(c => new Foo()).ScopedToSingleton();
 
             var container = builder.Build();
 
@@ -39,7 +38,7 @@ namespace LightCore.Tests
         public void DelegateActivator_can_return_a_named_instance()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(() => new Foo()).WithName("test");
+            builder.Register<IFoo>(c => new Foo()).WithName("test");
 
             var container = builder.Build();
 

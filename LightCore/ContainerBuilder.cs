@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LightCore.Activator;
+
+using LightCore.Activation;
 using LightCore.Exceptions;
 using LightCore.Fluent;
 using LightCore.Properties;
 using LightCore.Reuse;
 
-namespace LightCore.Builder
+namespace LightCore
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations
@@ -15,6 +16,11 @@ namespace LightCore.Builder
     /// </summary>
     public class ContainerBuilder : IContainerBuilder
     {
+        /// <summary>
+        /// The container.
+        /// </summary>
+        private readonly IContainer _container;
+
         /// <summary>
         /// Holds a list with registered registrations.
         /// </summary>
@@ -31,6 +37,7 @@ namespace LightCore.Builder
         public ContainerBuilder()
         {
             this._registrations = new Dictionary<RegistrationKey, Registration>();
+            this._container = new Container(this._registrations);
             this._registrationCallbacks = new List<Action>();
         }
 
@@ -43,7 +50,7 @@ namespace LightCore.Builder
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
 
-            return new Container(this._registrations);
+            return this._container;
         }
 
         /// <summary>
@@ -90,10 +97,10 @@ namespace LightCore.Builder
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-            {
-                this.AssertRegistrationExists(registration.Key);
-                this._registrations.Add(registration.Key, registration);
-            });
+                                                {
+                                                    this.AssertRegistrationExists(registration.Key);
+                                                    this._registrations.Add(registration.Key, registration);
+                                                });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;
@@ -136,7 +143,7 @@ namespace LightCore.Builder
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(Func<TContract> activatorFunction)
+        public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
         {
             var typeOfContract = typeof(TContract);
 
@@ -155,10 +162,10 @@ namespace LightCore.Builder
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-            {
-                this.AssertRegistrationExists(registration.Key);
-                this._registrations.Add(registration.Key, registration);
-            });
+                                                {
+                                                    this.AssertRegistrationExists(registration.Key);
+                                                    this._registrations.Add(registration.Key, registration);
+                                                });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;

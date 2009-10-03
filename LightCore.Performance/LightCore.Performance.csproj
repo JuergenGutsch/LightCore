@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UseCases\AutofacUseCase.cs" />
+    <Compile Include="UseCases\LightCoreDelegateUseCase.cs" />
     <Compile Include="UseCases\LightCoreUseCase.cs" />
     <Compile Include="Domain\Authenticator.cs" />
     <Compile Include="Domain\Database.cs" />

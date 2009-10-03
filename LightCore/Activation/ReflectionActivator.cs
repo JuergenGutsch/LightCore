@@ -6,7 +6,7 @@ using System.Linq;
 using LightCore.Exceptions;
 using LightCore.Properties;
 
-namespace LightCore.Activator
+namespace LightCore.Activation
 {
     /// <summary>
     /// Represents an reflection instance activator.
@@ -84,10 +84,10 @@ namespace LightCore.Activator
             // Select the constructor with most parameters (dependencies).
             ConstructorInfo constructorWithMostParameters = constructors.OrderByDescending(
                 delegate(ConstructorInfo c)
-                {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Count() > 0;
-                }).First();
+                    {
+                        var parameters = c.GetParameters();
+                        return parameters != null && parameters.Count() > 0;
+                    }).First();
 
             // Invoke constructor with arguments and return it to the caller.
             return this.InvokeConstructor(constructorWithMostParameters, null);
@@ -104,10 +104,10 @@ namespace LightCore.Activator
         {
             var constructorCandidates = constructors.Where(
                 delegate(ConstructorInfo c)
-                {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
-                });
+                    {
+                        var parameters = c.GetParameters();
+                        return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
+                    });
 
             // Only one constructor with same parameter count.
             if (constructorCandidates.Count() == 1)

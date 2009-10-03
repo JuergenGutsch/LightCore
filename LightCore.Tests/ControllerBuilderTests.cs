@@ -1,5 +1,4 @@
-﻿using LightCore.Builder;
-using LightCore.Exceptions;
+﻿using LightCore.Exceptions;
 using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -52,7 +51,7 @@ namespace LightCore.Tests
         public void ContainerBuilder_can_register_activation_functions()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository>(() => new FooRepository(new Logger()));
+            builder.Register<IFooRepository>(c => new FooRepository(new Logger()));
 
             var container = builder.Build();
         }

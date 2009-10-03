@@ -1,5 +1,4 @@
-﻿using LightCore.Builder;
-using LightCore.Performance.Domain;
+﻿using LightCore.Performance.Domain;
 
 namespace LightCore.Performance.UseCases
 {

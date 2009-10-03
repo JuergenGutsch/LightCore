@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using LightCore.Activator;
+
+using LightCore.Activation;
 using LightCore.Exceptions;
 using LightCore.Properties;
 

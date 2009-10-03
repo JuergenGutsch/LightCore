@@ -1,5 +1,4 @@
-﻿using LightCore.Builder;
-using LightCore.TestTypes;
+﻿using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -1,10 +1,11 @@
 ﻿using System;
+
 using LightCore.Reuse;
 
-namespace LightCore.Builder
+namespace LightCore
 {
     /// <summary>
-    /// Represents an abstract registration module for implemenenting custom registrations.
+    /// Represents an abstract registration module for implementing custom registrations.
     /// </summary>
     public abstract class RegistrationModule
     {

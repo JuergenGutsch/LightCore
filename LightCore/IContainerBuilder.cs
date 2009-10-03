@@ -2,7 +2,7 @@
 
 using LightCore.Fluent;
 
-namespace LightCore.Builder
+namespace LightCore
 {
     /// <summary>
     /// Represents a builder that is reponsible for accepting, validating registrations
@@ -35,7 +35,7 @@ namespace LightCore.Builder
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
-        IFluentRegistration Register<TContract>(Func<TContract> activatorFunction);
+        IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction);
 
         /// <summary>
         /// Registers a contract with its implementationtype.

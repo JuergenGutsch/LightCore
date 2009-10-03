@@ -20,8 +20,8 @@ namespace LightCore.Performance
                                {
                                    new PlainUseCase(),
                                    new FunqUseCase(),
-                                   new 
-                                       LightCoreUseCase(),
+                                   new LightCoreUseCase(),
+                                   new LightCoreDelegateUseCase(),
                                    new AutofacUseCase()
                                };
 

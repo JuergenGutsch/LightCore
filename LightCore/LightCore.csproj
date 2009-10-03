@@ -39,12 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activator\DelegateActivator.cs" />
-    <Compile Include="Activator\IActivator.cs" />
-    <Compile Include="Activator\ReflectionActivator.cs" />
-    <Compile Include="Builder\RegistrationModule.cs" />
+    <Compile Include="Activation\DelegateActivator.cs" />
+    <Compile Include="Activation\IActivator.cs" />
+    <Compile Include="Activation\ReflectionActivator.cs" />
+    <Compile Include="RegistrationModule.cs" />
     <Compile Include="Container.cs" />
-    <Compile Include="Builder\ContainerBuilder.cs" />
+    <Compile Include="ContainerBuilder.cs" />
     <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
     <Compile Include="Exceptions\ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
@@ -53,7 +53,7 @@
     <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\IFluentRegistration.cs" />
-    <Compile Include="Builder\IContainerBuilder.cs" />
+    <Compile Include="IContainerBuilder.cs" />
     <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
     <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
     <Compile Include="Registration.cs" />

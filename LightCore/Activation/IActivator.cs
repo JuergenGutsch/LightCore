@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LightCore.Activator
+namespace LightCore.Activation
 {
     /// <summary>
     /// Represents an instance activator.

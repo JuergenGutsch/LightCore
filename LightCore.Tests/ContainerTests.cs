@@ -1,6 +1,4 @@
-﻿using LightCore.Builder;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LightCore.Tests
 {

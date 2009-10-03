@@ -1,5 +1,6 @@
 ﻿using System;
-using LightCore.Activator;
+
+using LightCore.Activation;
 using LightCore.Fluent;
 using LightCore.Reuse;
 

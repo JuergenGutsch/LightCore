@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LightCore.Activator
+namespace LightCore.Activation
 {
     /// <summary>
     /// Represents a delegate instance activator.
     /// </summary>
     public class DelegateActivator<TContract> : IActivator
     {
-        private readonly Func<TContract> _activationFunction;
+        private readonly Func<IContainer, TContract> _activationFunction;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DelegateActivator" />.
+        /// Initializes a new instance of <see cref="DelegateActivator{TContract}" />.
         /// </summary>
         /// <param name="activationFunction">The activator function.</param>
-        public DelegateActivator(Func<TContract> activationFunction)
+        public DelegateActivator(Func<IContainer, TContract> activationFunction)
         {
             this._activationFunction = activationFunction;
         }
@@ -27,7 +27,7 @@ namespace LightCore.Activator
         /// <returns>The activated instance.</returns>
         public object ActivateInstance(IContainer container, IEnumerable<object> arguments)
         {
-            return this._activationFunction();
+            return this._activationFunction(container);
         }
     }
 }
