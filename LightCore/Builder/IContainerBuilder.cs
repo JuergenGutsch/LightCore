@@ -26,7 +26,7 @@ namespace LightCore.Builder
         /// Registers a contract with an existing instance.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         IFluentRegistration Register<TContract>(TContract instance);
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace LightCore.Builder
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activator">The activator as function..</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         IFluentRegistration Register<TContract>(Func<TContract> activator);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace LightCore.Builder
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         IFluentRegistration Register<TContract, TImplementation>();
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace LightCore.Builder
         /// </summary>
         /// <param name="typeOfContract">The type of the contract.</param>
         /// <param name="typeOfImplementation">The type of the implementation for the contract</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation);
     }
 }

@@ -35,47 +35,6 @@ namespace LightCore.Builder
         }
 
         /// <summary>
-        /// Registers a contract with its implementationtype.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
-        public IFluentRegistration Register<TContract, TImplementation>()
-        {
-            return this.Register(typeof(TContract), typeof(TImplementation));
-        }
-
-        /// <summary>
-        /// Registers a contract with its implementationtype.
-        /// </summary>
-        /// <param name="typeOfContract">The type of the contract.</param>
-        /// <param name="typeOfImplementation">The type of the implementation for the contract</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
-        public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
-        {
-            var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
-
-            // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, typeOfImplementation, key);
-            
-            // Set the transient reuse strategy as default.
-            if(registration.ReuseStrategy == null)
-            {
-                registration.ReuseStrategy = new TransientReuseStrategy();
-            }
-
-            // Add a register callback for lazy assertion after manipulating in fluent registration api.
-            this._registrationCallbacks.Add(() =>
-                                                {
-                                                    this.AssertRegistrationExists(registration.Key);
-                                                    this._registrations.Add(registration.Key, registration);
-                                                });
-
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return registration.FluentRegistration;
-        }
-
-        /// <summary>
         /// Builds the container.
         /// </summary>
         /// <returns>The builded container.</returns>
@@ -97,10 +56,51 @@ namespace LightCore.Builder
         }
 
         /// <summary>
+        /// Registers a contract with its implementationtype.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        public IFluentRegistration Register<TContract, TImplementation>()
+        {
+            return this.Register(typeof(TContract), typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Registers a contract with its implementationtype.
+        /// </summary>
+        /// <param name="typeOfContract">The type of the contract.</param>
+        /// <param name="typeOfImplementation">The type of the implementation for the contract</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
+        {
+            var key = new RegistrationKey(typeOfContract, typeOfImplementation, null);
+
+            // Register the type with default lifetime.
+            var registration = new Registration(typeOfContract, typeOfImplementation, key);
+
+            // Set the transient reuse strategy as default.
+            if (registration.ReuseStrategy == null)
+            {
+                registration.ReuseStrategy = new TransientReuseStrategy();
+            }
+
+            // Add a register callback for lazy assertion after manipulating in fluent registration api.
+            this._registrationCallbacks.Add(() =>
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return registration.FluentRegistration;
+        }
+
+        /// <summary>
         /// Registers a contract with an existing instance.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract>(TContract instance)
         {
             var typeOfContract = typeof (TContract);
@@ -132,7 +132,7 @@ namespace LightCore.Builder
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activator">The activator as function..</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes methods for LifeTime altering.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract>(Func<TContract> activator)
         {
             throw new NotImplementedException();
