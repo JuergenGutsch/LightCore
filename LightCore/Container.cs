@@ -59,6 +59,37 @@ namespace LightCore
         }
 
         /// <summary>
+        /// Resolves a contract (include subcontracts).
+        /// </summary>
+        /// <param name="typeOfContract">The type of the contract.</param>
+        /// <param name="name">The name given in the registration.</param>
+        /// <returns>The resolved instance as <see cref="object" />.</returns>
+        private object Resolve(Type typeOfContract, string name)
+        {
+            Func<Type, bool> typeSelector = t => t.Equals(typeOfContract);
+            Func<string, bool> nameSelector = n => n == name;
+
+            Func<KeyValuePair<RegistrationKey, Registration>, bool> registrationSelector =
+                r => typeSelector(r.Key.ContractType) && nameSelector(r.Key.Name);
+
+            // Select registration.
+            Registration  registration = this._registrations.Where(registrationSelector).SingleOrDefault().Value;
+
+            if (registration == null)
+            {
+                throw new RegistrationNotFoundException(
+                    Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
+            }
+
+            // Get the activator.
+            IActivator activator = registration.Activator;
+
+            // Handle registration reuse and creates an instance on these rules.
+            return registration.ReuseStrategy
+                .HandleReuse(() => activator.ActivateInstance(this, registration.Arguments));
+        }
+
+        /// <summary>
         /// Injects properties to an existing instance.
         /// </summary>
         /// <param name="instance">The instance.</param>
@@ -90,37 +121,6 @@ namespace LightCore
         private bool IsRegistered(Type typeOfContract)
         {
             return this._registrations.Any(r => r.Key.ContractType == typeOfContract);
-        }
-
-        /// <summary>
-        /// Resolves a contract (include subcontracts).
-        /// </summary>
-        /// <param name="typeOfContract">The type of the contract.</param>
-        /// <param name="name">The name given in the registration.</param>
-        /// <returns>The resolved instance as <see cref="object" />.</returns>
-        private object Resolve(Type typeOfContract, string name)
-        {
-            Func<Type, bool> typeSelector = t => t.Equals(typeOfContract);
-            Func<string, bool> nameSelector = n => n == name;
-
-            Func<KeyValuePair<RegistrationKey, Registration>, bool> registrationSelector =
-                r => typeSelector(r.Key.ContractType) && nameSelector(r.Key.Name);
-
-            // Select registration.
-            Registration  registration = this._registrations.Where(registrationSelector).SingleOrDefault().Value;
-
-            if (registration == null)
-            {
-                throw new RegistrationNotFoundException(
-                    Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
-            }
-
-            // Get the activator.
-            IActivator activator = registration.Activator;
-
-            // Handle registration reuse and creates an instance on these rules.
-            return registration.ReuseStrategy
-                .HandleReuse(() => activator.ActivateInstance(this, registration.Arguments));
         }
     }
 }

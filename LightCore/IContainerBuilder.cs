@@ -26,8 +26,14 @@ namespace LightCore
         /// <summary>
         /// Sets the default reuse strategy for this container.
         /// </summary>
-        /// <typeparam name="TReuseStrategy">The default reuse strategy.</typeparam>
+        /// <typeparam name="TReuseStrategy">The type of default reuse strategy.</typeparam>
         void DefaultScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new();
+
+        /// <summary>
+        /// Sets the default reuse strategy function for this container.
+        /// </summary>
+        /// <param name="reuseStrategyFunction">The creator function for default reuse strategy.</param>
+        void DefaultScopedTo(Func<IReuseStrategy> reuseStrategyFunction);
 
         /// <summary>
         /// Registers a contract with an existing instance.

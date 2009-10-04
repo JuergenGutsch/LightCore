@@ -22,7 +22,7 @@ namespace LightCore
         public Type ContractType
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>

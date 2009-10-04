@@ -78,6 +78,57 @@ namespace LightCore
         }
 
         /// <summary>
+        /// Sets the default reuse strategy function for this container.
+        /// </summary>
+        /// <param name="reuseStrategyFunction">The creator function for default reuse strategy.</param>
+        public void DefaultScopedTo(Func<IReuseStrategy> reuseStrategyFunction)
+        {
+            this._defaultReuseStrategyFunction = reuseStrategyFunction;
+        }
+
+        /// <summary>
+        /// Registers a contract with an existing instance.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        public IFluentRegistration Register<TContract>(TContract instance)
+        {
+            var typeOfContract = typeof(TContract);
+
+            var key = new RegistrationKey(typeOfContract);
+
+            // Register the type with default lifetime.
+            var registration = new Registration(typeOfContract, key)
+            {
+                Activator = new DelegateActivator<TContract>((c) => instance)
+            };
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return this.AddToRegistrations(registration);
+        }
+
+        /// <summary>
+        /// Registers a contract with an activatorFunction function.
+        /// </summary>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <param name="activatorFunction">The activator as function..</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
+        {
+            var typeOfContract = typeof(TContract);
+
+            var key = new RegistrationKey(typeOfContract);
+
+            var registration = new Registration(typeOfContract, key)
+            {
+                Activator = new DelegateActivator<TContract>(activatorFunction)
+            };
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return this.AddToRegistrations(registration);
+        }
+
+        /// <summary>
         /// Registers a contract with its implementationtype.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
@@ -109,48 +160,6 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Registers a contract with an existing instance.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(TContract instance)
-        {
-            var typeOfContract = typeof(TContract);
-
-            var key = new RegistrationKey(typeOfContract);
-
-            // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, key)
-                                   {
-                                       Activator = new DelegateActivator<TContract>((c) => instance)
-                                   };
-
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration);
-        }
-
-        /// <summary>
-        /// Registers a contract with an activatorFunction function.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="activatorFunction">The activator as function..</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
-        {
-            var typeOfContract = typeof(TContract);
-
-            var key = new RegistrationKey(typeOfContract);
-
-            var registration = new Registration(typeOfContract, key)
-                                   {
-                                       Activator = new DelegateActivator<TContract>(activatorFunction)
-                                   };
-
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration);
-        }
-
-        /// <summary>
         /// Add a registration to the registrations.
         /// </summary>
         /// <param name="registration">The registration to add.</param>
@@ -169,7 +178,7 @@ namespace LightCore
         private IFluentRegistration AddToRegistrations(Registration registration, Func<IReuseStrategy> forceReuseStrategyFunction)
         {
             // Force reuse stategy, for e.g. an registered instance would every time treat as singleton.
-            if(forceReuseStrategyFunction != null)
+            if (forceReuseStrategyFunction != null)
             {
                 registration.ReuseStrategy = forceReuseStrategyFunction();
             }
