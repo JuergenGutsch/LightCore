@@ -43,7 +43,7 @@ namespace LightCore
         IFluentRegistration Register<TContract>(TContract instance);
 
         /// <summary>
-        /// Registers a contract with an activatorFunction function.
+        /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>

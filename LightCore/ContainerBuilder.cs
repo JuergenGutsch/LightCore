@@ -17,11 +17,6 @@ namespace LightCore
     public class ContainerBuilder : IContainerBuilder
     {
         /// <summary>
-        /// The container.
-        /// </summary>
-        private readonly IContainer _container;
-
-        /// <summary>
         /// Holds a list with registered registrations.
         /// </summary>
         private readonly IDictionary<RegistrationKey, Registration> _registrations;
@@ -42,7 +37,6 @@ namespace LightCore
         public ContainerBuilder()
         {
             this._registrations = new Dictionary<RegistrationKey, Registration>();
-            this._container = new Container(this._registrations);
             this._registrationCallbacks = new List<Action>();
             this._defaultReuseStrategyFunction = () => new SingletonReuseStrategy();
         }
@@ -56,7 +50,7 @@ namespace LightCore
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
 
-            return this._container;
+            return new Container(this._registrations);
         }
 
         /// <summary>
@@ -104,11 +98,11 @@ namespace LightCore
             };
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration);
+            return this.AddToRegistrations(registration, () => new SingletonReuseStrategy());
         }
 
         /// <summary>
-        /// Registers a contract with an activatorFunction function.
+        /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
@@ -136,6 +130,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract, TImplementation>() where TImplementation : TContract
         {
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return this.Register(typeof(TContract), typeof(TImplementation));
         }
 
@@ -166,6 +161,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         private IFluentRegistration AddToRegistrations(Registration registration)
         {
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return AddToRegistrations(registration, null);
         }
 

@@ -19,7 +19,7 @@ namespace LightCore.Integration.Web.Mvc
         private readonly List<Assembly> _controllerAssemblies;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
         /// </summary>
         protected LightCoreControllerRegistrationModule()
         {
@@ -27,7 +27,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
         public LightCoreControllerRegistrationModule(params Assembly[] controllerAssemblies)
@@ -37,7 +37,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
         public LightCoreControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
@@ -47,7 +47,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
         public LightCoreControllerRegistrationModule(params string[] assemblyNames)
@@ -57,7 +57,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
         public LightCoreControllerRegistrationModule(IEnumerable<string> assemblyNames)
