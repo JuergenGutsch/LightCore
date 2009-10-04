@@ -33,7 +33,7 @@ namespace LightCore.ConsoleClient
 
             var container = builder.Build();
 
-            int iterations = 1000;
+            int iterations = 10000;
             var screens = new List<IScreen>();
 
             var stopWatch = new Stopwatch();

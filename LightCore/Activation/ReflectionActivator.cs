@@ -31,17 +31,17 @@ namespace LightCore.Activation
         /// <summary>
         /// The cached constructors for this type.
         /// </summary>
-        private ConstructorInfo[] _construcors;
+        private ConstructorInfo[] _cachedConstructors;
 
         /// <summary>
         /// The cached constructor with most parameters for this type.
         /// </summary>
-        private ConstructorInfo _constructorWithMostParameters;
+        private ConstructorInfo _cachedConstructorWithMostParameters;
 
         /// <summary>
         /// A cached value that indicates whether only a default constructor is available or not.
         /// </summary>
-        private bool? _onlyDefaultConstructorAvailable;
+        private bool? _cachedOnlyDefaultConstructorAvailable;
 
         /// <summary>
         /// A reference to the container to resolve inner dependencies.
@@ -80,19 +80,19 @@ namespace LightCore.Activation
         {
             this._container = container;
 
-            if (this._construcors == null)
+            if (this._cachedConstructors == null)
             {
-                this._construcors = this._implementationType.GetConstructors();
+                this._cachedConstructors = this._implementationType.GetConstructors();
             }
 
-            if (!this._onlyDefaultConstructorAvailable.HasValue)
+            if (!this._cachedOnlyDefaultConstructorAvailable.HasValue)
             {
-                this._onlyDefaultConstructorAvailable = this._construcors.Length == 1 &&
-                                                        this._construcors[0].GetParameters().Length == 0;
+                this._cachedOnlyDefaultConstructorAvailable = this._cachedConstructors.Length == 1 &&
+                                                        this._cachedConstructors[0].GetParameters().Length == 0;
             }
 
             // Use the default constructor.
-            if (this._onlyDefaultConstructorAvailable.Value || this.UseDefaultConstructor)
+            if (this._cachedOnlyDefaultConstructorAvailable.Value || this.UseDefaultConstructor)
             {
                 return Activator.CreateInstance(this._implementationType);
             }
@@ -100,13 +100,13 @@ namespace LightCore.Activation
             // Select constructor that matches the given arguments.
             if (arguments != null)
             {
-                return CreateInstanceWithArguments(this._implementationType, this._construcors, arguments.ToArray());
+                return CreateInstanceWithArguments(this._implementationType, this._cachedConstructors, arguments.ToArray());
             }
 
             // Select the constructor with most parameters (dependencies).
-            if (this._constructorWithMostParameters == null)
+            if (this._cachedConstructorWithMostParameters == null)
             {
-                this._constructorWithMostParameters = this._construcors.OrderByDescending(
+                this._cachedConstructorWithMostParameters = this._cachedConstructors.OrderByDescending(
                     delegate(ConstructorInfo c)
                     {
                         var parameters = c.GetParameters();
@@ -115,7 +115,7 @@ namespace LightCore.Activation
             }
 
             // Invoke constructor with most dependencies and return it to the caller.
-            return this.InvokeConstructor(this._constructorWithMostParameters, null);
+            return this.InvokeConstructor(this._cachedConstructorWithMostParameters, null);
         }
 
         /// <summary>

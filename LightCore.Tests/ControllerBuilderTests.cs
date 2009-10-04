@@ -1,4 +1,5 @@
 ﻿using LightCore.Exceptions;
+using LightCore.Reuse;
 using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -54,6 +55,36 @@ namespace LightCore.Tests
             builder.Register<IFooRepository>(c => new FooRepository(new Logger()));
 
             var container = builder.Build();
+        }
+
+        [TestMethod]
+        public void ContainerBuilders_default_scope_is_singleton()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var instanceOne = container.Resolve<IFoo>();
+            var instanceTwo = container.Resolve<IFoo>();
+
+            Assert.AreSame(instanceOne, instanceTwo);
+        }
+
+        [TestMethod]
+        public void CointainerBuilder_default_scope_can_be_altered_to_transient()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.DefaultScopedTo<TransientReuseStrategy>();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var instanceOne = container.Resolve<IFoo>();
+            var instanceTwo = container.Resolve<IFoo>();
+
+            Assert.AreNotSame(instanceOne, instanceTwo);
         }
     }
 }

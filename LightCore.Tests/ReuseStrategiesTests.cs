@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using LightCore.Reuse;
 using LightCore.TestTypes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,6 +13,8 @@ namespace LightCore.Tests
         public void Instance_is_not_reused_on_transient_strategy()
         {
             var builder = new ContainerBuilder();
+
+            builder.DefaultScopedTo<TransientReuseStrategy>();
             builder.Register<IFooRepository, FooRepository>();
             builder.Register<ILogger, Logger>();
 
@@ -26,7 +29,7 @@ namespace LightCore.Tests
         public void Instance_is_reused_on_singleton_strategy()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository, FooRepository>().ScopedToSingleton();
+            builder.Register<IFooRepository, FooRepository>();
             builder.Register<ILogger, Logger>();
 
             var container = builder.Build();

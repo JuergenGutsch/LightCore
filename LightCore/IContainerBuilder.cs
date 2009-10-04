@@ -1,6 +1,7 @@
 ﻿using System;
 
 using LightCore.Fluent;
+using LightCore.Reuse;
 
 namespace LightCore
 {
@@ -21,6 +22,12 @@ namespace LightCore
         /// </summary>
         /// <param name="module">The module.</param>
         void RegisterModule(RegistrationModule module);
+
+        /// <summary>
+        /// Sets the default reuse strategy for this container.
+        /// </summary>
+        /// <typeparam name="TReuseStrategy">The default reuse strategy.</typeparam>
+        void DefaultScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new();
 
         /// <summary>
         /// Registers a contract with an existing instance.

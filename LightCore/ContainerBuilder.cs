@@ -32,6 +32,11 @@ namespace LightCore
         private readonly IList<Action> _registrationCallbacks;
 
         /// <summary>
+        /// Holds the default reuse strategy function.
+        /// </summary>
+        private Func<IReuseStrategy> _defaultReuseStrategyFunction;
+
+        /// <summary>
         /// Initializes a new instance of <see cref="ContainerBuilder" />.
         /// </summary>
         public ContainerBuilder()
@@ -39,6 +44,7 @@ namespace LightCore
             this._registrations = new Dictionary<RegistrationKey, Registration>();
             this._container = new Container(this._registrations);
             this._registrationCallbacks = new List<Action>();
+            this._defaultReuseStrategyFunction = () => new SingletonReuseStrategy();
         }
 
         /// <summary>
@@ -60,6 +66,15 @@ namespace LightCore
         public void RegisterModule(RegistrationModule module)
         {
             module.Register(this);
+        }
+
+        /// <summary>
+        /// Sets the default reuse strategy for this container.
+        /// </summary>
+        /// <typeparam name="TReuseStrategy">The default reuse strategy.</typeparam>
+        public void DefaultScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new()
+        {
+            this._defaultReuseStrategyFunction = () => new TReuseStrategy();
         }
 
         /// <summary>
@@ -89,21 +104,8 @@ namespace LightCore
                                        Activator = new ReflectionActivator(typeOfImplementation)
                                    };
 
-            // Set the transient reuse strategy as default.
-            if (registration.ReuseStrategy == null)
-            {
-                registration.ReuseStrategy = new TransientReuseStrategy();
-            }
-
-            // Add a register callback for lazy assertion after manipulating in fluent registration api.
-            this._registrationCallbacks.Add(() =>
-                                                {
-                                                    this.AssertRegistrationExists(registration.Key);
-                                                    this._registrations.Add(registration.Key, registration);
-                                                });
-
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return registration.FluentRegistration;
+            return this.AddToRegistrations(registration);
         }
 
         /// <summary>
@@ -118,23 +120,13 @@ namespace LightCore
             var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, key);
-
-            // Set the transient reuse strategy as default.
-            if (registration.ReuseStrategy == null)
-            {
-                registration.ReuseStrategy = new SingletonReuseStrategy();
-            }
-
-            // Add a register callback for lazy assertion after manipulating in fluent registration api.
-            this._registrationCallbacks.Add(() =>
-                                                {
-                                                    this.AssertRegistrationExists(registration.Key);
-                                                    this._registrations.Add(registration.Key, registration);
-                                                });
+            var registration = new Registration(typeOfContract, key)
+                                   {
+                                       Activator = new DelegateActivator<TContract>((c) => instance)
+                                   };
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return registration.FluentRegistration;
+            return this.AddToRegistrations(registration);
         }
 
         /// <summary>
@@ -154,18 +146,46 @@ namespace LightCore
                                        Activator = new DelegateActivator<TContract>(activatorFunction)
                                    };
 
-            // Set the transient reuse strategy as default.
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return this.AddToRegistrations(registration);
+        }
+
+        /// <summary>
+        /// Add a registration to the registrations.
+        /// </summary>
+        /// <param name="registration">The registration to add.</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        private IFluentRegistration AddToRegistrations(Registration registration)
+        {
+            return AddToRegistrations(registration, null);
+        }
+
+        /// <summary>
+        /// Add a registration to the registrations.
+        /// </summary>
+        /// <param name="registration">The registration to add.</param>
+        /// <param name="forceReuseStrategyFunction">The reuse strategy function to force.</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        private IFluentRegistration AddToRegistrations(Registration registration, Func<IReuseStrategy> forceReuseStrategyFunction)
+        {
+            // Force reuse stategy, for e.g. an registered instance would every time treat as singleton.
+            if(forceReuseStrategyFunction != null)
+            {
+                registration.ReuseStrategy = forceReuseStrategyFunction();
+            }
+
+            // Set default reuse strategy, if not user defined. (System default is <see cref="SingletonReuseStrategy" />.
             if (registration.ReuseStrategy == null)
             {
-                registration.ReuseStrategy = new TransientReuseStrategy();
+                registration.ReuseStrategy = this._defaultReuseStrategyFunction();
             }
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
-                                                {
-                                                    this.AssertRegistrationExists(registration.Key);
-                                                    this._registrations.Add(registration.Key, registration);
-                                                });
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return registration.FluentRegistration;
