@@ -46,7 +46,7 @@ namespace LightCore.Activation
         /// <summary>
         /// A reference to the container to resolve inner dependencies.
         /// </summary>
-        private IContainer _container;
+        private Container _container;
 
         /// <summary>
         /// Gets or sets whether the default constructor should be used or not.
@@ -76,7 +76,7 @@ namespace LightCore.Activation
         /// <param name="container">The container.</param>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(IContainer container, IEnumerable<object> arguments)
+        public object ActivateInstance(Container container, IEnumerable<object> arguments)
         {
             this._container = container;
 

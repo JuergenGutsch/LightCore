@@ -33,7 +33,7 @@ namespace LightCore.ConsoleClient
 
             var container = builder.Build();
 
-            var namedScreen = container.ResolveNamed<IScreen>("NamedScreen");
+            var namedScreen = container.Resolve<IScreen>("NamedScreen");
             namedScreen.WriteText();
 
             Console.Read();

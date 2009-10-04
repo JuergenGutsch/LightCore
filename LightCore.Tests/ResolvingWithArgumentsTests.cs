@@ -18,7 +18,7 @@ namespace LightCore.Tests
             var container = builder.Build();
 
             var bar = container.Resolve<IBar>();
-            var barWithTwoArguments = container.ResolveNamed<IBar>("TwoArguments");
+            var barWithTwoArguments = container.Resolve<IBar>("TwoArguments");
 
             Assert.AreEqual("Peter", ((Bar)bar).Arg1);
             Assert.AreEqual("Peter", ((Bar)barWithTwoArguments).Arg1);

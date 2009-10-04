@@ -22,6 +22,6 @@ namespace LightCore.Activation
         /// <param name="container">The container.</param>
         /// <param name="arguments">The arguments.</param>
         /// <returns>The activated instance.</returns>
-        object ActivateInstance(IContainer container, IEnumerable<object> arguments);
+        object ActivateInstance(Container container, IEnumerable<object> arguments);
     }
 }

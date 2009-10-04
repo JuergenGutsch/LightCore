@@ -16,7 +16,7 @@ namespace LightCore.Tests
 
             var container = builder.Build();
 
-            var namedInstance = container.ResolveNamed<ILogger>("MyNullLogger");
+            var namedInstance = container.Resolve<ILogger>("MyNullLogger");
 
             Assert.IsNotNull(namedInstance);
         }

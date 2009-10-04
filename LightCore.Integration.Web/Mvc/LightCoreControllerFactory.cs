@@ -20,7 +20,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule{TContract}" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>
@@ -29,7 +29,7 @@ namespace LightCore.Integration.Web.Mvc
         protected override IController CreateControllerCore(RequestContext requestContext, string controllerName)
         {
             // Returns the resolved controller to the caller.
-            return this.Container.ResolveNamed<IController>(controllerName.ToLowerInvariant());
+            return this.Container.Resolve<IController>(controllerName.ToLowerInvariant());
         }
     }
 }

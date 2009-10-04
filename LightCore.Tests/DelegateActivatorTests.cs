@@ -42,7 +42,7 @@ namespace LightCore.Tests
 
             var container = builder.Build();
 
-            var foo = container.ResolveNamed<IFoo>("test");
+            var foo = container.Resolve<IFoo>("test");
 
             Assert.IsNotNull(foo);
         }

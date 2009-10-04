@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LightCore
+﻿namespace LightCore
 {
     /// <summary>
     /// Represents the contract for a inversion of control container.
@@ -20,14 +18,7 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="name">The name given in the registration.</param>
         /// <returns>The resolved instance as <see cref="TContract" />.</returns>
-        TContract ResolveNamed<TContract>(string name);
-
-        /// <summary>
-        /// Resolves a contract (include subcontracts).
-        /// </summary>
-        /// <param name="typeOfContract">The type of the contract.</param>
-        /// <returns>The resolved instance as <see cref="object" />.</returns>
-        object Resolve(Type typeOfContract);
+        TContract Resolve<TContract>(string name);
 
         /// <summary>
         /// Injects properties to an existing instance.

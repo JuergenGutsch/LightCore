@@ -42,7 +42,7 @@ namespace LightCore
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <returns>The resolved instance as <see cref="object" />.</returns>
-        public object Resolve(Type typeOfContract)
+        internal object Resolve(Type typeOfContract)
         {
             return this.Resolve(typeOfContract, null);
         }
@@ -53,7 +53,7 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="name">The name given in the registration.</param>
         /// <returns>The resolved instance as <see cref="TContract" />.</returns>
-        public TContract ResolveNamed<TContract>(string name)
+        public TContract Resolve<TContract>(string name)
         {
             return (TContract)this.Resolve(typeof(TContract), name);
         }
