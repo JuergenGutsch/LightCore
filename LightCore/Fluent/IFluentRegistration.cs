@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LightCore.Reuse;
 
 namespace LightCore.Fluent

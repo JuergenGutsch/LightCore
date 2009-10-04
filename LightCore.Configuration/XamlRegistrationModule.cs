@@ -1,6 +1,8 @@
 ﻿using System;
+
 using LightCore.Configuration.Exceptions;
 using LightCore.Configuration.Properties;
+using LightCore.Fluent;
 
 namespace LightCore.Configuration
 {
@@ -27,11 +29,10 @@ namespace LightCore.Configuration
 
             foreach (var registration in configuration.Registrations)
             {
-                var fluentRegistration = containerBuilder.Register(
-                    this.BuildType(configuration, registration.ContractType,
+                IFluentRegistration fluentRegistration = containerBuilder.Register(
+                    this.LoadType(configuration, registration.ContractType,
                                    configuration.Defaults.DefaultContractNamespace),
-
-                    this.BuildType(configuration, registration.ImplementationType,
+                    this.LoadType(configuration, registration.ImplementationType,
                                    configuration.Defaults.DefaultImplementationNamespace));
 
                 if (!String.IsNullOrEmpty(registration.Name))
@@ -48,13 +49,13 @@ namespace LightCore.Configuration
         }
 
         /// <summary>
-        /// Build type from registration.
+        /// Loads type according to the registration.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="typeName">The type to register.</param>
         /// <param name="defaultNamespace">The default namespace.</param>
         /// <returns>The type to register.</returns>
-        private Type BuildType(LightCoreConfiguration configuration, string typeName, string defaultNamespace)
+        private Type LoadType(LightCoreConfiguration configuration, string typeName, string defaultNamespace)
         {
             string typeIdentifier = typeName;
 
