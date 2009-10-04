@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
-using LightCore.ConsoleClient.Screens;
-using LightCore.ConsoleClient.Writers;
+using LightCore.Configuration;
 
 namespace LightCore.ConsoleClient
 {
@@ -22,39 +18,24 @@ namespace LightCore.ConsoleClient
             // Instantiate the container and register some dependencies.
             var builder = new ContainerBuilder();
 
-            builder.Register<IScreen, WelcomeScreen>().WithArguments("Test");
-
             // Uncomment this and comment ConsoleWriter below.
-            //container.Register<IWriter, DebugWindowWriter>();
-            builder.Register<IWriter, ConsoleWriter>();
-            builder.Register<IScreen, WelcomeScreen>()
-                .WithArguments("Hello World, it works")
-                .WithName("NamedScreen");
+            //builder.Register<IWriter, DebugWindowWriter>();
+            //builder.Register<IWriter, ConsoleWriter>();
+
+            //builder.Register<IScreen, WelcomeScreen>()
+            //    .WithArguments("Hello World, it works")
+            //    .WithName("NamedScreen");
+
+            var module = new XamlRegistrationModule();
+
+            builder.RegisterModule(module);
+
 
             var container = builder.Build();
-
-            int iterations = 10000;
-            var screens = new List<IScreen>();
-
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-
-            for (int i = 0; i < iterations; i++)
-            {
-                screens.Add(container.Resolve<IScreen>());
-            }
-
-            stopWatch.Stop();
-
-            IWriter writer = screens.First().Writer;
-            writer.WriteLine("Hello World, it works!");
 
             var namedScreen = container.ResolveNamed<IScreen>("NamedScreen");
             namedScreen.WriteText();
 
-            Console.WriteLine("{0}ms for {1} iterations", stopWatch.ElapsedMilliseconds, iterations);
-
-            // Waiting for user input.
             Console.Read();
         }
     }
