@@ -1,13 +1,13 @@
 ﻿using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ResolvingWithArgumentsTests
     {
-        [TestMethod]
+        [Test]
         public void Container_resolves_instances_with_arguments()
         {
             var builder = new ContainerBuilder();
@@ -25,7 +25,7 @@ namespace LightCore.Tests
             Assert.AreEqual(true, ((Bar)barWithTwoArguments).Arg2);
         }
 
-        [TestMethod]
+        [Test]
         public void Container_resolves_instances_with_dependencies_and_arguments()
         {
             var builder = new ContainerBuilder();

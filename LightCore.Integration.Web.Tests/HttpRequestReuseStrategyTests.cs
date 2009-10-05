@@ -4,16 +4,16 @@ using System.Web;
 using LightCore.Integration.Web.Reuse;
 using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 using Moq;
 
 namespace LightCore.Integration.Web.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class HttpRequestReuseStrategyTests
     {
-        [TestMethod]
+        [Test]
         public void Instance_is_reused_in_same_httprequestscope()
         {
             var builder = new ContainerBuilder();
@@ -38,7 +38,7 @@ namespace LightCore.Integration.Web.Tests
             Assert.AreSame(firstResolvedInstanceInContext, secondResolvedInstanceInContext);
         }
 
-        [TestMethod]
+        [Test]
         public void Instance_is_not_reused_in_different_httprequestscopes()
         {
             var builder = new ContainerBuilder();

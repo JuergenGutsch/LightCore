@@ -1,14 +1,14 @@
 ﻿using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class DelegateActivatorTests
     {
-        [TestMethod]
-        public void DelegateActivator_can_return_an_instance_from_given_instance()
+        [Test]
+        public void DelegateActivator_can_return_an_instance_from_given_new_function()
         {
             var builder = new ContainerBuilder();
             builder.Register<IFoo>(c => new Foo());
@@ -20,7 +20,7 @@ namespace LightCore.Tests
             Assert.IsNotNull(foo);
         }
 
-        [TestMethod]
+        [Test]
         public void DelegateActivator_can_return_same_object_with_singleton_reuse_scope()
         {
             var builder = new ContainerBuilder();
@@ -34,7 +34,7 @@ namespace LightCore.Tests
             Assert.AreSame(foo, foo2);
         }
 
-        [TestMethod]
+        [Test]
         public void DelegateActivator_can_return_a_named_instance()
         {
             var builder = new ContainerBuilder();

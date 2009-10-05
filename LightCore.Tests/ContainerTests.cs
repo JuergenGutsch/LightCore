@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ContainerTests
     {
-        [TestMethod]
+        [Test]
         public void ContainerBuilder_can_initialize_controller()
         {
             var builder = new ContainerBuilder();

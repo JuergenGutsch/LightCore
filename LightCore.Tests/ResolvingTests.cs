@@ -1,18 +1,19 @@
 ﻿using System.Linq;
+
 using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
     /// <summary>
     /// Summary description for ResolvingTests
     /// </summary>
-    [TestClass]
+    [TestFixture]
     public class ResolvingTests
     {
-        [TestMethod]
-        public void Container_resolves_interface_registration()
+        [Test]
+        public void Container_resolves_registered_interface_registration()
         {
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
@@ -20,11 +21,10 @@ namespace LightCore.Tests
             var container = builder.Build();
             var instance = container.Resolve<IFoo>();
 
-            Assert.IsNotNull(instance);
-            Assert.IsInstanceOfType(instance, typeof(Foo));
+            Assert.IsInstanceOf<Foo>(instance);
         }
 
-        [TestMethod]
+        [Test]
         public void Container_resolves_registed_abstract_class()
         {
             var builder = new ContainerBuilder();
@@ -33,11 +33,10 @@ namespace LightCore.Tests
             var container = builder.Build();
             var instance = container.Resolve<ProviderBase>();
 
-            Assert.IsNotNull(instance);
-            Assert.IsInstanceOfType(instance, typeof(DefaultProvider));
+            Assert.IsInstanceOf<DefaultProvider>(instance);
         }
 
-        [TestMethod]
+        [Test]
         public void Container_resolves_a_whole_object_tree()
         {
             var builder = new ContainerBuilder();
@@ -48,13 +47,9 @@ namespace LightCore.Tests
             var container = builder.Build();
             var instance = container.Resolve<IFooService>();
 
-            Assert.IsNotNull(instance);
-            Assert.IsInstanceOfType(instance, typeof(FooService));
-
+            Assert.IsInstanceOf<FooService>(instance);
             Assert.IsTrue(instance.GetFoos().Count() > 0);
-
-            Assert.IsNotNull(instance.Logger);
-            Assert.IsInstanceOfType(instance.Logger, typeof(Logger));
+            Assert.IsInstanceOf<Logger>(instance.Logger);
         }
     }
 }

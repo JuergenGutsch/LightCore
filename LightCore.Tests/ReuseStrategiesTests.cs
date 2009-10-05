@@ -1,15 +1,14 @@
-﻿using System.Threading;
-using LightCore.Reuse;
+﻿using LightCore.Reuse;
 using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ReuseStrategiesTests
     {
-        [TestMethod]
+        [Test]
         public void Instance_is_not_reused_on_transient_strategy()
         {
             var builder = new ContainerBuilder();
@@ -25,7 +24,7 @@ namespace LightCore.Tests
             Assert.IsFalse(ReferenceEquals(rep1, rep2));
         }
 
-        [TestMethod]
+        [Test]
         public void Instance_is_reused_on_singleton_strategy()
         {
             var builder = new ContainerBuilder();

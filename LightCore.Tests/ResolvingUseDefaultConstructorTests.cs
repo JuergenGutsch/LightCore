@@ -1,13 +1,13 @@
 ﻿using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ResolvingUseDefaultConstructorTests
     {
-        [TestMethod]
+        [Test]
         public void Container_resolving_with_default_constructor_as_supposed()
         {
             var builder = new ContainerBuilder();
@@ -20,7 +20,7 @@ namespace LightCore.Tests
             Assert.IsNull(((Bar)bar).Foo);
         }
 
-        [TestMethod]
+        [Test]
         public void Container_resolving_with_non_default_constructor_as_supposed()
         {
             var builder = new ContainerBuilder();

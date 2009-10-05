@@ -1,13 +1,13 @@
 ﻿using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class ResolvingNamedTests
     {
-        [TestMethod]
+        [Test]
         public void Container_can_resolve_named_registration()
         {
             var builder = new ContainerBuilder();

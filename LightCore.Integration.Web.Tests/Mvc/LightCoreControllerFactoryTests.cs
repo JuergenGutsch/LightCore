@@ -6,16 +6,16 @@ using LightCore.Integration.Web.Reuse;
 using LightCore.Reuse;
 using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 using Moq;
 
 namespace LightCore.Integration.Web.Tests.Mvc
 {
-    [TestClass]
+    [TestFixture]
     public class LightCoreControllerFactoryTests
     {
-        [TestMethod]
+        [Test]
         public void Registered_controller_instances_are_reused_on_httpcontextstrategy()
         {
             var builder = new ContainerBuilder();
@@ -47,7 +47,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             Assert.IsNotNull(secondController);
         }
 
-        [TestMethod]
+        [Test]
         public void Registered_controller_can_be_resolved_by_name()
         {
             var builder = new ContainerBuilder();
@@ -77,7 +77,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             Assert.IsNotNull(controller);
         }
 
-        [TestMethod]
+        [Test]
         public void Registered_controller_and_dependencies_can_be_resolved_by_name()
         {
             var builder = new ContainerBuilder();

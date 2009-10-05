@@ -1,13 +1,13 @@
 ﻿using LightCore.TestTypes;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class InjectPropertiesTests
     {
-        [TestMethod]
+        [Test]
         public void Container_can_inject_properties()
         {
             var builder = new ContainerBuilder();
