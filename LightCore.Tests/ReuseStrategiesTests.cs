@@ -14,28 +14,28 @@ namespace LightCore.Tests
             var builder = new ContainerBuilder();
 
             builder.DefaultScopedTo<TransientReuseStrategy>();
-            builder.Register<IFooRepository, FooRepository>();
-            builder.Register<ILogger, Logger>();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             var container = builder.Build();
-            var rep1 = container.Resolve<IFooRepository>();
-            var rep2 = container.Resolve<IFooRepository>();
+            var foo1 = container.Resolve<IFoo>();
+            var foo2 = container.Resolve<IFoo>();
 
-            Assert.IsFalse(ReferenceEquals(rep1, rep2));
+            Assert.IsFalse(ReferenceEquals(foo1, foo2));
         }
 
         [Test]
         public void Instance_is_reused_on_singleton_strategy()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository, FooRepository>();
-            builder.Register<ILogger, Logger>();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             var container = builder.Build();
-            var rep1 = container.Resolve<IFooRepository>();
-            var rep2 = container.Resolve<IFooRepository>();
+            var foo1 = container.Resolve<IFoo>();
+            var foo2 = container.Resolve<IFoo>();
 
-            Assert.IsTrue(ReferenceEquals(rep1, rep2));
+            Assert.IsTrue(ReferenceEquals(foo1, foo2));
         }
     }
 }

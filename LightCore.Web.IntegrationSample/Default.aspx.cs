@@ -13,7 +13,7 @@ namespace LightCore.Web.IntegrationSample
             set;
         }
 
-        public IWelcomeRepository WelcomeRepository
+        public IFoo Foo
         {
             get;
             set;
@@ -29,8 +29,7 @@ namespace LightCore.Web.IntegrationSample
         protected void Page_Load(object sender, EventArgs e)
         {
             this.Controls.Add(
-                new LiteralControl(
-                    this.WelcomeRepository.GetWelcomeText().Aggregate((current, next) => current + " " + next)));
+                new LiteralControl(((Foo) this.Foo).Arg1));
         }
     }
 }

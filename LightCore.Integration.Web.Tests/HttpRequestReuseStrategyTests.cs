@@ -25,6 +25,7 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
                                                              {
                                                                  CurrentContext = currentContext.Object
@@ -50,6 +51,7 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
                                                              {
                                                                  CurrentContext = currentContext.Object

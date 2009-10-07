@@ -11,34 +11,34 @@ namespace LightCore.Tests
         public void Container_resolves_instances_with_arguments()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo, Foo>();
-            builder.Register<IBar, Bar>().WithArguments("Peter");
-            builder.Register<IBar, Bar>().WithArguments("Peter", true).WithName("TwoArguments");
+            builder.Register<IBar, Bar>();
+            builder.Register<IFoo, Foo>().WithArguments("Peter");
+            builder.Register<IFoo, Foo>().WithArguments("Peter", true).WithName("TwoArguments");
 
             var container = builder.Build();
 
-            var bar = container.Resolve<IBar>();
-            var barWithTwoArguments = container.Resolve<IBar>("TwoArguments");
+            var foo = container.Resolve<IFoo>();
+            var fooWithTwoArguments = container.Resolve<IFoo>("TwoArguments");
 
-            Assert.AreEqual("Peter", ((Bar)bar).Arg1);
-            Assert.AreEqual("Peter", ((Bar)barWithTwoArguments).Arg1);
-            Assert.AreEqual(true, ((Bar)barWithTwoArguments).Arg2);
+            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+            Assert.AreEqual("Peter", ((Foo)fooWithTwoArguments).Arg1);
+            Assert.AreEqual(true, ((Foo) fooWithTwoArguments).Arg2);
         }
 
         [Test]
         public void Container_resolves_instances_with_dependencies_and_arguments()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo, Foo>();
-            builder.Register<IBar, Bar>().WithArguments("Peter", true);
+            builder.Register<IBar, Bar>();
+            builder.Register<IFoo, Foo>().WithArguments("Peter", true);
 
             var container = builder.Build();
 
-            var bar = container.Resolve<IBar>();
+            var foo = container.Resolve<IFoo>();
 
-            Assert.IsNotNull(((Bar)bar).Foo);
-            Assert.AreEqual("Peter", ((Bar)bar).Arg1);
-            Assert.AreEqual(true, ((Bar)bar).Arg2);
+            Assert.IsNotNull(foo.Bar);
+            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+            Assert.AreEqual(true, ((Foo)foo).Arg2);
         }
     }
 }

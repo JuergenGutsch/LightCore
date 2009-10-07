@@ -13,8 +13,7 @@ namespace LightCore.Tests
         public void ControllerBuilder_can_register_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository, FooRepository>();
-            builder.Register<ILogger, Logger>();
+            builder.Register<IFoo, Foo>();
         }
 
         [Test]
@@ -23,8 +22,8 @@ namespace LightCore.Tests
             Assert.Throws<RegistrationAlreadyExistsException>(() =>
                                                                   {
                                                                       var builder = new ContainerBuilder();
-                                                                      builder.Register<IFooRepository, FooRepository>();
-                                                                      builder.Register<IFooRepository, FooRepository>();
+                                                                      builder.Register<IFoo, Foo>();
+                                                                      builder.Register<IFoo, Foo>();
 
                                                                       var container = builder.Build();
                                                                   });
@@ -36,8 +35,8 @@ namespace LightCore.Tests
             Assert.Throws<RegistrationAlreadyExistsException>(() =>
                                                                   {
                                                                       var builder = new ContainerBuilder();
-                                                                      builder.Register<IFooRepository, FooRepository>().WithName("foo");
-                                                                      builder.Register<IFooRepository, BarRepository>().WithName("foo");
+                                                                      builder.Register<IFoo, Foo>().WithName("foo");
+                                                                      builder.Register<IFoo, Foo>().WithName("foo");
 
                                                                       var contianer = builder.Build();
                                                                   });
@@ -47,7 +46,7 @@ namespace LightCore.Tests
         public void ContainerBuilder_can_register_instance()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository>(new FooRepository(new Logger()));
+            builder.Register<IFoo>(new Foo(new Bar()));
 
             var container = builder.Build();
         }
@@ -56,7 +55,7 @@ namespace LightCore.Tests
         public void ContainerBuilder_can_register_activation_functions()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository>(c => new FooRepository(new Logger()));
+            builder.Register<IFoo>(c => new Foo(new Bar()));
 
             var container = builder.Build();
         }
@@ -65,6 +64,7 @@ namespace LightCore.Tests
         public void ContainerBuilders_default_scope_is_singleton()
         {
             var builder = new ContainerBuilder();
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
@@ -81,6 +81,7 @@ namespace LightCore.Tests
             var builder = new ContainerBuilder();
 
             builder.DefaultScopedTo<TransientReuseStrategy>();
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
             var container = builder.Build();

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using LightCore.TestTypes;
+﻿using LightCore.TestTypes;
 
 using NUnit.Framework;
 
@@ -16,6 +14,8 @@ namespace LightCore.Tests
         public void Container_resolves_registered_interface_registration()
         {
             var builder = new ContainerBuilder();
+
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
@@ -28,28 +28,27 @@ namespace LightCore.Tests
         public void Container_resolves_registed_abstract_class()
         {
             var builder = new ContainerBuilder();
-            builder.Register<ProviderBase, DefaultProvider>();
+            builder.Register<IBar, Bar>();
+            builder.Register<FooBase, Foo>();
 
             var container = builder.Build();
-            var instance = container.Resolve<ProviderBase>();
+            var instance = container.Resolve<FooBase>();
 
-            Assert.IsInstanceOf<DefaultProvider>(instance);
+            Assert.IsInstanceOf<FooBase>(instance);
         }
 
         [Test]
         public void Container_resolves_a_whole_object_tree()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFooRepository, FooRepository>();
-            builder.Register<IFooService, FooService>();
-            builder.Register<ILogger, Logger>();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             var container = builder.Build();
-            var instance = container.Resolve<IFooService>();
+            var instance = container.Resolve<IFoo>();
 
-            Assert.IsInstanceOf<FooService>(instance);
-            Assert.IsTrue(instance.GetFoos().Count() > 0);
-            Assert.IsInstanceOf<Logger>(instance.Logger);
+            Assert.IsInstanceOf<Foo>(instance);
+            Assert.IsNotNull(instance.Bar);
         }
     }
 }

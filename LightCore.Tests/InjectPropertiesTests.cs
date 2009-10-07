@@ -11,14 +11,14 @@ namespace LightCore.Tests
         public void Container_can_inject_properties()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             var container = builder.Build();
-            
-            var bar = new Bar();
-            container.InjectProperties(bar);
 
-            Assert.IsNotNull(bar.Foo);
+            var foo = new Foo();
+            container.InjectProperties(foo);
+
+            Assert.IsNotNull(foo.Bar);
         }
     }
 }

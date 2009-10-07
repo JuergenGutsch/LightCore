@@ -11,12 +11,14 @@ namespace LightCore.Tests
         public void Container_can_resolve_named_registration()
         {
             var builder = new ContainerBuilder();
-            builder.Register<ILogger, Logger>();
-            builder.Register<ILogger, NullLogger>().WithName("MyNullLogger");
+
+            builder.Register<IBar, Bar>();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IFoo, Foo>().WithName("test");
 
             var container = builder.Build();
 
-            var namedInstance = container.Resolve<ILogger>("MyNullLogger");
+            var namedInstance = container.Resolve<IFoo>("test");
 
             Assert.IsNotNull(namedInstance);
         }

@@ -19,7 +19,8 @@ namespace LightCore.Web.IntegrationSample
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IWelcomeRepository, WelcomeRepository>();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             _container = builder.Build();
         }

@@ -20,6 +20,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
         {
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
+            builder.Register<IBar, Bar>();
 
             var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);
 
@@ -51,6 +52,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
         public void Registered_controller_can_be_resolved_by_name()
         {
             var builder = new ContainerBuilder();
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
             var registrationModule = new LightCoreControllerRegistrationModule<TransientReuseStrategy>(typeof(FooController).Assembly);
@@ -81,6 +83,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
         public void Registered_controller_and_dependencies_can_be_resolved_by_name()
         {
             var builder = new ContainerBuilder();
+            builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
             var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);

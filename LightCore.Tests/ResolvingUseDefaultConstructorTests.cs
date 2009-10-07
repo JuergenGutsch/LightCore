@@ -11,13 +11,13 @@ namespace LightCore.Tests
         public void Container_resolving_with_default_constructor_as_supposed()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IBar, Bar>().UseDefaultConstructor();
+            builder.Register<IFoo, Foo>().UseDefaultConstructor();
 
             var container = builder.Build();
 
-            var bar = container.Resolve<IBar>();
+            var foo = container.Resolve<IFoo>();
 
-            Assert.IsNull(((Bar)bar).Foo);
+            Assert.IsNull(foo.Bar);
         }
 
         [Test]
@@ -29,9 +29,9 @@ namespace LightCore.Tests
 
             var container = builder.Build();
 
-            var bar = container.Resolve<IBar>();
+            var foo = container.Resolve<IFoo>();
 
-            Assert.IsNotNull(((Bar)bar).Foo);
+            Assert.IsNotNull(foo.Bar);
         }
     }
 }
