@@ -41,5 +41,25 @@ namespace LightCore
         {
             this.ContractType = contractType;
         }
+
+        public override bool Equals(object obj)
+        {
+            RegistrationKey other = (RegistrationKey)obj;
+
+            return other.ContractType == this.ContractType
+                && other.Name == this.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = this.ContractType.GetHashCode();
+
+            if(this.Name != null)
+            {
+                hashCode ^= this.Name.GetHashCode();
+            }
+
+            return hashCode;
+        }
     }
 }

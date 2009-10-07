@@ -66,14 +66,13 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract, string name)
         {
-            Func<Type, bool> typeSelector = t => t.Equals(typeOfContract);
-            Func<string, bool> nameSelector = n => n == name;
-
-            Func<KeyValuePair<RegistrationKey, Registration>, bool> registrationSelector =
-                r => typeSelector(r.Key.ContractType) && nameSelector(r.Key.Name);
-
             // Select registration.
-            Registration  registration = this._registrations.Where(registrationSelector).SingleOrDefault().Value;
+            RegistrationKey key = new RegistrationKey(typeOfContract)
+                                      {
+                                          Name = name
+                                      };
+
+            Registration registration = this._registrations[key];
 
             if (registration == null)
             {
