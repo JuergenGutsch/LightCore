@@ -24,7 +24,7 @@ namespace LightCore.Tests
         public void DelegateActivator_can_return_same_object_with_singleton_reuse_scope()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(c => new Foo()).ScopedToSingleton();
+            builder.Register<IFoo>(c => new Foo());
 
             var container = builder.Build();
 

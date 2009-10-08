@@ -1,5 +1,5 @@
 ﻿using LightCore.Exceptions;
-using LightCore.Reuse;
+using LightCore.Scope;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -43,15 +43,6 @@ namespace LightCore.Tests
         }
 
         [Test]
-        public void ContainerBuilder_can_register_instance()
-        {
-            var builder = new ContainerBuilder();
-            builder.Register<IFoo>(new Foo(new Bar()));
-
-            var container = builder.Build();
-        }
-
-        [Test]
         public void ContainerBuilder_can_register_activation_functions()
         {
             var builder = new ContainerBuilder();
@@ -80,7 +71,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultScopedTo<TransientReuseStrategy>();
+            builder.DefaultScopedTo<LocalScope>();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 

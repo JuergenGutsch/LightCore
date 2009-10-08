@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Web;
 
-using LightCore.Reuse;
+using LightCore.Scope;
 
-namespace LightCore.Integration.Web.Reuse
+namespace LightCore.Integration.Web.Scope
 {
     /// <summary>
     /// Represents a reuse strategy for one instance per http request (ASP.NET).
     /// </summary>
-    public class HttpRequestReuseStrategy : IReuseStrategy
+    public class HttpRequestScope : ScopeBase
     {
         /// <summary>
         /// Represents an identifier for the current instance.
@@ -29,7 +29,7 @@ namespace LightCore.Integration.Web.Reuse
         /// One instance per http request (ASP.NET).
         /// </summary>
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
-        public object HandleReuse(Func<object> newInstanceResolver)
+        public override object ReceiveScopedInstance(Func<object> newInstanceResolver)
         {
             HttpContextBase context = this.CurrentContext;
 

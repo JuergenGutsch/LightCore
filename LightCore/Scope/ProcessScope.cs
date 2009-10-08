@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace LightCore.Reuse
+namespace LightCore.Scope
 {
     /// <summary>
     /// Represents a singleton per registration strategy.
     /// </summary>
-    public class SingletonReuseStrategy : IReuseStrategy
+    public class ProcessScope : ScopeBase
     {
         /// <summary>
         /// The instance.
@@ -13,19 +13,10 @@ namespace LightCore.Reuse
         private object _instance;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="SingletonReuseStrategy" />.
-        /// </summary>
-        public SingletonReuseStrategy()
-        {
-
-        }
-
-        /// <summary>
         /// Handle the reuse of instances.
-        /// One instance per registration.
         /// </summary>
-        /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
-        public object HandleReuse(Func<object> newInstanceResolver)
+        /// <param name="newInstanceResolver"></param>
+        public override object ReceiveScopedInstance(Func<object> newInstanceResolver)
         {
             if (this._instance == null)
             {

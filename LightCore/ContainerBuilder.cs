@@ -6,7 +6,7 @@ using LightCore.Activation;
 using LightCore.Exceptions;
 using LightCore.Fluent;
 using LightCore.Properties;
-using LightCore.Reuse;
+using LightCore.Scope;
 
 namespace LightCore
 {
@@ -27,9 +27,9 @@ namespace LightCore
         private readonly IList<Action> _registrationCallbacks;
 
         /// <summary>
-        /// Holds the default reuse strategy function.
+        /// Holds the default reuse scope function.
         /// </summary>
-        private Func<IReuseStrategy> _defaultReuseStrategyFunction;
+        private Func<IScope> _defaultScopeFunction;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContainerBuilder" />.
@@ -38,7 +38,7 @@ namespace LightCore
         {
             this._registrations = new Dictionary<RegistrationKey, Registration>();
             this._registrationCallbacks = new List<Action>();
-            this._defaultReuseStrategyFunction = () => new SingletonReuseStrategy();
+            this._defaultScopeFunction = () => new ProcessScope();
         }
 
         /// <summary>
@@ -63,42 +63,21 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Sets the default reuse strategy for this container.
+        /// Sets the default reuse scope for this container.
         /// </summary>
-        /// <typeparam name="TReuseStrategy">The default reuse strategy.</typeparam>
-        public void DefaultScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new()
+        /// <typeparam name="TScope">The default reuse scope.</typeparam>
+        public void DefaultScopedTo<TScope>() where TScope : IScope, new()
         {
-            this._defaultReuseStrategyFunction = () => new TReuseStrategy();
+            this._defaultScopeFunction = () => new TScope();
         }
 
         /// <summary>
         /// Sets the default reuse strategy function for this container.
         /// </summary>
-        /// <param name="reuseStrategyFunction">The creator function for default reuse strategy.</param>
-        public void DefaultScopedTo(Func<IReuseStrategy> reuseStrategyFunction)
+        /// <param name="scopeFunction">The creator function for default reuse strategy.</param>
+        public void DefaultScopedTo(Func<IScope> scopeFunction)
         {
-            this._defaultReuseStrategyFunction = reuseStrategyFunction;
-        }
-
-        /// <summary>
-        /// Registers a contract with an existing instance.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(TContract instance)
-        {
-            var typeOfContract = typeof(TContract);
-
-            var key = new RegistrationKey(typeOfContract);
-
-            // Register the type with default lifetime.
-            var registration = new Registration(key)
-            {
-                Activator = new DelegateActivator<TContract>((c) => instance)
-            };
-
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration, () => new SingletonReuseStrategy());
+            this._defaultScopeFunction = scopeFunction;
         }
 
         /// <summary>
@@ -169,20 +148,20 @@ namespace LightCore
         /// Add a registration to the registrations.
         /// </summary>
         /// <param name="registration">The registration to add.</param>
-        /// <param name="forceReuseStrategyFunction">The reuse strategy function to force.</param>
+        /// <param name="forceScopeFunction">The reuse scope function to force.</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        private IFluentRegistration AddToRegistrations(Registration registration, Func<IReuseStrategy> forceReuseStrategyFunction)
+        private IFluentRegistration AddToRegistrations(Registration registration, Func<IScope> forceScopeFunction)
         {
-            // Force reuse stategy, for e.g. an registered instance would every time treat as singleton.
-            if (forceReuseStrategyFunction != null)
+            // Force reuse scope, for e.g. an registered instance would every time treat as singleton.
+            if (forceScopeFunction != null)
             {
-                registration.ReuseStrategy = forceReuseStrategyFunction();
+                registration.Scope = forceScopeFunction();
             }
 
-            // Set default reuse strategy, if not user defined. (System default is <see cref="SingletonReuseStrategy" />.
-            if (registration.ReuseStrategy == null)
+            // Set default reuse scope, if not user defined. (System default is <see cref="ProcessScope" />.
+            if (registration.Scope == null)
             {
-                registration.ReuseStrategy = this._defaultReuseStrategyFunction();
+                registration.Scope = this._defaultScopeFunction();
             }
 
             // Add a register callback for lazy assertion after manipulating in fluent registration api.

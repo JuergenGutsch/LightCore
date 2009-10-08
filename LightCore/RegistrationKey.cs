@@ -5,7 +5,7 @@ namespace LightCore
     /// <summary>
     /// Represents a registration key.
     /// </summary>
-    public class RegistrationKey
+    public class RegistrationKey : IEquatable<RegistrationKey>
     {
         /// <summary>
         /// The name for the registration.
@@ -51,9 +51,49 @@ namespace LightCore
         /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            var other = (RegistrationKey)obj;
+            var otherKey = obj as RegistrationKey;
 
-            return other.ContractType == this.ContractType && other.Name == this.Name;
+            if (otherKey == null)
+            {
+                return false;
+            }
+
+            return Equals(otherKey);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="otherKey"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="otherKey">An object to compare with this object.</param>
+        public bool Equals(RegistrationKey otherKey)
+        {
+            return otherKey.ContractType == this.ContractType
+                   && otherKey.Name == this.Name;
+        }
+
+        /// <summary>
+        /// Represents the behaviour for the equals operator.
+        /// </summary>
+        /// <param name="leftKey">The left key.</param>
+        /// <param name="rightKey">The right key.</param>
+        /// <returns><value>true</value> if the registration keys equals.</returns>
+        public static bool operator ==(RegistrationKey leftKey, RegistrationKey rightKey)
+        {
+            return leftKey.Equals(rightKey);
+        }
+
+        /// <summary>
+        /// Represents the behaviour for the not equals operator.
+        /// </summary>
+        /// <param name="leftKey">The left key.</param>
+        /// <param name="rightKey">The right key.</param>
+        /// <returns><value>true</value> if the registration keys equals.</returns>
+        public static bool operator !=(RegistrationKey leftKey, RegistrationKey rightKey)
+        {
+            return !(leftKey == rightKey);
         }
 
         /// <summary>

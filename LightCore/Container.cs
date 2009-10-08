@@ -80,12 +80,11 @@ namespace LightCore
                     Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
             }
 
-            // Get the activator.
+            // Get the scope.
             IActivator activator = registration.Activator;
 
-            // Handle registration reuse and creates an instance on these rules.
-            return registration.ReuseStrategy
-                .HandleReuse(() => activator.ActivateInstance(this, registration.Arguments));
+            // Activate instance in scope.
+            return registration.Scope.ReceiveScopedInstance(() => activator.ActivateInstance(this, registration.Arguments));
         }
 
         /// <summary>
@@ -119,7 +118,9 @@ namespace LightCore
         /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
         private bool IsRegistered(Type typeOfContract)
         {
-            return this._registrations.Any(r => r.Key.ContractType == typeOfContract);
+            RegistrationKey key = new RegistrationKey(typeOfContract);
+
+            return this._registrations.ContainsKey(key);
         }
     }
 }

@@ -1,16 +1,17 @@
 using System;
 
-namespace LightCore.Reuse
+namespace LightCore.Scope
 {
     /// <summary>
-    /// Represents a strategy for reusing instances.
+    /// Represents a scope where instances can be reused.
     /// </summary>
-    public interface IReuseStrategy
+    public interface IScope
     {
+
         /// <summary>
         /// Handle the reuse of instances.
         /// </summary>
         /// <param name="newInstanceResolver"></param>
-        object HandleReuse(Func<object> newInstanceResolver);
+        object ReceiveScopedInstance(Func<object> newInstanceResolver);
     }
 }

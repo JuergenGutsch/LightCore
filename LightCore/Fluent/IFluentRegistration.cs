@@ -1,6 +1,4 @@
-﻿using System;
-
-using LightCore.Reuse;
+﻿using LightCore.Scope;
 
 namespace LightCore.Fluent
 {
@@ -10,29 +8,10 @@ namespace LightCore.Fluent
     public interface IFluentRegistration : IFluentInterface
     {
         /// <summary>
-        /// Treat the current registration to be transient.
-        /// One instance per request.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration ScopedToTransient();
-
-        /// <summary>
-        /// Treat the current registration to singleton LifeTime.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration ScopedToSingleton();
-
-        /// <summary>
         /// Treat the current registration to the passed reuse strategy behaviour.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration ScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new();
-
-        /// <summary>
-        /// Treat the current registration to the passed reuse strategy behaviour function.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration ScopedTo(Func<IReuseStrategy> reuseStrategyFunction);
+        IFluentRegistration ScopedTo<TReuseStrategy>() where TReuseStrategy : IScope, new();
 
         /// <summary>
         /// Adds arguments to the registration.

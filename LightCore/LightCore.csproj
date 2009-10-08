@@ -43,6 +43,8 @@
     <Compile Include="Activation\DelegateActivator.cs" />
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
+    <Compile Include="Enforce.cs" />
+    <Compile Include="InlineRegistrationModule.cs" />
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
@@ -65,9 +67,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Reuse\SingletonReuseStrategy.cs" />
-    <Compile Include="Reuse\IReuseStrategy.cs" />
-    <Compile Include="Reuse\TransientReuseStrategy.cs" />
+    <Compile Include="Scope\LocalScope.cs" />
+    <Compile Include="Scope\ProcessScope.cs" />
+    <Compile Include="Scope\IScope.cs" />
+    <Compile Include="Scope\ScopeBase.cs" />
+    <Compile Include="Scope\AppDomainScope.cs" />
+    <Compile Include="Scope\ThreadScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

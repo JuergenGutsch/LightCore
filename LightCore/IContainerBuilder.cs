@@ -1,7 +1,7 @@
 ﻿using System;
 
 using LightCore.Fluent;
-using LightCore.Reuse;
+using LightCore.Scope;
 
 namespace LightCore
 {
@@ -24,23 +24,16 @@ namespace LightCore
         void RegisterModule(RegistrationModule module);
 
         /// <summary>
-        /// Sets the default reuse strategy for this container.
+        /// Sets the default reuse scope for this container.
         /// </summary>
-        /// <typeparam name="TReuseStrategy">The type of default reuse strategy.</typeparam>
-        void DefaultScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new();
+        /// <typeparam name="TScope">The type of default scope.</typeparam>
+        void DefaultScopedTo<TScope>() where TScope : IScope, new();
 
         /// <summary>
-        /// Sets the default reuse strategy function for this container.
+        /// Sets the default reuse scopeFunction function for this container.
         /// </summary>
-        /// <param name="reuseStrategyFunction">The creator function for default reuse strategy.</param>
-        void DefaultScopedTo(Func<IReuseStrategy> reuseStrategyFunction);
-
-        /// <summary>
-        /// Registers a contract with an existing instance.
-        /// </summary>
-        /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
-        IFluentRegistration Register<TContract>(TContract instance);
+        /// <param name="scopeFunction">The creator function for default reuse strategy.</param>
+        void DefaultScopedTo(Func<IScope> scopeFunction);
 
         /// <summary>
         /// Registers a contract with an activator function.

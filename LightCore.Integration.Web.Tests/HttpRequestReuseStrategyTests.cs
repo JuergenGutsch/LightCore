@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 
-using LightCore.Integration.Web.Reuse;
-using LightCore.TestTypes;
+using LightCore.Integration.Web.Scope;
+using LightCore.Scope;
 
 using NUnit.Framework;
 
@@ -25,8 +25,12 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
+            var scopeMock = new Mock<ScopeBase>();
+            scopeMock
+                .Setup(s => 
+
             builder.Register<IBar, Bar>();
-            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
+            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestScope
                                                              {
                                                                  CurrentContext = currentContext.Object
                                                              });

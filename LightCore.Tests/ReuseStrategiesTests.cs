@@ -1,4 +1,4 @@
-﻿using LightCore.Reuse;
+﻿using LightCore.Scope;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -13,7 +13,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultScopedTo<TransientReuseStrategy>();
+            builder.DefaultScopedTo<LocalScope>();
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 

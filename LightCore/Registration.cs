@@ -1,6 +1,6 @@
 ﻿using LightCore.Activation;
 using LightCore.Fluent;
-using LightCore.Reuse;
+using LightCore.Scope;
 
 namespace LightCore
 {
@@ -19,7 +19,7 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Gets or sets the activator for an instance.
+        /// Gets or sets the activator.
         /// </summary>
         public IActivator Activator
         {
@@ -28,9 +28,9 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Gets or sets the reuse strategy for the instance creation.
+        /// Gets or sets the scope that holds the reuse strategy.
         /// </summary>
-        public IReuseStrategy ReuseStrategy
+        public IScope Scope
         {
             get;
             set;
@@ -46,7 +46,7 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Gets the current fluent interface instance.
+        /// Gets the current fluent registration interface instance.
         /// </summary>
         public IFluentRegistration FluentRegistration
         {

@@ -1,6 +1,4 @@
-﻿using System;
-
-using LightCore.Reuse;
+﻿using LightCore.Scope;
 
 namespace LightCore.Fluent
 {
@@ -24,43 +22,12 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to be transient.
-        /// One instance per request.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedToTransient()
-        {
-            this._registration.ReuseStrategy = new TransientReuseStrategy();
-            return this;
-        }
-
-        /// <summary>
-        /// Treat the current registration to singleton behaviour.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedToSingleton()
-        {
-            this._registration.ReuseStrategy = new SingletonReuseStrategy();
-            return this;
-        }
-
-        /// <summary>
         /// Treat the current registration to the passed reuse strategy behaviour.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedTo<TReuseStrategy>() where TReuseStrategy : IReuseStrategy, new()
+        public IFluentRegistration ScopedTo<TScope>() where TScope : IScope, new()
         {
-            this._registration.ReuseStrategy = new TReuseStrategy();
-            return this;
-        }
-
-        /// <summary>
-        /// Treat the current registration to the passed reuse strategy behaviour function.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedTo(Func<IReuseStrategy> reuseStrategyFunction)
-        {
-            this._registration.ReuseStrategy = reuseStrategyFunction();
+            this._registration.Scope = new TScope();
             return this;
         }
 
@@ -81,7 +48,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration UseDefaultConstructor()
         {
-            this._registration.Activator.UseDefaultConstructor = true;;
+            this._registration.Activator.UseDefaultConstructor = true;
             return this;
         }
 

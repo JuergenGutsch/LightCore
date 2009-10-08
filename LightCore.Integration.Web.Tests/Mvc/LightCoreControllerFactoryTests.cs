@@ -2,8 +2,7 @@
 using System.Web;
 
 using LightCore.Integration.Web.Mvc;
-using LightCore.Integration.Web.Reuse;
-using LightCore.Reuse;
+using LightCore.Integration.Web.Scope;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -22,7 +21,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);
+            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestScope>(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -31,7 +30,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+            registrationModule. = () => new HttpRequestReuseStrategy
                                                          {
                                                              CurrentContext = currentContext.Object
                                                          };

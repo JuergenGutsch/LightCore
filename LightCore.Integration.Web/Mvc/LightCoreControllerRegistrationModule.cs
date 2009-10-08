@@ -4,14 +4,14 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 
-using LightCore.Reuse;
+using LightCore.Scope;
 
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.
     /// </summary>
-    public class LightCoreControllerRegistrationModule<TReuseStrategy> : RegistrationModule where TReuseStrategy : IReuseStrategy, new()
+    public class LightCoreControllerRegistrationModule<TScope> : RegistrationModule where TScope : IScope, new()
     {
         /// <summary>
         /// The assembly from the controller implementation types.
@@ -19,7 +19,7 @@ namespace LightCore.Integration.Web.Mvc
         private readonly List<Assembly> _controllerAssemblies;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
         /// </summary>
         protected LightCoreControllerRegistrationModule()
         {
@@ -27,7 +27,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
         public LightCoreControllerRegistrationModule(params Assembly[] controllerAssemblies)
@@ -37,7 +37,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
         public LightCoreControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
@@ -47,7 +47,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
         public LightCoreControllerRegistrationModule(params string[] assemblyNames)
@@ -57,7 +57,7 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TReuseStrategy}" />.
+        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
         public LightCoreControllerRegistrationModule(IEnumerable<string> assemblyNames)
@@ -87,21 +87,10 @@ namespace LightCore.Integration.Web.Mvc
 
             var controllerTypes = allPublicTypes.Where(t => typeOfController.IsAssignableFrom(t) && !t.IsAbstract);
 
-            if (this.ReuseStrategy == null)
-            {
-                controllerTypes.ForEach(t => containerBuilder
-                                                 .Register(typeOfController, t)
-                                                 .ScopedTo<TReuseStrategy>()
-                                                 .WithName(this.GetControllerName(t.Name)));
-            }
-            else
-            {
-                // Unit testing
-                controllerTypes.ForEach(t => containerBuilder
-                                                 .Register(typeOfController, t)
-                                                 .ScopedTo(this.ReuseStrategy)
-                                                 .WithName(this.GetControllerName(t.Name)));
-            }
+            controllerTypes.ForEach(t => containerBuilder
+                                             .Register(typeOfController, t)
+                                             .ScopedTo<TScope>()
+                                             .WithName(this.GetControllerName(t.Name)));
         }
 
         /// <summary>

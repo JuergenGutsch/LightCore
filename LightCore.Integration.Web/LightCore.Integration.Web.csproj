@@ -47,9 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LightCoreDependencyInjectionModule.cs" />
-    <Compile Include="ExtensionMethods\FluentRegistrationExtensions.cs" />
     <Compile Include="Mvc\LightCoreControllerFactoryBase.cs" />
-    <Compile Include="Reuse\HttpRequestReuseStrategy.cs" />
+    <Compile Include="Scope\HttpRequestScope.cs" />
     <Compile Include="IContainerAccessor.cs" />
     <Compile Include="Mvc\LightCoreControllerFactory.cs" />
     <Compile Include="Mvc\LightCoreControllerRegistrationModule.cs" />
