@@ -1,6 +1,4 @@
-﻿using System;
-
-using LightCore.Activation;
+﻿using LightCore.Activation;
 using LightCore.Fluent;
 using LightCore.Reuse;
 
@@ -15,15 +13,6 @@ namespace LightCore
         /// Gets the key for this registration.
         /// </summary>
         public RegistrationKey Key
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the contract type as <see cref="Type" />.
-        /// </summary>
-        public Type ContractType
         {
             get;
             private set;
@@ -78,11 +67,9 @@ namespace LightCore
         /// <summary>
         /// Creates a new instance of <see cref="Registration" />.
         /// </summary>
-        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
         /// <param name="key">The registration key as <see cref="RegistrationKey" />.</see></param>
-        public Registration(Type contractType, RegistrationKey key)
+        public Registration(RegistrationKey key)
         {
-            this.ContractType = contractType;
             this.Key = key;
         }
     }

@@ -92,7 +92,7 @@ namespace LightCore
             var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, key)
+            var registration = new Registration(key)
             {
                 Activator = new DelegateActivator<TContract>((c) => instance)
             };
@@ -113,7 +113,7 @@ namespace LightCore
 
             var key = new RegistrationKey(typeOfContract);
 
-            var registration = new Registration(typeOfContract, key)
+            var registration = new Registration(key)
             {
                 Activator = new DelegateActivator<TContract>(activatorFunction)
             };
@@ -145,7 +145,7 @@ namespace LightCore
             var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(typeOfContract, key)
+            var registration = new Registration(key)
                                    {
                                        Activator = new ReflectionActivator(typeOfImplementation)
                                    };

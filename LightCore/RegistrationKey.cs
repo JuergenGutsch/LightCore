@@ -42,19 +42,32 @@ namespace LightCore
             this.ContractType = contractType;
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.
+        /// </returns>
+        /// <param name="obj">The <see cref="T:System.Object"/> to compare with the current <see cref="T:System.Object"/>. </param><exception cref="T:System.NullReferenceException">The <paramref name="obj"/> parameter is null.</exception><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            RegistrationKey other = (RegistrationKey)obj;
+            var other = (RegistrationKey)obj;
 
-            return other.ContractType == this.ContractType
-                && other.Name == this.Name;
+            return other.ContractType == this.ContractType && other.Name == this.Name;
         }
 
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
             int hashCode = this.ContractType.GetHashCode();
 
-            if(this.Name != null)
+            if (this.Name != null)
             {
                 hashCode ^= this.Name.GetHashCode();
             }
