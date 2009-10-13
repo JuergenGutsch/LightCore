@@ -32,7 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bar.cs" />
@@ -40,6 +42,7 @@
     <Compile Include="Foo.cs" />
     <Compile Include="FooBase.cs" />
     <Compile Include="FooController.cs" />
+    <Compile Include="FooWithArguments.cs" />
     <Compile Include="IBar.cs" />
     <Compile Include="IFoo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

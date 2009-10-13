@@ -29,8 +29,9 @@
             this.Arg2 = arg2;
         }
 
-        public Foo(string arg1, bool arg2)
+        public Foo(IBar bar, string arg1, bool arg2)
         {
+            this.Bar = bar;
             this.Arg1 = arg1;
             this.Arg2 = arg2;
         }
@@ -38,13 +39,6 @@
         public Foo(string arg1)
         {
             this.Arg1 = arg1;
-        }
-
-        public Foo(IBar bar, string arg1, bool arg2)
-        {
-            this.Bar = bar;
-            this.Arg1 = arg1;
-            this.Arg2 = arg2;
         }
     }
 }

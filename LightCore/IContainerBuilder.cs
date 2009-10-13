@@ -30,12 +30,6 @@ namespace LightCore
         void DefaultScopedTo<TScope>() where TScope : IScope, new();
 
         /// <summary>
-        /// Sets the default reuse scopeFunction function for this container.
-        /// </summary>
-        /// <param name="scopeFunction">The creator function for default reuse strategy.</param>
-        void DefaultScopedTo(Func<IScope> scopeFunction);
-
-        /// <summary>
         /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>

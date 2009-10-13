@@ -36,8 +36,7 @@ namespace LightCore
         /// <returns>The name of the argument.</returns>
         private static string GetArgumentName<T>(Expression<Func<T>> argumentExpression)
         {
-            var memberExpression =
-                (MemberExpression)argumentExpression.Body;
+            var memberExpression = (MemberExpression)argumentExpression.Body;
             return memberExpression.Member.Name;
         }
 

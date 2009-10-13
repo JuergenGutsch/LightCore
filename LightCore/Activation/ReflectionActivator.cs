@@ -43,15 +43,6 @@ namespace LightCore.Activation
         /// </summary>
         private Container _container;
 
-        /// <summary>
-        /// Gets or sets whether the default constructor should be used or not.
-        /// </summary>
-        public bool UseDefaultConstructor
-        {
-            get;
-            set;
-        }
-
         ///<summary>
         /// Creates a new instance of <see cref="ReflectionActivator" />.
         ///</summary>
@@ -86,7 +77,7 @@ namespace LightCore.Activation
                                                    constructors[0].GetParameters().Length == 0;
 
             // Use the default constructor.
-            if (onlyDefaultConstructorAvailable || this.UseDefaultConstructor)
+            if (onlyDefaultConstructorAvailable)
             {
                 return Activator.CreateInstance(this._implementationType);
             }

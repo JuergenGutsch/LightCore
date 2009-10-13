@@ -75,7 +75,7 @@ namespace LightCore
         /// Sets the default reuse strategy function for this container.
         /// </summary>
         /// <param name="scopeFunction">The creator function for default reuse strategy.</param>
-        public void DefaultScopedTo(Func<IScope> scopeFunction)
+        internal void DefaultScopedTo(Func<IScope> scopeFunction)
         {
             this._defaultScopeFunction = scopeFunction;
         }
@@ -140,24 +140,6 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         private IFluentRegistration AddToRegistrations(Registration registration)
         {
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return AddToRegistrations(registration, null);
-        }
-
-        /// <summary>
-        /// Add a registration to the registrations.
-        /// </summary>
-        /// <param name="registration">The registration to add.</param>
-        /// <param name="forceScopeFunction">The reuse scope function to force.</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        private IFluentRegistration AddToRegistrations(Registration registration, Func<IScope> forceScopeFunction)
-        {
-            // Force reuse scope, for e.g. an registered instance would every time treat as singleton.
-            if (forceScopeFunction != null)
-            {
-                registration.Scope = forceScopeFunction();
-            }
-
             // Set default reuse scope, if not user defined. (System default is <see cref="ProcessScope" />.
             if (registration.Scope == null)
             {

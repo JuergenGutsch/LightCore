@@ -50,7 +50,7 @@ namespace LightCore.Tests
 
             var container = builder.Build();
         }
-
+        
         [Test]
         public void ContainerBuilders_default_scope_is_singleton()
         {

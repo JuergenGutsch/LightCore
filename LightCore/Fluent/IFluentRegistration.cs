@@ -21,12 +21,6 @@ namespace LightCore.Fluent
         IFluentRegistration WithArguments(params object[] arguments);
 
         /// <summary>
-        /// Indicates that the default constructor should be used.
-        /// </summary>
-        /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration UseDefaultConstructor();
-
-        /// <summary>
         /// Gives a name to the registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
