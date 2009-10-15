@@ -37,7 +37,6 @@
   <ItemGroup>
     <Compile Include="Bar.cs" />
     <Compile Include="BarController.cs" />
-    <Compile Include="BarRepository.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="FooBase.cs" />
     <Compile Include="FooController.cs" />

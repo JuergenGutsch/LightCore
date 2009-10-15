@@ -5,7 +5,6 @@ using System.Web.Routing;
 
 using LightCore.Integration.Web;
 using LightCore.Integration.Web.Mvc;
-using LightCore.Integration.Web.Scope;
 using LightCore.Web.Mvc.IntegrationSample.Controllers;
 using LightCore.Web.Mvc.IntegrationSample.Models;
 
@@ -24,7 +23,7 @@ namespace LightCore.Web.Mvc.IntegrationSample
             RegisterDependencies();
 
             // Set controller factory.
-            ControllerBuilder.Current.SetControllerFactory(new LightCoreControllerFactory(_container));
+            ControllerBuilder.Current.SetControllerFactory(new ControllerFactory(_container));
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -45,12 +44,12 @@ namespace LightCore.Web.Mvc.IntegrationSample
             var builder = new ContainerBuilder();
 
             var controllerAssembly = Assembly.GetExecutingAssembly();
-            var controllerRegistrationModule = new LightCoreControllerRegistrationModule<HttpRequestScope>(controllerAssembly);
+            var controllerRegistrationModule = new ControllerRegistrationModule(controllerAssembly);
 
             builder.RegisterModule(controllerRegistrationModule);
 
-            builder.Register<IFormsAuthentication, FormsAuthenticationService>().UseDefaultConstructor();
-            builder.Register<IMembershipService, AccountMembershipService>().UseDefaultConstructor();
+            builder.Register<IFormsAuthentication, FormsAuthenticationService>();
+            builder.Register<IMembershipService, AccountMembershipService>();
             builder.Register<IWelcomeRepository, WelcomeRepository>();
 
             _container = builder.Build();

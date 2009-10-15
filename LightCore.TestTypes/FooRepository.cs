@@ -2,7 +2,7 @@
 {
     public class FooRepository : IRepository<Foo>
     {
-        public Foo LoadEntityRepresentation()
+        public Foo GetData()
         {
             return new Foo();
         }
