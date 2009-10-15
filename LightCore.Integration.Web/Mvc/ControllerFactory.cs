@@ -6,13 +6,13 @@ namespace LightCore.Integration.Web.Mvc
     /// <summary>
     /// Represents a default controller factory that works with a <see cref="IContainer" / >.
     /// </summary>
-    public class LightCoreControllerFactory : LightCoreControllerFactoryBase
+    public class ControllerFactory : ControllerFactoryBase
     {
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerFactory" />.
+        /// Initializes a new instance of <see cref="ControllerFactory" />.
         /// </summary>
         /// <param name="container">The container.</param>
-        public LightCoreControllerFactory(IContainer container)
+        public ControllerFactory(IContainer container)
             : base(container)
         {
 
@@ -20,7 +20,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule{TContract}" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

@@ -4,14 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 
-using LightCore.Scope;
-
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
     /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.
     /// </summary>
-    public class LightCoreControllerRegistrationModule<TScope> : RegistrationModule where TScope : IScope, new()
+    public class ControllerRegistrationModule : RegistrationModule
     {
         /// <summary>
         /// The assembly from the controller implementation types.
@@ -19,48 +17,48 @@ namespace LightCore.Integration.Web.Mvc
         private readonly List<Assembly> _controllerAssemblies;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
-        protected LightCoreControllerRegistrationModule()
+        protected ControllerRegistrationModule()
         {
             this._controllerAssemblies = new List<Assembly>();
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
-        public LightCoreControllerRegistrationModule(params Assembly[] controllerAssemblies)
+        public ControllerRegistrationModule(params Assembly[] controllerAssemblies)
             : this()
         {
             this._controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="controllerAssemblies">The controller assemblies</param>
-        public LightCoreControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
+        public ControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
             : this()
         {
             this._controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
-        public LightCoreControllerRegistrationModule(params string[] assemblyNames)
+        public ControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
             this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerRegistrationModule{TScope}" />.
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="assemblyNames">The names where controller types lives in.</param>
-        public LightCoreControllerRegistrationModule(IEnumerable<string> assemblyNames)
+        public ControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
             this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
@@ -89,7 +87,6 @@ namespace LightCore.Integration.Web.Mvc
 
             controllerTypes.ForEach(t => containerBuilder
                                              .Register(typeOfController, t)
-                                             .ScopedTo<TScope>()
                                              .WithName(this.GetControllerName(t.Name)));
         }
 

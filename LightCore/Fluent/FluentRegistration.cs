@@ -1,4 +1,4 @@
-﻿using LightCore.Scope;
+﻿using LightCore.Lifecycle;
 
 namespace LightCore.Fluent
 {
@@ -25,9 +25,9 @@ namespace LightCore.Fluent
         /// Treat the current registration to the passed reuse strategy behaviour.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration ScopedTo<TScope>() where TScope : IScope, new()
+        public IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
         {
-            this._registration.Scope = new TScope();
+            this._registration.Lifecycle = new TLifecycle();
             return this;
         }
 

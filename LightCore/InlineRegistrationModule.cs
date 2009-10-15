@@ -3,8 +3,14 @@ using System.Collections.Generic;
 
 namespace LightCore
 {
+    /// <summary>
+    /// Represents an inline registration module.
+    /// </summary>
     public class InlineRegistrationModule : RegistrationModule
     {
+        /// <summary>
+        /// Gets or sets the registration callbacks.
+        /// </summary>
         public IEnumerable<Action<IContainerBuilder>> RegistrationCallBacks
         {
             get;
@@ -20,6 +26,10 @@ namespace LightCore
             this.RegistrationCallBacks = registrationCallBacks;
         }
 
+        /// <summary>
+        /// Registers all candidates.
+        /// </summary>
+        /// <param name="containerBuilder">The controllerbuilder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
             this.RegistrationCallBacks.ForEach(callback => callback(containerBuilder));

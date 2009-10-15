@@ -36,15 +36,18 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activation\DelegateActivator.cs" />
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="Enforce.cs" />
+    <Compile Include="Exceptions\RegisteredTypesNotCompatibleException.cs" />
     <Compile Include="InlineRegistrationModule.cs" />
+    <Compile Include="Lifecycle\ILifecycle.cs" />
+    <Compile Include="Lifecycle\SingletonLifecycle.cs" />
+    <Compile Include="Lifecycle\ThreadSingletonLifecycle.cs" />
+    <Compile Include="Lifecycle\TransientLifecycle.cs" />
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
@@ -67,12 +70,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Scope\LocalScope.cs" />
-    <Compile Include="Scope\ProcessScope.cs" />
-    <Compile Include="Scope\IScope.cs" />
-    <Compile Include="Scope\ScopeBase.cs" />
-    <Compile Include="Scope\AppDomainScope.cs" />
-    <Compile Include="Scope\ThreadScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

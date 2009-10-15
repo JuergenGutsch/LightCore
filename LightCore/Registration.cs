@@ -1,6 +1,5 @@
 ﻿using LightCore.Activation;
-using LightCore.Fluent;
-using LightCore.Scope;
+using LightCore.Lifecycle;
 
 namespace LightCore
 {
@@ -30,7 +29,7 @@ namespace LightCore
         /// <summary>
         /// Gets or sets the scope that holds the reuse strategy.
         /// </summary>
-        public IScope Scope
+        public ILifecycle Lifecycle
         {
             get;
             set;
@@ -43,17 +42,6 @@ namespace LightCore
         {
             get;
             set;
-        }
-
-        /// <summary>
-        /// Gets the current fluent registration interface instance.
-        /// </summary>
-        public IFluentRegistration FluentRegistration
-        {
-            get
-            {
-                return new FluentRegistration(this);
-            }
         }
 
         /// <summary>

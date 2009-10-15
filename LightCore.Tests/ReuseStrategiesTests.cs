@@ -1,4 +1,4 @@
-﻿using LightCore.Scope;
+﻿using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -13,7 +13,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultScopedTo<LocalScope>();
+            builder.DefaultControlledBy<TransientLifecycle>();
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 

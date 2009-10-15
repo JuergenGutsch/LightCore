@@ -40,12 +40,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DelegateActivatorTests.cs" />
+    <Compile Include="GenericRegistrationTests.cs" />
     <Compile Include="InjectPropertiesTests.cs" />
+    <Compile Include="LifecycleTests.cs" />
+    <Compile Include="NamedContractTests.cs" />
     <Compile Include="ResolvingNamedTests.cs" />
     <Compile Include="ReuseStrategiesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,6 +57,10 @@
     <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LightCore.Performance\LightCore.Performance.csproj">
+      <Project>{8267A0FD-66DF-46B1-851E-99B8471BF3C2}</Project>
+      <Name>LightCore.Performance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
       <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
       <Name>LightCore.TestTypes</Name>

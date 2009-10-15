@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Web;
 
-using LightCore.Scope;
+using LightCore.Lifecycle;
 
-namespace LightCore.Integration.Web.Scope
+namespace LightCore.Integration.Web.Lifecycle
 {
     /// <summary>
-    /// Represents a reuse strategy for one instance per http request (ASP.NET).
+    /// Represents a lifecycle for one instance per http request (ASP.NET).
     /// </summary>
-    public class HttpRequestScope : ScopeBase
+    public class HttpRequestLifecycle : ILifecycle
     {
         /// <summary>
         /// Represents an identifier for the current instance.
@@ -29,7 +29,7 @@ namespace LightCore.Integration.Web.Scope
         /// One instance per http request (ASP.NET).
         /// </summary>
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
-        public override object ReceiveScopedInstance(Func<object> newInstanceResolver)
+        public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
             HttpContextBase context = this.CurrentContext;
 

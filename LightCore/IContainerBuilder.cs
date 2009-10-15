@@ -1,7 +1,7 @@
 ﻿using System;
 
 using LightCore.Fluent;
-using LightCore.Scope;
+using LightCore.Lifecycle;
 
 namespace LightCore
 {
@@ -27,7 +27,7 @@ namespace LightCore
         /// Sets the default reuse scope for this container.
         /// </summary>
         /// <typeparam name="TScope">The type of default scope.</typeparam>
-        void DefaultScopedTo<TScope>() where TScope : IScope, new();
+        void DefaultControlledBy<TScope>() where TScope : ILifecycle, new();
 
         /// <summary>
         /// Registers a contract with an activator function.

@@ -1,5 +1,5 @@
 ﻿using LightCore.Exceptions;
-using LightCore.Scope;
+using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -38,8 +38,20 @@ namespace LightCore.Tests
                                                                       builder.Register<IFoo, Foo>().WithName("foo");
                                                                       builder.Register<IFoo, Foo>().WithName("foo");
 
-                                                                      var contianer = builder.Build();
+                                                                      var container = builder.Build();
                                                                   });
+        }
+
+        [Test]
+        public void ContainerBuilder_throws_on_not_assignable_contract_to_implementation()
+        {
+            Assert.Throws<RegisteredTypesNotCompatibleException>(() =>
+            {
+                var builder = new ContainerBuilder();
+                builder.Register(typeof (IFoo), typeof (Bar));
+
+                var container = builder.Build();
+            });
         }
 
         [Test]
@@ -71,7 +83,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultScopedTo<LocalScope>();
+            builder.DefaultControlledBy<TransientLifecycle>();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 

@@ -8,7 +8,7 @@ namespace LightCore.Integration.Web.Mvc
     /// Represents a base controller factory that works with a <see cref="IContainer" / >.
     /// Can be used as base class for custom implementations.
     /// </summary>
-    public abstract class LightCoreControllerFactoryBase : IControllerFactory
+    public abstract class ControllerFactoryBase : IControllerFactory
     {
         /// <summary>
         /// The container.
@@ -20,25 +20,25 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerFactoryBase" />.
+        /// Initializes a new instance of <see cref="ControllerFactoryBase" />.
         /// </summary>
-        protected LightCoreControllerFactoryBase()
+        protected ControllerFactoryBase()
         {
             
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="LightCoreControllerFactoryBase" />.
+        /// Initializes a new instance of <see cref="ControllerFactoryBase" />.
         /// </summary>
         /// <param name="container">The container.</param>
-        protected LightCoreControllerFactoryBase(IContainer container)
+        protected ControllerFactoryBase(IContainer container)
         {
             this.Container = container;
         }
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>
@@ -56,7 +56,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="LightCoreControllerRegistrationModule" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

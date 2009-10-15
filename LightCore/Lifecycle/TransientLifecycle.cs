@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace LightCore.Scope
+namespace LightCore.Lifecycle
 {
     /// <summary>
-    /// Represents a scope where instances cannot be reused.
+    /// Represents a lifecycle where instances cannot be reused.
     /// </summary>
-    public class LocalScope : ScopeBase
+    public class TransientLifecycle : ILifecycle
     {
         /// <summary>
         /// Handle the reuse of instances.
         /// </summary>
         /// <param name="newInstanceResolver"></param>
-        public override object ReceiveScopedInstance(Func<object> newInstanceResolver)
+        public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
             return newInstanceResolver();
         }

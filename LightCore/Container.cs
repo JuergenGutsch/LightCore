@@ -66,8 +66,7 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract, string name)
         {
-            // Select registration.
-            RegistrationKey key = new RegistrationKey(typeOfContract)
+            var key = new RegistrationKey(typeOfContract)
                                       {
                                           Name = name
                                       };
@@ -80,11 +79,10 @@ namespace LightCore
                     Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
             }
 
-            // Get the scope.
             IActivator activator = registration.Activator;
 
-            // Activate instance in scope.
-            return registration.Scope.ReceiveScopedInstance(() => activator.ActivateInstance(this, registration.Arguments));
+            return registration.Lifecycle.ReceiveInstanceInLifecycle(
+                () => registration.Activator.ActivateInstance(this, registration.Arguments));
         }
 
         /// <summary>

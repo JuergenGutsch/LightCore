@@ -46,12 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LightCoreDependencyInjectionModule.cs" />
-    <Compile Include="Mvc\LightCoreControllerFactoryBase.cs" />
-    <Compile Include="Scope\HttpRequestScope.cs" />
+    <Compile Include="DependencyInjectionModule.cs" />
     <Compile Include="IContainerAccessor.cs" />
-    <Compile Include="Mvc\LightCoreControllerFactory.cs" />
-    <Compile Include="Mvc\LightCoreControllerRegistrationModule.cs" />
+    <Compile Include="Lifecycle\HttpRequestLifecycle.cs" />
+    <Compile Include="Mvc\ControllerFactory.cs" />
+    <Compile Include="Mvc\ControllerFactoryBase.cs" />
+    <Compile Include="Mvc\ControllerRegistrationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

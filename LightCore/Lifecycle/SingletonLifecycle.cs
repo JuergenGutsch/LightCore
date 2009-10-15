@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace LightCore.Scope
+namespace LightCore.Lifecycle
 {
     /// <summary>
-    /// Represents a singleton per registration strategy.
+    /// Represents a singleton per registration strategy on process scope (??)
     /// </summary>
-    public class ProcessScope : ScopeBase
+    public class SingletonLifecycle : ILifecycle
     {
         /// <summary>
         /// The instance.
@@ -16,7 +16,7 @@ namespace LightCore.Scope
         /// Handle the reuse of instances.
         /// </summary>
         /// <param name="newInstanceResolver"></param>
-        public override object ReceiveScopedInstance(Func<object> newInstanceResolver)
+        public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
             if (this._instance == null)
             {

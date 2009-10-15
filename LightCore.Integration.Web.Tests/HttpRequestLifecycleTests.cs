@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 
-using LightCore.Integration.Web.Scope;
-using LightCore.Scope;
+using LightCore.Integration.Web.Lifecycle;
+using LightCore.Lifecycle;
+using LightCore.TestTypes;
 
 using NUnit.Framework;
 
@@ -11,10 +12,10 @@ using Moq;
 namespace LightCore.Integration.Web.Tests
 {
     [TestFixture]
-    public class HttpRequestReuseStrategyTests
+    public class HttpRequestLifecycleTests
     {
         [Test]
-        public void Instance_is_reused_in_same_httprequestscope()
+        public void Instance_is_reused_in_same_httprequest()
         {
             var builder = new ContainerBuilder();
 
@@ -25,15 +26,13 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            var scopeMock = new Mock<ScopeBase>();
-            scopeMock
-                .Setup(s => 
+            builder.DefaultControlledBy(() => new HttpRequestLifecycle
+                                                  {
+                                                      CurrentContext = currentContext.Object
+                                                  });
 
-            builder.Register<IBar, Bar>();
-            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestScope
-                                                             {
-                                                                 CurrentContext = currentContext.Object
-                                                             });
+            builder.Register<IBar, Bar>().ControlledBy<TransientLifecycle>();
+            builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
 
@@ -44,7 +43,7 @@ namespace LightCore.Integration.Web.Tests
         }
 
         [Test]
-        public void Instance_is_not_reused_in_different_httprequestscopes()
+        public void Instance_is_not_reused_in_different_httprequests()
         {
             var builder = new ContainerBuilder();
 
@@ -55,11 +54,13 @@ namespace LightCore.Integration.Web.Tests
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            builder.Register<IBar, Bar>();
-            builder.Register<IFoo, Foo>().ScopedTo(() => new HttpRequestReuseStrategy
-                                                             {
-                                                                 CurrentContext = currentContext.Object
-                                                             });
+            builder.DefaultControlledBy(() => new HttpRequestLifecycle
+                                                  {
+                                                      CurrentContext = currentContext.Object
+                                                  });
+
+            builder.Register<IBar, Bar>().ControlledBy<TransientLifecycle>();
+            builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
 

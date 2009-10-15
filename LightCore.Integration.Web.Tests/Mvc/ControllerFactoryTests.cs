@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web;
 
+using LightCore.Integration.Web.Lifecycle;
 using LightCore.Integration.Web.Mvc;
-using LightCore.Integration.Web.Scope;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -12,7 +12,7 @@ using Moq;
 namespace LightCore.Integration.Web.Tests.Mvc
 {
     [TestFixture]
-    public class LightCoreControllerFactoryTests
+    public class ControllerFactoryTests
     {
         [Test]
         public void Registered_controller_instances_are_reused_on_httpcontextstrategy()
@@ -21,7 +21,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestScope>(typeof(FooController).Assembly);
+            var registrationModule = new ControllerRegistrationModule(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -30,15 +30,15 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            registrationModule. = () => new HttpRequestReuseStrategy
+            builder.DefaultControlledBy(() => new HttpRequestLifecycle
                                                          {
                                                              CurrentContext = currentContext.Object
-                                                         };
+                                                         });
 
             builder.RegisterModule(registrationModule);
 
             var container = builder.Build();
-            var controllerFactory = new LightCoreControllerFactory(container);
+            var controllerFactory = new ControllerFactory(container);
 
             var controller = controllerFactory.CreateController(null, "foo");
             var secondController = controllerFactory.CreateController(null, "bar");
@@ -54,7 +54,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule<TransientReuseStrategy>(typeof(FooController).Assembly);
+            var registrationModule = new ControllerRegistrationModule(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -63,15 +63,15 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+            builder.DefaultControlledBy(() => new HttpRequestLifecycle
                                                          {
                                                              CurrentContext = currentContext.Object
-                                                         };
+                                                         });
 
             builder.RegisterModule(registrationModule);
 
             var container = builder.Build();
-            var controllerFactory = new LightCoreControllerFactory(container);
+            var controllerFactory = new ControllerFactory(container);
 
             var controller = controllerFactory.CreateController(null, "foo");
 
@@ -85,7 +85,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
-            var registrationModule = new LightCoreControllerRegistrationModule<HttpRequestReuseStrategy>(typeof(FooController).Assembly);
+            var registrationModule = new ControllerRegistrationModule(typeof(FooController).Assembly);
 
             var currentItems = new Dictionary<string, object>();
 
@@ -94,15 +94,15 @@ namespace LightCore.Integration.Web.Tests.Mvc
                 .Setup(c => c.Items)
                 .Returns(currentItems);
 
-            registrationModule.ReuseStrategy = () => new HttpRequestReuseStrategy
+            builder.DefaultControlledBy(() => new HttpRequestLifecycle
                                                          {
                                                              CurrentContext = currentContext.Object
-                                                         };
+                                                         });
 
             builder.RegisterModule(registrationModule);
 
             var container = builder.Build();
-            var controllerFactory = new LightCoreControllerFactory(container);
+            var controllerFactory = new ControllerFactory(container);
 
             var controller = controllerFactory.CreateController(null, "foo");
 

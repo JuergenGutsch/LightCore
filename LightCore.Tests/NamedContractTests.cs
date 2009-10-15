@@ -1,23 +1,23 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PeterBucher.AutoFunc.Build;
-using PeterBucher.AutoFunc.TestTypes;
+﻿using LightCore.Performance.Domain;
 
-namespace PeterBucher.AutoFunc.Tests
+using NUnit.Framework;
+
+namespace LightCore.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class NamedContractTests
     {
-        [TestMethod]
+        [Test]
         public void Container_can_resolve_named_registration()
         {
             var builder = new ContainerBuilder();
 
             builder.Register<ILogger, Logger>();
-            builder.Register<ILogger, NullLogger>().WithName("MyNullLogger");
+            builder.Register<ILogger, Logger>().WithName("MyNullLogger");
 
             var container = builder.Build();
 
-            var namedInstance = container.ResolveNamed<ILogger>("MyNullLogger");
+            var namedInstance = container.Resolve<ILogger>("MyNullLogger");
 
             Assert.IsNotNull(namedInstance);
         }

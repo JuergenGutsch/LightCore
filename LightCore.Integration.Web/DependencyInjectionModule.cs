@@ -6,7 +6,7 @@ namespace LightCore.Integration.Web
     /// <summary>
     /// Represents a <see cref="IHttpModule" /> for property injection on ASP.NET WebForms.
     /// </summary>
-    public class LightCoreDependencyInjectionModule : IHttpModule
+    public class DependencyInjectionModule : IHttpModule
     {
         /// <summary>
         /// The current application.

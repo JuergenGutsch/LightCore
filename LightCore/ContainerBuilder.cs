@@ -5,8 +5,8 @@ using System.Linq;
 using LightCore.Activation;
 using LightCore.Exceptions;
 using LightCore.Fluent;
+using LightCore.Lifecycle;
 using LightCore.Properties;
-using LightCore.Scope;
 
 namespace LightCore
 {
@@ -27,9 +27,9 @@ namespace LightCore
         private readonly IList<Action> _registrationCallbacks;
 
         /// <summary>
-        /// Holds the default reuse scope function.
+        /// Holds the default lifecycle function.
         /// </summary>
-        private Func<IScope> _defaultScopeFunction;
+        private Func<ILifecycle> _defaultLifecycleFunction;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ContainerBuilder" />.
@@ -38,7 +38,7 @@ namespace LightCore
         {
             this._registrations = new Dictionary<RegistrationKey, Registration>();
             this._registrationCallbacks = new List<Action>();
-            this._defaultScopeFunction = () => new ProcessScope();
+            this._defaultLifecycleFunction = () => new SingletonLifecycle();
         }
 
         /// <summary>
@@ -63,21 +63,21 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Sets the default reuse scope for this container.
+        /// Sets the default lifecycle for this container.
         /// </summary>
-        /// <typeparam name="TScope">The default reuse scope.</typeparam>
-        public void DefaultScopedTo<TScope>() where TScope : IScope, new()
+        /// <typeparam name="TLifecycle">The default lifecycle.</typeparam>
+        public void DefaultControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
         {
-            this._defaultScopeFunction = () => new TScope();
+            this._defaultLifecycleFunction = () => new TLifecycle();
         }
 
         /// <summary>
         /// Sets the default reuse strategy function for this container.
         /// </summary>
-        /// <param name="scopeFunction">The creator function for default reuse strategy.</param>
-        internal void DefaultScopedTo(Func<IScope> scopeFunction)
+        /// <param name="lifecycleFunction">The creator function for default reuse strategy.</param>
+        internal void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)
         {
-            this._defaultScopeFunction = scopeFunction;
+            this._defaultLifecycleFunction = lifecycleFunction;
         }
 
         /// <summary>
@@ -97,8 +97,30 @@ namespace LightCore
                 Activator = new DelegateActivator<TContract>(activatorFunction)
             };
 
+            this.AddToRegistrations(registration);
+
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration);
+            return new FluentRegistration(registration);
+        }
+
+        /// <summary>
+        /// Add a registration to the registrations.
+        /// </summary>
+        /// <param name="registration">The registration to add.</param>
+        private void AddToRegistrations(Registration registration)
+        {
+            // Set default reuse scope, if not user defined. (System default is <see cref="SingletonLifecycle" />.
+            if (registration.Lifecycle == null)
+            {
+                registration.Lifecycle = this._defaultLifecycleFunction();
+            }
+
+            // Add a register callback for lazy assertion after manipulating in fluent registration api.
+            this._registrationCallbacks.Add(() =>
+            {
+                this.AssertRegistrationExists(registration.Key);
+                this._registrations.Add(registration.Key, registration);
+            });
         }
 
         /// <summary>
@@ -121,6 +143,11 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
+            if (!typeOfContract.IsAssignableFrom(typeOfImplementation))
+            {
+                throw new RegisteredTypesNotCompatibleException();
+            }
+
             var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
@@ -129,32 +156,10 @@ namespace LightCore
                                        Activator = new ReflectionActivator(typeOfImplementation)
                                    };
 
-            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrations(registration);
-        }
-
-        /// <summary>
-        /// Add a registration to the registrations.
-        /// </summary>
-        /// <param name="registration">The registration to add.</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        private IFluentRegistration AddToRegistrations(Registration registration)
-        {
-            // Set default reuse scope, if not user defined. (System default is <see cref="ProcessScope" />.
-            if (registration.Scope == null)
-            {
-                registration.Scope = this._defaultScopeFunction();
-            }
-
-            // Add a register callback for lazy assertion after manipulating in fluent registration api.
-            this._registrationCallbacks.Add(() =>
-            {
-                this.AssertRegistrationExists(registration.Key);
-                this._registrations.Add(registration.Key, registration);
-            });
+            this.AddToRegistrations(registration);
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return registration.FluentRegistration;
+            return new FluentRegistration(registration);
         }
 
         /// <summary>

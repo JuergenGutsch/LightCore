@@ -1,17 +1,17 @@
 using System;
 
-namespace LightCore.Scope
+namespace LightCore.Lifecycle
 {
     /// <summary>
-    /// Represents a scope where instances can be reused.
+    /// Represents a lifecycle where instances can be reused.
     /// </summary>
-    public interface IScope
+    public interface ILifecycle
     {
 
         /// <summary>
         /// Handle the reuse of instances.
         /// </summary>
         /// <param name="newInstanceResolver"></param>
-        object ReceiveScopedInstance(Func<object> newInstanceResolver);
+        object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver);
     }
 }
