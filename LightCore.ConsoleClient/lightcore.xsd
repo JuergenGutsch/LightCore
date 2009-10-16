@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema elementFormDefault="qualified" targetNamespace="clr-namespace:LightCore.Configuration;assembly=LightCore.Configuration" xmlns="clr-namespace:LightCore.Configuration;assembly=LightCore.Configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="clr-namespace:LightCore.Configuration;assembly=LightCore.Configuration" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="LightCoreConfiguration">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="LightCoreConfiguration.Defaults">
+                <xs:element name="LightCoreConfiguration.TypeAliases">
                     <xs:complexType>
                         <xs:sequence>
-                            <xs:element name="LightCoreConfigurationDefaults">
+                            <xs:element name="TypeAlias">
                                 <xs:complexType>
-                                    <xs:attribute name="DefaultAssembly" type="xs:string" use="optional" />
-                                    <xs:attribute name="DefaultContractNamespace" type="xs:string" use="optional" />
-                                    <xs:attribute name="DefaultImplementationNamespace" type="xs:string" use="optional" />
+                                    <xs:attribute name="Alias" type="xs:string" use="required" />
+                                    <xs:attribute name="Type" type="xs:string" use="required" />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -31,6 +30,7 @@
                     </xs:complexType>
                 </xs:element>
             </xs:sequence>
+            <xs:attribute name="DefaultLifecycle" type="xs:string" use="optional" />
         </xs:complexType>
     </xs:element>
 </xs:schema>

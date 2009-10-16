@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LightCore.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,7 +43,7 @@
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="Enforce.cs" />
-    <Compile Include="Exceptions\RegisteredTypesNotCompatibleException.cs" />
+    <Compile Include="ImplementationTypeDoesNotImplemenentContractException.cs" />
     <Compile Include="InlineRegistrationModule.cs" />
     <Compile Include="Lifecycle\ILifecycle.cs" />
     <Compile Include="Lifecycle\SingletonLifecycle.cs" />
@@ -51,8 +52,7 @@
     <Compile Include="RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
-    <Compile Include="Exceptions\ContainerAccessorNotImplementedException.cs" />
-    <Compile Include="Exceptions\ResolutionFailedException.cs" />
+    <Compile Include="ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\SystemCollectionsGenericExtensions.cs" />
     <Compile Include="ExtensionMethods\SystemExtensions.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
@@ -60,8 +60,8 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\IFluentRegistration.cs" />
     <Compile Include="IContainerBuilder.cs" />
-    <Compile Include="Exceptions\RegistrationAlreadyExistsException.cs" />
-    <Compile Include="Exceptions\RegistrationNotFoundException.cs" />
+    <Compile Include="RegistrationAlreadyExistsException.cs" />
+    <Compile Include="RegistrationNotFoundException.cs" />
     <Compile Include="Registration.cs" />
     <Compile Include="RegistrationKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

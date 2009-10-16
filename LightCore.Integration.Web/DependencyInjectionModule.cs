@@ -32,7 +32,7 @@ namespace LightCore.Integration.Web
 
             if (accessor == null)
             {
-                return;
+                throw new ContainerAccessorNotImplementedException();
             }
 
             _container = accessor.Container;

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
-    /// Represents a default controller factory that works with a <see cref="IContainer" / >.
+    /// Represents a default controller factory that works with a <see cref="IContainer" />.
     /// </summary>
     public class ControllerFactory : ControllerFactoryBase
     {

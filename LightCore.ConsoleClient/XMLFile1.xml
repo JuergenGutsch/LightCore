@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LightCoreConfiguration DefaultLifecycle="Transient" xmlns="clr-namespace:LightCore.Configuration;assembly=LightCore.Configuration">
+    <LightCoreConfiguration.TypeAliases>
+        <TypeAlias Alias="Transient" Type="LightCore.Lifecycle.TransientLifecycle, LightCore" />
+    </LightCoreConfiguration.TypeAliases>
+    <LightCoreConfiguration.Registrations>
+        <Registration ContractType="IWriter" ImplementationType="ConsoleWriter"/>
+        <Registration  Name="NamedScreen" ContractType="IScreen" ImplementationType="LightCore.ConsoleClient.Screens.WelcomeScreen" Arguments="Hello World"/>
+    </LightCoreConfiguration.Registrations>
+</LightCoreConfiguration>

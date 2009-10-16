@@ -1,4 +1,6 @@
-﻿using LightCore.Lifecycle;
+﻿using System;
+
+using LightCore.Lifecycle;
 
 namespace LightCore.Fluent
 {
@@ -8,10 +10,16 @@ namespace LightCore.Fluent
     public interface IFluentRegistration : IFluentInterface
     {
         /// <summary>
-        /// Treat the current registration to the passed reuse strategy behaviour.
+        /// Treat the current registration to the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new();
+
+        /// <summary>
+        /// Treat the current registration to the passed lifecycle.
+        /// </summary>
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration ControlledBy(Type type);
 
         /// <summary>
         /// Adds arguments to the registration.

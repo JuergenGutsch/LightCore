@@ -1,49 +1,49 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace LightCore.Exceptions
+namespace LightCore.Configuration
 {
     /// <summary>
     /// Thrown when the container accessor container accessor is not implemented.
     /// </summary>
     [Serializable]
-    public class ContainerAccessorNotImplementedException : Exception
+    public class XamlRegistrationException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerAccessorNotImplementedException"/> type.
+        /// Initializes a new instance of the <see cref="XamlRegistrationException"/> type.
         /// </summary>
-        public ContainerAccessorNotImplementedException()
+        public XamlRegistrationException()
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerAccessorNotImplementedException"/> type.
+        /// Initializes a new instance of the <see cref="XamlRegistrationException"/> type.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        public ContainerAccessorNotImplementedException(string message)
+        public XamlRegistrationException(string message)
             : base(message)
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerAccessorNotImplementedException"/> type.
+        /// Initializes a new instance of the <see cref="XamlRegistrationException"/> type.
         /// </summary>
         /// <param name="message">The exception message.</param>
         /// <param name="innerException">The inner exception</param>
-        public ContainerAccessorNotImplementedException(string message, Exception innerException)
+        public XamlRegistrationException(string message, Exception innerException)
             : base(message, innerException)
         {
 
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ContainerAccessorNotImplementedException"/> type.
+        /// Initializes a new instance of the <see cref="XamlRegistrationException"/> type.
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The context.</param>
-        protected ContainerAccessorNotImplementedException(SerializationInfo info, StreamingContext context)
+        protected XamlRegistrationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
 

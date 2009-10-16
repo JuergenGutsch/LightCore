@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using LightCore.Exceptions;
 using LightCore.Properties;
 
 namespace LightCore
@@ -31,7 +30,7 @@ namespace LightCore
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>The resolved instance as <see cref="TContract" />.</returns>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         public TContract Resolve<TContract>()
         {
             return (TContract)this.Resolve(typeof(TContract), null);
@@ -51,7 +50,7 @@ namespace LightCore
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="name">The name given in the registration.</param>
-        /// <returns>The resolved instance as <see cref="TContract" />.</returns>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         public TContract Resolve<TContract>(string name)
         {
             return (TContract)this.Resolve(typeof(TContract), name);
@@ -66,9 +65,10 @@ namespace LightCore
         private object Resolve(Type typeOfContract, string name)
         {
             var key = new RegistrationKey(typeOfContract, name);
-            var registration = this._registrations[key];
+            
+            Registration registration;
 
-            if (registration == null)
+            if(!this._registrations.TryGetValue(key, out registration))
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));

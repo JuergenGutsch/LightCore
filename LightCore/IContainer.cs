@@ -9,7 +9,7 @@
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>The resolved instance as <see cref="TContract" />.</returns>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         TContract Resolve<TContract>();
 
         /// <summary>
@@ -17,7 +17,7 @@
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="name">The name given in the registration.</param>
-        /// <returns>The resolved instance as <see cref="TContract" />.</returns>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         TContract Resolve<TContract>(string name);
 
         /// <summary>

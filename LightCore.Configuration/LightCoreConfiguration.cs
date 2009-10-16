@@ -8,7 +8,19 @@ namespace LightCore.Configuration
     /// </summary>
     public class LightCoreConfiguration
     {
-        public LightCoreConfigurationDefaults Defaults
+        ///<summary>
+        /// Gets or sets the default lifecycle.
+        ///</summary>
+        public string DefaultLifecycle
+        {
+            get;
+            set;
+        }
+
+        ///<summary>
+        /// Gets or sets the type aliases.
+        ///</summary>
+        public List<TypeAlias> TypeAliases
         {
             get;
             set;
@@ -28,6 +40,7 @@ namespace LightCore.Configuration
         /// </summary>
         public LightCoreConfiguration()
         {
+            this.TypeAliases = new List<TypeAlias>();
             this.Registrations = new List<Registration>();
         }
 

@@ -55,7 +55,7 @@ namespace LightCore
         /// <summary>
         /// Creates a new instance of <see cref="Registration" />.
         /// </summary>
-        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</see></param>
+        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</param>
         public Registration(RegistrationKey key)
         {
             this.Key = key;

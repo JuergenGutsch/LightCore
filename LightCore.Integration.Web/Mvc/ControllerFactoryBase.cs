@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
-    /// Represents a base controller factory that works with a <see cref="IContainer" / >.
+    /// Represents a base controller factory that works with a <see cref="IContainer" />.
     /// Can be used as base class for custom implementations.
     /// </summary>
     public abstract class ControllerFactoryBase : IControllerFactory
@@ -24,7 +24,7 @@ namespace LightCore.Integration.Web.Mvc
         /// </summary>
         protected ControllerFactoryBase()
         {
-            
+
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>
@@ -56,7 +56,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

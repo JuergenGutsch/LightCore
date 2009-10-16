@@ -40,5 +40,14 @@
             get;
             set;
         }
+
+        /// <summary>
+        /// Gets or sets the lifecycle
+        /// </summary>
+        public string Lifecycle
+        {
+            get;
+            set;
+        }
     }
 }

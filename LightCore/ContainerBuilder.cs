@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using LightCore.Activation;
-using LightCore.Exceptions;
 using LightCore.Fluent;
 using LightCore.Lifecycle;
 using LightCore.Properties;
@@ -145,7 +144,7 @@ namespace LightCore
         {
             if (!typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
-                throw new RegisteredTypesNotCompatibleException();
+                throw new ImplementationTypeDoesNotImplemenentContractException();
             }
 
             var key = new RegistrationKey(typeOfContract);
