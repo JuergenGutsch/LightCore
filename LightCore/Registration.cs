@@ -60,5 +60,15 @@ namespace LightCore
         {
             this.Key = key;
         }
+
+        /// <summary>
+        /// Activates the current registration.
+        /// </summary>
+        /// <returns>The activated instance.</returns>
+        public object ActivateInstance(Container container)
+        {
+            return this.Lifecycle.ReceiveInstanceInLifecycle(
+                () => this.Activator.ActivateInstance(container, this.Arguments));
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace LightCore.Integration.Web
 
             _container = accessor.Container;
 
-            this._application.PreRequestHandlerExecute += _application_PreRequestHandlerExecute;
+            this._application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
         }
 
         /// <summary>
@@ -55,9 +55,14 @@ namespace LightCore.Integration.Web
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The eventargs.</param>
-        private void _application_PreRequestHandlerExecute(object sender, System.EventArgs e)
+        private void OnPreRequestHandlerExecute(object sender, System.EventArgs e)
         {
             object handler = this._application.Context.CurrentHandler;
+
+            if(handler == null)
+            {
+                return;
+            }
 
             // Inject properties on current handler.
             _container.InjectProperties(handler);

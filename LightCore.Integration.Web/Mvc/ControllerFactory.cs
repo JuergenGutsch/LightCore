@@ -20,7 +20,7 @@ namespace LightCore.Integration.Web.Mvc
 
         /// <summary>
         /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule{TLifecycle}" />.
+        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule" />.
         /// </summary>
         /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>

@@ -43,6 +43,16 @@ namespace LightCore
         }
 
         /// <summary>
+        /// Creates a new instance of <see cref="Registration" />.
+        /// </summary>
+        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
+        /// <param name="name">The name.</param>
+        public RegistrationKey(Type contractType, string name) : this(contractType)
+        {
+            this.Name = name;
+        }
+
+        /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>

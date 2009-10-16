@@ -11,6 +11,11 @@ namespace LightCore.Integration.Web.Lifecycle
     public class HttpRequestLifecycle : ILifecycle
     {
         /// <summary>
+        /// Contains the lock object for instance creation.
+        /// </summary>
+        private readonly object _lock = new object();
+
+        /// <summary>
         /// Represents an identifier for the current instance.
         /// </summary>
         private readonly string _instanceIdentifier = Guid.NewGuid().ToString();
@@ -31,22 +36,26 @@ namespace LightCore.Integration.Web.Lifecycle
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
+
             HttpContextBase context = this.CurrentContext;
 
-            if (context == null)
+            lock (this._lock)
             {
-                context = new HttpContextWrapper(HttpContext.Current);
+                if (context == null)
+                {
+                    context = new HttpContextWrapper(HttpContext.Current);
+                }
+
+                object instanceToReturn = context.Items[this._instanceIdentifier];
+
+                if (instanceToReturn == null)
+                {
+                    instanceToReturn = newInstanceResolver();
+                    context.Items[this._instanceIdentifier] = instanceToReturn;
+                }
+
+                return instanceToReturn;
             }
-
-            object instanceToReturn = context.Items[this._instanceIdentifier];
-
-            if (instanceToReturn == null)
-            {
-                instanceToReturn = newInstanceResolver();
-                context.Items[this._instanceIdentifier] = instanceToReturn;
-            }
-
-            return instanceToReturn;
         }
     }
 }

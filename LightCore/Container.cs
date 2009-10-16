@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using LightCore.Activation;
 using LightCore.Exceptions;
 using LightCore.Properties;
 
@@ -66,12 +65,8 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract, string name)
         {
-            var key = new RegistrationKey(typeOfContract)
-                                      {
-                                          Name = name
-                                      };
-
-            Registration registration = this._registrations[key];
+            var key = new RegistrationKey(typeOfContract, name);
+            var registration = this._registrations[key];
 
             if (registration == null)
             {
@@ -79,10 +74,7 @@ namespace LightCore
                     Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
             }
 
-            IActivator activator = registration.Activator;
-
-            return registration.Lifecycle.ReceiveInstanceInLifecycle(
-                () => registration.Activator.ActivateInstance(this, registration.Arguments));
+            return registration.ActivateInstance(this);
         }
 
         /// <summary>
@@ -116,7 +108,7 @@ namespace LightCore
         /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
         private bool IsRegistered(Type typeOfContract)
         {
-            RegistrationKey key = new RegistrationKey(typeOfContract);
+            var key = new RegistrationKey(typeOfContract);
 
             return this._registrations.ContainsKey(key);
         }

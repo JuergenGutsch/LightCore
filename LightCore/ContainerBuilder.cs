@@ -171,7 +171,6 @@ namespace LightCore
             var selectors = new List<Func<RegistrationKey, bool>>
                                 {
                                     r => r.ContractType == registrationKey.ContractType,
-                                    //r => r.ImplementationType == registrationKey.ImplementationType,
                                     r => r.Name == registrationKey.Name
                                 };
 

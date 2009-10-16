@@ -10,6 +10,11 @@ namespace LightCore.Lifecycle
     public class ThreadSingletonLifecycle : ILifecycle
     {
         /// <summary>
+        /// Contains the lock object for instance creation.
+        /// </summary>
+        private readonly object _lock = new object();
+
+        /// <summary>
         /// Holds an map with instances for different threads.
         /// </summary>
         private readonly IDictionary<int, object> _instanceMap;
@@ -30,15 +35,19 @@ namespace LightCore.Lifecycle
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
-            if (this._instanceMap.ContainsKey(threadId))
+            lock (this._lock)
             {
-                return this._instanceMap[threadId];
+                if (this._instanceMap.ContainsKey(threadId))
+                {
+                    return this._instanceMap[threadId];
+                }
+
+                var instance = newInstanceResolver();
+                this._instanceMap.Add(threadId, instance);
+
+
+                return instance;
             }
-
-            var instance = newInstanceResolver();
-            this._instanceMap.Add(threadId, instance);
-
-            return instance;
         }
     }
 }

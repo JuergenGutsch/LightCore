@@ -8,6 +8,11 @@ namespace LightCore.Lifecycle
     public class SingletonLifecycle : ILifecycle
     {
         /// <summary>
+        /// Contains the lock object for instance creation.
+        /// </summary>
+        private readonly object _lock = new object();
+
+        /// <summary>
         /// The instance.
         /// </summary>
         private object _instance;
@@ -18,12 +23,15 @@ namespace LightCore.Lifecycle
         /// <param name="newInstanceResolver"></param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
-            if (this._instance == null)
+            lock (_lock)
             {
-                this._instance = newInstanceResolver();
-            }
+                if (this._instance == null)
+                {
+                    this._instance = newInstanceResolver();
+                }
 
-            return this._instance;
+                return this._instance;
+            }
         }
     }
 }

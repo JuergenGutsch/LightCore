@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CC409020-9039-4478-8581-C230923A6064}</ProjectGuid>
+    <ProjectGuid>{0938377E-199E-4EC3-9EB0-E20957EF6B37}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightCore.Configuration</RootNamespace>
-    <AssemblyName>LightCore.Configuration</AssemblyName>
+    <RootNamespace>LightCore.Configuration.Tests</RootNamespace>
+    <AssemblyName>LightCore.Configuration.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\LightCore.Configuration.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,45 +31,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Referenced DLLs\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.XML" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\XamlRegistrationException.cs" />
-    <Compile Include="LightCoreConfiguration.cs" />
-    <Compile Include="LightCoreConfigurationDefaults.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Registration.cs" />
-    <Compile Include="RegistrationLoader.cs" />
-    <Compile Include="XamlSectionHandler.cs" />
-    <Compile Include="XamlRegistrationModule.cs" />
+    <Compile Include="FooTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LightCore.Configuration\LightCore.Configuration.csproj">
+      <Project>{CC409020-9039-4478-8581-C230923A6064}</Project>
+      <Name>LightCore.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
+      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
+      <Name>LightCore.TestTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>LightCore</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

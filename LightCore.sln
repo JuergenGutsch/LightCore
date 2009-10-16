@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore", "LightCore\Ligh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration", "LightCore.Configuration\LightCore.Configuration.csproj", "{CC409020-9039-4478-8581-C230923A6064}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration.Tests", "LightCore.Configuration.Tests\LightCore.Configuration.Tests.csproj", "{0938377E-199E-4EC3-9EB0-E20957EF6B37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{CC409020-9039-4478-8581-C230923A6064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC409020-9039-4478-8581-C230923A6064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC409020-9039-4478-8581-C230923A6064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0938377E-199E-4EC3-9EB0-E20957EF6B37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0938377E-199E-4EC3-9EB0-E20957EF6B37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0938377E-199E-4EC3-9EB0-E20957EF6B37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0938377E-199E-4EC3-9EB0-E20957EF6B37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
