@@ -34,5 +34,12 @@ namespace LightCore.Fluent
         /// <param name="name">The registration name.</param>
         /// <returns>The instance itself to get fluent working.</returns>
         IFluentRegistration WithName(string name);
+
+        /// <summary>
+        /// Gives a group accociation to the registration.
+        /// </summary>
+        /// <param name="group">The registration name.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration WithGroup(string group);
     }
 }

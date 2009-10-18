@@ -63,5 +63,16 @@ namespace LightCore.Fluent
             this._registration.Key.Name = name;
             return this;
         }
+
+        /// <summary>
+        /// Gives a group accociation to the registration.
+        /// </summary>
+        /// <param name="group">The registration name.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration WithGroup(string group)
+        {
+            this._registration.Group = group;
+            return this;
+        }
     }
 }

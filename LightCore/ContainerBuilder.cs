@@ -15,6 +15,26 @@ namespace LightCore
     /// </summary>
     public class ContainerBuilder : IContainerBuilder
     {
+        private string _activeGroupConfigurations;
+        private string[] _activeGroupConfigurationsInternal;
+
+        /// <summary>
+        /// Gets or sets the active group configurations.
+        /// </summary>
+        public string ActiveGroupConfigurations
+        {
+            get
+            {
+                return _activeGroupConfigurations;
+            }
+
+            set
+            {
+                this._activeGroupConfigurations = value;
+                this._activeGroupConfigurationsInternal = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            }
+        }
+
         /// <summary>
         /// Holds a list with registered registrations.
         /// </summary>
@@ -117,6 +137,15 @@ namespace LightCore
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
             {
+                if (this._activeGroupConfigurationsInternal != null && registration.Group != null)
+                {
+                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registration.Group))
+                    {
+                        // Do not add inactive registration.
+                        return;
+                    }
+                }
+
                 this.AssertRegistrationExists(registration.Key);
                 this._registrations.Add(registration.Key, registration);
             });
