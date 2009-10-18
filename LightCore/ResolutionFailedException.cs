@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace LightCore.Exceptions
+namespace LightCore
 {
     /// <summary>
     /// Thrown when resolving of a type failed.

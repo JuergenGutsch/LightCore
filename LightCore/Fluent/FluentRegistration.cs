@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LightCore.Lifecycle;
 
 namespace LightCore.Fluent
@@ -23,7 +24,7 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
@@ -33,7 +34,7 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
@@ -65,7 +66,7 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Gives a group accociation to the registration.
+        /// Gives a group association to the registration.
         /// </summary>
         /// <param name="group">The registration name.</param>
         /// <returns>The instance itself to get fluent working.</returns>

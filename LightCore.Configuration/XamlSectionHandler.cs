@@ -32,7 +32,9 @@ namespace LightCore.Configuration
         {
             StringReader stringReader = new StringReader(section.OuterXml);
             XmlReader xmlReader = XmlReader.Create(stringReader);
+
             this._lightCoreConfigSection = System.Windows.Markup.XamlReader.Load(xmlReader);
+
             return this;
         }
     }

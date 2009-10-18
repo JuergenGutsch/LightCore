@@ -7,6 +7,7 @@ namespace LightCore.Integration.Web.Lifecycle
 {
     /// <summary>
     /// Represents a lifecycle for one instance per http request (ASP.NET).
+    /// (One instance is shared within the same http request).
     /// </summary>
     public class HttpRequestLifecycle : ILifecycle
     {

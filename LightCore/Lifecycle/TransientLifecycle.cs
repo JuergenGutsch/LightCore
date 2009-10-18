@@ -4,6 +4,7 @@ namespace LightCore.Lifecycle
 {
     /// <summary>
     /// Represents a lifecycle where instances cannot be reused.
+    /// (Every request gets a new instance).
     /// </summary>
     public class TransientLifecycle : ILifecycle
     {

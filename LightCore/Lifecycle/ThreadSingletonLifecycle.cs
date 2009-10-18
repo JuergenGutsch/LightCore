@@ -6,6 +6,7 @@ namespace LightCore.Lifecycle
 {
     /// <summary>
     /// Represents a singleton per thread lifecycle.
+    /// (One instance is shared within one thread).
     /// </summary>
     public class ThreadSingletonLifecycle : ILifecycle
     {

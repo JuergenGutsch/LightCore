@@ -1,7 +1,7 @@
 ﻿namespace LightCore.Configuration
 {
     ///<summary>
-    /// Represents a type alias.
+    /// Represents a type alias for registrations.
     ///</summary>
     public class TypeAlias
     {

@@ -3,7 +3,8 @@
 namespace LightCore.Lifecycle
 {
     /// <summary>
-    /// Represents a singleton per registration strategy on process scope (??)
+    /// Represents a singleton per container lifecycle.
+    /// (One instance is shared within the same container).
     /// </summary>
     public class SingletonLifecycle : ILifecycle
     {

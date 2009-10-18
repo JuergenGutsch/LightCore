@@ -10,13 +10,13 @@ namespace LightCore.Fluent
     public interface IFluentRegistration : IFluentInterface
     {
         /// <summary>
-        /// Treat the current registration to the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new();
 
         /// <summary>
-        /// Treat the current registration to the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         IFluentRegistration ControlledBy(Type type);
@@ -36,7 +36,7 @@ namespace LightCore.Fluent
         IFluentRegistration WithName(string name);
 
         /// <summary>
-        /// Gives a group accociation to the registration.
+        /// Gives a group association to the registration.
         /// </summary>
         /// <param name="group">The registration name.</param>
         /// <returns>The instance itself to get fluent working.</returns>

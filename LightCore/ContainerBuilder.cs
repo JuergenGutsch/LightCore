@@ -15,7 +15,14 @@ namespace LightCore
     /// </summary>
     public class ContainerBuilder : IContainerBuilder
     {
+        /// <summary>
+        /// Contains the active group configurations as comma separated string.
+        /// </summary>
         private string _activeGroupConfigurations;
+
+        /// <summary>
+        /// Contains the active group configurations as array for internal use.
+        /// </summary>
         private string[] _activeGroupConfigurationsInternal;
 
         /// <summary>
