@@ -14,7 +14,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_configure_and_resolve_explicite_type_registration()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             var registrations = new List<Registration>
                                     {
@@ -42,7 +42,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_configure_and_resolve_type_registration_with_alias()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             configuration.TypeAliases.Add(new TypeAlias { Alias = "IBar", Type = "LightCore.TestTypes.IBar, LightCore.TestTypes" });
 
@@ -74,7 +74,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_configure_and_resolve_with_default_singleton_lifecycle()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             var registrations = new List<Registration>
                                     {
@@ -103,7 +103,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_configure_and_resolve_with_registration_default_transient_lifecycle()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             configuration.DefaultLifecycle = "Transient";
 
@@ -134,7 +134,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_set_type_alias_for_lifecycles()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             var registrations = new List<Registration>
                                     {
@@ -164,7 +164,7 @@ namespace LightCore.Configuration.Tests
         [Test]
         public void Can_set_lifecycle_full_qualified()
         {
-            var configuration = GetDefaultConfiguration();
+            var configuration = new LightCoreConfiguration();
 
             var registrations = new List<Registration>
                                     {
@@ -189,34 +189,6 @@ namespace LightCore.Configuration.Tests
             var barTwo = container.Resolve<IBar>();
 
             Assert.AreNotSame(bar, barTwo);
-        }
-
-        private static LightCoreConfiguration GetDefaultConfiguration()
-        {
-            return new LightCoreConfiguration
-                       {
-                           TypeAliases = new List<TypeAlias>
-                                             {
-                                                 new TypeAlias
-                                                     {
-                                                         Alias = "Transient",
-                                                         Type =
-                                                             "LightCore.Lifecycle.TransientLifecycle, LightCore"
-                                                     },
-                                                 new TypeAlias
-                                                     {
-                                                         Alias = "Singleton",
-                                                         Type =
-                                                             "LightCore.Lifecycle.SingletonLifecycle, LightCore"
-                                                     },
-                                                 new TypeAlias
-                                                     {
-                                                         Alias = "ThreadSingleton",
-                                                         Type =
-                                                             "LightCore.Lifecycle.ThreadSingletonLifecycle, LightCore"
-                                                     }
-                                             }
-                       };
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 
+using LightCore.Lifecycle;
+
 namespace LightCore.Configuration
 {
     /// <summary>
@@ -41,6 +43,27 @@ namespace LightCore.Configuration
         public LightCoreConfiguration()
         {
             this.TypeAliases = new List<TypeAlias>();
+
+            // Load default lifecycle type alias.
+            this.TypeAliases.AddRange(new List<TypeAlias>
+                                          {
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "Transient",
+                                                      Type = typeof(TransientLifecycle).AssemblyQualifiedName
+                                                  },
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "Singleton",
+                                                      Type = typeof(SingletonLifecycle).AssemblyQualifiedName
+                                                  },
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "ThreadSingleton",
+                                                      Type = typeof(ThreadSingletonLifecycle).AssemblyQualifiedName
+                                                  }
+                                          });
+
             this.Registrations = new List<Registration>();
         }
 

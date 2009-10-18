@@ -3,7 +3,7 @@
     <xs:element name="LightCoreConfiguration">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="LightCoreConfiguration.TypeAliases">
+                <xs:element name="LightCoreConfiguration.TypeAliases" minOccurs="0">
                     <xs:complexType>
                         <xs:sequence>
                             <xs:element name="TypeAlias">
