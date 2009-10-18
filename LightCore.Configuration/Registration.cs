@@ -15,6 +15,15 @@
         }
 
         /// <summary>
+        /// Gets or sets the registration group.
+        /// </summary>
+        public string Group
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets or sets the identifier for the contract type.
         /// </summary>
         public string ContractType

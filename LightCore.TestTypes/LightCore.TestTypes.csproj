@@ -12,6 +12,8 @@
     <AssemblyName>LightCore.TestTypes</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>LightCore.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +40,9 @@
   <ItemGroup>
     <Compile Include="Bar.cs" />
     <Compile Include="BarController.cs" />
+    <Compile Include="SqlBar.cs" />
+    <Compile Include="SqlFoo.cs" />
+    <Compile Include="XmlBar.cs" />
     <Compile Include="Foo.cs" />
     <Compile Include="FooBase.cs" />
     <Compile Include="FooController.cs" />
@@ -48,6 +53,10 @@
     <Compile Include="IFoo.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlFoo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LightCore.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

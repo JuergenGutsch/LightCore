@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using LightCore.Configuration.Properties;
 using LightCore.Fluent;
@@ -28,76 +30,92 @@ namespace LightCore.Configuration
         /// <param name="configuration">The configuration</param>
         public void Register(IContainerBuilder containerBuilder, LightCoreConfiguration configuration)
         {
-            foreach (var registration in configuration.Registrations)
+            IEnumerable<Registration> registrationsToRegister = configuration.Registrations;
+
+            if(configuration.ActiveGroupConfigurations != null)
             {
-                string contractType = registration.ContractType;
-                string implementationType = registration.ImplementationType;
+                var activeGroups = configuration.ActiveGroupConfigurations.Split(new[] { ',' },
+                                                                                 StringSplitOptions.RemoveEmptyEntries);
 
-                if (!registration.ContractType.Contains("."))
+                registrationsToRegister = registrationsToRegister.Where(
+                    r => !string.IsNullOrEmpty(r.Group) && activeGroups.Any(g => g == r.Group));
+            }
+
+            foreach (Registration registration in registrationsToRegister)
+            {
+                this.ProcessRegistration(containerBuilder, configuration, registration);
+            }
+        }
+
+        private void ProcessRegistration(IContainerBuilder containerBuilder, LightCoreConfiguration configuration, Registration registration)
+        {
+            string contractType = registration.ContractType;
+            string implementationType = registration.ImplementationType;
+
+            if (!registration.ContractType.Contains("."))
+            {
+                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == contractType);
+
+                if (typeAlias != null)
                 {
-                    TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == contractType);
-
-                    if (typeAlias != null)
-                    {
-                        contractType = typeAlias.Type;
-                    }
+                    contractType = typeAlias.Type;
                 }
+            }
 
-                if (!registration.ImplementationType.Contains("."))
+            if (!registration.ImplementationType.Contains("."))
+            {
+                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == implementationType);
+
+                if (typeAlias != null)
                 {
-                    TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == implementationType);
-
-                    if (typeAlias != null)
-                    {
-                        implementationType = typeAlias.Type;
-                    }
+                    implementationType = typeAlias.Type;
                 }
+            }
 
-                IFluentRegistration fluentRegistration = containerBuilder.Register(
-                    LoadType(configuration, contractType),
-                    LoadType(configuration, implementationType));
+            IFluentRegistration fluentRegistration = containerBuilder.Register(
+                LoadType(configuration, contractType),
+                LoadType(configuration, implementationType));
 
-                if (!String.IsNullOrEmpty(registration.Name))
+            if (!String.IsNullOrEmpty(registration.Name))
+            {
+                fluentRegistration.WithName(registration.Name);
+            }
+
+            if (!String.IsNullOrEmpty(registration.Arguments))
+            {
+                var arguments = registration.Arguments.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                fluentRegistration.WithArguments(arguments);
+            }
+
+            Type lifecycleType = null;
+
+            if (!String.IsNullOrEmpty(registration.Lifecycle))
+            {
+                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == registration.Lifecycle);
+
+                if (typeAlias != null)
                 {
-                    fluentRegistration.WithName(registration.Name);
-                }
-
-                if (!String.IsNullOrEmpty(registration.Arguments))
-                {
-                    var arguments = registration.Arguments.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                    fluentRegistration.WithArguments(arguments);
-                }
-
-                Type lifecycleType = null;
-
-                if (!String.IsNullOrEmpty(registration.Lifecycle))
-                {
-                    TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == registration.Lifecycle);
-
-                    if (typeAlias != null)
-                    {
-                        lifecycleType = LoadType(configuration, typeAlias.Type);
-                    }
-                    else
-                    {
-                        lifecycleType = LoadType(configuration, registration.Lifecycle);
-                    }
+                    lifecycleType = LoadType(configuration, typeAlias.Type);
                 }
                 else
                 {
-                    if (!String.IsNullOrEmpty(configuration.DefaultLifecycle))
-                    {
-                        TypeAlias typeAlias =
-                            configuration.TypeAliases.Find(alias => alias.Alias == configuration.DefaultLifecycle);
-
-                        lifecycleType = LoadType(configuration, typeAlias.Type);
-                    }
+                    lifecycleType = LoadType(configuration, registration.Lifecycle);
                 }
-
-                if (lifecycleType != null)
+            }
+            else
+            {
+                if (!String.IsNullOrEmpty(configuration.DefaultLifecycle))
                 {
-                    fluentRegistration.ControlledBy(lifecycleType);
+                    TypeAlias typeAlias =
+                        configuration.TypeAliases.Find(alias => alias.Alias == configuration.DefaultLifecycle);
+
+                    lifecycleType = LoadType(configuration, typeAlias.Type);
                 }
+            }
+
+            if (lifecycleType != null)
+            {
+                fluentRegistration.ControlledBy(lifecycleType);
             }
         }
 

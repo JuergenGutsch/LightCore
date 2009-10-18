@@ -19,6 +19,15 @@ namespace LightCore.Configuration
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the active group configurations.
+        /// </summary>
+        public string ActiveGroupConfigurations
+        {
+            get;
+            set;
+        }
+
         ///<summary>
         /// Gets or sets the type aliases.
         ///</summary>
