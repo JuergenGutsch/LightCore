@@ -23,6 +23,7 @@
                                     <xs:attribute name="ContractType" type="xs:string" use="required" />
                                     <xs:attribute name="ImplementationType" type="xs:string" use="required" />
                                     <xs:attribute name="Name" type="xs:string" use="optional" />
+                                    <xs:attribute name="Group" type="xs:string" use="optional" />
                                     <xs:attribute name="Arguments" type="xs:string" use="optional" />
                                 </xs:complexType>
                             </xs:element>
@@ -31,6 +32,7 @@
                 </xs:element>
             </xs:sequence>
             <xs:attribute name="DefaultLifecycle" type="xs:string" use="optional" />
+            <xs:attribute name="ActiveGroupConfigurations" type="xs:string" use="optional" />
         </xs:complexType>
     </xs:element>
 </xs:schema>
