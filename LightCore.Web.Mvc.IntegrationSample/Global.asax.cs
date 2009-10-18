@@ -48,8 +48,8 @@ namespace LightCore.Web.Mvc.IntegrationSample
 
             builder.RegisterModule(controllerRegistrationModule);
 
-            builder.Register<IFormsAuthentication, FormsAuthenticationService>();
-            builder.Register<IMembershipService, AccountMembershipService>();
+            builder.Register<IFormsAuthentication>(c => new FormsAuthenticationService());
+            builder.Register<IMembershipService>(c => new AccountMembershipService());
             builder.Register<IWelcomeRepository, WelcomeRepository>();
 
             _container = builder.Build();

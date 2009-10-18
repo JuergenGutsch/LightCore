@@ -19,7 +19,7 @@ namespace LightCore.Web.IntegrationSample
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo, Foo>();
+            builder.Register<IFoo, Foo>().WithArguments("Test Argument", true);
             builder.Register<IBar, Bar>();
 
             _container = builder.Build();
