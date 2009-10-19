@@ -38,7 +38,9 @@ namespace LightCore.Configuration
                                                                                  StringSplitOptions.RemoveEmptyEntries);
 
                 registrationsToRegister = registrationsToRegister.Where(
-                    r => !string.IsNullOrEmpty(r.Group) && activeGroups.Any(g => g.Trim() == r.Group));
+                    r =>
+                    string.IsNullOrEmpty(r.Group) ||
+                    (!string.IsNullOrEmpty(r.Group) && activeGroups.Any(g => g.Trim() == r.Group)));
             }
 
             foreach (Registration registration in registrationsToRegister)
