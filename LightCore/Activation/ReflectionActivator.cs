@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
+using LightCore.ExtensionMethods.System;
+using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Properties;
 
 namespace LightCore.Activation

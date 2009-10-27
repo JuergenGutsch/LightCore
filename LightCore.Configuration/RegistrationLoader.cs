@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using LightCore.Configuration.Properties;
+using LightCore.ExtensionMethods.System;
 using LightCore.Fluent;
 
 namespace LightCore.Configuration
