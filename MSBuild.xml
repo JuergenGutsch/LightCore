@@ -2,10 +2,12 @@
 <Project DefaultTargets="Publish" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <BasePath>$(MSBuildProjectDirectory)\</BasePath>
-
         <BuildFolder>C:\Build\LightCore\</BuildFolder>
         <PublishFolder>C:\inetpub\wwwroot\LightCore\</PublishFolder>
-        <ConfigurationProperties>Configuration=Release</ConfigurationProperties>
+
+        <Optimize>true</Optimize>
+        <DebugSymbols>false</DebugSymbols>
+        <OutputPath>.\bin\Release</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,7 +25,6 @@
     <Target Name="Build" DependsOnTargets="Clean">
         <MSBuild
           Projects="@(Solution)"
-          Properties="@(ConfigurationProperties)"
           Targets="Build" />
     </Target>
 </Project>
