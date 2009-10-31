@@ -4,10 +4,6 @@
         <BasePath>$(MSBuildProjectDirectory)\</BasePath>
         <BuildFolder>C:\Build\LightCore\</BuildFolder>
         <PublishFolder>C:\inetpub\wwwroot\LightCore\</PublishFolder>
-
-        <Optimize>true</Optimize>
-        <DebugSymbols>false</DebugSymbols>
-        <OutputPath>.\bin\Release</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +21,7 @@
     <Target Name="Build" DependsOnTargets="Clean">
         <MSBuild
           Projects="@(Solution)"
-          Targets="Build" />
+          Targets="Build"
+          Properties="Configuration=Release;Optimize=true" />
     </Target>
 </Project>
