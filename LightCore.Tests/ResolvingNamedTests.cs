@@ -18,7 +18,8 @@ namespace LightCore.Tests
 
             var container = builder.Build();
 
-            var namedInstance = container.Resolve<IFoo>("test");
+            var namedInstance = container
+                .Resolve<IFoo>("test");
 
             Assert.IsNotNull(namedInstance);
         }

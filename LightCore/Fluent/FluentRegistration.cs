@@ -72,7 +72,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithGroup(string group)
         {
-            this._registration.Group = group;
+            this._registration.Key.Group = group;
             return this;
         }
     }

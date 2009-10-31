@@ -16,15 +16,6 @@ namespace LightCore
             get;
             private set;
         }
-        
-        /// <summary>
-        /// Gets or sets the group for this registration.
-        /// </summary>
-        public string Group
-        {
-            get;
-            set;
-        }
 
         /// <summary>
         /// Gets or sets the activator.

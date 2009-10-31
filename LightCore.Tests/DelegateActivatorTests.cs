@@ -38,11 +38,15 @@ namespace LightCore.Tests
         public void DelegateActivator_can_return_a_named_instance()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(c => new Foo()).WithName("test");
+
+            builder
+                .Register<IFoo>(c => new Foo())
+                .WithName("test");
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>("test");
+            var foo = container
+                .Resolve<IFoo>(("test"));
 
             Assert.IsNotNull(foo);
         }

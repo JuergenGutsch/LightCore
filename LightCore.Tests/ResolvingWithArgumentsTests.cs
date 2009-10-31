@@ -11,14 +11,23 @@ namespace LightCore.Tests
         public void Container_resolves_instances_with_arguments()
         {
             var builder = new ContainerBuilder();
+
             builder.Register<IBar, Bar>();
-            builder.Register<IFoo, Foo>().WithArguments("Peter");
-            builder.Register<IFoo, Foo>().WithArguments("Peter", true).WithName("TwoArguments");
+
+            builder
+                .Register<IFoo, Foo>()
+                .WithArguments("Peter");
+
+            builder
+                .Register<IFoo, Foo>()
+                .WithArguments("Peter", true)
+                .WithName("TwoArguments");
 
             var container = builder.Build();
 
             var foo = container.Resolve<IFoo>();
-            var fooWithTwoArguments = container.Resolve<IFoo>("TwoArguments");
+            var fooWithTwoArguments = container
+                .Resolve<IFoo>("TwoArguments");
 
             Assert.AreEqual("Peter", ((Foo)foo).Arg1);
             Assert.AreEqual("Peter", ((Foo)fooWithTwoArguments).Arg1);

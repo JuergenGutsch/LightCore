@@ -17,7 +17,8 @@ namespace LightCore.Tests
             var container = builder.Build();
 
             var fooRepository = container.Resolve<IRepository<Foo>>();
-            var fooTwoRepository = container.Resolve<IRepository<Foo>>("two");
+            var fooTwoRepository = container
+                .Resolve<IRepository<Foo>>("two");
 
             Assert.IsNotNull(fooRepository.GetData());
             Assert.IsNotNull(fooTwoRepository.GetData());

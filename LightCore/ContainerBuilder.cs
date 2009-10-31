@@ -118,7 +118,7 @@ namespace LightCore
         {
             var typeOfContract = typeof(TContract);
 
-            var key = new RegistrationKey(typeOfContract);
+            var key = new RegistrationKey(typeOfContract, null);
 
             var registration = new Registration(key)
             {
@@ -146,16 +146,23 @@ namespace LightCore
             // Add a register callback for lazy assertion after manipulating in fluent registration api.
             this._registrationCallbacks.Add(() =>
             {
-                if (this._activeGroupConfigurationsInternal != null && registration.Group != null)
+                if (this._activeGroupConfigurationsInternal != null && registration.Key.Group != null)
                 {
-                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registration.Group))
+                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registration.Key.Group))
                     {
                         // Do not add inactive registration.
                         return;
                     }
                 }
 
-                this.AssertRegistrationExists(registration.Key);
+                if(this._registrations.ContainsKey(registration.Key))
+                {
+                    throw new
+                        RegistrationAlreadyExistsException(
+                        Resources.RegistrationForContractAndNameAlreadyExistsFormat.FormatWith(
+                            registration.Key.ContractType, registration.Key.Name));
+                }
+
                 this._registrations.Add(registration.Key, registration);
             });
         }
@@ -197,33 +204,6 @@ namespace LightCore
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return new FluentRegistration(registration);
-        }
-
-        /// <summary>
-        /// Asserts whether the registration already exists.
-        /// </summary>
-        /// <param name="registrationKey">The registration key to check for.</param>
-        private void AssertRegistrationExists(RegistrationKey registrationKey)
-        {
-            var selectors = new List<Func<RegistrationKey, bool>>
-                                {
-                                    r => r.ContractType == registrationKey.ContractType,
-                                    r => r.Name == registrationKey.Name
-                                };
-
-            Func<RegistrationKey, bool> registrationEqualsSelector = selectors.Aggregate((current, next) => r => current(r) && next(r));
-            Func<RegistrationKey, bool> registrationNameEqualsSelector = r => r.Name != null && r.Name == registrationKey.Name;
-
-            Func<RegistrationKey, bool> mainSelector = r => registrationEqualsSelector(r) || registrationNameEqualsSelector(r);
-
-            // Check if the registration key already exists.
-            if (this._registrations.Any(r => mainSelector(r.Key)))
-            {
-                throw new RegistrationAlreadyExistsException(
-                    Resources.RegistrationForContractAndNameAlreadyExistsFormat.FormatWith(
-                        registrationKey.ContractType,
-                        registrationKey.Name));
-            }
         }
     }
 }

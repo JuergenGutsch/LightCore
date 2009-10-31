@@ -16,6 +16,15 @@ namespace LightCore
             set;
         }
 
+        ///<summary>
+        /// The group for the registration.
+        ///</summary>
+        public string Group
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// The contract type.
         /// </summary>
@@ -47,9 +56,22 @@ namespace LightCore
         /// </summary>
         /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
         /// <param name="name">The name.</param>
-        public RegistrationKey(Type contractType, string name) : this(contractType)
+        public RegistrationKey(Type contractType, string name)
+            : this(contractType)
         {
             this.Name = name;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Registration" />.
+        /// </summary>
+        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="group">The group.</param>
+        public RegistrationKey(Type contractType, string name, string group)
+            : this(contractType, null)
+        {
+            this.Group = group;
         }
 
         /// <summary>
@@ -80,8 +102,7 @@ namespace LightCore
         /// <param name="otherKey">An object to compare with this object.</param>
         public bool Equals(RegistrationKey otherKey)
         {
-            return otherKey.ContractType == this.ContractType
-                   && otherKey.Name == this.Name;
+            return otherKey.ContractType == this.ContractType && otherKey.Name == this.Name;
         }
 
         /// <summary>

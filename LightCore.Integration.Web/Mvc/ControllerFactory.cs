@@ -29,7 +29,8 @@ namespace LightCore.Integration.Web.Mvc
         protected override IController CreateControllerCore(RequestContext requestContext, string controllerName)
         {
             // Returns the resolved controller to the caller.
-            return this.Container.Resolve<IController>(controllerName.ToLowerInvariant());
+            return this.Container
+                .Resolve<IController>(controllerName.ToLowerInvariant());
         }
     }
 }

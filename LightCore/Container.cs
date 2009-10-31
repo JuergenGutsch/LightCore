@@ -39,19 +39,10 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Resolves a contract (include subcontracts).
-        /// </summary>
-        /// <returns>The resolved instance as <see cref="object" />.</returns>
-        internal object Resolve(Type typeOfContract)
-        {
-            return this.Resolve(typeOfContract, null);
-        }
-
-        /// <summary>
         /// Resolves a contract by name (include subcontracts).
         /// </summary>
+        /// <param name="name">The name.</param>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <param name="name">The name given in the registration.</param>
         /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         public TContract Resolve<TContract>(string name)
         {
@@ -61,22 +52,47 @@ namespace LightCore
         /// <summary>
         /// Resolves a contract (include subcontracts).
         /// </summary>
+        /// <returns>The resolved instance as <see cref="object" />.</returns>
+        internal object Resolve(Type typeOfContract)
+        {
+            return this.Resolve(typeOfContract, null);
+        }
+
+        /// <summary>
+        /// Resolves a contract (include subcontracts).
+        /// </summary>
         /// <param name="typeOfContract">The type of the contract.</param>
-        /// <param name="name">The name given in the registration.</param>
+        /// <param name="name">The name.</param>
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         private object Resolve(Type typeOfContract, string name)
         {
             var key = new RegistrationKey(typeOfContract, name);
-            
+
             Registration registration;
 
             if(!this._registrations.TryGetValue(key, out registration))
             {
                 throw new RegistrationNotFoundException(
-                    Resources.RegistrationForContractAndNameNotFoundFormat.FormatWith(typeOfContract.Name, name));
+                    Resources.RegistrationForContractAndNameNotFoundFormat
+                        .FormatWith(
+                        typeOfContract.Name,
+                        name));
             }
 
             return registration.ActivateInstance(this);
+        }
+
+        /// <summary>
+        /// Resolves all contracts.
+        /// </summary>
+        /// <param name="predicate">The predicate for the query.</param>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<object> ResolveAll(Func<Registration, bool> predicate)
+        {
+            foreach(var registration in this._registrations.Where(r => predicate(r.Value)))
+            {
+                yield return this.Resolve(registration.Key.ContractType, registration.Key.Name);
+            }
         }
 
         /// <summary>
@@ -100,7 +116,7 @@ namespace LightCore
             var validProperties = properties.Where(
                 validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
 
-            validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType, null), null));
+            validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
         }
 
         /// <summary>
