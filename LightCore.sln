@@ -25,6 +25,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration.Tests", "LightCore.Configuration.Tests\LightCore.Configuration.Tests.csproj", "{0938377E-199E-4EC3-9EB0-E20957EF6B37}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Items", "Build Items", "{B4B2EE66-45FA-44AA-9333-503682EF07ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
+	ProjectSection(SolutionItems) = preProject
+		MSBuild.xml = MSBuild.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -82,5 +89,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{22AD0900-A58F-4D1B-88F1-1B109835F956} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
+		{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0} = {B4B2EE66-45FA-44AA-9333-503682EF07ED}
 	EndGlobalSection
 EndGlobal
