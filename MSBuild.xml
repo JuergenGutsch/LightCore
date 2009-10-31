@@ -5,7 +5,7 @@
 
         <BuildFolder>C:\Build\LightCore\</BuildFolder>
         <PublishFolder>C:\inetpub\wwwroot\LightCore\</PublishFolder>
-        <Configuration>Release</Configuration>
+        <ConfigurationProperties>Configuration=Release</ConfigurationProperties>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,7 +23,7 @@
     <Target Name="Build" DependsOnTargets="Clean">
         <MSBuild
           Projects="@(Solution)"
-          Properties="@(Configuration)"
+          Properties="@(ConfigurationProperties)"
           Targets="Build" />
     </Target>
 </Project>
