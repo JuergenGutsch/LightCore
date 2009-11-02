@@ -24,7 +24,7 @@ namespace LightCore.Integration.Web.Lifecycle
         /// <summary>
         /// The current context for unit testing.
         /// </summary>
-        internal HttpContextBase CurrentContext
+        public HttpContextBase CurrentContext
         {
             get;
             set;

@@ -103,7 +103,7 @@ namespace LightCore
         /// Sets the default reuse strategy function for this container.
         /// </summary>
         /// <param name="lifecycleFunction">The creator function for default reuse strategy.</param>
-        internal void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)
+        public void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)
         {
             this._defaultLifecycleFunction = lifecycleFunction;
         }
