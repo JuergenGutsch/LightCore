@@ -24,11 +24,37 @@ namespace LightCore
         TContract Resolve<TContract>(string name);
 
         /// <summary>
+        /// Resolves a contract (include subcontracts).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>The resolved instance as object.</returns>
+        object Resolve(Type contractType);
+
+        /// <summary>
+        /// Resolves a contract by name (include subcontracts).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>The resolved instance as object.</returns>
+        object Resolve(Type contractType, string name);
+
+        /// <summary>
         /// Resolves all contracts.
         /// </summary>
-        /// <param name="predicate">The predicate for the query.</param>
         /// <returns>The resolved instances</returns>
-        IEnumerable<object> ResolveAll(Func<Registration, bool> predicate);
+        IEnumerable<T> ResolveAll<T>();
+
+        /// <summary>
+        /// Resolves all contracts based on a contracttype.
+        /// </summary>
+        /// <returns>The resolved instances</returns>
+        IEnumerable<object> ResolveAll(Type contractType);
+
+        /// <summary>
+        /// Resolves all contracts.
+        /// </summary>
+        /// <returns>The resolved instances</returns>
+        IEnumerable<object> ResolveAll();
 
         /// <summary>
         /// Injects properties to an existing instance.

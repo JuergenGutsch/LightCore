@@ -53,7 +53,7 @@ namespace LightCore
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <returns>The resolved instance as <see cref="object" />.</returns>
-        internal object Resolve(Type typeOfContract)
+        public object Resolve(Type typeOfContract)
         {
             return this.Resolve(typeOfContract, null);
         }
@@ -64,13 +64,13 @@ namespace LightCore
         /// <param name="typeOfContract">The type of the contract.</param>
         /// <param name="name">The name.</param>
         /// <returns>The resolved instance as <see cref="object" />.</returns>
-        private object Resolve(Type typeOfContract, string name)
+        public object Resolve(Type typeOfContract, string name)
         {
             var key = new RegistrationKey(typeOfContract, name);
 
             Registration registration;
 
-            if(!this._registrations.TryGetValue(key, out registration))
+            if (!this._registrations.TryGetValue(key, out registration))
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat
@@ -85,13 +85,39 @@ namespace LightCore
         /// <summary>
         /// Resolves all contracts.
         /// </summary>
-        /// <param name="predicate">The predicate for the query.</param>
         /// <returns>The resolved instances</returns>
-        public IEnumerable<object> ResolveAll(Func<Registration, bool> predicate)
+        public IEnumerable<T> ResolveAll<T>()
         {
-            foreach(var registration in this._registrations.Where(r => predicate(r.Value)))
+            foreach (object instance in this.ResolveAll())
+            {
+                if (instance is T)
+                {
+                    yield return (T)instance;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resolves all contracts.
+        /// </summary>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<object> ResolveAll()
+        {
+            foreach (var registration in this._registrations)
             {
                 yield return this.Resolve(registration.Key.ContractType, registration.Key.Name);
+            }
+        }
+
+        /// <summary>
+        /// Resolves all contracts based on a contracttype.
+        /// </summary>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<object> ResolveAll(Type contractType)
+        {
+            foreach (var registration in this._registrations.Where(r => r.Key.ContractType == contractType))
+            {
+                yield return this.Resolve(contractType, registration.Key.Name);
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
+
 using NUnit.Framework;
 
 namespace LightCore.Tests
@@ -22,13 +24,21 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo, Foo>().ControlledBy<TransientLifecycle>();
-            builder.Register<IBar, Bar>().ControlledBy<TransientLifecycle>();
+            builder.Register<IFoo, Foo>()
+                .ControlledBy<TransientLifecycle>();
+
+            builder.Register<IFoo, Foo>()
+                .ControlledBy<SingletonLifecycle>()
+                .WithName("test");
+
+            builder.Register<IBar, Bar>()
+                .ControlledBy<TransientLifecycle>();
+
             builder.Register<ILorem, TestLorem>();
 
             var container = builder.Build();
 
-            var allInstances = container.ResolveAll(r => r.Lifecycle is TransientLifecycle);
+            var allInstances = container.ResolveAll<IFoo>();
 
             Assert.AreEqual(2, allInstances.Count());
         }

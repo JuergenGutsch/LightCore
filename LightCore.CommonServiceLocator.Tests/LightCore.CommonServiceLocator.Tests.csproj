@@ -1,19 +1,17 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{10415A70-65B2-47CD-860C-6726F5626335}</ProjectGuid>
+    <ProjectGuid>{3E243370-7480-4559-B89B-B5A68A7E2AF8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LightCore.Tests</RootNamespace>
-    <AssemblyName>LightCore.Tests</AssemblyName>
+    <RootNamespace>LightCore.CommonServiceLocator.Tests</RootNamespace>
+    <AssemblyName>LightCore.CommonServiceLocator.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LightCore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,9 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,46 +31,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Referenced DLLs\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Referenced DLLs\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DelegateActivatorTests.cs" />
-    <Compile Include="GenericRegistrationTests.cs" />
-    <Compile Include="InjectPropertiesTests.cs" />
-    <Compile Include="LifecycleTests.cs" />
-    <Compile Include="ResolvingNamedTests.cs" />
+    <Compile Include="LightCoreAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ContainerTests.cs" />
-    <Compile Include="ControllerBuilderTests.cs" />
-    <Compile Include="ResolvingTests.cs" />
-    <Compile Include="ResolvingUseDefaultConstructorTests.cs" />
-    <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore.Performance\LightCore.Performance.csproj">
-      <Project>{8267A0FD-66DF-46B1-851E-99B8471BF3C2}</Project>
-      <Name>LightCore.Performance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
-      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
-      <Name>LightCore.TestTypes</Name>
+    <ProjectReference Include="..\LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj">
+      <Project>{AEB033B9-0F01-44A9-9642-A50BA90CA748}</Project>
+      <Name>LightCore.CommonServiceLocator</Name>
     </ProjectReference>
     <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>LightCore</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="LightCore.snk" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
