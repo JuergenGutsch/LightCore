@@ -47,7 +47,7 @@ namespace LightCore.Configuration
         {
             RegistrationLoader
                 .Instance
-                .Register(containerBuilder, LightCoreConfiguration.Instance);
+                .Register(containerBuilder, _configuration);
         }
     }
 }
