@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.ConsoleClient", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Performance", "LightCore.Performance\LightCore.Performance.csproj", "{8267A0FD-66DF-46B1-851E-99B8471BF3C2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc.IntegrationSample", "LightCore.Web.Mvc.IntegrationSample\LightCore.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
 EndProject
@@ -35,6 +35,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator", "LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj", "{AEB033B9-0F01-44A9-9642-A50BA90CA748}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator.Tests", "LightCore.CommonServiceLocator.Tests\LightCore.CommonServiceLocator.Tests.csproj", "{3E243370-7480-4559-B89B-B5A68A7E2AF8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blog Example", "Blog Example", "{BD34448E-E0A4-4894-A5B1-C6E7D07F18EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.BlogExample.Interfaces", "LightCore.Web.BlogExample.Interfaces\LightCore.Web.BlogExample.Interfaces.csproj", "{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -94,6 +98,10 @@ Global
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +109,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{22AD0900-A58F-4D1B-88F1-1B109835F956} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
+		{BD34448E-E0A4-4894-A5B1-C6E7D07F18EF} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0} = {B4B2EE66-45FA-44AA-9333-503682EF07ED}
+		{72A10DC9-16EE-4C99-BA5D-92F8B5A57FBA} = {BD34448E-E0A4-4894-A5B1-C6E7D07F18EF}
 	EndGlobalSection
 EndGlobal

@@ -38,6 +38,18 @@ namespace LightCore.Tests
         }
 
         [Test]
+        public void Container_resolves_registered_class_mapped_to_itself()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<Bar>();
+
+            var container = builder.Build();
+            var instance = container.Resolve<Bar>();
+
+            Assert.NotNull(instance);
+        }
+
+        [Test]
         public void Container_resolves_a_whole_object_tree()
         {
             var builder = new ContainerBuilder();

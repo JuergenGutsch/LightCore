@@ -1,6 +1,7 @@
 ﻿using System;
 
 using LightCore.Configuration;
+using LightCore.ConsoleClient.Screens;
 
 namespace LightCore.ConsoleClient
 {
@@ -34,7 +35,7 @@ namespace LightCore.ConsoleClient
             var container = builder.Build();
 
             var namedScreen = container
-                .Resolve<IScreen>("NamedScreen");
+                .Resolve<WelcomeScreen>("NamedScreen");
 
             namedScreen.WriteText();
 

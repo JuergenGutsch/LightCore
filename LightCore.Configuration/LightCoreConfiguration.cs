@@ -46,6 +46,12 @@ namespace LightCore.Configuration
             set;
         }
 
+        public List<RegistrationGroup> RegistrationGroups
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="LightCoreConfiguration" /> type.
         /// </summary>
@@ -74,6 +80,7 @@ namespace LightCore.Configuration
                                           });
 
             this.Registrations = new List<Registration>();
+            this.RegistrationGroups = new List<RegistrationGroup>();
         }
 
         /// <summary>

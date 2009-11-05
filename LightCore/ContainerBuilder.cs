@@ -109,6 +109,19 @@ namespace LightCore
         }
 
         /// <summary>
+        /// Registers a type to itself.
+        /// </summary>
+        /// <typeparam name="TSelf">The type.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        public IFluentRegistration Register<TSelf>()
+        {
+            Type typeOfSelf = typeof (TSelf);
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return this.Register(typeOfSelf, typeOfSelf);
+        }
+
+        /// <summary>
         /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>

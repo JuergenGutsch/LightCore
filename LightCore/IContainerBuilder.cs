@@ -30,6 +30,13 @@ namespace LightCore
         void DefaultControlledBy<TScope>() where TScope : ILifecycle, new();
 
         /// <summary>
+        /// Registers a type to itself.
+        /// </summary>
+        /// <typeparam name="TSelf">The type.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        IFluentRegistration Register<TSelf>();
+
+        /// <summary>
         /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>

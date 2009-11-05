@@ -12,6 +12,7 @@ namespace LightCore.Tests
         public void ControllerBuilder_can_register_types()
         {
             var builder = new ContainerBuilder();
+
             builder.Register<IFoo, Foo>();
         }
 
@@ -57,7 +58,18 @@ namespace LightCore.Tests
         public void ContainerBuilder_can_register_activation_functions()
         {
             var builder = new ContainerBuilder();
+
             builder.Register<IFoo>(c => new Foo(new Bar()));
+
+            var container = builder.Build();
+        }
+
+        [Test]
+        public void ContainerBuilder_can_register_type_to_self()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register<Foo>();
 
             var container = builder.Build();
         }
