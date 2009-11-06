@@ -11,7 +11,7 @@ namespace LightCore.Tests
     public class ContainerTests
     {
         [Test]
-        public void ContainerBuilder_can_initialize_controller()
+        public void ContainerBuilder_can_initialize_container()
         {
             var builder = new ContainerBuilder();
             var container = builder.Build();

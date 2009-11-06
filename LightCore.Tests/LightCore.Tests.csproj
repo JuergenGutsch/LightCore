@@ -59,10 +59,6 @@
     <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore.Performance\LightCore.Performance.csproj">
-      <Project>{8267A0FD-66DF-46B1-851E-99B8471BF3C2}</Project>
-      <Name>LightCore.Performance</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
       <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
       <Name>LightCore.TestTypes</Name>
