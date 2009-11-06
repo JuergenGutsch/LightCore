@@ -46,6 +46,9 @@ namespace LightCore.Configuration
             set;
         }
 
+        /// <summary>
+        /// Represents the registration groups.
+        /// </summary>
         public List<RegistrationGroup> RegistrationGroups
         {
             get;

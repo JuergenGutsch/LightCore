@@ -3,6 +3,9 @@ using LightCore.Lifecycle;
 
 namespace LightCore.ExtensionMethods.LightCore.Fluent
 {
+  /// <summary>
+  /// Represents extensionmethods for LightCore.Fluent namespace.
+  /// </summary>
     public static class FluentRegistrationExtensions
     {
         /// <summary>
