@@ -46,7 +46,7 @@
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="Enforce.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
-    <Compile Include="ImplementationTypeDoesNotImplemenentContractException.cs" />
+    <Compile Include="ImplementationNotImplementContractException.cs" />
     <Compile Include="InlineRegistrationModule.cs" />
     <Compile Include="Lifecycle\ILifecycle.cs" />
     <Compile Include="Lifecycle\SingletonLifecycle.cs" />

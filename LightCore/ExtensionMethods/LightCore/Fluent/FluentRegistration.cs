@@ -9,7 +9,7 @@ namespace LightCore.ExtensionMethods.LightCore.Fluent
     public static class FluentRegistrationExtensions
     {
         /// <summary>
-        /// Treat the current registration to use the passed lifecycle. (easter egg)
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         public static IFluentRegistration StirbLangsamMit<TLifecycle>(this IFluentRegistration source) where TLifecycle : ILifecycle, new()
@@ -18,7 +18,7 @@ namespace LightCore.ExtensionMethods.LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to use the passed lifecycle. (easter egg)
+        /// Treat the current registration to use the passed lifecycle.
         /// </summary>
         /// <returns>The instance itself to get fluent working.</returns>
         public static IFluentRegistration DieSlowlyWithin<TLifecycle>(this IFluentRegistration source) where TLifecycle : ILifecycle, new()

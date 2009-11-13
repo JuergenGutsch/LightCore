@@ -5,7 +5,7 @@ using LightCore.Lifecycle;
 namespace LightCore.Fluent
 {
     /// <summary>
-    /// Represents the fluent interface for registration.
+    /// Represents the fluent interface for the registration.
     /// </summary>
     public interface IFluentRegistration : IFluentInterface
     {
