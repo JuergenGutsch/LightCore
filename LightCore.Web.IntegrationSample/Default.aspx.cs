@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Web.UI;
+
 using LightCore.TestTypes;
 
 namespace LightCore.Web.IntegrationSample
@@ -23,12 +23,12 @@ namespace LightCore.Web.IntegrationSample
         {
             base.OnInit(e);
 
-            this.Controls.Add(this.LoadControl("~/UserControls/WelcomeUserControl.ascx"));
+            this.Form.Controls.Add(this.LoadControl("~/UserControls/WelcomeUserControl.ascx"));
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.Controls.Add(
+            this.Form.Controls.Add(
                 new LiteralControl(((Foo) this.Foo).Arg1));
         }
     }
