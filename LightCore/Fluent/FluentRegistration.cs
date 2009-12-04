@@ -1,26 +1,27 @@
 ﻿using System;
 
 using LightCore.Lifecycle;
+using LightCore.Registration;
 
 namespace LightCore.Fluent
 {
     /// <summary>
     /// Represents the fluent interface for registration.
     /// </summary>
-    public class FluentRegistration : IFluentRegistration
+    internal class FluentRegistration : IFluentRegistration
     {
         /// <summary>
         /// The current registration.
         /// </summary>
-        private readonly Registration _registration;
+        private readonly RegistrationItem _registrationItem;
 
         /// <summary>
         /// Initializes a new instance of <see cref="FluentRegistration" /> type.
         /// </summary>
-        /// <param name="registration">The current mapping item.</param>
-        public FluentRegistration(Registration registration)
+        /// <param name="registrationItem">The current mapping item.</param>
+        internal FluentRegistration(RegistrationItem registrationItem)
         {
-            this._registration = registration;
+            this._registrationItem = registrationItem;
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
         {
-            this._registration.Lifecycle = new TLifecycle();
+            this._registrationItem.Lifecycle = new TLifecycle();
             return this;
         }
 
@@ -39,7 +40,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
         {
-            this._registration.Lifecycle = (ILifecycle)Activator.CreateInstance(type);
+            this._registrationItem.Lifecycle = (ILifecycle)Activator.CreateInstance(type);
             return this;
         }
 
@@ -50,7 +51,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithArguments(params object[] arguments)
         {
-            this._registration.Arguments = arguments;
+            this._registrationItem.Arguments = arguments;
             return this;
         }
 
@@ -61,7 +62,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithName(string name)
         {
-            this._registration.Key.Name = name;
+            this._registrationItem.Key.Name = name;
             return this;
         }
 
@@ -72,7 +73,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithGroup(string group)
         {
-            this._registration.Key.Group = group;
+            this._registrationItem.Key.Group = group;
             return this;
         }
     }

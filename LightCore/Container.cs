@@ -6,23 +6,24 @@ using System.Reflection;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Properties;
+using LightCore.Registration;
 
 namespace LightCore
 {
     /// <summary>
     /// Represents the implementation for an inversion of control container.
     /// </summary>
-    public class Container : IContainer
+    internal class Container : IContainer
     {
         /// <summary>
         /// Holds a dictionary with registered registration keys and their corresponding registrations.
         /// </summary>
-        private readonly IDictionary<RegistrationKey, Registration> _registrations;
+        private readonly IDictionary<RegistrationKey, RegistrationItem> _registrations;
 
         /// <summary>
         /// Initializes a new instance of <see cref="Container" />.
         /// </summary>
-        internal Container(IDictionary<RegistrationKey, Registration> registrations)
+        internal Container(IDictionary<RegistrationKey, RegistrationItem> registrations)
         {
             // Save registrations.
             this._registrations = registrations;
@@ -68,9 +69,9 @@ namespace LightCore
         {
             var key = new RegistrationKey(typeOfContract, name);
 
-            Registration registration;
+            RegistrationItem registrationItem;
 
-            if (!this._registrations.TryGetValue(key, out registration))
+            if (!this._registrations.TryGetValue(key, out registrationItem))
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat
@@ -79,7 +80,7 @@ namespace LightCore
                         name));
             }
 
-            return registration.ActivateInstance(this);
+            return registrationItem.ActivateInstance(this);
         }
 
         /// <summary>

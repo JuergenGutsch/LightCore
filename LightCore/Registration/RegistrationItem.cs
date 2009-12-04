@@ -1,17 +1,17 @@
 ﻿using LightCore.Activation;
 using LightCore.Lifecycle;
 
-namespace LightCore
+namespace LightCore.Registration
 {
     /// <summary>
     /// Represents a registration.
     /// </summary>
-    public class Registration
+    internal class RegistrationItem
     {
         /// <summary>
         /// Gets the key for this registration.
         /// </summary>
-        public RegistrationKey Key
+        internal RegistrationKey Key
         {
             get;
             private set;
@@ -20,7 +20,7 @@ namespace LightCore
         /// <summary>
         /// Gets or sets the activator.
         /// </summary>
-        public IActivator Activator
+        internal IActivator Activator
         {
             get;
             set;
@@ -29,7 +29,7 @@ namespace LightCore
         /// <summary>
         /// Gets or sets the scope that holds the reuse strategy.
         /// </summary>
-        public ILifecycle Lifecycle
+        internal ILifecycle Lifecycle
         {
             get;
             set;
@@ -38,25 +38,25 @@ namespace LightCore
         /// <summary>
         /// Gets or sets the arguments for object creations.
         /// </summary>
-        public object[] Arguments
+        internal object[] Arguments
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="RegistrationItem" />.
         /// </summary>
-        public Registration()
+        internal RegistrationItem()
         {
 
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="RegistrationItem" />.
         /// </summary>
         /// <param name="key">The registration key as <see cref="RegistrationKey" />.</param>
-        public Registration(RegistrationKey key)
+        internal RegistrationItem(RegistrationKey key)
         {
             this.Key = key;
         }
@@ -65,7 +65,7 @@ namespace LightCore
         /// Activates the current registration.
         /// </summary>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(Container container)
+        internal object ActivateInstance(Container container)
         {
             return this.Lifecycle.ReceiveInstanceInLifecycle(
                 () => this.Activator.ActivateInstance(container, this.Arguments));

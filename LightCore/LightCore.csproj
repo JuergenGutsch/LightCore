@@ -44,15 +44,14 @@
     <Compile Include="Activation\DelegateActivator.cs" />
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
-    <Compile Include="Enforce.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
     <Compile Include="ImplementationNotImplementContractException.cs" />
-    <Compile Include="InlineRegistrationModule.cs" />
+    <Compile Include="Registration\InlineRegistrationModule.cs" />
     <Compile Include="Lifecycle\ILifecycle.cs" />
     <Compile Include="Lifecycle\SingletonLifecycle.cs" />
     <Compile Include="Lifecycle\ThreadSingletonLifecycle.cs" />
     <Compile Include="Lifecycle\TransientLifecycle.cs" />
-    <Compile Include="RegistrationModule.cs" />
+    <Compile Include="Registration\RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="ResolutionFailedException.cs" />
@@ -65,8 +64,8 @@
     <Compile Include="IContainerBuilder.cs" />
     <Compile Include="RegistrationAlreadyExistsException.cs" />
     <Compile Include="RegistrationNotFoundException.cs" />
-    <Compile Include="Registration.cs" />
-    <Compile Include="RegistrationKey.cs" />
+    <Compile Include="Registration\RegistrationItem.cs" />
+    <Compile Include="Registration\RegistrationKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

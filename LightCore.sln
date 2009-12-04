@@ -25,7 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration.Tests", "LightCore.Configuration.Tests\LightCore.Configuration.Tests.csproj", "{0938377E-199E-4EC3-9EB0-E20957EF6B37}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Items", "Build Items", "{B4B2EE66-45FA-44AA-9333-503682EF07ED}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4B2EE66-45FA-44AA-9333-503682EF07ED}"
+	ProjectSection(SolutionItems) = preProject
+		LightCore.xsd = LightCore.xsd
+		SampleConfiguration.xml = SampleConfiguration.xml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSBuild", "MSBuild", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
 	ProjectSection(SolutionItems) = preProject

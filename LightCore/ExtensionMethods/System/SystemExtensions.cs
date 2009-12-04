@@ -1,19 +1,19 @@
 ﻿namespace LightCore.ExtensionMethods.System
 {
-  /// <summary>
-  /// Represents extensionmethods for System namespace.
-  /// </summary>
-  public static class SystemExtensions
-  {
     /// <summary>
-    /// Formats a string with given arguments.
+    /// Represents extensionmethods for System namespace.
     /// </summary>
-    /// <param name="source">The format string.</param>
-    /// <param name="values">The values.</param>
-    /// <returns>The formatted string.</returns>
-    public static string FormatWith(this string source, params object[] values)
+    internal static class SystemExtensions
     {
-      return string.Format(source, values);
+        /// <summary>
+        /// Formats a string with given arguments.
+        /// </summary>
+        /// <param name="source">The format string.</param>
+        /// <param name="values">The values.</param>
+        /// <returns>The formatted string.</returns>
+        internal static string FormatWith(this string source, params object[] values)
+        {
+            return string.Format(source, values);
+        }
     }
-  }
 }

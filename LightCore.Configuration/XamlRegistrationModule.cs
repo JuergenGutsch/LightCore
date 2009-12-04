@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Markup;
+using LightCore.Registration;
 
 namespace LightCore.Configuration
 {

@@ -50,23 +50,28 @@ namespace LightCore.Configuration
             this._containerBuilder = containerBuilder;
 
             IEnumerable<RegistrationGroup> registrationGroups = configuration.RegistrationGroups;
-            IEnumerable<Registration> registrationsToRegister;
+            IEnumerable<Registration> registrationsToRegister = configuration.Registrations;
 
             if (configuration.ActiveGroupConfigurations == null)
             {
-                registrationsToRegister = registrationGroups.SelectMany(g => g.Registrations);
+                registrationsToRegister = registrationsToRegister
+                    .Union(registrationGroups.SelectMany(g => g.Registrations));
             }
             else
             {
                 var activeGroups = configuration.ActiveGroupConfigurations.Split(new[] { ',' },
                                                                                  StringSplitOptions.RemoveEmptyEntries);
 
-                registrationsToRegister = registrationGroups
-                    .Where(group => string.IsNullOrEmpty(group.Name)
-                                    ||
-                                    (!string.IsNullOrEmpty(group.Name) &&
-                                     activeGroups.Any(activeGroup => activeGroup.Trim() == group.Name)))
-                    .SelectMany(group => group.Registrations);
+                registrationsToRegister = registrationsToRegister.Union(registrationGroups
+                                                                            .Where(
+                                                                            group => string.IsNullOrEmpty(group.Name)
+                                                                                     ||
+                                                                                     (!string.IsNullOrEmpty(group.Name) &&
+                                                                                      activeGroups.Any(
+                                                                                          activeGroup =>
+                                                                                          activeGroup.Trim() ==
+                                                                                          group.Name)))
+                                                                            .SelectMany(group => group.Registrations));
             }
 
             foreach (Registration registration in registrationsToRegister)

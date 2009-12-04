@@ -2,6 +2,7 @@
 
 using LightCore.Fluent;
 using LightCore.Lifecycle;
+using LightCore.Registration;
 
 namespace LightCore
 {

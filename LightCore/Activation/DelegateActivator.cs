@@ -6,7 +6,7 @@ namespace LightCore.Activation
     /// <summary>
     /// Represents a delegate instance activator.
     /// </summary>
-    public class DelegateActivator<TContract> : IActivator
+    internal class DelegateActivator<TContract> : IActivator
     {
         /// <summary>
         /// The activation function as a delegate.
@@ -17,7 +17,7 @@ namespace LightCore.Activation
         /// Initializes a new instance of <see cref="DelegateActivator{TContract}" />.
         /// </summary>
         /// <param name="activationFunction">The activator function.</param>
-        public DelegateActivator(Func<IContainer, TContract> activationFunction)
+        internal DelegateActivator(Func<IContainer, TContract> activationFunction)
         {
             this._activationFunction = activationFunction;
         }

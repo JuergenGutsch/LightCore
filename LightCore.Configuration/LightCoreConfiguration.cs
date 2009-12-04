@@ -38,6 +38,15 @@ namespace LightCore.Configuration
         }
 
         /// <summary>
+        /// Represents the registrations.
+        /// </summary>
+        public List<Registration> Registrations
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Represents the registration groups.
         /// </summary>
         public List<RegistrationGroup> RegistrationGroups
@@ -73,6 +82,7 @@ namespace LightCore.Configuration
                                                   }
                                           });
 
+            this.Registrations = new List<Registration>();
             this.RegistrationGroups = new List<RegistrationGroup>();
         }
 

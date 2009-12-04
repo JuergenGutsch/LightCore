@@ -12,7 +12,7 @@ namespace LightCore.Activation
     /// <summary>
     /// Represents an reflection instance activator.
     /// </summary>
-    public class ReflectionActivator : IActivator
+    internal class ReflectionActivator : IActivator
     {
         /// <summary>
         /// Selector for dependency parameters.
@@ -48,7 +48,7 @@ namespace LightCore.Activation
         /// Creates a new instance of <see cref="ReflectionActivator" />.
         ///</summary>
         ///<param name="implementationType"></param>
-        public ReflectionActivator(Type implementationType)
+        internal ReflectionActivator(Type implementationType)
         {
             this._implementationType = implementationType;
 

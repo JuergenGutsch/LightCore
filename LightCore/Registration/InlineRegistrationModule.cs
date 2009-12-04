@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using LightCore.ExtensionMethods.System.Collections.Generic;
 
-namespace LightCore
+namespace LightCore.Registration
 {
     /// <summary>
     /// Represents an inline registration module.

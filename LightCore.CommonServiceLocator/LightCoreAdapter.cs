@@ -7,7 +7,7 @@ using Microsoft.Practices.ServiceLocation;
 namespace LightCore.CommonServiceLocator
 {
     /// <summary>
-    /// Represents an adapter for <see cref="IServiceLocator" /> interface,
+    /// Represents an adapter for the <see cref="IServiceLocator" /> interface,
     /// for the "CommonServiceLocator" project.
     /// </summary>
     public class LightCoreAdapter : ServiceLocatorImplBase

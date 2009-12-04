@@ -59,7 +59,7 @@ namespace LightCore.Integration.Web
         {
             object handler = this._application.Context.CurrentHandler;
 
-            if(handler == null)
+            if (handler == null)
             {
                 return;
             }

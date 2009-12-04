@@ -5,7 +5,7 @@ namespace LightCore.Activation
     /// <summary>
     /// Represents an instance activator.
     /// </summary>
-    public interface IActivator
+    internal interface IActivator
     {
         /// <summary>
         /// Activates an instance with given arguments.

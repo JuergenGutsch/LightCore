@@ -208,5 +208,52 @@ namespace LightCore.Configuration.Tests
 
             Assert.AreNotSame(bar, barTwo);
         }
+
+        [Test]
+        public void Usage_of_global_registrations_and_grouped_registrations_work_together()
+        {
+            var configuration = new LightCoreConfiguration();
+            configuration.ActiveGroupConfigurations = "Test";
+
+            var globalRegistrations = new List<Registration>()
+                                    {
+                                        new Registration
+                                            {
+                                                ContractType = "System.Object",
+                                                ImplementationType = "System.Object"
+                                            }
+                                    };
+
+            var groupRegistrations = new List<Registration>
+                                         {
+                                             new Registration
+                                                 {
+                                                     ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                     ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes"
+                                                 }
+                                         };
+
+            configuration.Registrations = globalRegistrations;
+            configuration.RegistrationGroups = new List<RegistrationGroup>
+                                                   {
+                                                       new RegistrationGroup
+                                                           {
+                                                               Name = "Test",
+                                                               Registrations = groupRegistrations
+                                                           }
+                                                   };
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var objectInstance = container.Resolve<object>();
+            var barInstance = container.Resolve<IBar>();
+
+            Assert.NotNull(objectInstance);
+            Assert.NotNull(barInstance);
+        }
     }
 }

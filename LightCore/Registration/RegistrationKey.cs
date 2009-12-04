@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace LightCore
+namespace LightCore.Registration
 {
     /// <summary>
     /// Represents a registration key.
     /// </summary>
-    public class RegistrationKey : IEquatable<RegistrationKey>
+    internal class RegistrationKey : IEquatable<RegistrationKey>
     {
         /// <summary>
         /// The name for the registration.
         /// </summary>
-        public string Name
+        internal string Name
         {
             get;
             set;
@@ -19,7 +19,7 @@ namespace LightCore
         ///<summary>
         /// The group for the registration.
         ///</summary>
-        public string Group
+        internal string Group
         {
             get;
             set;
@@ -28,47 +28,47 @@ namespace LightCore
         /// <summary>
         /// The contract type.
         /// </summary>
-        public Type ContractType
+        internal Type ContractType
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="RegistrationItem" />.
         /// </summary>
-        public RegistrationKey()
+        internal RegistrationKey()
         {
 
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="Type" />.
         /// </summary>
-        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
-        public RegistrationKey(Type contractType)
+        /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
+        internal RegistrationKey(Type contractType)
         {
             this.ContractType = contractType;
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="Type" />.
         /// </summary>
-        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
+        /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
         /// <param name="name">The name.</param>
-        public RegistrationKey(Type contractType, string name)
+        internal RegistrationKey(Type contractType, string name)
             : this(contractType)
         {
             this.Name = name;
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Registration" />.
+        /// Creates a new instance of <see cref="Type" />.
         /// </summary>
-        /// <param name="contractType">The contract type as <see cref="Type"  />.</param>
+        /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
         /// <param name="name">The name.</param>
         /// <param name="group">The group.</param>
-        public RegistrationKey(Type contractType, string name, string group)
+        internal RegistrationKey(Type contractType, string name, string group)
             : this(contractType, null)
         {
             this.Group = group;

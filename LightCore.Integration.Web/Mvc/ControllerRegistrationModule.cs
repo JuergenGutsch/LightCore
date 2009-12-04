@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web.Mvc;
 
 using LightCore.ExtensionMethods.System.Collections.Generic;
+using LightCore.Registration;
 
 namespace LightCore.Integration.Web.Mvc
 {

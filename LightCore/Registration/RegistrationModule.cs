@@ -1,4 +1,4 @@
-﻿namespace LightCore
+﻿namespace LightCore.Registration
 {
     /// <summary>
     /// Represents an abstract registration module for implementing custom registrations.

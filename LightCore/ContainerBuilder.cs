@@ -8,6 +8,7 @@ using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Fluent;
 using LightCore.Lifecycle;
 using LightCore.Properties;
+using LightCore.Registration;
 
 namespace LightCore
 {
@@ -47,7 +48,7 @@ namespace LightCore
         /// <summary>
         /// Holds a list with registered registrations.
         /// </summary>
-        private readonly IDictionary<RegistrationKey, Registration> _registrations;
+        private readonly IDictionary<RegistrationKey, RegistrationItem> _registrations;
 
         /// <summary>
         /// Holds a list with registering callbacks.
@@ -64,7 +65,7 @@ namespace LightCore
         /// </summary>
         public ContainerBuilder()
         {
-            this._registrations = new Dictionary<RegistrationKey, Registration>();
+            this._registrations = new Dictionary<RegistrationKey, RegistrationItem>();
             this._registrationCallbacks = new List<Action>();
             this._defaultLifecycleFunction = () => new SingletonLifecycle();
         }
@@ -133,7 +134,7 @@ namespace LightCore
 
             var key = new RegistrationKey(typeOfContract, null);
 
-            var registration = new Registration(key)
+            var registration = new RegistrationItem(key)
             {
                 Activator = new DelegateActivator<TContract>(activatorFunction)
             };
@@ -145,38 +146,38 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Add a registration to the registrations.
+        /// Add a registrationItem to the registrations.
         /// </summary>
-        /// <param name="registration">The registration to add.</param>
-        private void AddToRegistrations(Registration registration)
+        /// <param name="registrationItem">The registration to add.</param>
+        private void AddToRegistrations(RegistrationItem registrationItem)
         {
             // Set default reuse scope, if not user defined. (System default is <see cref="SingletonLifecycle" />.
-            if (registration.Lifecycle == null)
+            if (registrationItem.Lifecycle == null)
             {
-                registration.Lifecycle = this._defaultLifecycleFunction();
+                registrationItem.Lifecycle = this._defaultLifecycleFunction();
             }
 
-            // Add a register callback for lazy assertion after manipulating in fluent registration api.
+            // Add a register callback for lazy assertion after manipulating in fluent registrationItem api.
             this._registrationCallbacks.Add(() =>
             {
-                if (this._activeGroupConfigurationsInternal != null && registration.Key.Group != null)
+                if (this._activeGroupConfigurationsInternal != null && registrationItem.Key.Group != null)
                 {
-                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registration.Key.Group))
+                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registrationItem.Key.Group))
                     {
-                        // Do not add inactive registration.
+                        // Do not add inactive registrationItem.
                         return;
                     }
                 }
 
-                if(this._registrations.ContainsKey(registration.Key))
+                if(this._registrations.ContainsKey(registrationItem.Key))
                 {
                     throw new
                         RegistrationAlreadyExistsException(
                         Resources.RegistrationForContractAndNameAlreadyExistsFormat.FormatWith(
-                            registration.Key.ContractType, registration.Key.Name));
+                            registrationItem.Key.ContractType, registrationItem.Key.Name));
                 }
 
-                this._registrations.Add(registration.Key, registration);
+                this._registrations.Add(registrationItem.Key, registrationItem);
             });
         }
 
@@ -208,7 +209,7 @@ namespace LightCore
             var key = new RegistrationKey(typeOfContract);
 
             // Register the type with default lifetime.
-            var registration = new Registration(key)
+            var registration = new RegistrationItem(key)
                                    {
                                        Activator = new ReflectionActivator(typeOfImplementation)
                                    };
