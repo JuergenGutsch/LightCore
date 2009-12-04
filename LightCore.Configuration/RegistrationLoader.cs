@@ -9,12 +9,27 @@ using LightCore.Fluent;
 namespace LightCore.Configuration
 {
     ///<summary>
+    /// Represents the loader for a LightCore registration.
     ///</summary>
     public class RegistrationLoader
     {
+        /// <summary>
+        /// Contains the configuration.
+        /// </summary>
+        private LightCoreConfiguration _configuration;
+
+        /// <summary>
+        /// Contains the container builder.
+        /// </summary>
+        private IContainerBuilder _containerBuilder;
+
+        /// <summary>
+        /// Contains the singleton instance.
+        /// </summary>
         private static readonly RegistrationLoader _instance = new RegistrationLoader();
 
         ///<summary>
+        /// Gets the current instance of <see cref="RegistrationLoader" />.
         ///</summary>
         public static RegistrationLoader Instance
         {
@@ -31,53 +46,47 @@ namespace LightCore.Configuration
         /// <param name="configuration">The configuration</param>
         public void Register(IContainerBuilder containerBuilder, LightCoreConfiguration configuration)
         {
-            IEnumerable<Registration> registrationsToRegister = configuration.Registrations;
+            this._configuration = configuration;
+            this._containerBuilder = containerBuilder;
 
-            if(configuration.ActiveGroupConfigurations != null)
+            IEnumerable<RegistrationGroup> registrationGroups = configuration.RegistrationGroups;
+            IEnumerable<Registration> registrationsToRegister;
+
+            if (configuration.ActiveGroupConfigurations == null)
+            {
+                registrationsToRegister = registrationGroups.SelectMany(g => g.Registrations);
+            }
+            else
             {
                 var activeGroups = configuration.ActiveGroupConfigurations.Split(new[] { ',' },
                                                                                  StringSplitOptions.RemoveEmptyEntries);
 
-                registrationsToRegister = registrationsToRegister.Where(
-                    r =>
-                    string.IsNullOrEmpty(r.Group) ||
-                    (!string.IsNullOrEmpty(r.Group) && activeGroups.Any(g => g.Trim() == r.Group)));
+                registrationsToRegister = registrationGroups
+                    .Where(group => string.IsNullOrEmpty(group.Name)
+                                    ||
+                                    (!string.IsNullOrEmpty(group.Name) &&
+                                     activeGroups.Any(activeGroup => activeGroup.Trim() == group.Name)))
+                    .SelectMany(group => group.Registrations);
             }
 
             foreach (Registration registration in registrationsToRegister)
             {
-                this.ProcessRegistration(containerBuilder, configuration, registration);
+                ProcessRegistration(registration);
             }
         }
 
-        private void ProcessRegistration(IContainerBuilder containerBuilder, LightCoreConfiguration configuration, Registration registration)
+        /// <summary>
+        /// Processes a Registration.
+        /// </summary>
+        /// <param name="registration">The registration to process.</param>
+        private void ProcessRegistration(Registration registration)
         {
-            string contractType = registration.ContractType;
-            string implementationType = registration.ImplementationType;
+            string contractTypeName = this.ResolveAlias(registration.ContractType);
+            string implementationTypeName = this.ResolveAlias(registration.ImplementationType);
 
-            if (!registration.ContractType.Contains("."))
-            {
-                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == contractType);
-
-                if (typeAlias != null)
-                {
-                    contractType = typeAlias.Type;
-                }
-            }
-
-            if (!registration.ImplementationType.Contains("."))
-            {
-                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == implementationType);
-
-                if (typeAlias != null)
-                {
-                    implementationType = typeAlias.Type;
-                }
-            }
-
-            IFluentRegistration fluentRegistration = containerBuilder.Register(
-                LoadType(configuration, contractType),
-                LoadType(configuration, implementationType));
+            IFluentRegistration fluentRegistration = this._containerBuilder.Register(
+                LoadType(contractTypeName),
+                LoadType(implementationTypeName));
 
             if (!String.IsNullOrEmpty(registration.Name))
             {
@@ -86,49 +95,54 @@ namespace LightCore.Configuration
 
             if (!String.IsNullOrEmpty(registration.Arguments))
             {
-                var arguments = registration.Arguments.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                var arguments = registration.Arguments.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
                 fluentRegistration.WithArguments(arguments);
             }
 
-            Type lifecycleType = null;
+            string lifecycleTypeName = this.ResolveAlias(registration.Lifecycle);
 
-            if (!String.IsNullOrEmpty(registration.Lifecycle))
+            if (String.IsNullOrEmpty(lifecycleTypeName) && !String.IsNullOrEmpty(this._configuration.DefaultLifecycle))
             {
-                TypeAlias typeAlias = configuration.TypeAliases.Find(a => a.Alias == registration.Lifecycle);
+                lifecycleTypeName = this.ResolveAlias(this._configuration.DefaultLifecycle);
+            }
+
+            if (lifecycleTypeName != null)
+            {
+                Type lifecycleType = this.LoadType(lifecycleTypeName);
+
+                if (lifecycleType != null)
+                {
+                    fluentRegistration.ControlledBy(lifecycleType);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resolves a potential alias to the full qualified type string.
+        /// </summary>
+        /// <param name="rawType">The alias or full qualified type string.</param>
+        /// <returns>The rawType, if no alias found, otherwise the full qualified type string according to the alias data.</returns>
+        private string ResolveAlias(string rawType)
+        {
+            if (rawType != null && !rawType.Contains("."))
+            {
+                TypeAlias typeAlias = this._configuration.TypeAliases.Find(a => a.Alias == rawType);
 
                 if (typeAlias != null)
                 {
-                    lifecycleType = LoadType(configuration, typeAlias.Type);
-                }
-                else
-                {
-                    lifecycleType = LoadType(configuration, registration.Lifecycle);
-                }
-            }
-            else
-            {
-                if (!String.IsNullOrEmpty(configuration.DefaultLifecycle))
-                {
-                    TypeAlias typeAlias =
-                        configuration.TypeAliases.Find(alias => alias.Alias == configuration.DefaultLifecycle);
-
-                    lifecycleType = LoadType(configuration, typeAlias.Type);
+                    return typeAlias.Type;
                 }
             }
 
-            if (lifecycleType != null)
-            {
-                fluentRegistration.ControlledBy(lifecycleType);
-            }
+            return rawType;
         }
 
         /// <summary>
         /// Loads type according to the registration.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
         /// <param name="typeName">The type to register.</param>
         /// <returns>The type to register.</returns>
-        private static Type LoadType(LightCoreConfiguration configuration, string typeName)
+        private Type LoadType(string typeName)
         {
             Type type = Type.GetType(typeName);
 

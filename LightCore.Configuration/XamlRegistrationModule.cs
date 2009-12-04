@@ -8,14 +8,15 @@ namespace LightCore.Configuration
     /// </summary>
     public class XamlRegistrationModule : RegistrationModule
     {
-        private LightCoreConfiguration _configuration;
+        private readonly LightCoreConfiguration _configuration;
 
         ///<summary>
         /// Initializes a new instance of <see cref="XamlRegistrationModule" />.
+        /// Uses the default app.config or web.config for loading the configuration.
         ///</summary>
         public XamlRegistrationModule()
         {
-            _configuration = LightCoreConfiguration.Instance;
+            this._configuration = LightCoreConfiguration.Instance;
         }
 
         ///<summary>
@@ -26,7 +27,7 @@ namespace LightCore.Configuration
         {
             using (var file = File.Open(configPath, FileMode.Open))
             {
-                _configuration = (LightCoreConfiguration)XamlReader.Load(file);
+                this._configuration = (LightCoreConfiguration)XamlReader.Load(file);
             }
         }
 
@@ -36,7 +37,7 @@ namespace LightCore.Configuration
         ///<param name="configurationStream">The stream containing the configuration file content.</param>
         public XamlRegistrationModule(Stream configurationStream)
         {
-            _configuration = (LightCoreConfiguration)XamlReader.Load(configurationStream);
+            this._configuration = (LightCoreConfiguration)XamlReader.Load(configurationStream);
         }
 
         /// <summary>

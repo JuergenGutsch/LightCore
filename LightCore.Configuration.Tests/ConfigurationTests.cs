@@ -26,7 +26,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+                                                     {
+                                                         Registrations = registrations
+                                                     });
 
             var builder = new ContainerBuilder();
 
@@ -58,7 +61,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 
@@ -86,7 +92,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 
@@ -117,7 +126,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 
@@ -147,7 +159,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 
@@ -177,7 +192,10 @@ namespace LightCore.Configuration.Tests
                                             }
                                     };
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 

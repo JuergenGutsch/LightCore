@@ -88,12 +88,9 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<T> ResolveAll<T>()
         {
-            foreach (object instance in this.ResolveAll())
+            foreach (object instance in this.ResolveAll(typeof(T)))
             {
-                if (instance is T)
-                {
-                    yield return (T)instance;
-                }
+                yield return (T)instance;
             }
         }
 

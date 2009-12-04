@@ -14,15 +14,14 @@ namespace LightCore.Configuration.Tests
         {
             var configuration = new LightCoreConfiguration();
             configuration.ActiveGroupConfigurations = "Sql";
-            var registrations = GetTestGroupRegistrations();
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups = GetTestRegistrationGroups();
 
             var builder = new ContainerBuilder();
 
             RegistrationLoader.Instance.Register(builder, configuration);
 
-            var container = builder.Build();
+            builder.Build();
         }
 
         [Test]
@@ -30,9 +29,8 @@ namespace LightCore.Configuration.Tests
         {
             var configuration = new LightCoreConfiguration();
             configuration.ActiveGroupConfigurations = "Xml";
-            var registrations = GetTestGroupRegistrations();
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups = GetTestRegistrationGroups();
 
             var builder = new ContainerBuilder();
 
@@ -88,9 +86,8 @@ namespace LightCore.Configuration.Tests
         {
             var configuration = new LightCoreConfiguration();
             configuration.ActiveGroupConfigurations = "Xml, Test";
-            var registrations = GetTestGroupRegistrations();
 
-            configuration.Registrations = registrations;
+            configuration.RegistrationGroups = GetTestRegistrationGroups();
 
             var builder = new ContainerBuilder();
 
@@ -102,45 +99,79 @@ namespace LightCore.Configuration.Tests
             Assert.IsInstanceOf<TestLorem>(container.Resolve<ILorem>());
         }
 
-        private List<Registration> GetTestGroupRegistrations()
+        private static List<RegistrationGroup> GetTestRegistrationGroups()
         {
-            return new List<Registration>
+            return new List<RegistrationGroup>
                        {
-                           new Registration
+                           new RegistrationGroup
                                {
-                                   Group = "Xml",
-                                   ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.XmlBar, LightCore.TestTypes",
+                                   Name = "Xml",
+                                   Registrations = new List<Registration>
+                                                       {
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.XmlBar, LightCore.TestTypes",
+                                                               },
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.XmlFoo, LightCore.TestTypes",
+                                                               }
+                                                       }
                                },
-                           new Registration
+                           new RegistrationGroup
                                {
-                                   Group = "Xml",
-                                   ContractType = "LightCore.TestTypes.IFoo, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.XmlFoo, LightCore.TestTypes",
+                                   Name = "Sql",
+                                   Registrations = new List<Registration>
+                                                       {
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.SqlBar, LightCore.TestTypes",
+                                                               },
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.SqlFoo, LightCore.TestTypes"
+                                                               }
+                                                       }
                                },
-                           new Registration
+                           new RegistrationGroup
                                {
-                                   Group = "Sql",
-                                   ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.SqlBar, LightCore.TestTypes",
+                                   Name = "Lalala",
+                                   Registrations = new List<Registration>
+                                                       {
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.ILorem, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.Lorem, LightCore.TestTypes"
+                                                               }
+                                                       }
                                },
-                           new Registration
+                           new RegistrationGroup
                                {
-                                   Group = "Sql",
-                                   ContractType = "LightCore.TestTypes.IFoo, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.SqlFoo, LightCore.TestTypes",
-                               },
-                           new Registration
-                               {
-                                   Group = "Lalala",
-                                   ContractType = "LightCore.TestTypes.ILorem, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.Lorem, LightCore.TestTypes"
-                               },
-                                                          new Registration
-                               {
-                                   Group = "Test",
-                                   ContractType = "LightCore.TestTypes.ILorem, LightCore.TestTypes",
-                                   ImplementationType = "LightCore.TestTypes.TestLorem, LightCore.TestTypes"
+                                   Name = "Test",
+                                   Registrations = new List<Registration>
+                                                       {
+                                                           new Registration
+                                                               {
+                                                                   ContractType =
+                                                                       "LightCore.TestTypes.ILorem, LightCore.TestTypes",
+                                                                   ImplementationType =
+                                                                       "LightCore.TestTypes.TestLorem, LightCore.TestTypes"
+                                                               }
+                                                       }
                                }
                        };
         }

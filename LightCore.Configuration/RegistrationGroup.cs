@@ -24,5 +24,13 @@ namespace LightCore.Configuration
             get;
             set;
         }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="RegistrationGroup" />.
+        /// </summary>
+        public RegistrationGroup()
+        {
+            this.Registrations = new List<Registration>();
+        }
     }
 }
