@@ -22,6 +22,7 @@ namespace LightCore
 
         /// <summary>
         /// Initializes a new instance of <see cref="Container" />.
+        /// <param name="registrations">The registrations for this container.</param>
         /// </summary>
         internal Container(IDictionary<RegistrationKey, RegistrationItem> registrations)
         {
@@ -86,12 +87,13 @@ namespace LightCore
         /// <summary>
         /// Resolves all contracts.
         /// </summary>
+        /// <typeparam name="TContract">The contract type contraining the result.</typeparam>
         /// <returns>The resolved instances</returns>
-        public IEnumerable<T> ResolveAll<T>()
+        public IEnumerable<TContract> ResolveAll<TContract>()
         {
-            foreach (object instance in this.ResolveAll(typeof(T)))
+            foreach (object instance in this.ResolveAll(typeof(TContract)))
             {
-                yield return (T)instance;
+                yield return (TContract)instance;
             }
         }
 
@@ -110,6 +112,7 @@ namespace LightCore
         /// <summary>
         /// Resolves all contracts based on a contracttype.
         /// </summary>
+        /// <param name="contractType">The contract type contraining the result.</param>
         /// <returns>The resolved instances</returns>
         public IEnumerable<object> ResolveAll(Type contractType)
         {

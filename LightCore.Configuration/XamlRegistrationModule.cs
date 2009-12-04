@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Windows.Markup;
+
 using LightCore.Registration;
 
 namespace LightCore.Configuration
@@ -23,10 +24,10 @@ namespace LightCore.Configuration
         ///<summary>
         /// Initializes a new instance of <see cref="XamlRegistrationModule" />.
         ///</summary>
-        ///<param name="configPath">The path to a xaml config file.</param>
-        public XamlRegistrationModule(string configPath)
+        ///<param name="configurationPath">The path to a xaml config file.</param>
+        public XamlRegistrationModule(string configurationPath)
         {
-            using (var file = File.Open(configPath, FileMode.Open))
+            using (var file = File.Open(configurationPath, FileMode.Open))
             {
                 this._configuration = (LightCoreConfiguration)XamlReader.Load(file);
             }
@@ -44,7 +45,7 @@ namespace LightCore.Configuration
         /// <summary>
         /// Registers all candidates.
         /// </summary>
-        /// <param name="containerBuilder">The controllerbuilder.</param>
+        /// <param name="containerBuilder">The containerbuilder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
             RegistrationLoader

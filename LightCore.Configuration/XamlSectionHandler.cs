@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using System.IO;
+using System.Windows.Markup;
 using System.Xml;
 
 namespace LightCore.Configuration
@@ -17,23 +18,24 @@ namespace LightCore.Configuration
         /// <summary>
         /// Gets the configuration.
         /// </summary>
+        /// <typeparam name="TConfiguration">The type of the configuration.</typeparam>
         /// <returns>The configuration.</returns>
-        public T GetInstance<T>()
+        public TConfiguration GetInstance<TConfiguration>()
         {
-            return (T)this._lightCoreConfigSection;
+            return (TConfiguration)this._lightCoreConfigSection;
         }
 
         /// <summary>Creates a configuration section handler.</summary>
-        /// <returns>The created section handler object.</returns>
         /// <param name="parent">Parent object.</param>
         /// <param name="configContext">Configuration context object.</param>
         /// <param name="section">Section XML node.</param>
+        /// <returns>The created section handler object.</returns>
         public object Create(object parent, object configContext, XmlNode section)
         {
-            StringReader stringReader = new StringReader(section.OuterXml);
-            XmlReader xmlReader = XmlReader.Create(stringReader);
+            var stringReader = new StringReader(section.OuterXml);
+            var xmlReader = XmlReader.Create(stringReader);
 
-            this._lightCoreConfigSection = System.Windows.Markup.XamlReader.Load(xmlReader);
+            this._lightCoreConfigSection = XamlReader.Load(xmlReader);
 
             return this;
         }

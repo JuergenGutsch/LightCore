@@ -41,12 +41,14 @@ namespace LightCore
         /// <summary>
         /// Resolves all contracts.
         /// </summary>
+        /// <typeparam name="TContract">The contract type contraining the result.</typeparam>
         /// <returns>The resolved instances</returns>
-        IEnumerable<T> ResolveAll<T>();
+        IEnumerable<TContract> ResolveAll<TContract>();
 
         /// <summary>
         /// Resolves all contracts based on a contracttype.
         /// </summary>
+        /// <param name="contractType">The contract type contraining the result.</param>
         /// <returns>The resolved instances</returns>
         IEnumerable<object> ResolveAll(Type contractType);
 

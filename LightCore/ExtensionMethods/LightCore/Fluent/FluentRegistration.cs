@@ -11,6 +11,8 @@ namespace LightCore.ExtensionMethods.LightCore.Fluent
         /// <summary>
         /// Treat the current registration to use the passed lifecycle.
         /// </summary>
+        /// <typeparam name="TLifecycle">The lifecycle type.</typeparam>
+        /// <param name="source">The source.</param>
         /// <returns>The instance itself to get fluent working.</returns>
         public static IFluentRegistration StirbLangsamMit<TLifecycle>(this IFluentRegistration source) where TLifecycle : ILifecycle, new()
         {
@@ -20,6 +22,8 @@ namespace LightCore.ExtensionMethods.LightCore.Fluent
         /// <summary>
         /// Treat the current registration to use the passed lifecycle.
         /// </summary>
+        /// <typeparam name="TLifecycle">The lifecycle type.</typeparam>
+        /// <param name="source">The source.</param>
         /// <returns>The instance itself to get fluent working.</returns>
         public static IFluentRegistration DieSlowlyWithin<TLifecycle>(this IFluentRegistration source) where TLifecycle : ILifecycle, new()
         {

@@ -11,7 +11,7 @@ namespace LightCore.Lifecycle
         /// <summary>
         /// Handle the reuse of instances.
         /// </summary>
-        /// <param name="newInstanceResolver"></param>
+        /// <param name="newInstanceResolver">The function for lazy get an instance.</param>
         object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver);
     }
 }

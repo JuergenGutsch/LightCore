@@ -27,6 +27,7 @@ namespace LightCore.Fluent
         /// <summary>
         /// Treat the current registration to use the passed lifecycle.
         /// </summary>
+        /// <typeparam name="TLifecycle">The lifecycle type.</typeparam>
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
         {
@@ -37,6 +38,7 @@ namespace LightCore.Fluent
         /// <summary>
         /// Treat the current registration to use the passed lifecycle.
         /// </summary>
+        /// <param name="type">The lifecycle type.</param>
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
         {

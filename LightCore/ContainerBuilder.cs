@@ -85,7 +85,7 @@ namespace LightCore
         /// <summary>
         /// Registers a module with registrations.
         /// </summary>
-        /// <param name="module">The module.</param>
+        /// <param name="module">The module to register within this container builder.</param>
         public void RegisterModule(RegistrationModule module)
         {
             module.Register(this);

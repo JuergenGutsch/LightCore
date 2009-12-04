@@ -64,6 +64,7 @@ namespace LightCore.Registration
         /// <summary>
         /// Activates the current registration.
         /// </summary>
+        /// <param name="container">The container to resolve inner depenencies.</param>
         /// <returns>The activated instance.</returns>
         internal object ActivateInstance(Container container)
         {
