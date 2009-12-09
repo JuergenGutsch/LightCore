@@ -100,8 +100,12 @@ namespace LightCore.Configuration
 
             if (!String.IsNullOrEmpty(registration.Arguments))
             {
-                var arguments = registration.Arguments.Split(new[] {","}, StringSplitOptions.RemoveEmptyEntries);
+                var arguments = registration.Arguments.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
                 fluentRegistration.WithArguments(arguments);
+            }
+            else if (registration.Arguments == "")
+            {
+                fluentRegistration.WithArguments(new[] {""});
             }
 
             string lifecycleTypeName = this.ResolveAlias(registration.Lifecycle);
