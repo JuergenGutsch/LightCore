@@ -11,8 +11,9 @@
     <RootNamespace>LightCore.Web.IntegrationSample</RootNamespace>
     <AssemblyName>LightCore.Web.IntegrationSample</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LightCore.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -78,9 +79,6 @@
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>LightCore</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LightCore.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
