@@ -11,6 +11,24 @@ namespace LightCore.Tests
     public class ResolvingTests
     {
         [Test]
+        public void Can_resolve_dependencies_with_injected_container()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IBar>(c => new Bar());
+
+            var container = builder.Build();
+
+            var resolvedContainer = container.Resolve<IContainer>();
+            var bar = resolvedContainer.Resolve<IBar>();
+
+            Assert.NotNull(bar);
+            Assert.IsInstanceOf<IBar>(bar);
+
+            Assert.NotNull(resolvedContainer);
+            Assert.IsInstanceOf<IContainer>(resolvedContainer);
+        }
+
+        [Test]
         public void Container_resolves_registered_interface_registration()
         {
             var builder = new ContainerBuilder();

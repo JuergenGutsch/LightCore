@@ -11,6 +11,18 @@ namespace LightCore.Tests
     public class ContainerTests
     {
         [Test]
+        public void IContainer_is_automatically_registered_when_container_was_build()
+        {
+            var builder = new ContainerBuilder();
+            var container = builder.Build();
+
+            var resolvedContainer = container.Resolve<IContainer>();
+
+            Assert.NotNull(resolvedContainer);
+            Assert.IsInstanceOf<IContainer>(resolvedContainer);
+        }
+
+        [Test]
         public void ContainerBuilder_can_initialize_container()
         {
             var builder = new ContainerBuilder();

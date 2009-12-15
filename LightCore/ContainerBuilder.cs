@@ -203,7 +203,7 @@ namespace LightCore
         {
             if (!typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
-                throw new ImplementationNotImplementContractException();
+                throw new ContractNotImplementedByTypeException();
             }
 
             var key = new RegistrationKey(typeOfContract);

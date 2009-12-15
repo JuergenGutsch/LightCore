@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using LightCore.Activation;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
+using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
 
@@ -28,6 +29,17 @@ namespace LightCore
         {
             // Save registrations.
             this._registrations = registrations;
+
+            // Register the container itself for service locator reasons.
+            var registrationKey = new RegistrationKey(typeof (IContainer));
+            var registrationItem = new RegistrationItem(registrationKey)
+                                       {
+                                           Activator = new DelegateActivator<IContainer>(c => this),
+                                           Lifecycle = new SingletonLifecycle()
+                                       };
+
+            this._registrations.Add(new KeyValuePair<RegistrationKey, RegistrationItem>(registrationKey,
+                                                                                        registrationItem));
         }
 
         /// <summary>

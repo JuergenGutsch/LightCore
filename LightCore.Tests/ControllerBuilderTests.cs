@@ -45,7 +45,7 @@ namespace LightCore.Tests
         [Test]
         public void ContainerBuilder_throws_on_not_assignable_contract_to_implementation()
         {
-            Assert.Throws<ImplementationNotImplementContractException>(() =>
+            Assert.Throws<ContractNotImplementedByTypeException>(() =>
             {
                 var builder = new ContainerBuilder();
                 builder.Register(typeof (IFoo), typeof (Bar));
