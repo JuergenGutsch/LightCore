@@ -78,43 +78,9 @@ namespace LightCore.Configuration.Tests
         }
 
         [Test]
-        public void Can_configure_and_resolve_with_default_singleton_lifecycle()
+        public void Can_configure_and_resolve_with_default_transient_lifecycle()
         {
             var configuration = new LightCoreConfiguration();
-
-            var registrations = new List<Registration>
-                                    {
-                                        new Registration
-                                            {
-                                                Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
-                                            }
-                                    };
-
-            configuration.RegistrationGroups.Add(new RegistrationGroup()
-            {
-                Registrations = registrations
-            });
-
-            var builder = new ContainerBuilder();
-
-            RegistrationLoader.Instance.Register(builder, configuration);
-
-            var container = builder.Build();
-
-            var bar = container.Resolve<IBar>();
-            var barTwo = container.Resolve<IBar>();
-
-            Assert.AreSame(bar, barTwo);
-        }
-
-        [Test]
-        public void Can_configure_and_resolve_with_registration_default_transient_lifecycle()
-        {
-            var configuration = new LightCoreConfiguration();
-
-            configuration.DefaultLifecycle = "Transient";
 
             var registrations = new List<Registration>
                                     {
@@ -141,6 +107,40 @@ namespace LightCore.Configuration.Tests
             var barTwo = container.Resolve<IBar>();
 
             Assert.AreNotSame(bar, barTwo);
+        }
+
+        [Test]
+        public void Can_configure_and_resolve_with_registration_default_singleton_lifecycle()
+        {
+            var configuration = new LightCoreConfiguration();
+
+            configuration.DefaultLifecycle = "Singleton";
+
+            var registrations = new List<Registration>
+                                    {
+                                        new Registration
+                                            {
+                                                Arguments = String.Empty,
+                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
+                                            }
+                                    };
+
+            configuration.RegistrationGroups.Add(new RegistrationGroup()
+            {
+                Registrations = registrations
+            });
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var bar = container.Resolve<IBar>();
+            var barTwo = container.Resolve<IBar>();
+
+            Assert.AreSame(bar, barTwo);
         }
 
         [Test]
@@ -213,7 +213,7 @@ namespace LightCore.Configuration.Tests
         public void Usage_of_global_registrations_and_grouped_registrations_work_together()
         {
             var configuration = new LightCoreConfiguration();
-            configuration.ActiveGroupConfigurations = "Test";
+            configuration.ActiveRegistrationGroups = "Test";
 
             var globalRegistrations = new List<Registration>()
                                     {

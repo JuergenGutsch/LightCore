@@ -21,7 +21,7 @@ namespace LightCore.Tests
         }
 
         [Test]
-        public void DelegateActivator_can_return_same_object_with_default_singleton_lifecycle()
+        public void DelegateActivator_can_return_new_object_with_default_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
             builder.Register<IFoo>(c => new Foo());
@@ -31,7 +31,7 @@ namespace LightCore.Tests
             var foo = container.Resolve<IFoo>();
             var foo2 = container.Resolve<IFoo>();
 
-            Assert.AreSame(foo, foo2);
+            Assert.AreNotSame(foo, foo2);
         }
 
         [Test]

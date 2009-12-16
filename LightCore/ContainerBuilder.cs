@@ -19,29 +19,29 @@ namespace LightCore
     public class ContainerBuilder : IContainerBuilder
     {
         /// <summary>
-        /// Contains the active group configurations as comma separated string.
+        /// Contains the active registration groups as comma separated string.
         /// </summary>
-        private string _activeGroupConfigurations;
+        private string _activeRegistrationGroups;
 
         /// <summary>
-        /// Contains the active group configurations as array for internal use.
+        /// Contains the active registration groups as array for internal use.
         /// </summary>
-        private string[] _activeGroupConfigurationsInternal;
+        private string[] _activeRegistrationGroupsInternal;
 
         /// <summary>
         /// Gets or sets the active group configurations.
         /// </summary>
-        public string ActiveGroupConfigurations
+        public string ActiveRegistrationGroups
         {
             get
             {
-                return _activeGroupConfigurations;
+                return _activeRegistrationGroups;
             }
 
             set
             {
-                this._activeGroupConfigurations = value;
-                this._activeGroupConfigurationsInternal = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                this._activeRegistrationGroups = value;
+                this._activeRegistrationGroupsInternal = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
@@ -67,7 +67,7 @@ namespace LightCore
         {
             this._registrations = new Dictionary<RegistrationKey, RegistrationItem>();
             this._registrationCallbacks = new List<Action>();
-            this._defaultLifecycleFunction = () => new SingletonLifecycle();
+            this._defaultLifecycleFunction = () => new TransientLifecycle();
         }
 
         /// <summary>
@@ -160,9 +160,9 @@ namespace LightCore
             // Add a register callback for lazy assertion after manipulating in fluent registrationItem api.
             this._registrationCallbacks.Add(() =>
             {
-                if (this._activeGroupConfigurationsInternal != null && registrationItem.Key.Group != null)
+                if (this._activeRegistrationGroupsInternal != null && registrationItem.Key.Group != null)
                 {
-                    if (!this._activeGroupConfigurationsInternal.Any(g => g.Trim() == registrationItem.Key.Group))
+                    if (!this._activeRegistrationGroupsInternal.Any(g => g.Trim() == registrationItem.Key.Group))
                     {
                         // Do not add inactive registrationItem.
                         return;

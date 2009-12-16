@@ -15,7 +15,6 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultControlledBy<TransientLifecycle>();
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 
@@ -30,6 +29,8 @@ namespace LightCore.Tests
         public void Instance_is_reused_when_controlled_by_singleton_lifecycle()
         {
             var builder = new ContainerBuilder();
+            builder.DefaultControlledBy<SingletonLifecycle>();
+
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 

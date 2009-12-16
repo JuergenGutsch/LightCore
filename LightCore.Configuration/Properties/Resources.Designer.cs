@@ -61,6 +61,15 @@ namespace LightCore.Configuration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active registration group with name &apos;{0}&apos; was not found..
+        /// </summary>
+        internal static string ActiveRegistrationGroupNotFoundFormat {
+            get {
+                return ResourceManager.GetString("ActiveRegistrationGroupNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not load type: &apos;{0}&apos;..
         /// </summary>
         internal static string CouldNotLoadTypeFormat {

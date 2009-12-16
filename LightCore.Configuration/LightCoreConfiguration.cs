@@ -20,9 +20,9 @@ namespace LightCore.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the active group configurations.
+        /// Gets or sets the active registration groups.
         /// </summary>
-        public string ActiveGroupConfigurations
+        public string ActiveRegistrationGroups
         {
             get;
             set;

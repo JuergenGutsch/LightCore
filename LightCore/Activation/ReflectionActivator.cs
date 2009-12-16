@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Linq;
 
 using LightCore.ExtensionMethods.System;
-using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Properties;
 
 namespace LightCore.Activation
@@ -54,18 +53,26 @@ namespace LightCore.Activation
             this._implementationType = implementationType;
 
             // Setup selectors.
-            Func<ParameterInfo, bool> func =
-                this._dependencyParameterSelector = p => this._container.IsRegistered(p.ParameterType)
-                                                         ||
-                                                         IsGenericEnumerable(p.ParameterType) &&
-                                                         this._container.IsRegistered(
-                                                             p.ParameterType.GetGenericArguments().FirstOrDefault());
+            this._dependencyParameterSelector = p => this._container.IsRegistered(p.ParameterType)
+                                                     || this.IsRegisteredGenericEnumerable(p);
 
             this._nonDependencyParameterSelector = p => !this._dependencyParameterSelector(p);
         }
 
         /// <summary>
-        /// Checkes whether a given parameterType is type of generic enumerable.
+        /// Checks whether a parameter is typeo of IEnumerable{T}, where {T} is a registered contract.
+        /// </summary>
+        /// <param name="parameter">The parameter candidate.</param>
+        /// <returns><true /> if the parameter is a registered type within an generic enumerable instance.</returns>
+        private bool IsRegisteredGenericEnumerable(ParameterInfo parameter)
+        {
+            return this.IsGenericEnumerable(parameter.ParameterType)
+                   && this._container.IsRegistered(parameter.ParameterType.GetGenericArguments()
+                                                       .FirstOrDefault());
+        }
+
+        /// <summary>
+        /// Checks whether a given parameterType is type of generic enumerable.
         /// </summary>
         /// <param name="parameterType">The parameter type.</param>
         /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
@@ -213,13 +220,21 @@ namespace LightCore.Activation
             {
                 if (this.IsGenericEnumerable(parameter.ParameterType))
                 {
-                    Type genericArgument = parameter.ParameterType.GetGenericArguments().FirstOrDefault();
+                    Type genericArgument = parameter
+                        .ParameterType
+                        .GetGenericArguments()
+                        .FirstOrDefault();
+
                     object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
 
-                    Array typedArrayToReturn = Array.CreateInstance(genericArgument, resolvedInstances.Count());
-                    resolvedInstances.CopyTo(typedArrayToReturn, 0);
+                    Type openListType = typeof (List<>);
+                    Type closedListType = openListType.MakeGenericType(genericArgument);
 
-                    yield return typedArrayToReturn;
+                    var list = (IList) Activator.CreateInstance(closedListType);
+
+                    Array.ForEach(resolvedInstances, instance => list.Add(instance));
+
+                    yield return list;
                 }
                 else
                 {

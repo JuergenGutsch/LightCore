@@ -10,10 +10,24 @@ namespace LightCore.Configuration.Tests
     public class GroupConfigurationTests
     {
         [Test]
+        public void Exception_is_thrown_when_a_given_active_group_was_not_found()
+        {
+            var configuration = new LightCoreConfiguration();
+            configuration.ActiveRegistrationGroups = "test";
+
+            configuration.RegistrationGroups = GetTestRegistrationGroups();
+
+            var builder = new ContainerBuilder();
+
+            Assert.Throws<ActiveGroupNotFoundException>(
+                () => RegistrationLoader.Instance.Register(builder, configuration));
+        }
+
+        [Test]
         public void Can_register_group_configurations()
         {
             var configuration = new LightCoreConfiguration();
-            configuration.ActiveGroupConfigurations = "Sql";
+            configuration.ActiveRegistrationGroups = "Sql";
 
             configuration.RegistrationGroups = GetTestRegistrationGroups();
 
@@ -28,7 +42,7 @@ namespace LightCore.Configuration.Tests
         public void Can_resolve_active_group_configuration()
         {
             var configuration = new LightCoreConfiguration();
-            configuration.ActiveGroupConfigurations = "Xml";
+            configuration.ActiveRegistrationGroups = "Xml";
 
             configuration.RegistrationGroups = GetTestRegistrationGroups();
 
@@ -46,7 +60,7 @@ namespace LightCore.Configuration.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.ActiveGroupConfigurations = "Xml";
+            builder.ActiveRegistrationGroups = "Xml";
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
             builder.Register<IFoo, XmlFoo>().WithGroup("Xml");
@@ -64,7 +78,7 @@ namespace LightCore.Configuration.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.ActiveGroupConfigurations = "Xml, Test";
+            builder.ActiveRegistrationGroups = "Xml, Test";
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
             builder.Register<IFoo, XmlFoo>().WithGroup("Xml");
@@ -85,7 +99,7 @@ namespace LightCore.Configuration.Tests
         public void Can_register_multiple_group_configurations_registered_configuration()
         {
             var configuration = new LightCoreConfiguration();
-            configuration.ActiveGroupConfigurations = "Xml, Test";
+            configuration.ActiveRegistrationGroups = "Xml, Test";
 
             configuration.RegistrationGroups = GetTestRegistrationGroups();
 

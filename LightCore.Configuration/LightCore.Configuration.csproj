@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveGroupNotFoundException.cs" />
     <Compile Include="RegistrationGroup.cs" />
     <Compile Include="XamlRegistrationException.cs" />
     <Compile Include="LightCoreConfiguration.cs" />

@@ -75,7 +75,7 @@ namespace LightCore.Tests
         }
         
         [Test]
-        public void ContainerBuilders_default_scope_is_singleton()
+        public void ContainerBuilders_default_scope_is_transient()
         {
             var builder = new ContainerBuilder();
             builder.Register<IBar, Bar>();
@@ -86,7 +86,7 @@ namespace LightCore.Tests
             var instanceOne = container.Resolve<IFoo>();
             var instanceTwo = container.Resolve<IFoo>();
 
-            Assert.AreSame(instanceOne, instanceTwo);
+            Assert.AreNotSame(instanceOne, instanceTwo);
         }
 
         [Test]

@@ -52,26 +52,34 @@ namespace LightCore.Configuration
             IEnumerable<RegistrationGroup> registrationGroups = configuration.RegistrationGroups;
             IEnumerable<Registration> registrationsToRegister = configuration.Registrations;
 
-            if (configuration.ActiveGroupConfigurations == null)
+            if (configuration.ActiveRegistrationGroups == null)
             {
-                registrationsToRegister = registrationsToRegister
-                    .Union(registrationGroups.SelectMany(g => g.Registrations));
+                registrationsToRegister = registrationsToRegister.Union(registrationGroups.SelectMany(g => g.Registrations));
             }
             else
             {
-                var activeGroups = configuration.ActiveGroupConfigurations.Split(new[] { ',' },
+                var activeGroups = configuration.ActiveRegistrationGroups.Split(new[] { ',' },
                                                                                  StringSplitOptions.RemoveEmptyEntries);
 
-                registrationsToRegister = registrationsToRegister.Union(registrationGroups
-                                                                            .Where(
-                                                                            group => string.IsNullOrEmpty(group.Name)
-                                                                                     ||
-                                                                                     (!string.IsNullOrEmpty(group.Name) &&
-                                                                                      activeGroups.Any(
-                                                                                          activeGroup =>
-                                                                                          activeGroup.Trim() ==
-                                                                                          group.Name)))
-                                                                            .SelectMany(group => group.Registrations));
+                foreach (string group in activeGroups)
+                {
+                    if (!registrationGroups.Any(g => g.Name.Trim() == group.Trim()))
+                    {
+                        throw new ActiveGroupNotFoundException(
+                            Resources.ActiveRegistrationGroupNotFoundFormat.FormatWith(group));
+                    }
+                }
+
+                Func<RegistrationGroup, bool> groupNameIsEmpty = group => string.IsNullOrEmpty(group.Name);
+                Func<RegistrationGroup, bool> groupNameIsNotEmpty = group => !groupNameIsEmpty(group);
+                Func<RegistrationGroup, bool> groupIsActive =
+                    group => activeGroups.Any(activeGroup => activeGroup.Trim() == group.Name.Trim());
+
+                var validGroupRegistrations = registrationGroups
+                    .Where(group => groupNameIsEmpty(group) || groupNameIsNotEmpty(group) && groupIsActive(group))
+                    .SelectMany(group => group.Registrations);
+
+                registrationsToRegister = registrationsToRegister.Union(validGroupRegistrations);
             }
 
             foreach (Registration registration in registrationsToRegister)
