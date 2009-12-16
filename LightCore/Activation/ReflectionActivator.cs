@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Linq;
 
@@ -53,8 +54,36 @@ namespace LightCore.Activation
             this._implementationType = implementationType;
 
             // Setup selectors.
-            this._dependencyParameterSelector = p => p.ParameterType.IsInterface || p.ParameterType.IsAbstract;
+            Func<ParameterInfo, bool> func =
+                this._dependencyParameterSelector = p => this._container.IsRegistered(p.ParameterType)
+                                                         ||
+                                                         IsGenericEnumerable(p.ParameterType) &&
+                                                         this._container.IsRegistered(
+                                                             p.ParameterType.GetGenericArguments().FirstOrDefault());
+
             this._nonDependencyParameterSelector = p => !this._dependencyParameterSelector(p);
+        }
+
+        /// <summary>
+        /// Checkes whether a given parameterType is type of generic enumerable.
+        /// </summary>
+        /// <param name="parameterType">The parameter type.</param>
+        /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
+        private bool IsGenericEnumerable(Type parameterType)
+        {
+            if(!parameterType.IsGenericType)
+            {
+                return false;
+            }
+
+            var typeArguments = parameterType.GetGenericArguments();
+
+            if (typeof (IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(parameterType))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -152,7 +181,8 @@ namespace LightCore.Activation
             if (parameters.Any(_dependencyParameterSelector))
             {
                 var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-                var resolvedDependencies = dependencyParameters.Convert(p => this._container.Resolve(p.ParameterType));
+
+                var resolvedDependencies = this.ResolveDependencies(dependencyParameters);
 
                 // If there are arguments, concat at the end.
                 if (arguments != null)
@@ -170,6 +200,32 @@ namespace LightCore.Activation
 
             // There are only non depdency arguments.
             return constructor.Invoke(this._cachedArguments);
+        }
+
+        /// <summary>
+        /// Resolve all dependencies and consider IEnumerable{TContract}.
+        /// </summary>
+        /// <param name="dependencyParameters"></param>
+        /// <returns></returns>
+        private IEnumerable<object> ResolveDependencies(IEnumerable<ParameterInfo> dependencyParameters)
+        {
+            foreach (ParameterInfo parameter in dependencyParameters)
+            {
+                if (this.IsGenericEnumerable(parameter.ParameterType))
+                {
+                    Type genericArgument = parameter.ParameterType.GetGenericArguments().FirstOrDefault();
+                    object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
+
+                    Array typedArrayToReturn = Array.CreateInstance(genericArgument, resolvedInstances.Count());
+                    resolvedInstances.CopyTo(typedArrayToReturn, 0);
+
+                    yield return typedArrayToReturn;
+                }
+                else
+                {
+                    yield return this._container.Resolve(parameter.ParameterType);
+                }
+            }
         }
 
         /// <summary>

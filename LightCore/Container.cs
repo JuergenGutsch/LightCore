@@ -146,7 +146,6 @@ namespace LightCore
 
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
-                                                   p => p.PropertyType.IsAbstract || p.PropertyType.IsInterface,
                                                    p => !p.PropertyType.IsValueType,
                                                    p => this.IsRegistered(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
@@ -163,7 +162,7 @@ namespace LightCore
         /// </summary>
         /// <param name="typeOfContract">The type of contract.</param>
         /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
-        private bool IsRegistered(Type typeOfContract)
+        internal bool IsRegistered(Type typeOfContract)
         {
             var key = new RegistrationKey(typeOfContract);
 

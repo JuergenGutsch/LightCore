@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Bar.cs" />
     <Compile Include="BarController.cs" />
+    <Compile Include="EnumerableTest.cs" />
     <Compile Include="ILorem.cs" />
     <Compile Include="Lorem.cs" />
     <Compile Include="SqlBar.cs" />

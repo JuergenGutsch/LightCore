@@ -54,5 +54,22 @@ namespace LightCore.Tests
 
             Assert.AreEqual(2, allInstances.Count());
         }
+
+        [Test]
+        public void Container_can_resolve_enumerables_of_contract()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register<IBar>(c => new Bar());
+            builder.Register<IBar>(c => new Bar()).WithName("Foo");
+            builder.Register<EnumerableTest>();
+
+            var container = builder.Build();
+
+            var instance = container.Resolve<EnumerableTest>();
+
+            Assert.IsNotNull(instance);
+            Assert.AreEqual(2, instance.Bars.Count());
+        }
     }
 }
