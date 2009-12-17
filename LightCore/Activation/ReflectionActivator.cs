@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
-using LightCore.ExtensionMethods.System;
-using LightCore.Properties;
-
 namespace LightCore.Activation
 {
     /// <summary>
@@ -78,14 +75,14 @@ namespace LightCore.Activation
         /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
         private bool IsGenericEnumerable(Type parameterType)
         {
-            if(!parameterType.IsGenericType)
+            if (!parameterType.IsGenericType)
             {
                 return false;
             }
 
             var typeArguments = parameterType.GetGenericArguments();
 
-            if (typeof (IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(parameterType))
+            if (typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(parameterType))
             {
                 return true;
             }
@@ -116,60 +113,79 @@ namespace LightCore.Activation
             // Use the default constructor.
             if (onlyDefaultConstructorAvailable)
             {
-                return Activator.CreateInstance(this._implementationType);
+                return this.InvokeDefaultConstructor();
             }
 
-            // Select constructor that matches the given arguments.
-            if (arguments != null)
+            var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Count());
+
+            foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
             {
-                return CreateInstanceWithArguments(this._implementationType, constructors, arguments.ToArray());
-            }
+                ParameterInfo[] parameters = constructorCandidate.GetParameters();
+                var dependencyParameters = parameters.Where(this._dependencyParameterSelector);
 
-            // Select the constructor with most parameters (dependencies).
-            var cachedConstructorWithMostParameters = constructors.OrderByDescending(
-                delegate(ConstructorInfo c)
+                if (arguments == null && !dependencyParameters.Any())
                 {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Count() > 0;
-                }).First();
+                    return this.InvokeDefaultConstructor();
+                }
 
-            // Invoke constructor with most dependencies and return it to the caller.
-            return this.InvokeConstructor(cachedConstructorWithMostParameters, null);
-        }
-
-        /// <summary>
-        /// Creates an instance with arguments.
-        /// </summary>
-        /// <param name="implementationType">The imlementation type.</param>
-        /// <param name="constructors">The constructor candidates.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns>The created instance.</returns>
-        private object CreateInstanceWithArguments(Type implementationType, IEnumerable<ConstructorInfo> constructors, object[] arguments)
-        {
-            var constructorCandidates = constructors.Where(
-                delegate(ConstructorInfo c)
+                if (arguments == null && parameters.Count() == dependencyParameters.Count())
                 {
-                    var parameters = c.GetParameters();
-                    return parameters != null && parameters.Where(this._nonDependencyParameterSelector).Count() == arguments.Count();
-                });
+                    return this.InvokeConstructor(constructorCandidate, (arguments != null ? arguments.ToArray() : null));
+                }
 
-            // Only one constructor with same parameter count.
-            if (constructorCandidates.Count() == 1)
-            {
-                return this.InvokeConstructor(constructorCandidates.First(), arguments);
-            }
-
-            // Find the right constructor according the parameter types.
-            foreach (var constructor in constructorCandidates.OrderByDescending(c => c.GetParameters().Count()))
-            {
-                if (ConstructorParameterTypesMatch(constructor.GetParameters().Where(this._nonDependencyParameterSelector).ToArray(), arguments))
+                if (arguments != null && this.ConstructorParameterTypesMatch(parameters, arguments.ToArray()))
                 {
-                    return this.InvokeConstructor(constructor, arguments);
+                    return this.InvokeConstructor(constructorCandidate, (arguments != null ? arguments.ToArray() : null));
                 }
             }
 
-            // No constructor found.
-            throw new ResolutionFailedException(Resources.ConstructorNotFoundFormat.FormatWith(implementationType.Name));
+            return this.InvokeDefaultConstructor();
+        }
+
+        /// <summary>
+        /// Invokes the default constructor of the implementation type.-
+        /// </summary>
+        /// <returns>The instance constructed bei default constructor.</returns>
+        private object InvokeDefaultConstructor()
+        {
+            return Activator.CreateInstance(this._implementationType);
+        }
+
+        /// <summary>
+        /// Checks whether the types of parameter infos and arguments matches.
+        /// Ignores depdency parameters at the beginning (increment the index from begining on).
+        /// </summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <returns><value>true</value> if the parameter and argument types match, otherwise <value>false</value>.</returns>
+        private bool ConstructorParameterTypesMatch(ParameterInfo[] parameters, object[] arguments)
+        {
+            int parameterStartIndex = 0;
+            var depdendencyParameters = parameters.Where(_dependencyParameterSelector);
+
+            if (depdendencyParameters.Any())
+            {
+                parameterStartIndex = depdendencyParameters.Count();
+            }
+
+            if ((parameters.Count()) - parameterStartIndex != arguments.Count())
+            {
+                return false;
+            }
+
+            for (int i = 0; i < arguments.Length; i++)
+            {
+                var test = arguments[i].GetType();
+
+                if (parameters[parameterStartIndex].ParameterType != arguments[i].GetType())
+                {
+                    return false;
+                }
+
+                parameterStartIndex++;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -227,10 +243,10 @@ namespace LightCore.Activation
 
                     object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
 
-                    Type openListType = typeof (List<>);
+                    Type openListType = typeof(List<>);
                     Type closedListType = openListType.MakeGenericType(genericArgument);
 
-                    var list = (IList) Activator.CreateInstance(closedListType);
+                    var list = (IList)Activator.CreateInstance(closedListType);
 
                     Array.ForEach(resolvedInstances, instance => list.Add(instance));
 
@@ -241,34 +257,6 @@ namespace LightCore.Activation
                     yield return this._container.Resolve(parameter.ParameterType);
                 }
             }
-        }
-
-        /// <summary>
-        /// Checks whether the types of parameter infos and arguments matches.
-        /// Ignores depdency parameters at the beginning (increment the index from begining on).
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns><value>true</value> if the parameter and argument types match, otherwise <value>false</value>.</returns>
-        private bool ConstructorParameterTypesMatch(ParameterInfo[] parameters, object[] arguments)
-        {
-            int startIndex = 0;
-            var depdendencyParameters = parameters.Where(_dependencyParameterSelector);
-
-            if (depdendencyParameters.Any())
-            {
-                startIndex = depdendencyParameters.Count();
-            }
-
-            for (int i = startIndex; i < arguments.Length; i++)
-            {
-                if (parameters[i].ParameterType != arguments[i].GetType())
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
