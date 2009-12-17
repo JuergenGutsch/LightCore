@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using LightCore.Activation;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
@@ -164,6 +165,11 @@ namespace LightCore
         /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
         internal bool IsRegistered(Type typeOfContract)
         {
+            if(typeOfContract == null)
+            {
+                return false;
+            }
+
             var key = new RegistrationKey(typeOfContract);
 
             return this._registrations.ContainsKey(key);

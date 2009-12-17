@@ -61,7 +61,7 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constructor for type &apos;{0}&apos; not found..
+        ///   Looks up a localized string similar to Constructor for implementation type &apos;{0}&apos; not found..
         /// </summary>
         internal static string ConstructorNotFoundFormat {
             get {

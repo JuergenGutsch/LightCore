@@ -56,7 +56,6 @@
     <Compile Include="ContainerTests.cs" />
     <Compile Include="ControllerBuilderTests.cs" />
     <Compile Include="ResolvingTests.cs" />
-    <Compile Include="ResolvingUseDefaultConstructorTests.cs" />
     <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>
   <ItemGroup>

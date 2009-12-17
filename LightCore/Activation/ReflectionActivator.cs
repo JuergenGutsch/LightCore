@@ -17,11 +17,6 @@ namespace LightCore.Activation
         private readonly Func<ParameterInfo, bool> _dependencyParameterSelector;
 
         /// <summary>
-        /// Selector for non dependency parameters.
-        /// </summary>
-        private readonly Func<ParameterInfo, bool> _nonDependencyParameterSelector;
-
-        /// <summary>
         /// The implementation type.
         /// </summary>
         private readonly Type _implementationType;
@@ -52,8 +47,6 @@ namespace LightCore.Activation
             // Setup selectors.
             this._dependencyParameterSelector = p => this._container.IsRegistered(p.ParameterType)
                                                      || this.IsRegisteredGenericEnumerable(p);
-
-            this._nonDependencyParameterSelector = p => !this._dependencyParameterSelector(p);
         }
 
         /// <summary>
@@ -117,29 +110,38 @@ namespace LightCore.Activation
             }
 
             var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Count());
+            ConstructorInfo finalConstructor = null;
 
+            // Loop througth all constructors, from the most to the least parameters.
             foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
             {
                 ParameterInfo[] parameters = constructorCandidate.GetParameters();
                 var dependencyParameters = parameters.Where(this._dependencyParameterSelector);
 
+                // If there are no arguments at all, use default constructor.
                 if (arguments == null && !dependencyParameters.Any())
                 {
                     return this.InvokeDefaultConstructor();
                 }
 
+                // Parameters and registered dependencies match.
                 if (arguments == null && parameters.Count() == dependencyParameters.Count())
                 {
-                    return this.InvokeConstructor(constructorCandidate, (arguments != null ? arguments.ToArray() : null));
+                    finalConstructor = constructorCandidate;
+                    break;
                 }
 
+                // There are arguments, the types matches.
                 if (arguments != null && this.ConstructorParameterTypesMatch(parameters, arguments.ToArray()))
                 {
-                    return this.InvokeConstructor(constructorCandidate, (arguments != null ? arguments.ToArray() : null));
+                    finalConstructor = constructorCandidate;
+                    break;
                 }
             }
 
-            return this.InvokeDefaultConstructor();
+            this._cachedConstructor = finalConstructor;
+
+            return this.InvokeConstructor(finalConstructor, (arguments != null ? arguments.ToArray() : null));
         }
 
         /// <summary>
@@ -213,7 +215,6 @@ namespace LightCore.Activation
                     resolvedDependencies = resolvedDependencies.Concat(arguments);
                 }
 
-                this._cachedConstructor = constructor;
                 this._cachedArguments = resolvedDependencies.ToArray();
 
                 return constructor.Invoke(this._cachedArguments);
@@ -221,7 +222,6 @@ namespace LightCore.Activation
 
             this._cachedArguments = arguments.ToArray();
 
-            // There are only non depdency arguments.
             return constructor.Invoke(this._cachedArguments);
         }
 

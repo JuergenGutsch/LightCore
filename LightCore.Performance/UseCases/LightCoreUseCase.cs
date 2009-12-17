@@ -1,4 +1,5 @@
-﻿using LightCore.Performance.Domain;
+﻿using LightCore.Lifecycle;
+using LightCore.Performance.Domain;
 
 namespace LightCore.Performance.UseCases
 {
@@ -9,6 +10,7 @@ namespace LightCore.Performance.UseCases
         public LightCoreUseCase()
         {
             var builder = new ContainerBuilder();
+
             builder.Register<IWebApp, WebApp>();
             builder.Register<IAuthenticator, Authenticator>();
             builder.Register<IStockQuote, StockQuote>();

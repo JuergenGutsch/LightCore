@@ -162,7 +162,7 @@ namespace LightCore
             {
                 if (this._activeRegistrationGroupsInternal != null && registrationItem.Key.Group != null)
                 {
-                    if (!this._activeRegistrationGroupsInternal.Any(g => g.Trim() == registrationItem.Key.Group))
+                    if (!this._activeRegistrationGroupsInternal.Any(g => g.Trim() == registrationItem.Key.Group.Trim()))
                     {
                         // Do not add inactive registrationItem.
                         return;

@@ -10,6 +10,8 @@ namespace LightCore.Performance.UseCases
         {
             this._container = new Funq.Container();
 
+            this._container.DefaultReuse = Funq.ReuseScope.None;
+
             this._container.Register<IWebApp>(
                 c => new WebApp(
                          c.Resolve<IAuthenticator>(),

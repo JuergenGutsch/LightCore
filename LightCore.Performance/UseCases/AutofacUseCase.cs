@@ -11,6 +11,7 @@ namespace LightCore.Performance.UseCases
         public AutofacUseCase()
         {
             var builder = new Autofac.ContainerBuilder();
+
             builder.RegisterType<WebApp>()
                 .As<IWebApp>();
 
