@@ -11,6 +11,17 @@ namespace LightCore.Tests
     public class ContainerTests
     {
         [Test]
+        public void Container_can_resolve_types_to_self_automatically()
+        {
+            var builder = new ContainerBuilder();
+            var container = builder.Build();
+
+            Foo resolvedInstance = container.Resolve<Foo>();
+
+            Assert.IsNotNull(resolvedInstance);
+        }
+
+        [Test]
         public void IContainer_is_automatically_registered_when_container_was_build()
         {
             var builder = new ContainerBuilder();
