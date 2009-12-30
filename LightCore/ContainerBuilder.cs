@@ -40,6 +40,11 @@ namespace LightCore
 
             set
             {
+                if(value == null)
+                {
+                    throw new ArgumentException("value");
+                }
+
                 this._activeRegistrationGroups = value;
                 this._activeRegistrationGroupsInternal = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
