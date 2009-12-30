@@ -101,9 +101,9 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Sets the default reuse strategy function for this container.
+        /// Sets the default lifecycle function for this container.
         /// </summary>
-        /// <param name="lifecycleFunction">The creator function for default reuse strategy.</param>
+        /// <param name="lifecycleFunction">The creator function for default lifecycle.</param>
         public void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)
         {
             this._defaultLifecycleFunction = lifecycleFunction;
@@ -117,6 +117,12 @@ namespace LightCore
         public IFluentRegistration Register<TSelf>()
         {
             Type typeOfSelf = typeof (TSelf);
+
+            if(!typeOfSelf.IsConcreteType())
+            {
+                throw new InvalidRegistrationException(
+                    Resources.InvalidRegistrationFormat.FormatWith(typeOfSelf.ToString()));
+            }
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return this.Register(typeOfSelf, typeOfSelf);

@@ -120,6 +120,9 @@
   <data name="ConstructorNotFoundFormat" xml:space="preserve">
     <value>Constructor for implementation type '{0}' not found.</value>
   </data>
+  <data name="InvalidRegistrationFormat" xml:space="preserve">
+    <value>Registration to self for type '{0}' is invalid, because the type is abstract or an interface type.</value>
+  </data>
   <data name="RegistrationForContractAndNameAlreadyExistsFormat" xml:space="preserve">
     <value>Registration for contract '{0}' and name '{1}' already exists.</value>
   </data>

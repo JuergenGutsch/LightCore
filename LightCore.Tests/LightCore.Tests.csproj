@@ -54,7 +54,7 @@
     <Compile Include="ResolvingNamedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />
-    <Compile Include="ControllerBuilderTests.cs" />
+    <Compile Include="ContainerBuilderTests.cs" />
     <Compile Include="ResolvingTests.cs" />
     <Compile Include="ResolvingWithArgumentsTests.cs" />
   </ItemGroup>

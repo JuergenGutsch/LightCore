@@ -98,7 +98,6 @@ namespace LightCore.Activation
                 return _cachedConstructor.Invoke(this._cachedArguments);
             }
 
-
             var constructors = this._implementationType.GetConstructors();
             bool onlyDefaultConstructorAvailable = constructors.Length == 1 &&
                                                    constructors[0].GetParameters().Length == 0;
@@ -177,8 +176,6 @@ namespace LightCore.Activation
 
             for (int i = 0; i < arguments.Length; i++)
             {
-                var test = arguments[i].GetType();
-
                 if (parameters[parameterStartIndex].ParameterType != arguments[i].GetType())
                 {
                     return false;

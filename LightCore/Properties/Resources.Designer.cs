@@ -70,6 +70,15 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registration to self for type &apos;{0}&apos; is invalid, because the type is abstract or an interface type..
+        /// </summary>
+        internal static string InvalidRegistrationFormat {
+            get {
+                return ResourceManager.GetString("InvalidRegistrationFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; and name &apos;{1}&apos; already exists..
         /// </summary>
         internal static string RegistrationForContractAndNameAlreadyExistsFormat {

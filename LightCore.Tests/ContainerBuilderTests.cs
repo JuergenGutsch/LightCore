@@ -6,10 +6,18 @@ using NUnit.Framework;
 namespace LightCore.Tests
 {
     [TestFixture]
-    public class ControllerBuilderTests
+    public class ContainerBuilderTests
     {
         [Test]
-        public void ControllerBuilder_can_register_types()
+        public void ContainerBuilder_throws_exception_on_interface_to_interface_registration()
+        {
+            var builder = new ContainerBuilder();
+
+            Assert.Throws<InvalidRegistrationException>(() => builder.Register<IFoo>());
+        }
+
+        [Test]
+        public void ContainerBuilder_can_register_types()
         {
             var builder = new ContainerBuilder();
 

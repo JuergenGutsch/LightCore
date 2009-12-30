@@ -31,7 +31,7 @@ namespace LightCore.Registration
         /// <summary>
         /// Registers all candidates.
         /// </summary>
-        /// <param name="containerBuilder">The controllerbuilder.</param>
+        /// <param name="containerBuilder">The ContainerBuilder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
             this.RegistrationCallBacks.ForEach(callback => callback(containerBuilder));

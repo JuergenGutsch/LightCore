@@ -85,7 +85,12 @@ namespace LightCore
 
             RegistrationItem registrationItem;
 
-            if (!this._registrations.TryGetValue(key, out registrationItem))
+            if (this._registrations.TryGetValue(key, out registrationItem))
+            {
+                return registrationItem.ActivateInstance(this);
+            }
+
+            if (!typeOfContract.IsConcreteType())
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat
@@ -93,6 +98,12 @@ namespace LightCore
                         typeOfContract.Name,
                         name));
             }
+
+            registrationItem = new RegistrationItem(key)
+                                   {
+                                       Activator = new ReflectionActivator(typeOfContract),
+                                       Lifecycle = new TransientLifecycle()
+                                   };
 
             return registrationItem.ActivateInstance(this);
         }

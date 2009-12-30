@@ -8,7 +8,7 @@
         /// <summary>
         /// Registers all candidates.
         /// </summary>
-        /// <param name="containerBuilder">The controllerbuilder.</param>
+        /// <param name="containerBuilder">The ContainerBuilder.</param>
         public abstract void Register(IContainerBuilder containerBuilder);
     }
 }

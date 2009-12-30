@@ -42,7 +42,7 @@ namespace LightCore.Configuration
         /// <summary>
         /// Registers all candidates.
         /// </summary>
-        /// <param name="containerBuilder">The controllerbuilder.</param>
+        /// <param name="containerBuilder">The containerbuilder.</param>
         /// <param name="configuration">The configuration</param>
         public void Register(IContainerBuilder containerBuilder, LightCoreConfiguration configuration)
         {
