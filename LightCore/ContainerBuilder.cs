@@ -97,7 +97,7 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Sets the default lifecycle for this container.
+        /// Sets the default lifecycle for this container. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
         /// </summary>
         /// <typeparam name="TLifecycle">The default lifecycle.</typeparam>
         public void DefaultControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
@@ -106,7 +106,7 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Sets the default lifecycle function for this container.
+        /// Sets the default lifecycle function for this container. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
         /// </summary>
         /// <param name="lifecycleFunction">The creator function for default lifecycle.</param>
         public void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)

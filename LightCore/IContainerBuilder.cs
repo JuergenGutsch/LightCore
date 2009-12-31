@@ -13,6 +13,11 @@ namespace LightCore
     public interface IContainerBuilder
     {
         /// <summary>
+        /// Gets or sets the active group configurations.
+        /// </summary>
+        string ActiveRegistrationGroups { get; set; }
+
+        /// <summary>
         /// Builds the container.
         /// </summary>
         /// <returns>The builded container.</returns>
@@ -21,14 +26,20 @@ namespace LightCore
         /// <summary>
         /// Registers a module with registrations.
         /// </summary>
-        /// <param name="module">The module.</param>
+        /// <param name="module">The module to register within this container builder.</param>
         void RegisterModule(RegistrationModule module);
 
         /// <summary>
-        /// Sets the default reuse scope for this container.
+        /// Sets the default lifecycle for this container. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
         /// </summary>
-        /// <typeparam name="TScope">The type of default scope.</typeparam>
-        void DefaultControlledBy<TScope>() where TScope : ILifecycle, new();
+        /// <typeparam name="TLifecycle">The default lifecycle.</typeparam>
+        void DefaultControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new();
+
+        /// <summary>
+        /// Sets the default lifecycle function for this container. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
+        /// </summary>
+        /// <param name="lifecycleFunction">The creator function for default lifecycle.</param>
+        void DefaultControlledBy(Func<ILifecycle> lifecycleFunction);
 
         /// <summary>
         /// Registers a type to itself.
@@ -42,7 +53,7 @@ namespace LightCore
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction);
 
         /// <summary>
@@ -50,7 +61,7 @@ namespace LightCore
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         IFluentRegistration Register<TContract, TImplementation>() where TImplementation : TContract;
 
         /// <summary>
@@ -58,7 +69,7 @@ namespace LightCore
         /// </summary>
         /// <param name="typeOfContract">The type of the contract.</param>
         /// <param name="typeOfImplementation">The type of the implementation for the contract</param>
-        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation);
     }
 }

@@ -25,7 +25,7 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to use the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
         /// </summary>
         /// <typeparam name="TLifecycle">The lifecycle type.</typeparam>
         /// <returns>The instance itself to get fluent working.</returns>
@@ -36,7 +36,7 @@ namespace LightCore.Fluent
         }
 
         /// <summary>
-        /// Treat the current registration to use the passed lifecycle.
+        /// Treat the current registration to use the passed lifecycle. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
         /// </summary>
         /// <param name="type">The lifecycle type.</param>
         /// <returns>The instance itself to get fluent working.</returns>
