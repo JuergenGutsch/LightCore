@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LightCoreConfiguration xmlns="clr-namespace:LightCore.Configuration;assembly=LightCore.Configuration">
     <LightCoreConfiguration.TypeAliases>
-        <TypeAlias Alias="HttpRequest" Type="LightCore.Integration.Web.HttpRequestLifecycle, LightCore.Integration.Web" />
+        <TypeAlias Alias="HttpRequest" Type="LightCore.Integration.Web.Lifecycle.HttpRequestLifecycle, LightCore.Integration.Web" />
     </LightCoreConfiguration.TypeAliases>
     <LightCoreConfiguration.Registrations>
         <Registration ContractType="System.ComponentModel.IDisposable" ImplementationType="System.IO.Stream, mscorlib"/>
