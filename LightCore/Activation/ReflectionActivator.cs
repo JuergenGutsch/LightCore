@@ -19,7 +19,7 @@ namespace LightCore.Activation
         /// <summary>
         /// The implementation type.
         /// </summary>
-        private Type _implementationType;
+        private readonly Type _implementationType;
 
         /// <summary>
         /// The cached constructor.
@@ -36,15 +36,6 @@ namespace LightCore.Activation
         /// </summary>
         private Container _container;
 
-        /// <summary>
-        /// Gets or sets the generic type arguments for this activator.
-        /// </summary>
-        public Type[] GenericTypeArguments
-        {
-            get;
-            set;
-        }
-
         ///<summary>
         /// Creates a new instance of <see cref="ReflectionActivator" />.
         ///</summary>
@@ -54,8 +45,15 @@ namespace LightCore.Activation
             this._implementationType = implementationType;
 
             // Setup selectors.
-            this._dependencyParameterSelector = p => this._container.IsRegistered(p.ParameterType)
-                                                     || this.IsRegisteredGenericEnumerable(p);
+            this._dependencyParameterSelector =
+                delegate(ParameterInfo p)
+                    {
+                        Type parameterType = p.ParameterType;
+
+                        return this._container.ContractIsRegistered(parameterType)
+                               || this._container.OpenGenericContractIsRegistered(parameterType)
+                               || this.IsRegisteredGenericEnumerable(p);
+                    };
         }
 
         /// <summary>
@@ -66,7 +64,7 @@ namespace LightCore.Activation
         private bool IsRegisteredGenericEnumerable(ParameterInfo parameter)
         {
             return this.IsGenericEnumerable(parameter.ParameterType)
-                   && this._container.IsRegistered(parameter.ParameterType.GetGenericArguments()
+                   && this._container.ContractIsRegistered(parameter.ParameterType.GetGenericArguments()
                                                        .FirstOrDefault());
         }
 
@@ -105,11 +103,6 @@ namespace LightCore.Activation
             if (_cachedConstructor != null)
             {
                 return _cachedConstructor.Invoke(this._cachedArguments);
-            }
-
-            if(this._implementationType.IsGenericTypeDefinition && this.GenericTypeArguments != null)
-            {
-                this._implementationType = this._implementationType.MakeGenericType(this.GenericTypeArguments);
             }
 
             var constructors = this._implementationType.GetConstructors();

@@ -39,6 +39,24 @@ namespace LightCore.Tests
         }
 
         [Test]
+        public void Container_can_resolve_a_few_open_generic_types()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+
+            var container = builder.Build();
+
+            var fooRepository = container.Resolve<IRepository<Foo>>();
+            var barRepository = container.Resolve<IRepository<Bar>>();
+
+            Assert.NotNull(fooRepository);
+            Assert.NotNull(barRepository);
+
+            Assert.IsInstanceOf<IRepository<Foo>>(fooRepository);
+            Assert.IsInstanceOf<IRepository<Bar>>(barRepository);
+        }
+
+        [Test]
         public void Container_can_resolve_types_to_self_automatically()
         {
             var builder = new ContainerBuilder();

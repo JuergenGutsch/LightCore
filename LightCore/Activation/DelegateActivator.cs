@@ -14,15 +14,6 @@ namespace LightCore.Activation
         private readonly Func<IContainer, TContract> _activationFunction;
 
         /// <summary>
-        /// Gets or sets the generic type arguments for this activator.
-        /// </summary>
-        public Type[] GenericTypeArguments
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Initializes a new instance of <see cref="DelegateActivator{TContract}" />.
         /// </summary>
         /// <param name="activationFunction">The activator function.</param>

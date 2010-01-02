@@ -81,39 +81,52 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         public object Resolve(Type typeOfContract, string name)
         {
-            Type typeOfContractLocal = typeOfContract;
-
-            if (typeOfContractLocal.IsGenericType && OpenGenericTypeIsRegistered(typeOfContract))
-            {
-                typeOfContractLocal = typeOfContract.GetGenericTypeDefinition();
-            }
-
-            var key = new RegistrationKey(typeOfContractLocal, name);
+            var key = new RegistrationKey(typeOfContract, name);
 
             RegistrationItem registrationItem;
 
-            // Activate existing registration.
             if (this._registrations.TryGetValue(key, out registrationItem))
             {
-                registrationItem.Activator.GenericTypeArguments = typeOfContract.GetGenericArguments();
+                // Activate existing registration.
+                return registrationItem.ActivateInstance(this);
+            }
+
+            if (typeOfContract.IsGenericType && OpenGenericContractIsRegistered(typeOfContract))
+            {
+                // Get the Registration for the open generic type.
+                key = new RegistrationKey(typeOfContract.GetGenericTypeDefinition(), name);
+                registrationItem = this._registrations[key];
+
+                // Register close generic type on-the-fly.
+                key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(typeOfContract.GetGenericArguments()));
+
+                registrationItem = new RegistrationItem(key)
+                                       {
+                                           Activator = new ReflectionActivator(registrationItem.ImplementationType
+                                                                                   .MakeGenericType(
+                                                                                   typeOfContract.GetGenericArguments())),
+                                           Lifecycle = registrationItem.Lifecycle
+                                       };
+
+                this._registrations.Add(registrationItem.Key, registrationItem);
 
                 return registrationItem.ActivateInstance(this);
             }
 
             // No registration found for this type.
-            if (!typeOfContractLocal.IsConcreteType())
+            if (!typeOfContract.IsConcreteType())
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat
                         .FormatWith(
-                        typeOfContractLocal.Name,
+                        typeOfContract.Name,
                         name));
             }
 
             // On-the-fly registration of concrete types. Equivalent to new-operator.
             registrationItem = new RegistrationItem(key)
                                    {
-                                       Activator = new ReflectionActivator(typeOfContractLocal),
+                                       Activator = new ReflectionActivator(typeOfContract),
                                        Lifecycle = new TransientLifecycle()
                                    };
 
@@ -126,9 +139,11 @@ namespace LightCore
         /// </summary>
         /// <param name="typeOfContract">The type of the contract.</param>
         /// <returns><value>true</value> if the open generic type is registered, otherwise <value>false</value>.</returns>
-        private bool OpenGenericTypeIsRegistered(Type typeOfContract)
+        internal bool OpenGenericContractIsRegistered(Type typeOfContract)
         {
-            return this.IsRegistered(typeOfContract.GetGenericTypeDefinition());
+            return typeOfContract.IsGenericTypeDefinition || typeOfContract.IsGenericType
+                                                             &&
+                                                             this.ContractIsRegistered(typeOfContract.GetGenericTypeDefinition());
         }
 
         /// <summary>
@@ -182,7 +197,7 @@ namespace LightCore
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this.IsRegistered(p.PropertyType),
+                                                   p => this.ContractIsRegistered(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
                                                };
 
@@ -197,7 +212,7 @@ namespace LightCore
         /// </summary>
         /// <param name="typeOfContract">The type of contract.</param>
         /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
-        internal bool IsRegistered(Type typeOfContract)
+        internal bool ContractIsRegistered(Type typeOfContract)
         {
             if(typeOfContract == null)
             {

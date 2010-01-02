@@ -226,7 +226,9 @@ namespace LightCore
             // Register the type with default lifetime.
             var registration = new RegistrationItem(key)
                                    {
-                                       Activator = new ReflectionActivator(typeOfImplementation)
+                                       Activator = new ReflectionActivator(typeOfImplementation),
+                                       Lifecycle = this._defaultLifecycleFunction(),
+                                       ImplementationType = typeOfImplementation
                                    };
 
             this.AddToRegistrations(registration);

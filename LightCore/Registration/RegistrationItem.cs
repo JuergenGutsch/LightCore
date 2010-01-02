@@ -1,4 +1,6 @@
-﻿using LightCore.Activation;
+﻿using System;
+
+using LightCore.Activation;
 using LightCore.Lifecycle;
 
 namespace LightCore.Registration
@@ -15,6 +17,15 @@ namespace LightCore.Registration
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the implementation type for this registration.
+        /// </summary>
+        internal Type ImplementationType
+        {
+            get;
+            set;
         }
 
         /// <summary>
