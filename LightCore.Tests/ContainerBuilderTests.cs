@@ -9,6 +9,14 @@ namespace LightCore.Tests
     public class ContainerBuilderTests
     {
         [Test]
+        public void ContainerBuilder_can_register_generic_type()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+        }
+
+        [Test]
         public void ContainerBuilder_throws_exception_on_interface_to_interface_registration()
         {
             var builder = new ContainerBuilder();

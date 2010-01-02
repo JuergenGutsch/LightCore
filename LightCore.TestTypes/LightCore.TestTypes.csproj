@@ -41,9 +41,11 @@
   <ItemGroup>
     <Compile Include="Bar.cs" />
     <Compile Include="BarController.cs" />
+    <Compile Include="BarRepository.cs" />
     <Compile Include="EnumerableTest.cs" />
     <Compile Include="ILorem.cs" />
     <Compile Include="Lorem.cs" />
+    <Compile Include="Repository.cs" />
     <Compile Include="SqlBar.cs" />
     <Compile Include="SqlFoo.cs" />
     <Compile Include="TestLorem.cs" />

@@ -19,7 +19,7 @@ namespace LightCore.Activation
         /// <summary>
         /// The implementation type.
         /// </summary>
-        private readonly Type _implementationType;
+        private Type _implementationType;
 
         /// <summary>
         /// The cached constructor.
@@ -35,6 +35,15 @@ namespace LightCore.Activation
         /// A reference to the container to resolve inner dependencies.
         /// </summary>
         private Container _container;
+
+        /// <summary>
+        /// Gets or sets the generic type arguments for this activator.
+        /// </summary>
+        public Type[] GenericTypeArguments
+        {
+            get;
+            set;
+        }
 
         ///<summary>
         /// Creates a new instance of <see cref="ReflectionActivator" />.
@@ -96,6 +105,11 @@ namespace LightCore.Activation
             if (_cachedConstructor != null)
             {
                 return _cachedConstructor.Invoke(this._cachedArguments);
+            }
+
+            if(this._implementationType.IsGenericTypeDefinition && this.GenericTypeArguments != null)
+            {
+                this._implementationType = this._implementationType.MakeGenericType(this.GenericTypeArguments);
             }
 
             var constructors = this._implementationType.GetConstructors();

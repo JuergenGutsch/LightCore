@@ -1,6 +1,6 @@
 ﻿namespace LightCore.TestTypes
 {
-    public class FooRepository : Repository<Foo>
+    public class BarRepository : Repository<Bar>
     {
 
     }

@@ -81,31 +81,54 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         public object Resolve(Type typeOfContract, string name)
         {
-            var key = new RegistrationKey(typeOfContract, name);
+            Type typeOfContractLocal = typeOfContract;
+
+            if (typeOfContractLocal.IsGenericType && OpenGenericTypeIsRegistered(typeOfContract))
+            {
+                typeOfContractLocal = typeOfContract.GetGenericTypeDefinition();
+            }
+
+            var key = new RegistrationKey(typeOfContractLocal, name);
 
             RegistrationItem registrationItem;
 
+            // Activate existing registration.
             if (this._registrations.TryGetValue(key, out registrationItem))
             {
+                registrationItem.Activator.GenericTypeArguments = typeOfContract.GetGenericArguments();
+
                 return registrationItem.ActivateInstance(this);
             }
 
-            if (!typeOfContract.IsConcreteType())
+            // No registration found for this type.
+            if (!typeOfContractLocal.IsConcreteType())
             {
                 throw new RegistrationNotFoundException(
                     Resources.RegistrationForContractAndNameNotFoundFormat
                         .FormatWith(
-                        typeOfContract.Name,
+                        typeOfContractLocal.Name,
                         name));
             }
 
+            // On-the-fly registration of concrete types. Equivalent to new-operator.
             registrationItem = new RegistrationItem(key)
                                    {
-                                       Activator = new ReflectionActivator(typeOfContract),
+                                       Activator = new ReflectionActivator(typeOfContractLocal),
                                        Lifecycle = new TransientLifecycle()
                                    };
 
             return registrationItem.ActivateInstance(this);
+        }
+
+        /// <summary>
+        /// Checks whether an open generic type, taken from the closed type (typeOfContract) is registered or not.
+        /// (This makes possible to use open generic types and also closed generic types at once.
+        /// </summary>
+        /// <param name="typeOfContract">The type of the contract.</param>
+        /// <returns><value>true</value> if the open generic type is registered, otherwise <value>false</value>.</returns>
+        private bool OpenGenericTypeIsRegistered(Type typeOfContract)
+        {
+            return this.IsRegistered(typeOfContract.GetGenericTypeDefinition());
         }
 
         /// <summary>

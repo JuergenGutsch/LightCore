@@ -194,6 +194,10 @@ namespace LightCore
 
         /// <summary>
         /// Registers a contract with its implementationtype.
+        /// 
+        ///  Can be a generic contract (open generic types) with its implementationtype.
+        /// e.g. builder.RegisterGeneric(typeof(IRepository{T}), typeof(Repository{T}));
+        /// container.Resolve{IRepository{Foo}}();
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation for the contract</typeparam>
@@ -212,7 +216,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            if (!typeOfContract.IsAssignableFrom(typeOfImplementation))
+            if (!typeOfContract.IsGenericTypeDefinition &&  !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException();
             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LightCore.Activation
 {
@@ -7,6 +8,11 @@ namespace LightCore.Activation
     /// </summary>
     internal interface IActivator
     {
+        /// <summary>
+        /// Gets or sets the generic type arguments for this activator.
+        /// </summary>
+        Type[] GenericTypeArguments { get; set; }
+
         /// <summary>
         /// Activates an instance with given arguments.
         /// </summary>
