@@ -48,6 +48,7 @@
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
     <Compile Include="ContractNotImplementedByTypeException.cs" />
+    <Compile Include="ExtensionMethods\System\TypeExtensions.cs" />
     <Compile Include="InvalidRegistrationException.cs" />
     <Compile Include="Registration\InlineRegistrationModule.cs" />
     <Compile Include="Lifecycle\ILifecycle.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\System\Collections\Generic\SystemCollectionsGenericExtensions.cs" />
-    <Compile Include="ExtensionMethods\System\SystemExtensions.cs" />
+    <Compile Include="ExtensionMethods\System\StringExtensions.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
     <Compile Include="Fluent\IFluentInterface.cs" />
     <Compile Include="IContainer.cs" />
