@@ -3,17 +3,8 @@
     /// <summary>
     /// Represents a registration configuration.
     /// </summary>
-    public class Registration
+    public class Registration : RegistrationBase
     {
-        /// <summary>
-        /// Gets or sets the name.
-        /// </summary>
-        public string Name
-        {
-            get;
-            set;
-        }
-
         /// <summary>
         /// Gets or sets the identifier for the contract type.
         /// </summary>

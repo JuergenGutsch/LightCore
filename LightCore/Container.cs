@@ -33,6 +33,13 @@ namespace LightCore
 
             // Register the container itself for service locator reasons.
             var registrationKey = new RegistrationKey(typeof (IContainer));
+
+            // The container is already registered from external.
+            if(this._registrations.ContainsKey(registrationKey))
+            {
+                return;
+            }
+
             var registrationItem = new RegistrationItem(registrationKey)
                                        {
                                            Activator = new DelegateActivator<IContainer>(c => this),
@@ -81,6 +88,11 @@ namespace LightCore
         /// <returns>The resolved instance as <see cref="object" />.</returns>
         public object Resolve(Type typeOfContract, string name)
         {
+            if(typeOfContract == null)
+            {
+                throw new ArgumentNullException("typeOfContract");
+            }
+
             var key = new RegistrationKey(typeOfContract, name);
 
             RegistrationItem registrationItem;
@@ -93,18 +105,19 @@ namespace LightCore
 
             if (typeOfContract.IsGenericType && OpenGenericContractIsRegistered(typeOfContract))
             {
+                Type[] genericArguments = typeOfContract.GetGenericArguments();
+
                 // Get the Registration for the open generic type.
                 key = new RegistrationKey(typeOfContract.GetGenericTypeDefinition(), name);
                 registrationItem = this._registrations[key];
 
                 // Register close generic type on-the-fly.
-                key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(typeOfContract.GetGenericArguments()));
+                key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(genericArguments));
 
                 registrationItem = new RegistrationItem(key)
                                        {
                                            Activator = new ReflectionActivator(registrationItem.ImplementationType
-                                                                                   .MakeGenericType(
-                                                                                   typeOfContract.GetGenericArguments())),
+                                                                                   .MakeGenericType(genericArguments)),
                                            Lifecycle = registrationItem.Lifecycle
                                        };
 
@@ -197,7 +210,7 @@ namespace LightCore
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this.ContractIsRegistered(p.PropertyType),
+                                                   p => this.ContractIsRegistered(p.PropertyType) || OpenGenericContractIsRegistered(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
                                                };
 

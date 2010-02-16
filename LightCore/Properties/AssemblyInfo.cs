@@ -38,5 +38,6 @@ using System.Runtime.InteropServices;
 [assembly: CLSCompliant(true)]
 
 // Make internals visible to our other assemblies.
+[assembly: InternalsVisibleTo("LightCore.Tests")]
 [assembly: InternalsVisibleTo("LightCore.Configuration")]
 [assembly: InternalsVisibleTo("LightCore.Integration.Web")]

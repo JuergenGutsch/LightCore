@@ -12,6 +12,31 @@ namespace LightCore.Configuration.Tests
     public class ConfigurationTests
     {
         [Test]
+        public void Enabled_or_disable_registrations_works()
+        {
+            var configuration = new LightCoreConfiguration();
+
+            var registrations = new List<Registration>()
+                                    {
+                                        new Registration
+                                            {
+                                                ImplementationType = "LightCore.TestTypes.Bar, LightCoreTestTypes",
+                                                Enabled = "false"
+                                            }
+                                    };
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var bar = container.Resolve<Bar>();
+
+            Assert.NotNull(bar);
+        }
+
+        [Test]
         public void Can_configure_and_resolve_explicite_type_registration()
         {
             var configuration = new LightCoreConfiguration();

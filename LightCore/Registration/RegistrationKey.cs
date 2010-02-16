@@ -43,7 +43,7 @@ namespace LightCore.Registration
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Type" />.
+        /// Creates a new instance of <see cref="RegistrationKey" />.
         /// </summary>
         /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
         internal RegistrationKey(Type contractType)
@@ -52,7 +52,7 @@ namespace LightCore.Registration
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Type" />.
+        /// Creates a new instance of <see cref="RegistrationKey" />.
         /// </summary>
         /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
         /// <param name="name">The name.</param>
@@ -63,7 +63,7 @@ namespace LightCore.Registration
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="Type" />.
+        /// Creates a new instance of <see cref="RegistrationKey" />.
         /// </summary>
         /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
         /// <param name="name">The name.</param>

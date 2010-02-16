@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
@@ -46,25 +49,20 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultControlledBy<ThreadSingletonLifecycle>();
+            builder.DefaultControlledBy<SingletonLifecycle>();
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 
             var container = builder.Build();
 
-            var threadDataOne = new ThreadData(container);
-            var threadOne = new Thread(threadDataOne.ResolveFoo);
+            var threadData = new ThreadData(container);
+            var thread = new Thread(threadData.ResolveFoos);
 
-            var threadDataTwo = new ThreadData(container);
-            var threadTwo = new Thread(threadDataTwo.ResolveFoo);
+            thread.Start();
 
-            threadOne.Start();
-            threadTwo.Start();
+            thread.Join();
 
-            threadOne.Join();
-            threadTwo.Join();
-
-            Assert.AreNotSame(threadDataOne.Foo, threadDataTwo.Foo);
+            Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
         }
 
         private class ThreadData
@@ -76,15 +74,22 @@ namespace LightCore.Tests
                 this._container = container;
             }
 
-            public IFoo Foo
+            public IFoo FooOne
             {
                 get;
-                set;
+                private set;
             }
 
-            public void ResolveFoo()
+            public IFoo FooTwo
             {
-                this.Foo = this._container.Resolve<IFoo>();
+                get;
+                private set;
+            }
+
+            public void ResolveFoos()
+            {
+                this.FooOne = this._container.Resolve<IFoo>();
+                this.FooTwo = this._container.Resolve<IFoo>();
             }
         }
     }

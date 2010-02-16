@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActiveGroupNotFoundException.cs" />
+    <Compile Include="RegistrationBase.cs" />
     <Compile Include="RegistrationGroup.cs" />
     <Compile Include="XamlRegistrationException.cs" />
     <Compile Include="LightCoreConfiguration.cs" />

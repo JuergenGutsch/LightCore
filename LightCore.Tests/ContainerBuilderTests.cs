@@ -106,11 +106,11 @@ namespace LightCore.Tests
         }
 
         [Test]
-        public void CointainerBuilder_default_scope_can_be_altered_to_transient()
+        public void CointainerBuilder_default_scope_can_be_altered_to_singleton()
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultControlledBy<TransientLifecycle>();
+            builder.DefaultControlledBy<SingletonLifecycle>();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
@@ -119,7 +119,7 @@ namespace LightCore.Tests
             var instanceOne = container.Resolve<IFoo>();
             var instanceTwo = container.Resolve<IFoo>();
 
-            Assert.AreNotSame(instanceOne, instanceTwo);
+            Assert.AreSame(instanceOne, instanceTwo);
         }
     }
 }

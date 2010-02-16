@@ -115,7 +115,7 @@ namespace LightCore.Activation
                 return this.InvokeDefaultConstructor();
             }
 
-            var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Count());
+            var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
             ConstructorInfo finalConstructor = null;
 
             // Loop througth all constructors, from the most to the least parameters.
@@ -131,7 +131,7 @@ namespace LightCore.Activation
                 }
 
                 // Parameters and registered dependencies match.
-                if (arguments == null && parameters.Count() == dependencyParameters.Count())
+                if (arguments == null && parameters.Length == dependencyParameters.Count())
                 {
                     finalConstructor = constructorCandidate;
                     break;
@@ -176,7 +176,7 @@ namespace LightCore.Activation
                 parameterStartIndex = depdendencyParameters.Count();
             }
 
-            if ((parameters.Count()) - parameterStartIndex != arguments.Count())
+            if ((parameters.Length) - parameterStartIndex != arguments.Count())
             {
                 return false;
             }
