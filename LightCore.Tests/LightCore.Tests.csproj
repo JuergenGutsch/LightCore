@@ -52,6 +52,7 @@
     <Compile Include="GenericRegistrationTests.cs" />
     <Compile Include="InjectPropertiesTests.cs" />
     <Compile Include="LifecycleTests.cs" />
+    <Compile Include="RegistrationKeyTests.cs" />
     <Compile Include="ResolvingNamedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ContainerTests.cs" />

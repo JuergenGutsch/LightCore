@@ -13,7 +13,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace LightCore.Tests
             Assert.Throws<ContractNotImplementedByTypeException>(() =>
             {
                 var builder = new ContainerBuilder();
-                builder.Register(typeof (IFoo), typeof (Bar));
+                builder.Register(typeof(IFoo), typeof(Bar));
 
                 var container = builder.Build();
             });
@@ -89,7 +89,7 @@ namespace LightCore.Tests
 
             var container = builder.Build();
         }
-        
+
         [Test]
         public void ContainerBuilders_default_scope_is_transient()
         {
@@ -120,6 +120,19 @@ namespace LightCore.Tests
             var instanceTwo = container.Resolve<IFoo>();
 
             Assert.AreSame(instanceOne, instanceTwo);
+        }
+
+        [Test]
+        public void ContainerBuilder_can_build_twice()
+        {
+            var builder = new ContainerBuilder();
+
+            // First Build
+            builder.Register<IBar, Bar>();
+            var container = builder.Build();
+
+            // Second Build
+            container = builder.Build();
         }
     }
 }

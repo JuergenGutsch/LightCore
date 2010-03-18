@@ -83,6 +83,7 @@ namespace LightCore
         {
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
+            this._registrationCallbacks.Clear();
 
             return new Container(this._registrations);
         }

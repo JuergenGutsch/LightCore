@@ -102,7 +102,7 @@ namespace LightCore.Registration
         /// <param name="otherKey">An object to compare with this object.</param>
         public bool Equals(RegistrationKey otherKey)
         {
-            return otherKey.ContractType == this.ContractType && otherKey.Name == this.Name;
+            return this == otherKey;
         }
 
         /// <summary>
@@ -113,7 +113,14 @@ namespace LightCore.Registration
         /// <returns><value>true</value> if the registration keys equals.</returns>
         public static bool operator ==(RegistrationKey leftKey, RegistrationKey rightKey)
         {
-            return leftKey.Equals(rightKey);
+            // If one is null, but not both, return false.
+            if (((object) leftKey == null) || ((object) rightKey == null))
+            {
+                return false;
+            }
+
+            // Return true if the fields match:
+            return leftKey.ContractType == rightKey.ContractType && leftKey.Name == rightKey.Name;
         }
 
         /// <summary>
