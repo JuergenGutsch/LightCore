@@ -49,20 +49,26 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultControlledBy<SingletonLifecycle>();
+            builder.DefaultControlledBy<ThreadSingletonLifecycle>();
             builder.Register<IFoo, Foo>();
             builder.Register<IBar, Bar>();
 
             var container = builder.Build();
 
-            var threadData = new ThreadData(container);
-            var thread = new Thread(threadData.ResolveFoos);
+            var threadDataOne = new ThreadData(container);
+            var threadDataTwo = new ThreadData(container);
 
-            thread.Start();
+            var threadOne = new Thread(threadDataOne.ResolveFoos);
+            var threadTwo = new Thread(threadDataTwo.ResolveFoos);
 
-            thread.Join();
+            threadOne.Start();
+            threadOne.Join();
 
-            Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
+            threadTwo.Start();
+            threadTwo.Join();
+
+            Assert.IsTrue(ReferenceEquals(threadDataOne.FooOne, threadDataOne.FooTwo));
+            Assert.IsFalse(ReferenceEquals(threadDataOne.FooOne, threadDataTwo.FooOne));
         }
 
         private class ThreadData
