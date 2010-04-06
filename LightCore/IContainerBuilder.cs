@@ -49,6 +49,14 @@ namespace LightCore
         IFluentRegistration Register<TSelf>();
 
         /// <summary>
+        /// Registers a instance for usage.
+        /// </summary>
+        /// <typeparam name="TInstance">The type of the instance.</typeparam>
+        /// <param name="instance">The instance to register.</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        IFluentRegistration Register<TInstance>(TInstance instance);
+
+        /// <summary>
         /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>

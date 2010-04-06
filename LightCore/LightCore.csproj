@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Activation\DelegateActivator.cs" />
     <Compile Include="Activation\IActivator.cs" />
+    <Compile Include="Activation\InstanceActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
     <Compile Include="ContractNotImplementedByTypeException.cs" />

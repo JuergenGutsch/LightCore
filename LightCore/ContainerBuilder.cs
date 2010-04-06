@@ -135,6 +135,28 @@ namespace LightCore
         }
 
         /// <summary>
+        /// Registers a type an instance.
+        /// </summary>
+        /// <typeparam name="TInstance">The instance type.</typeparam>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        public IFluentRegistration Register<TInstance>(TInstance instance)
+        {
+            Type typeOfInstance = (typeof (TInstance));
+
+            var key = new RegistrationKey(typeOfInstance);
+
+            var registration = new RegistrationItem(key)
+                                   {
+                                       Activator = new InstanceActivator<TInstance>(instance)
+                                   };
+
+            this.AddToRegistrations(registration);
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return new FluentRegistration(registration);
+        }
+
+        /// <summary>
         /// Registers a contract with an activator function.
         /// </summary>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
