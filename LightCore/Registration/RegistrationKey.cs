@@ -7,15 +7,6 @@ namespace LightCore.Registration
     /// </summary>
     internal class RegistrationKey : IEquatable<RegistrationKey>
     {
-        /// <summary>
-        /// The name for the registration.
-        /// </summary>
-        internal string Name
-        {
-            get;
-            set;
-        }
-
         ///<summary>
         /// The group for the registration.
         ///</summary>
@@ -52,29 +43,6 @@ namespace LightCore.Registration
         }
 
         /// <summary>
-        /// Creates a new instance of <see cref="RegistrationKey" />.
-        /// </summary>
-        /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
-        /// <param name="name">The name.</param>
-        internal RegistrationKey(Type contractType, string name)
-            : this(contractType)
-        {
-            this.Name = name;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="RegistrationKey" />.
-        /// </summary>
-        /// <param name="contractType">The contract type as <see cref="RegistrationItem"  />.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="group">The group.</param>
-        internal RegistrationKey(Type contractType, string name, string group)
-            : this(contractType, null)
-        {
-            this.Group = group;
-        }
-
-        /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
@@ -102,7 +70,7 @@ namespace LightCore.Registration
         /// <param name="otherKey">An object to compare with this object.</param>
         public bool Equals(RegistrationKey otherKey)
         {
-            return this == otherKey;
+            return otherKey.ContractType == this.ContractType;
         }
 
         /// <summary>
@@ -113,14 +81,7 @@ namespace LightCore.Registration
         /// <returns><value>true</value> if the registration keys equals.</returns>
         public static bool operator ==(RegistrationKey leftKey, RegistrationKey rightKey)
         {
-            // If one is null, but not both, return false.
-            if (((object) leftKey == null) || ((object) rightKey == null))
-            {
-                return false;
-            }
-
-            // Return true if the fields match:
-            return leftKey.ContractType == rightKey.ContractType && leftKey.Name == rightKey.Name;
+            return leftKey.Equals(rightKey);
         }
 
         /// <summary>
@@ -143,14 +104,7 @@ namespace LightCore.Registration
         /// <filterpriority>2</filterpriority>
         public override int GetHashCode()
         {
-            int hashCode = this.ContractType.GetHashCode();
-
-            if (this.Name != null)
-            {
-                hashCode ^= this.Name.GetHashCode();
-            }
-
-            return hashCode;
+            return this.ContractType.GetHashCode();
         }
     }
 }

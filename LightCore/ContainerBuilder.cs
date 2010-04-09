@@ -40,7 +40,7 @@ namespace LightCore
 
             set
             {
-                if(value == null)
+                if (value == null)
                 {
                     throw new ArgumentException("value");
                 }
@@ -51,9 +51,9 @@ namespace LightCore
         }
 
         /// <summary>
-        /// Holds a list with registered registrations.
+        /// Holds a container with registrations to register.
         /// </summary>
-        private readonly IDictionary<RegistrationKey, RegistrationItem> _registrations;
+        private readonly RegistrationContainer _registrationContainer;
 
         /// <summary>
         /// Holds a list with registering callbacks.
@@ -70,7 +70,7 @@ namespace LightCore
         /// </summary>
         public ContainerBuilder()
         {
-            this._registrations = new Dictionary<RegistrationKey, RegistrationItem>();
+            this._registrationContainer = new RegistrationContainer();
             this._registrationCallbacks = new List<Action>();
             this._defaultLifecycleFunction = () => new TransientLifecycle();
         }
@@ -85,7 +85,7 @@ namespace LightCore
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
             this._registrationCallbacks.Clear();
 
-            return new Container(this._registrations);
+            return new Container(this._registrationContainer);
         }
 
         /// <summary>
@@ -122,9 +122,9 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         public IFluentRegistration Register<TSelf>()
         {
-            Type typeOfSelf = typeof (TSelf);
+            Type typeOfSelf = typeof(TSelf);
 
-            if(!typeOfSelf.IsConcreteType())
+            if (!typeOfSelf.IsConcreteType())
             {
                 throw new InvalidRegistrationException(
                     Resources.InvalidRegistrationFormat.FormatWith(typeOfSelf.ToString()));
@@ -141,7 +141,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         public IFluentRegistration Register<TInstance>(TInstance instance)
         {
-            Type typeOfInstance = (typeof (TInstance));
+            Type typeOfInstance = (typeof(TInstance));
 
             var key = new RegistrationKey(typeOfInstance);
 
@@ -166,7 +166,7 @@ namespace LightCore
         {
             var typeOfContract = typeof(TContract);
 
-            var key = new RegistrationKey(typeOfContract, null);
+            var key = new RegistrationKey(typeOfContract);
 
             var registration = new RegistrationItem(key)
             {
@@ -185,34 +185,44 @@ namespace LightCore
         /// <param name="registrationItem">The registration to add.</param>
         private void AddToRegistrations(RegistrationItem registrationItem)
         {
-            // Set default reuse scope, if not user defined. (System default is <see cref="SingletonLifecycle" />.
-            if (registrationItem.Lifecycle == null)
-            {
-                registrationItem.Lifecycle = this._defaultLifecycleFunction();
-            }
+            this._registrationCallbacks
+                .Add(() =>
+                         {
 
-            // Add a register callback for lazy assertion after manipulating in fluent registrationItem api.
-            this._registrationCallbacks.Add(() =>
-            {
-                if (this._activeRegistrationGroupsInternal != null && registrationItem.Key.Group != null)
-                {
-                    if (!this._activeRegistrationGroupsInternal.Any(g => g.Trim() == registrationItem.Key.Group.Trim()))
-                    {
-                        // Do not add inactive registrationItem.
-                        return;
-                    }
-                }
+                             // Set default reuse scope, if not user defined. (System default is <see cref="TransientLifecycle" />.
+                             if (registrationItem.Lifecycle == null)
+                             {
+                                 registrationItem.Lifecycle = this._defaultLifecycleFunction();
+                             }
 
-                if(this._registrations.ContainsKey(registrationItem.Key))
-                {
-                    throw new
-                        RegistrationAlreadyExistsException(
-                        Resources.RegistrationForContractAndNameAlreadyExistsFormat.FormatWith(
-                            registrationItem.Key.ContractType, registrationItem.Key.Name));
-                }
+                             if (this._activeRegistrationGroupsInternal != null && registrationItem.Key.Group != null)
+                             {
+                                 if (
+                                     !this._activeRegistrationGroupsInternal.Any(
+                                         g => g.Trim() == registrationItem.Key.Group.Trim()))
+                                 {
+                                     // Do not add inactive registrationItem.
+                                     return;
+                                 }
+                             }
 
-                this._registrations.Add(registrationItem.Key, registrationItem);
-            });
+                             if (
+                                 this._registrationContainer.Registrations.ContainsKey(registrationItem.Key))
+                             {
+                                 // Duplicate registration for enumerable requests.
+                                 RegistrationItem duplicateItem =
+                                     this._registrationContainer.Registrations[registrationItem.Key];
+
+                                 this._registrationContainer.DuplicateRegistrations.Add(registrationItem);
+                                 this._registrationContainer.DuplicateRegistrations.Add(duplicateItem);
+
+                                 this._registrationContainer.Registrations.Remove(duplicateItem.Key);
+                             }
+                             else
+                             {
+                                 this._registrationContainer.Registrations.Add(registrationItem.Key, registrationItem);
+                             }
+                         });
         }
 
         /// <summary>
@@ -239,7 +249,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            if (!typeOfContract.IsGenericTypeDefinition &&  !typeOfContract.IsAssignableFrom(typeOfImplementation))
+            if (!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException();
             }

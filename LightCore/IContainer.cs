@@ -15,13 +15,29 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         TContract Resolve<TContract>();
 
+        ///<summary>
+        /// Resolves a contract (include subcontracts) with constructor arguments.
+        ///</summary>
+        ///<param name="arguments">The constructor arguments.</param>
+        ///<typeparam name="TContract">The type of the contract.</typeparam>
+        ///<returns>The resolved instance as <typeparamref name="TContract"/></returns>.
+        TContract Resolve<TContract>(params object[] arguments);
+
+        ///<summary>
+        /// Resolves a contract (include subcontracts) with constructor arguments.
+        ///</summary>
+        ///<param name="arguments">The constructor arguments.</param>
+        ///<typeparam name="TContract">The type of the contract.</typeparam>
+        ///<returns>The resolved instance as <typeparamref name="TContract"/></returns>.
+        TContract Resolve<TContract>(IEnumerable<object> arguments);
+
         /// <summary>
-        /// Resolves a contract by name (include subcontracts).
+        /// Resolves a contract (include subcontracts) with named constructor arguments.
         /// </summary>
-        /// <param name="name">The name.</param>
+        /// <param name="namedArguments">The  named constructor arguments.</param>
         /// <typeparam name="TContract">The type of the contract.</typeparam>
-        /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
-        TContract Resolve<TContract>(string name);
+        /// <returns>The resolved instance as <typeparamref name="TContract"/></returns>
+        TContract Resolve<TContract>(IDictionary<string, object> namedArguments);
 
         /// <summary>
         /// Resolves a contract (include subcontracts).
@@ -30,23 +46,39 @@ namespace LightCore
         /// <returns>The resolved instance as object.</returns>
         object Resolve(Type contractType);
 
-        /// <summary>
-        /// Resolves a contract by name (include subcontracts).
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <param name="name">The name.</param>
-        /// <returns>The resolved instance as object.</returns>
-        object Resolve(Type contractType, string name);
+        ///<summary>
+        /// Resolves a contract (include subcontracts) with constructor arguments.
+        ///</summary>
+        ///<param name="contractType">The contract type.</param>
+        ///<param name="arguments">The constructor arguments.</param>
+        ///<returns>The resolved instance as object.</returns>.
+        object Resolve(Type contractType, params object[] arguments);
+
+        ///<summary>
+        /// Resolves a contract (include subcontracts) with constructor arguments.
+        ///</summary>
+        ///<param name="contractType">The contract type.</param>
+        ///<param name="arguments">The constructor arguments.</param>
+        ///<returns>The resolved instance as object.</returns>.
+        object Resolve(Type contractType, IEnumerable<object> arguments);
 
         /// <summary>
-        /// Resolves all contracts.
+        /// Resolves a contract (include subcontract) with named constructor arguments.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="namedArguments">The named constructor arguments.</param>
+        /// <returns>The resolved instance as object.</returns>
+        object Resolve(Type contractType, IDictionary<string, object> namedArguments);
+
+        /// <summary>
+        /// Resolves all contracts of type {TContract}.
         /// </summary>
         /// <typeparam name="TContract">The contract type contraining the result.</typeparam>
         /// <returns>The resolved instances</returns>
         IEnumerable<TContract> ResolveAll<TContract>();
 
         /// <summary>
-        /// Resolves all contracts based on a contracttype.
+        /// Resolves all contract of type <paramref name="contractType"/>.
         /// </summary>
         /// <param name="contractType">The contract type contraining the result.</param>
         /// <returns>The resolved instances</returns>

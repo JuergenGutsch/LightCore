@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 
-using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class ContainerTests
@@ -93,17 +92,12 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo, Foo>()
-                .ControlledBy<TransientLifecycle>();
+            builder.Register<IBar, Bar>();
 
-            builder.Register<IFoo, Foo>()
-                .ControlledBy<SingletonLifecycle>()
-                .WithName("test");
+            builder.Register<IFoo, Foo>();
+            builder.Register<IFoo, FooTwo>();
 
-            builder.Register<IBar, Bar>()
-                .ControlledBy<TransientLifecycle>();
-
-            builder.Register<ILorem, TestLorem>();
+            //builder.Register<ILorem, TestLorem>();
 
             var container = builder.Build();
 
@@ -118,7 +112,7 @@ namespace LightCore.Tests
             var builder = new ContainerBuilder();
 
             builder.Register<IBar>(c => new Bar());
-            builder.Register<IBar>(c => new Bar()).WithName("Foo");
+            builder.Register<IBar>(c => new Bar());
             builder.Register<EnumerableTest>();
 
             var container = builder.Build();

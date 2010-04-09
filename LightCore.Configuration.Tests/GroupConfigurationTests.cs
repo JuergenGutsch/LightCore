@@ -124,17 +124,15 @@ namespace LightCore.Configuration.Tests
                                                        {
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                                   ContractType = typeof (IBar).AssemblyQualifiedName,
                                                                    ImplementationType =
-                                                                       "LightCore.TestTypes.XmlBar, LightCore.TestTypes",
+                                                                       typeof (XmlBar).AssemblyQualifiedName,
                                                                },
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+                                                                   ContractType = typeof (IFoo).AssemblyQualifiedName,
                                                                    ImplementationType =
-                                                                       "LightCore.TestTypes.XmlFoo, LightCore.TestTypes",
+                                                                       typeof (XmlFoo).AssemblyQualifiedName,
                                                                }
                                                        }
                                },
@@ -145,17 +143,15 @@ namespace LightCore.Configuration.Tests
                                                        {
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.IBar, LightCore.TestTypes",
+                                                                   ContractType = typeof (IBar).AssemblyQualifiedName,
                                                                    ImplementationType =
-                                                                       "LightCore.TestTypes.SqlBar, LightCore.TestTypes",
+                                                                       typeof (SqlBar).AssemblyQualifiedName,
                                                                },
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+                                                                   ContractType = typeof (IFoo).AssemblyQualifiedName,
                                                                    ImplementationType =
-                                                                       "LightCore.TestTypes.SqlFoo, LightCore.TestTypes"
+                                                                       typeof (SqlFoo).AssemblyQualifiedName
                                                                }
                                                        }
                                },
@@ -166,10 +162,8 @@ namespace LightCore.Configuration.Tests
                                                        {
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.ILorem, LightCore.TestTypes",
-                                                                   ImplementationType =
-                                                                       "LightCore.TestTypes.Lorem, LightCore.TestTypes"
+                                                                   ContractType = typeof (ILorem).AssemblyQualifiedName,
+                                                                   ImplementationType = typeof(Lorem).AssemblyQualifiedName
                                                                }
                                                        }
                                },
@@ -180,10 +174,8 @@ namespace LightCore.Configuration.Tests
                                                        {
                                                            new Registration
                                                                {
-                                                                   ContractType =
-                                                                       "LightCore.TestTypes.ILorem, LightCore.TestTypes",
-                                                                   ImplementationType =
-                                                                       "LightCore.TestTypes.TestLorem, LightCore.TestTypes"
+                                                                   ContractType = typeof (ILorem).AssemblyQualifiedName,
+                                                                   ImplementationType = typeof(TestLorem).AssemblyQualifiedName
                                                                }
                                                        }
                                }

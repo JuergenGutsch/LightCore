@@ -30,16 +30,11 @@ namespace LightCore.CommonServiceLocator
         /// Get an instance by service type and name (key).
         /// </summary>
         /// <param name="serviceType">The service type.</param>
-        /// <param name="key">The key.</param>
+        /// <param name="key">The key, (Supply null, named dependecies are not allowed).</param>
         /// <returns>The requested instance as object.</returns>
         protected override object DoGetInstance(Type serviceType, string key)
         {
-            if (String.IsNullOrEmpty(key))
-            {
-                return this._container.Resolve(serviceType);
-            }
-
-            return this._container.Resolve(serviceType, key);
+            return this._container.Resolve(serviceType);
         }
 
         /// <summary>

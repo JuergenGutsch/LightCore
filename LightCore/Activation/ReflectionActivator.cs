@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 
+using LightCore.Activation.Components;
+using LightCore.ExtensionMethods.System;
+using LightCore.Registration;
+
 namespace LightCore.Activation
 {
     /// <summary>
@@ -12,9 +16,19 @@ namespace LightCore.Activation
     internal class ReflectionActivator : IActivator
     {
         /// <summary>
-        /// Selector for dependency parameters.
+        /// Selector for dependency parameters / types.
         /// </summary>
-        private readonly Func<ParameterInfo, bool> _dependencyParameterSelector;
+        private readonly Func<Type, bool> _dependencyTypeSelector;
+
+        /// <summary>
+        /// The constructor selector.
+        /// </summary>
+        private readonly ConstructorSelector _constructorSelector;
+
+        /// <summary>
+        /// The argument collector.
+        /// </summary>
+        private readonly ArgumentCollector _argumentCollector;
 
         /// <summary>
         /// The implementation type.
@@ -43,51 +57,25 @@ namespace LightCore.Activation
         internal ReflectionActivator(Type implementationType)
         {
             this._implementationType = implementationType;
+            this._constructorSelector = new ConstructorSelector();
+            this._argumentCollector = new ArgumentCollector();
 
             // Setup selectors.
-            this._dependencyParameterSelector =
-                delegate(ParameterInfo p)
-                    {
-                        Type parameterType = p.ParameterType;
-
-                        return this._container.ContractIsRegistered(parameterType)
-                               || this._container.OpenGenericContractIsRegistered(parameterType)
-                               || this.IsRegisteredGenericEnumerable(p);
-                    };
+            this._dependencyTypeSelector = (Type parameterType) =>
+                                           this._container.ContractIsRegistered(parameterType)
+                                           || this._container.OpenGenericContractIsRegistered(parameterType)
+                                           || this.IsRegisteredGenericEnumerable(parameterType);
         }
 
         /// <summary>
         /// Checks whether a parameter is typeo of IEnumerable{T}, where {T} is a registered contract.
         /// </summary>
-        /// <param name="parameter">The parameter candidate.</param>
-        /// <returns><true /> if the parameter is a registered type within an generic enumerable instance.</returns>
-        private bool IsRegisteredGenericEnumerable(ParameterInfo parameter)
-        {
-            return this.IsGenericEnumerable(parameter.ParameterType)
-                   && this._container.ContractIsRegistered(parameter.ParameterType.GetGenericArguments()
-                                                       .FirstOrDefault());
-        }
-
-        /// <summary>
-        /// Checks whether a given parameterType is type of generic enumerable.
-        /// </summary>
         /// <param name="parameterType">The parameter type.</param>
-        /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
-        private bool IsGenericEnumerable(Type parameterType)
+        /// <returns><true /> if the parameter is a registered type within an generic enumerable instance.</returns>
+        private bool IsRegisteredGenericEnumerable(Type parameterType)
         {
-            if (!parameterType.IsGenericType)
-            {
-                return false;
-            }
-
-            var typeArguments = parameterType.GetGenericArguments();
-
-            if (typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(parameterType))
-            {
-                return true;
-            }
-
-            return false;
+            return parameterType.IsGenericEnumerable()
+                && this._container.ContractIsRegistered(parameterType.GetGenericArguments().FirstOrDefault());
         }
 
         /// <summary>
@@ -95,172 +83,65 @@ namespace LightCore.Activation
         /// </summary>
         /// <param name="container">The container.</param>
         /// <param name="arguments">The arguments.</param>
+        /// <param name="runtimeArguments">The runtime arguments.</param>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(Container container, IEnumerable<object> arguments)
+        public object ActivateInstance(Container container, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
         {
             this._container = container;
 
-            if (_cachedConstructor != null)
+            int countOfRuntimeArguments = runtimeArguments.CountOfAllArguments;
+
+            if (_cachedConstructor != null && countOfRuntimeArguments == 0)
             {
                 return _cachedConstructor.Invoke(this._cachedArguments);
             }
 
-            var constructors = this._implementationType.GetConstructors();
-            bool onlyDefaultConstructorAvailable = constructors.Length == 1 &&
-                                                   constructors[0].GetParameters().Length == 0;
+            var constructors = this._implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            // Use the default constructor.
-            if (onlyDefaultConstructorAvailable)
-            {
-                return this.InvokeDefaultConstructor();
-            }
-
-            var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
-            ConstructorInfo finalConstructor = null;
-
-            // Loop througth all constructors, from the most to the least parameters.
-            foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
-            {
-                ParameterInfo[] parameters = constructorCandidate.GetParameters();
-                var dependencyParameters = parameters.Where(this._dependencyParameterSelector);
-
-                // If there are no arguments at all, use default constructor.
-                if (arguments == null && !dependencyParameters.Any())
-                {
-                    return this.InvokeDefaultConstructor();
-                }
-
-                // Parameters and registered dependencies match.
-                if (arguments == null && parameters.Length == dependencyParameters.Count())
-                {
-                    finalConstructor = constructorCandidate;
-                    break;
-                }
-
-                // There are arguments, the types matches.
-                if (arguments != null && this.ConstructorParameterTypesMatch(parameters, arguments.ToArray()))
-                {
-                    finalConstructor = constructorCandidate;
-                    break;
-                }
-            }
+            ConstructorInfo finalConstructor = this._constructorSelector.SelectConstructor(this._dependencyTypeSelector, constructors, arguments, runtimeArguments);
 
             this._cachedConstructor = finalConstructor;
 
-            return this.InvokeConstructor(finalConstructor, (arguments != null ? arguments.ToArray() : null));
+            if (this._cachedArguments == null || countOfRuntimeArguments > 0)
+            {
+                this._argumentCollector.DependencyTypeSelector = this._dependencyTypeSelector;
+                this._argumentCollector.Parameters = this._cachedConstructor.GetParameters();
+                this._argumentCollector.Arguments = arguments;
+                this._argumentCollector.RuntimeArguments = runtimeArguments;
+                this._argumentCollector.DependencyResolver = t => this.ResolveDependency(t);
+
+                this._cachedArguments = this._argumentCollector.CollectArguments();
+            }
+
+            return this._cachedConstructor.Invoke(this._cachedArguments);
         }
 
         /// <summary>
-        /// Invokes the default constructor of the implementation type.-
+        /// Resolves a dependency.
         /// </summary>
-        /// <returns>The instance constructed bei default constructor.</returns>
-        private object InvokeDefaultConstructor()
+        /// <param name="parameterType">The parameter type.</param>
+        /// <returns>The resolved dependecy.</returns>
+        private object ResolveDependency(Type parameterType)
         {
-            return Activator.CreateInstance(this._implementationType);
-        }
-
-        /// <summary>
-        /// Checks whether the types of parameter infos and arguments matches.
-        /// Ignores depdency parameters at the beginning (increment the index from begining on).
-        /// </summary>
-        /// <param name="parameters">The parameters.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <returns><value>true</value> if the parameter and argument types match, otherwise <value>false</value>.</returns>
-        private bool ConstructorParameterTypesMatch(ParameterInfo[] parameters, object[] arguments)
-        {
-            int parameterStartIndex = 0;
-            var depdendencyParameters = parameters.Where(_dependencyParameterSelector);
-
-            if (depdendencyParameters.Any())
+            if (parameterType.IsGenericEnumerable())
             {
-                parameterStartIndex = depdendencyParameters.Count();
+                Type genericArgument = parameterType
+                    .GetGenericArguments()
+                    .FirstOrDefault();
+
+                object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
+
+                Type openListType = typeof(List<>);
+                Type closedListType = openListType.MakeGenericType(genericArgument);
+
+                var list = (IList)Activator.CreateInstance(closedListType);
+
+                Array.ForEach(resolvedInstances, instance => list.Add(instance));
+
+                return list;
             }
 
-            if ((parameters.Length) - parameterStartIndex != arguments.Count())
-            {
-                return false;
-            }
-
-            for (int i = 0; i < arguments.Length; i++)
-            {
-                if (parameters[parameterStartIndex].ParameterType != arguments[i].GetType())
-                {
-                    return false;
-                }
-
-                parameterStartIndex++;
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Invokes a constructor with optional given arguments.
-        /// Automatically detects the right resolved arguments and arguments,
-        /// and injects these into the constructor invocation.
-        /// </summary>
-        /// <param name="constructor">The constructor to invoke.</param>
-        /// <param name="arguments">The optional arguments.</param>
-        /// <returns>The resolved object.</returns>
-        private object InvokeConstructor(ConstructorInfo constructor, IEnumerable<object> arguments)
-        {
-            ParameterInfo[] parameters = constructor.GetParameters();
-
-            // If there are depdendency parameters, resolve these.
-            if (parameters.Any(_dependencyParameterSelector))
-            {
-                var dependencyParameters = parameters.Where(_dependencyParameterSelector);
-
-                var resolvedDependencies = this.ResolveDependencies(dependencyParameters);
-
-                // If there are arguments, concat at the end.
-                if (arguments != null)
-                {
-                    resolvedDependencies = resolvedDependencies.Concat(arguments);
-                }
-
-                this._cachedArguments = resolvedDependencies.ToArray();
-
-                return constructor.Invoke(this._cachedArguments);
-            }
-
-            this._cachedArguments = arguments.ToArray();
-
-            return constructor.Invoke(this._cachedArguments);
-        }
-
-        /// <summary>
-        /// Resolve all dependencies and consider IEnumerable{TContract}.
-        /// </summary>
-        /// <param name="dependencyParameters"></param>
-        /// <returns></returns>
-        private IEnumerable<object> ResolveDependencies(IEnumerable<ParameterInfo> dependencyParameters)
-        {
-            foreach (ParameterInfo parameter in dependencyParameters)
-            {
-                if (this.IsGenericEnumerable(parameter.ParameterType))
-                {
-                    Type genericArgument = parameter
-                        .ParameterType
-                        .GetGenericArguments()
-                        .FirstOrDefault();
-
-                    object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
-
-                    Type openListType = typeof(List<>);
-                    Type closedListType = openListType.MakeGenericType(genericArgument);
-
-                    var list = (IList)Activator.CreateInstance(closedListType);
-
-                    Array.ForEach(resolvedInstances, instance => list.Add(instance));
-
-                    yield return list;
-                }
-                else
-                {
-                    yield return this._container.Resolve(parameter.ParameterType);
-                }
-            }
+            return this._container.Resolve(parameterType);
         }
     }
 }

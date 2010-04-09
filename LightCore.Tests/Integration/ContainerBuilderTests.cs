@@ -3,7 +3,7 @@ using LightCore.TestTypes;
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class ContainerBuilderTests
@@ -13,7 +13,7 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.Register(typeof(IRepository<>), typeof(Repository<>));
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
         }
 
         [Test]
@@ -33,41 +33,15 @@ namespace LightCore.Tests
         }
 
         [Test]
-        public void ContainerBuilder_throws_exception_on_duplicate_registration()
-        {
-            Assert.Throws<RegistrationAlreadyExistsException>(() =>
-                                                                  {
-                                                                      var builder = new ContainerBuilder();
-                                                                      builder.Register<IFoo, Foo>();
-                                                                      builder.Register<IFoo, Foo>();
-
-                                                                      var container = builder.Build();
-                                                                  });
-        }
-
-        [Test]
-        public void ContainerBuilder_throws_exception_on_duplicate_name_registration()
-        {
-            Assert.Throws<RegistrationAlreadyExistsException>(() =>
-                                                                  {
-                                                                      var builder = new ContainerBuilder();
-                                                                      builder.Register<IFoo, Foo>().WithName("foo");
-                                                                      builder.Register<IFoo, Foo>().WithName("foo");
-
-                                                                      var container = builder.Build();
-                                                                  });
-        }
-
-        [Test]
         public void ContainerBuilder_throws_on_not_assignable_contract_to_implementation()
         {
             Assert.Throws<ContractNotImplementedByTypeException>(() =>
-            {
-                var builder = new ContainerBuilder();
-                builder.Register(typeof(IFoo), typeof(Bar));
+                                                                     {
+                                                                         var builder = new ContainerBuilder();
+                                                                         builder.Register(typeof (IFoo), typeof (Bar));
 
-                var container = builder.Build();
-            });
+                                                                         var container = builder.Build();
+                                                                     });
         }
 
         [Test]
@@ -89,7 +63,7 @@ namespace LightCore.Tests
 
             var container = builder.Build();
         }
-
+        
         [Test]
         public void ContainerBuilders_default_scope_is_transient()
         {
@@ -120,19 +94,6 @@ namespace LightCore.Tests
             var instanceTwo = container.Resolve<IFoo>();
 
             Assert.AreSame(instanceOne, instanceTwo);
-        }
-
-        [Test]
-        public void ContainerBuilder_can_build_twice()
-        {
-            var builder = new ContainerBuilder();
-
-            // First Build
-            builder.Register<IBar, Bar>();
-            var container = builder.Build();
-
-            // Second Build
-            container = builder.Build();
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class LifecycleTests
@@ -55,20 +52,22 @@ namespace LightCore.Tests
 
             var container = builder.Build();
 
-            var threadDataOne = new ThreadData(container);
-            var threadDataTwo = new ThreadData(container);
+            var threadData = new ThreadData(container);
+            var thread = new Thread(threadData.ResolveFoos);
 
-            var threadOne = new Thread(threadDataOne.ResolveFoos);
+            var threadDataTwo = new ThreadData(container);
             var threadTwo = new Thread(threadDataTwo.ResolveFoos);
 
-            threadOne.Start();
-            threadOne.Join();
-
+            thread.Start();
             threadTwo.Start();
+
+            thread.Join();
             threadTwo.Join();
 
-            Assert.IsTrue(ReferenceEquals(threadDataOne.FooOne, threadDataOne.FooTwo));
-            Assert.IsFalse(ReferenceEquals(threadDataOne.FooOne, threadDataTwo.FooOne));
+            Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
+            Assert.IsTrue(ReferenceEquals(threadDataTwo.FooOne, threadDataTwo.FooOne));
+
+            Assert.IsFalse(ReferenceEquals(threadData.FooOne, threadDataTwo.FooOne));
         }
 
         private class ThreadData

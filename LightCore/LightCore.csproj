@@ -25,7 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LightCore.XML</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\LightCore.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,12 +44,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activation\Components\ArgumentCollector.cs" />
+    <Compile Include="Activation\Components\ConstructorSelector.cs" />
     <Compile Include="Activation\DelegateActivator.cs" />
     <Compile Include="Activation\IActivator.cs" />
     <Compile Include="Activation\InstanceActivator.cs" />
     <Compile Include="Activation\ReflectionActivator.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
     <Compile Include="ContractNotImplementedByTypeException.cs" />
+    <Compile Include="ExtensionMethods\System\ObjectExtensions.cs" />
     <Compile Include="ExtensionMethods\System\TypeExtensions.cs" />
     <Compile Include="InvalidRegistrationException.cs" />
     <Compile Include="Registration\InlineRegistrationModule.cs" />
@@ -56,6 +60,8 @@
     <Compile Include="Lifecycle\SingletonLifecycle.cs" />
     <Compile Include="Lifecycle\ThreadSingletonLifecycle.cs" />
     <Compile Include="Lifecycle\TransientLifecycle.cs" />
+    <Compile Include="Registration\ArgumentContainer.cs" />
+    <Compile Include="Registration\RegistrationContainer.cs" />
     <Compile Include="Registration\RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />

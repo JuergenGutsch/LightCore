@@ -2,7 +2,7 @@
 
 using LightCore.ExtensionMethods.System;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class TypeExtensionTest

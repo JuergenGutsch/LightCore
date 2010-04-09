@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class DelegateActivatorTests
@@ -32,23 +32,6 @@ namespace LightCore.Tests
             var foo2 = container.Resolve<IFoo>();
 
             Assert.AreNotSame(foo, foo2);
-        }
-
-        [Test]
-        public void DelegateActivator_can_return_a_named_instance()
-        {
-            var builder = new ContainerBuilder();
-
-            builder
-                .Register<IFoo>(c => new Foo())
-                .WithName("test");
-
-            var container = builder.Build();
-
-            var foo = container
-                .Resolve<IFoo>(("test"));
-
-            Assert.IsNotNull(foo);
         }
     }
 }

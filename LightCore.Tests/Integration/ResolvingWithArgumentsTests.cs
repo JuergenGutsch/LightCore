@@ -2,11 +2,25 @@
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class ResolvingWithArgumentsTests
     {
+        [Test]
+        public void Foo_is_resolved_with_bool_argument_constructor_if_only_that_argument_is_supported()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>().WithArguments(true);
+
+            var container = builder.Build();
+
+            var instance = container.Resolve<IFoo>();
+
+            Assert.IsNotNull(instance);
+            Assert.AreEqual(true, (instance as Foo).Arg2);
+        }
+
         [Test]
         public void Container_resolves_instances_with_arguments()
         {
@@ -16,22 +30,14 @@ namespace LightCore.Tests
 
             builder
                 .Register<IFoo, Foo>()
-                .WithArguments("Peter");
-
-            builder
-                .Register<IFoo, Foo>()
-                .WithArguments("Peter", true)
-                .WithName("TwoArguments");
+                .WithArguments("Peter", true);
 
             var container = builder.Build();
 
             var foo = container.Resolve<IFoo>();
-            //var fooWithTwoArguments = container
-            //    .Resolve<IFoo>("TwoArguments");
 
-            //Assert.AreEqual("Peter", ((Foo)foo).Arg1);
-            //Assert.AreEqual("Peter", ((Foo)fooWithTwoArguments).Arg1);
-            //Assert.AreEqual(true, ((Foo) fooWithTwoArguments).Arg2);
+            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+            Assert.AreEqual(true, ((Foo)foo).Arg2);
         }
 
         [Test]

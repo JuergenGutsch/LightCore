@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+
+using LightCore.Registration;
 
 namespace LightCore.Activation
 {
@@ -27,8 +28,9 @@ namespace LightCore.Activation
         /// </summary>
         /// <param name="container">The container.</param>
         /// <param name="arguments">The arguments.</param>
+        /// <param name="runtimeArguments">The runtime arguments.</param>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(Container container, IEnumerable<object> arguments)
+        public object ActivateInstance(Container container, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
         {
             return this._activationFunction(container);
         }

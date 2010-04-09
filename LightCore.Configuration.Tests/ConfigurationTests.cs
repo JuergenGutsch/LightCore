@@ -1,5 +1,5 @@
 ﻿using System;
-
+using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -20,10 +20,13 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCoreTestTypes",
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                                 Enabled = "false"
                                             }
                                     };
+
+            configuration.Registrations = registrations;
 
             var builder = new ContainerBuilder();
 
@@ -31,7 +34,7 @@ namespace LightCore.Configuration.Tests
 
             var container = builder.Build();
 
-            var bar = container.Resolve<Bar>();
+            var bar = container.Resolve<IBar>();
 
             Assert.NotNull(bar);
         }
@@ -46,8 +49,8 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
                                     };
 
@@ -72,9 +75,9 @@ namespace LightCore.Configuration.Tests
         {
             var configuration = new LightCoreConfiguration();
 
-            configuration.TypeAliases.Add(new TypeAlias { Alias = "IBar", Type = "LightCore.TestTypes.IBar, LightCore.TestTypes" });
+            configuration.TypeAliases.Add(new TypeAlias { Alias = "IBar", Type = typeof(IBar).AssemblyQualifiedName });
 
-            configuration.TypeAliases.Add(new TypeAlias { Alias = "Bar", Type = "LightCore.TestTypes.Bar, LightCore.TestTypes" });
+            configuration.TypeAliases.Add(new TypeAlias { Alias = "Bar", Type = typeof(Bar).AssemblyQualifiedName });
 
             var registrations = new List<Registration>
                                     {
@@ -112,8 +115,8 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
                                     };
 
@@ -146,8 +149,8 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
                                     };
 
@@ -178,8 +181,8 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                                 Lifecycle = "Transient"
                                             }
                                     };
@@ -211,9 +214,9 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 Arguments = String.Empty,
-                                                ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes",
-                                                Lifecycle = "LightCore.Lifecycle.TransientLifecycle, LightCore"
+                                                ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
+                                                Lifecycle = typeof(TransientLifecycle).AssemblyQualifiedName
                                             }
                                     };
 
@@ -244,8 +247,8 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                ContractType = "System.Object",
-                                                ImplementationType = "System.Object"
+                                                ContractType = typeof(object).AssemblyQualifiedName,
+                                                ImplementationType = typeof(object).AssemblyQualifiedName
                                             }
                                     };
 
@@ -253,8 +256,8 @@ namespace LightCore.Configuration.Tests
                                          {
                                              new Registration
                                                  {
-                                                     ContractType = "LightCore.TestTypes.IBar, LightCore.TestTypes",
-                                                     ImplementationType = "LightCore.TestTypes.Bar, LightCore.TestTypes"
+                                                     ContractType = typeof(IBar).AssemblyQualifiedName,
+                                                     ImplementationType = typeof(Bar).AssemblyQualifiedName
                                                  }
                                          };
 

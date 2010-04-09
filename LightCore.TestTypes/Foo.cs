@@ -24,6 +24,36 @@
             this.Bar = bar;
         }
 
+        public Foo(Bar bar)
+        {
+            this.Bar = bar;
+        }
+
+        public Foo(Bar bar, string arg1)
+        {
+            this.Bar = bar;
+            this.Arg1 = arg1;
+        }
+
+        public Foo(IBar bar, string arg1)
+        {
+            this.Bar = bar;
+            this.Arg1 = arg1;
+        }
+
+        public Foo(string arg1, IBar bar, bool arg2)
+        {
+            this.Bar = bar;
+            this.Arg1 = arg1;
+            this.Arg2 = arg2;
+        }
+
+        public Foo(string arg1, bool arg2)
+        {
+            this.Arg1 = arg1;
+            this.Arg2 = arg2;
+        }
+
         public Foo(bool arg2)
         {
             this.Arg2 = arg2;

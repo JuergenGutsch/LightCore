@@ -16,16 +16,7 @@ namespace LightCore.ConsoleClient
         /// <param name="args">The arguments.</param>
         static void Main(string[] args)
         {
-            // Instantiate the container and register some dependencies.
             var builder = new ContainerBuilder();
-
-            // Uncomment this and comment ConsoleWriter below.
-            //builder.Register<IWriter, DebugWindowWriter>();
-            //builder.Register<IWriter, ConsoleWriter>();
-
-            //builder.Register<IScreen, WelcomeScreen>()
-            //    .WithArguments("Hello World, it works")
-            //    .WithName("NamedScreen");
 
             var module = new XamlRegistrationModule();
 
@@ -35,7 +26,7 @@ namespace LightCore.ConsoleClient
             var container = builder.Build();
 
             var namedScreen = container
-                .Resolve<WelcomeScreen>("NamedScreen");
+                .Resolve<WelcomeScreen>("Hello World");
 
             namedScreen.WriteText();
 

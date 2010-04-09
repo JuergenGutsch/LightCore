@@ -49,7 +49,16 @@ namespace LightCore.Registration
         /// <summary>
         /// Gets or sets the arguments for object creations.
         /// </summary>
-        internal object[] Arguments
+        internal ArgumentContainer Arguments
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the runtime arguments for object creations.
+        /// </summary>
+        internal ArgumentContainer RuntimeArguments
         {
             get;
             set;
@@ -60,7 +69,8 @@ namespace LightCore.Registration
         /// </summary>
         internal RegistrationItem()
         {
-
+            this.Arguments = new ArgumentContainer();
+            this.RuntimeArguments = new ArgumentContainer();
         }
 
         /// <summary>
@@ -68,6 +78,7 @@ namespace LightCore.Registration
         /// </summary>
         /// <param name="key">The registration key as <see cref="RegistrationKey" />.</param>
         internal RegistrationItem(RegistrationKey key)
+            : this()
         {
             this.Key = key;
         }
@@ -80,7 +91,7 @@ namespace LightCore.Registration
         internal object ActivateInstance(Container container)
         {
             return this.Lifecycle.ReceiveInstanceInLifecycle(
-                () => this.Activator.ActivateInstance(container, this.Arguments));
+                () => this.Activator.ActivateInstance(container, this.Arguments, this.RuntimeArguments));
         }
     }
 }

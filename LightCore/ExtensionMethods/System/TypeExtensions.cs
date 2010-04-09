@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace LightCore.ExtensionMethods.System
 {
@@ -15,6 +16,28 @@ namespace LightCore.ExtensionMethods.System
         internal static bool IsConcreteType(this Type source)
         {
             return !source.IsAbstract && !source.IsInterface;
+        }
+
+        /// <summary>
+        /// Checks whether a given type is type of generic enumerable.
+        /// </summary>
+        /// <param name="source">The source type.</param>
+        /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
+        internal static bool IsGenericEnumerable(this Type source)
+        {
+            if (!source.IsGenericType)
+            {
+                return false;
+            }
+
+            var typeArguments = source.GetGenericArguments();
+
+            if (typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(source))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

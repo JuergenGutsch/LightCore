@@ -1,4 +1,4 @@
-﻿using System.Web.Routing;
+﻿using System;
 using System.Web.Mvc;
 
 namespace LightCore.Integration.Web.Mvc
@@ -6,32 +6,29 @@ namespace LightCore.Integration.Web.Mvc
     /// <summary>
     /// Represents a default controller factory that works with a <see cref="IContainer" />.
     /// </summary>
-    public class ControllerFactory : ControllerFactoryBase
+    public class ControllerFactory : DefaultControllerFactory
     {
+        private readonly IContainer _container;
+
         /// <summary>
         /// Initializes a new instance of <see cref="ControllerFactory" />.
         /// </summary>
         /// <param name="container">The container.</param>
         public ControllerFactory(IContainer container)
-            : base(container)
         {
-
+            this._container = container;
         }
 
         /// <summary>
-        /// Creates the controller.
-        /// Resolves it by name as registered from <see cref="ControllerRegistrationModule" />.
+        /// Gets the controller instance.
         /// </summary>
-        /// <param name="requestContext">The request context.</param>
-        /// <param name="controllerName">Name of the controller.</param>
+        /// <param name="controllerType">Type of the controller.</param>
         /// <returns>
-        /// The controller.
+        /// A reference to the controller.
         /// </returns>
-        protected override IController CreateControllerCore(RequestContext requestContext, string controllerName)
+        protected override IController GetControllerInstance(Type controllerType)
         {
-            // Returns the resolved controller to the caller.
-            return this.Container
-                .Resolve<IController>(controllerName.ToLowerInvariant());
+            return (IController)this._container.Resolve(controllerType);
         }
     }
 }

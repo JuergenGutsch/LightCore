@@ -55,6 +55,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Foo.cs" />
+    <Compile Include="Models\IFoo.cs" />
     <Compile Include="Models\IWelcomeRepository.cs" />
     <Compile Include="Models\WelcomeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

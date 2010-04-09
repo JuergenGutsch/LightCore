@@ -30,7 +30,17 @@ namespace LightCore.Integration.Web.Mvc
         /// <summary>
         /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
-        /// <param name="controllerAssemblies">The controller assemblies</param>
+        /// <param name="controllerAssembly">The controller assembly.</param>
+        public ControllerRegistrationModule(Assembly controllerAssembly)
+            : this()
+        {
+            this._controllerAssemblies.Add(controllerAssembly);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
+        /// </summary>
+        /// <param name="controllerAssemblies">The controller assemblies.</param>
         public ControllerRegistrationModule(params Assembly[] controllerAssemblies)
             : this()
         {
@@ -40,7 +50,7 @@ namespace LightCore.Integration.Web.Mvc
         /// <summary>
         /// Initializes a new instance of <see cref="ControllerRegistrationModule" />.
         /// </summary>
-        /// <param name="controllerAssemblies">The controller assemblies</param>
+        /// <param name="controllerAssemblies">The controller assemblies.</param>
         public ControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
             : this()
         {
@@ -54,7 +64,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
+            this._controllerAssemblies.AddRange(assemblyNames.Select(n => Assembly.Load(n)));
         }
 
         /// <summary>
@@ -64,7 +74,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Convert(n => Assembly.Load(n)));
+            this._controllerAssemblies.AddRange(assemblyNames.Select(n => Assembly.Load(n)));
         }
 
         /// <summary>
@@ -88,24 +98,7 @@ namespace LightCore.Integration.Web.Mvc
 
             var controllerTypes = allPublicTypes.Where(t => typeOfController.IsAssignableFrom(t) && !t.IsAbstract);
 
-            controllerTypes.ForEach(t => containerBuilder
-                                             .Register(typeOfController, t)
-                                             .WithName(this.GetControllerName(t.Name)));
-        }
-
-        /// <summary>
-        /// Gets the controllername used for registration from typename.
-        /// </summary>
-        /// <param name="typeName">The typename.</param>
-        /// <returns>The controllername used for registration.</returns>
-        private string GetControllerName(string typeName)
-        {
-            string controllerPostfix = "Controller";
-            int indexOfControllerPostfix = typeName.IndexOf(controllerPostfix);
-
-            return typeName
-                .Substring(0, indexOfControllerPostfix)
-                .ToLowerInvariant();
+            controllerTypes.ForEach(t => containerBuilder.Register(t, t));
         }
     }
 }

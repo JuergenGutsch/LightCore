@@ -5,7 +5,7 @@ namespace LightCore.TestTypes
     public class EnumerableTest
     {
         private readonly IEnumerable<IBar> _bars;
-
+        
         public EnumerableTest(IEnumerable<IBar> bars)
         {
             this._bars = bars;

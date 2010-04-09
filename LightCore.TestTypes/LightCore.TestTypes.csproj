@@ -43,6 +43,7 @@
     <Compile Include="BarController.cs" />
     <Compile Include="BarRepository.cs" />
     <Compile Include="EnumerableTest.cs" />
+    <Compile Include="FooTwo.cs" />
     <Compile Include="ILorem.cs" />
     <Compile Include="Lorem.cs" />
     <Compile Include="Repository.cs" />

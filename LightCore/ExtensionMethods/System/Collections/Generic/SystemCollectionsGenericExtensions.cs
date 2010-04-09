@@ -23,20 +23,27 @@ namespace LightCore.ExtensionMethods.System.Collections.Generic
         }
 
         /// <summary>
-        /// Converts an enuneration from an inputtype to an outputtype,
-        /// with the given converter function.
+        /// Merges two dictionaries together.
         /// </summary>
-        /// <typeparam name="TInput">The inputtype.</typeparam>
-        /// <typeparam name="TOutput">The outputtype.</typeparam>
-        /// <param name="source">The source.</param>
-        /// <param name="converter">The converter function.</param>
-        /// <returns>The converted source.</returns>
-        internal static IEnumerable<TOutput> Convert<TInput, TOutput>(this IEnumerable<TInput> source, Func<TInput, TOutput> converter)
+        /// <typeparam name="TKey">The key type.</typeparam>
+        /// <typeparam name="TValue">The value type.</typeparam>
+        /// <param name="source">The source dictionary.</param>
+        /// <param name="dictionaryToMerge">The dictionary to merge with.</param>
+        /// <returns>A new dictionary which represents the merged result of <paramref name="source"/> and <paramref name="dictionaryToMerge"/>.</returns>
+        internal static IDictionary<TKey, TValue> Merge<TKey, TValue>(this IDictionary<TKey, TValue> source, IDictionary<TKey, TValue> dictionaryToMerge)
         {
-            foreach (var item in source)
+            var result = new Dictionary<TKey, TValue>();
+            var dictionaries = new List<IDictionary<TKey, TValue>>();
+
+            foreach (var dict in dictionaries)
             {
-                yield return converter(item);
+                foreach (var x in dict)
+                {
+                    result[x.Key] = x.Value;
+                }
             }
+
+            return result;
         }
     }
 }

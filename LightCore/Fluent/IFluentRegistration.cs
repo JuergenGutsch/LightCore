@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using LightCore.Lifecycle;
 
@@ -31,11 +32,18 @@ namespace LightCore.Fluent
         IFluentRegistration WithArguments(params object[] arguments);
 
         /// <summary>
-        /// Gives a name to the registration.
+        /// Adds named arguments with an anonymous type to the registration.
         /// </summary>
-        /// <param name="name">The registration name.</param>
+        /// <param name="namedArguments">The arguments as anonymous type, e.g. new { arg1 = "test" }.</param>
         /// <returns>The instance itself to get fluent working.</returns>
-        IFluentRegistration WithName(string name);
+        IFluentRegistration WithNamedArguments(object namedArguments);
+
+        /// <summary>
+        /// Adds named arguments to the registration.
+        /// </summary>
+        /// <param name="namedArguments">The arguments.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration WithNamedArguments(IDictionary<string, object> namedArguments);
 
         /// <summary>
         /// Gives a group association to the registration.

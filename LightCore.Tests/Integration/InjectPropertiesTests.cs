@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class InjectPropertiesTests

@@ -27,34 +27,13 @@ namespace LightCore.CommonServiceLocator.Tests
         }
 
         [Test]
-        public void Can_resolve_named_instance()
-        {
-            var builder = new ContainerBuilder();
-
-            var instance = new object();
-
-            builder.Register(c => instance).WithName("test");
-            builder.Register(c => new object());
-
-            var container = builder.Build();
-
-            IServiceLocator locator = new LightCoreAdapter(container);
-
-            var locatedInstance = locator.GetInstance(typeof(object), "test");
-
-            Assert.AreSame(instance, locatedInstance);
-        }
-
-        [Test]
         public void Can_resolve_all_instances_of_type_object()
         {
             var builder = new ContainerBuilder();
 
             for (int i = 0; i < 10; i++)
             {
-                builder
-                    .Register(c => new object())
-                    .WithName(i.ToString());
+                builder.Register(c => new object());
             }
 
             var container = builder.Build();
@@ -75,8 +54,7 @@ namespace LightCore.CommonServiceLocator.Tests
             for (int i = 0; i < 10; i++)
             {
                 builder
-                    .Register(c => new List<string>())
-                    .WithName(i.ToString());
+                    .Register(c => new List<string>());
             }
 
             var container = builder.Build();

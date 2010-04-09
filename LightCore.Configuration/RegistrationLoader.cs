@@ -63,7 +63,7 @@ namespace LightCore.Configuration
 
                 foreach (string group in activeGroups)
                 {
-                    if (!registrationGroups.Any(g => g.Name.Trim() == group.Trim()))
+                    if (!registrationGroups.Any(g => g.Name != null && g.Name.Trim() == group.Trim()))
                     {
                         throw new ActiveGroupNotFoundException(
                             Resources.ActiveRegistrationGroupNotFoundFormat.FormatWith(group));
@@ -100,11 +100,6 @@ namespace LightCore.Configuration
             IFluentRegistration fluentRegistration = this._containerBuilder.Register(
                 LoadType(contractTypeName),
                 LoadType(implementationTypeName));
-
-            if (!String.IsNullOrEmpty(registration.Name))
-            {
-                fluentRegistration.WithName(registration.Name);
-            }
 
             if (!String.IsNullOrEmpty(registration.Arguments))
             {

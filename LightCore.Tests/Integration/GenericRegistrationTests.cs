@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace LightCore.Tests
+namespace LightCore.Tests.Integration
 {
     [TestFixture]
     public class GenericRegistrationTest
@@ -12,16 +12,12 @@ namespace LightCore.Tests
         {
             var builder = new ContainerBuilder();
             builder.Register<IRepository<Foo>, FooRepository>();
-            builder.Register<IRepository<Foo>, FooTwoRepository>().WithName("two");
 
             var container = builder.Build();
 
             var fooRepository = container.Resolve<IRepository<Foo>>();
-            var fooTwoRepository = container
-                .Resolve<IRepository<Foo>>("two");
 
             Assert.IsNotNull(fooRepository.GetData());
-            Assert.IsNotNull(fooTwoRepository.GetData());
         }
     }
 }

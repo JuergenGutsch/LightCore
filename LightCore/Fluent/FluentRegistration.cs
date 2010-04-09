@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
+using LightCore.ExtensionMethods.System;
 using LightCore.Lifecycle;
 using LightCore.Registration;
 
@@ -53,18 +55,29 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithArguments(params object[] arguments)
         {
-            this._registrationItem.Arguments = arguments;
+            this._registrationItem.Arguments.AddToAnonymousArguments(arguments);
             return this;
         }
 
         /// <summary>
-        /// Gives a name to the registration.
+        /// Adds named arguments to the registration.
         /// </summary>
-        /// <param name="name">The registration name.</param>
+        /// <param name="namedArguments">The arguments as anonymous type, e.g. new { arg1 = "test" }.</param>
         /// <returns>The instance itself to get fluent working.</returns>
-        public IFluentRegistration WithName(string name)
+        public IFluentRegistration WithNamedArguments(object namedArguments)
         {
-            this._registrationItem.Key.Name = name;
+            return this.WithNamedArguments(namedArguments.ToNamedArgumentDictionary());
+        }
+
+        /// <summary>
+        /// Adds named arguments to the registration.
+        /// </summary>
+        /// <param name="namedArguments">The arguments.</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration WithNamedArguments(IDictionary<string, object> namedArguments)
+        {
+            this._registrationItem.Arguments.AddToNamedArguments(namedArguments);
+
             return this;
         }
 
