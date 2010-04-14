@@ -86,12 +86,12 @@ namespace LightCore.Registration
         /// <summary>
         /// Activates the current registration.
         /// </summary>
-        /// <param name="container">The container to resolve inner depenencies.</param>
+        /// <param name="resolutionContext">The resolution context (e.g. for resolve inner depenencies).</param>
         /// <returns>The activated instance.</returns>
-        internal object ActivateInstance(Container container)
+        internal object ActivateInstance(ResolutionContext resolutionContext)
         {
             return this.Lifecycle.ReceiveInstanceInLifecycle(
-                () => this.Activator.ActivateInstance(container, this.Arguments, this.RuntimeArguments));
+                () => this.Activator.ActivateInstance(resolutionContext));
         }
     }
 }

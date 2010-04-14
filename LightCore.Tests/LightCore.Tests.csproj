@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Activation\ArgumentCollector\WhenCollectArgumentsIsCalled.cs" />
     <Compile Include="Activation\ConstructorSelector\WhenSelectConstructorIsCalled.cs" />
+    <Compile Include="Activation\RegistrationHelper.cs" />
     <Compile Include="Integration\DelegateActivatorTests.cs" />
     <Compile Include="Integration\GenericRegistrationTests.cs" />
     <Compile Include="Integration\InjectPropertiesTests.cs" />

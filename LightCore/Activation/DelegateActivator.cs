@@ -1,7 +1,5 @@
 ﻿using System;
 
-using LightCore.Registration;
-
 namespace LightCore.Activation
 {
     /// <summary>
@@ -26,13 +24,11 @@ namespace LightCore.Activation
         /// <summary>
         /// Activates an instance with given arguments.
         /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="runtimeArguments">The runtime arguments.</param>
+        /// <param name="resolutionContext">The resolutionContext.</param>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(Container container, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
+        public object ActivateInstance(ResolutionContext resolutionContext)
         {
-            return this._activationFunction(container);
+            return this._activationFunction(resolutionContext.Container);
         }
     }
 }

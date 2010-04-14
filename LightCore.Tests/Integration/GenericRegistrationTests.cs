@@ -8,7 +8,7 @@ namespace LightCore.Tests.Integration
     public class GenericRegistrationTest
     {
         [Test]
-        public void Generic_registration_can_registered_with_delegates()
+        public void Generic_registration_can_registered_with_closed_type()
         {
             var builder = new ContainerBuilder();
             builder.Register<IRepository<Foo>, FooRepository>();
@@ -18,6 +18,28 @@ namespace LightCore.Tests.Integration
             var fooRepository = container.Resolve<IRepository<Foo>>();
 
             Assert.IsNotNull(fooRepository.GetData());
+        }
+
+        [Test]
+        public void Generic_registration_can_registered_with_open_type()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+
+            var container = builder.Build();
+
+            for(int i=0; i < 100; i++)
+            {
+                var fooRepository = container.Resolve<IRepository<Foo>>();
+                var barRepository = container.Resolve<IRepository<Bar>>();
+
+                Assert.IsNotNull(fooRepository);
+                Assert.IsNotNull(barRepository);
+
+                Assert.IsInstanceOf<Repository<Foo>>(fooRepository);
+                Assert.IsInstanceOf<Repository<Bar>>(barRepository);
+            }
         }
     }
 }

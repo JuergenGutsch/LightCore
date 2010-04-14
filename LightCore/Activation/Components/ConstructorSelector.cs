@@ -1,15 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using LightCore.ExtensionMethods.LightCore.Registration;
 using LightCore.Registration;
 
 namespace LightCore.Activation.Components
 {
+    /// <summary>
+    /// Represents the constructor search stratetgy.
+    /// </summary>
     internal class ConstructorSelector
     {
-        public ConstructorInfo SelectConstructor(Func<Type, bool> dependencyParameterSelector, IEnumerable<ConstructorInfo> constructors, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
+        /// <summary>
+        /// Selects the right constructor for current context.
+        /// </summary>
+        /// <param name="constructors">The constructors.</param>
+        /// <param name="resolutionContext">The resolution context.</param>
+        /// <returns></returns>
+        public ConstructorInfo SelectConstructor(IEnumerable<ConstructorInfo> constructors, ResolutionContext resolutionContext)
         {
             var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
 
@@ -24,39 +33,38 @@ namespace LightCore.Activation.Components
             foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
             {
                 ParameterInfo[] parameters = constructorCandidate.GetParameters();
-                var dependencyParameters = parameters.Where(p => dependencyParameterSelector(p.ParameterType));
+                var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredAsAnything(p.ParameterType));
 
-                if (arguments == null)
+                if (resolutionContext.Arguments == null)
                 {
-                    arguments = new ArgumentContainer();
+                    resolutionContext.Arguments = new ArgumentContainer();
                 }
 
-                if(runtimeArguments == null)
+                if (resolutionContext.RuntimeArguments == null)
                 {
-                    runtimeArguments = new ArgumentContainer();
+                    resolutionContext.RuntimeArguments = new ArgumentContainer();
                 }
 
                 // Parameters and registered dependencies match.
-                if (arguments.CountOfAllArguments + runtimeArguments.CountOfAllArguments == 0 && parameters.Length == dependencyParameters.Count())
+                if (resolutionContext.Arguments.CountOfAllArguments + resolutionContext.RuntimeArguments.CountOfAllArguments == 0 && parameters.Length == dependencyParameters.Count())
                 {
                     finalConstructor = constructorCandidate;
                     break;
                 }
 
-                if (arguments.CountOfAllArguments > 0 || runtimeArguments.CountOfAllArguments > 0)
+                if (resolutionContext.Arguments.CountOfAllArguments > 0 || resolutionContext.RuntimeArguments.CountOfAllArguments > 0)
                 {
-                    if (arguments.CountOfAllArguments + runtimeArguments.CountOfAllArguments >= parameters.Count() - dependencyParameters.Count())
+                    if (resolutionContext.Arguments.CountOfAllArguments + resolutionContext.RuntimeArguments.CountOfAllArguments >= parameters.Count() - dependencyParameters.Count())
                     {
                         bool canSupply = true;
 
                         foreach (ParameterInfo parameter in parameters)
                         {
                             bool dependenciesCanSupplyValue = dependencyParameters.Contains(parameter);
-                            bool argumentsCanSupplyValue = arguments.CanSupplyValue(parameter);
-                            bool runtimeArgumentsCanSupplyValue = runtimeArguments.CanSupplyValue(parameter);
+                            bool argumentsCanSupplyValue = resolutionContext.Arguments.CanSupplyValue(parameter);
+                            bool runtimeArgumentsCanSupplyValue = resolutionContext.RuntimeArguments.CanSupplyValue(parameter);
 
                             if (!(dependenciesCanSupplyValue || argumentsCanSupplyValue || runtimeArgumentsCanSupplyValue))
-                            //if (!dependenciesCanSupplyValue || (!argumentsCanSupplyValue || !runtimeArgumentsCanSupplyValue))
                             {
                                 canSupply = false;
                             }

@@ -6,7 +6,6 @@ using System.Linq;
 
 using LightCore.Activation.Components;
 using LightCore.ExtensionMethods.System;
-using LightCore.Registration;
 
 namespace LightCore.Activation
 {
@@ -16,9 +15,9 @@ namespace LightCore.Activation
     internal class ReflectionActivator : IActivator
     {
         /// <summary>
-        /// Selector for dependency parameters / types.
+        /// The container.
         /// </summary>
-        private readonly Func<Type, bool> _dependencyTypeSelector;
+        private IContainer _container;
 
         /// <summary>
         /// The constructor selector.
@@ -45,51 +44,30 @@ namespace LightCore.Activation
         /// </summary>
         private object[] _cachedArguments;
 
-        /// <summary>
-        /// A reference to the container to resolve inner dependencies.
-        /// </summary>
-        private Container _container;
-
         ///<summary>
         /// Creates a new instance of <see cref="ReflectionActivator" />.
         ///</summary>
-        ///<param name="implementationType"></param>
+        ///<param name="implementationType">The implementation type.</param>
         internal ReflectionActivator(Type implementationType)
         {
             this._implementationType = implementationType;
             this._constructorSelector = new ConstructorSelector();
             this._argumentCollector = new ArgumentCollector();
-
-            // Setup selectors.
-            this._dependencyTypeSelector = (Type parameterType) =>
-                                           this._container.ContractIsRegistered(parameterType)
-                                           || this._container.OpenGenericContractIsRegistered(parameterType)
-                                           || this.IsRegisteredGenericEnumerable(parameterType);
-        }
-
-        /// <summary>
-        /// Checks whether a parameter is typeo of IEnumerable{T}, where {T} is a registered contract.
-        /// </summary>
-        /// <param name="parameterType">The parameter type.</param>
-        /// <returns><true /> if the parameter is a registered type within an generic enumerable instance.</returns>
-        private bool IsRegisteredGenericEnumerable(Type parameterType)
-        {
-            return parameterType.IsGenericEnumerable()
-                && this._container.ContractIsRegistered(parameterType.GetGenericArguments().FirstOrDefault());
         }
 
         /// <summary>
         /// Activates an instance with given arguments.
         /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="runtimeArguments">The runtime arguments.</param>
+        /// <param name="resolutionContext">The container.</param>
         /// <returns>The activated instance.</returns>
-        public object ActivateInstance(Container container, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
+        public object ActivateInstance(ResolutionContext resolutionContext)
         {
-            this._container = container;
+            if (this._container == null)
+            {
+                this._container = resolutionContext.Container;
+            }
 
-            int countOfRuntimeArguments = runtimeArguments.CountOfAllArguments;
+            int countOfRuntimeArguments = resolutionContext.RuntimeArguments.CountOfAllArguments;
 
             if (_cachedConstructor != null && countOfRuntimeArguments == 0)
             {
@@ -98,19 +76,20 @@ namespace LightCore.Activation
 
             var constructors = this._implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-            ConstructorInfo finalConstructor = this._constructorSelector.SelectConstructor(this._dependencyTypeSelector, constructors, arguments, runtimeArguments);
+            resolutionContext.Arguments = resolutionContext.Arguments;
+            resolutionContext.RuntimeArguments = resolutionContext.RuntimeArguments;
+
+            ConstructorInfo finalConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
 
             this._cachedConstructor = finalConstructor;
 
             if (this._cachedArguments == null || countOfRuntimeArguments > 0)
             {
-                this._argumentCollector.DependencyTypeSelector = this._dependencyTypeSelector;
-                this._argumentCollector.Parameters = this._cachedConstructor.GetParameters();
-                this._argumentCollector.Arguments = arguments;
-                this._argumentCollector.RuntimeArguments = runtimeArguments;
-                this._argumentCollector.DependencyResolver = t => this.ResolveDependency(t);
-
-                this._cachedArguments = this._argumentCollector.CollectArguments();
+                this._cachedArguments =
+                    this._argumentCollector.CollectArguments(
+                        this.ResolveDependency,
+                        this._cachedConstructor.GetParameters(),
+                        resolutionContext);
             }
 
             return this._cachedConstructor.Invoke(this._cachedArguments);

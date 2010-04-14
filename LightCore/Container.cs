@@ -6,6 +6,7 @@ using System.Reflection;
 using LightCore.Activation;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
+using LightCore.ExtensionMethods.LightCore.Registration;
 using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
@@ -46,7 +47,8 @@ namespace LightCore
                                            Lifecycle = new SingletonLifecycle()
                                        };
 
-            this._registrationContainer.Registrations.Add(new KeyValuePair<RegistrationKey, RegistrationItem>(registrationKey, registrationItem));
+            this._registrationContainer.Registrations.Add(
+                new KeyValuePair<RegistrationKey, RegistrationItem>(registrationKey, registrationItem));
         }
 
         /// <summary>
@@ -114,28 +116,9 @@ namespace LightCore
                 return this.Resolve(registrationItem);
             }
 
-            if (contractType.IsGenericType && OpenGenericContractIsRegistered(contractType))
+            if (contractType.IsGenericType && this._registrationContainer.IsRegisteredOpenGeneric(contractType))
             {
-                Type[] genericArguments = contractType.GetGenericArguments();
-
-                // Get the Registration for the open generic type.
-                key = new RegistrationKey(contractType.GetGenericTypeDefinition());
-                registrationItem = this._registrationContainer.Registrations[key];
-
-                // Register close generic type on-the-fly.
-                key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(genericArguments));
-
-                var activator = new ReflectionActivator(registrationItem.ImplementationType.MakeGenericType(genericArguments));
-
-                registrationItem = new RegistrationItem(key)
-                {
-                    Activator = activator,
-                    Lifecycle = registrationItem.Lifecycle
-                };
-
-                this._registrationContainer.Registrations.Add(registrationItem.Key, registrationItem);
-
-                return this.Resolve(registrationItem);
+                return ResolveOpenGeneric(contractType);
             }
 
             // No registration found for this type.
@@ -146,11 +129,54 @@ namespace LightCore
             }
 
             // On-the-fly registration of concrete types. Equivalent to new-operator.
+            return ResolveConcrete(contractType, key);
+        }
+
+        /// <summary>
+        /// Resolves a conctrete type on the fly using a new registration item.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="key">The registration key.</param>
+        /// <returns>The resolved instance as object.</returns>
+        private object ResolveConcrete(Type contractType, RegistrationKey key)
+        {
+            var registrationItem = new RegistrationItem(key)
+                                                    {
+                                                        Activator = new ReflectionActivator(contractType),
+                                                        Lifecycle = new TransientLifecycle()
+                                                    };
+
+            this._registrationContainer.Registrations.Add(new KeyValuePair<RegistrationKey, RegistrationItem>(key,
+                                                                                                              registrationItem));
+
+            return this.Resolve(registrationItem);
+        }
+
+        /// <summary>
+        /// Resolves a open generic type.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>The resolved instance as object.</returns>
+        private object ResolveOpenGeneric(Type contractType)
+        {
+            Type[] genericArguments = contractType.GetGenericArguments();
+
+            // Get the Registration for the open generic type.
+            var key = new RegistrationKey(contractType.GetGenericTypeDefinition());
+            RegistrationItem registrationItem = this._registrationContainer.Registrations[key];
+
+            // Register close generic type on-the-fly.
+            key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(genericArguments));
+
+            var activator = new ReflectionActivator(registrationItem.ImplementationType.MakeGenericType(genericArguments));
+
             registrationItem = new RegistrationItem(key)
                                    {
-                                       Activator = new ReflectionActivator(contractType),
-                                       Lifecycle = new TransientLifecycle()
+                                       Activator = activator,
+                                       Lifecycle = registrationItem.Lifecycle
                                    };
+
+            this._registrationContainer.Registrations.Add(registrationItem.Key, registrationItem);
 
             return this.Resolve(registrationItem);
         }
@@ -213,12 +239,12 @@ namespace LightCore
 
             if (this._registrationContainer.Registrations.TryGetValue(key, out registration))
             {
-                if(arguments != null)
+                if (arguments != null)
                 {
                     registration.RuntimeArguments.AddToAnonymousArguments(arguments);
                 }
 
-                if(namedArguments != null)
+                if (namedArguments != null)
                 {
                     registration.RuntimeArguments.AddToNamedArguments(namedArguments);
                 }
@@ -234,26 +260,17 @@ namespace LightCore
         /// <returns>The resolved instance.</returns>
         private object Resolve(RegistrationItem registrationItem)
         {
-            object instance = registrationItem.ActivateInstance(this);
+            var resolutionContext = new ResolutionContext(this, this._registrationContainer,
+                                                                        registrationItem.Arguments,
+                                                                        registrationItem.RuntimeArguments);
+
+            object instance = registrationItem.ActivateInstance(resolutionContext);
 
             // Clear all runtime arguments on registration.
             registrationItem.RuntimeArguments.AnonymousArguments = null;
             registrationItem.RuntimeArguments.NamedArguments = null;
 
             return instance;
-        }
-
-        /// <summary>
-        /// Checks whether an open generic type, taken from the closed type (contractType) is registered or not.
-        /// (This makes possible to use open generic types and also closed generic types at once.
-        /// </summary>
-        /// <param name="contractType">The type of the contract.</param>
-        /// <returns><value>true</value> if the open generic type is registered, otherwise <value>false</value>.</returns>
-        internal bool OpenGenericContractIsRegistered(Type contractType)
-        {
-            return contractType.IsGenericTypeDefinition || contractType.IsGenericType
-                                                             &&
-                                                             this.ContractIsRegistered(contractType.GetGenericTypeDefinition());
         }
 
         /// <summary>
@@ -307,7 +324,7 @@ namespace LightCore
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this.ContractIsRegistered(p.PropertyType) || OpenGenericContractIsRegistered(p.PropertyType),
+                                                   p => this._registrationContainer.IsRegisteredAsAnything(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
                                                };
 
@@ -315,25 +332,6 @@ namespace LightCore
                 validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
 
             validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
-        }
-
-        /// <summary>
-        /// Determines whether a contracttype is registered or not.
-        /// </summary>
-        /// <param name="contractType">The type of contract.</param>
-        /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
-        internal bool ContractIsRegistered(Type contractType)
-        {
-            if (contractType == null)
-            {
-                return false;
-            }
-
-            return this._registrationContainer
-                .Registrations
-                .Values
-                .Concat(this._registrationContainer.DuplicateRegistrations)
-                .Any(registration => registration.Key.ContractType == contractType);
         }
     }
 }

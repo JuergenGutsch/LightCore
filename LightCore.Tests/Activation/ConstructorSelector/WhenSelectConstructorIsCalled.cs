@@ -12,12 +12,24 @@ namespace LightCore.Tests.Activation.ConstructorSelector
     [TestFixture]
     public class WhenSelectConstructorIsCalled
     {
-        private ConstructorInfo Select(IEnumerable<ConstructorInfo> constructors, ArgumentContainer arguments, Func<Type, bool> dependencySelector)
+        private ConstructorInfo Select(IEnumerable<ConstructorInfo> constructors, ArgumentContainer arguments)
+        {
+            return this.Select(constructors, arguments, new Type[] { });
+        }
+
+        private ConstructorInfo Select(IEnumerable<ConstructorInfo> constructors, ArgumentContainer arguments, params Type[] registeredTypes)
         {
             var selector = new LightCore.Activation.Components.ConstructorSelector();
 
+            var resolutionContext =
+                new LightCore.Activation.ResolutionContext(
+                    null,
+                    RegistrationHelper.GetRegistrationContainerFor(registeredTypes),
+                    arguments,
+                    new ArgumentContainer());
+
             return selector
-                .SelectConstructor(dependencySelector, constructors, arguments, new ArgumentContainer());
+                .SelectConstructor(constructors, resolutionContext);
         }
 
         [Test]
@@ -25,14 +37,12 @@ namespace LightCore.Tests.Activation.ConstructorSelector
         {
             var selector = new LightCore.Activation.Components.ConstructorSelector();
 
-            var finalConstructor = selector.SelectConstructor(
-                arg => false,
-                typeof (Foo).GetConstructors(),
-                null,
+            var finalConstructor = this.Select(
+                typeof(Foo).GetConstructors(),
                 null);
 
             Assert.That(finalConstructor, Is.Not.Null);
-            Assert.That(finalConstructor == typeof (Foo).GetConstructor(Type.EmptyTypes));
+            Assert.That(finalConstructor == typeof(Foo).GetConstructor(Type.EmptyTypes));
         }
 
         [Test]
@@ -40,8 +50,7 @@ namespace LightCore.Tests.Activation.ConstructorSelector
         {
             var finalConstructor = this.Select(
                 typeof(Foo).GetConstructors(),
-                null,
-                arg => false);
+                null);
 
             Assert.That(finalConstructor, Is.Not.Null);
             Assert.That(finalConstructor == typeof(Foo).GetConstructor(Type.EmptyTypes));
@@ -53,7 +62,7 @@ namespace LightCore.Tests.Activation.ConstructorSelector
             var finalConstructor = this.Select(
                 typeof(Foo).GetConstructors(),
                 null,
-                arg => arg == typeof(IBar));
+                typeof(IBar));
 
             Assert.That(finalConstructor == typeof(Foo).GetConstructor(new[] { typeof(IBar) }));
         }
@@ -67,7 +76,7 @@ namespace LightCore.Tests.Activation.ConstructorSelector
                     {
                         AnonymousArguments = new[] { "Peter" }
                     },
-                arg => arg == typeof(IBar));
+               typeof(IBar));
 
             Assert.That(finalConstructor == typeof(Foo).GetConstructor(new[] { typeof(IBar), typeof(string) }));
         }
@@ -80,8 +89,7 @@ namespace LightCore.Tests.Activation.ConstructorSelector
                 new ArgumentContainer
                     {
                         AnonymousArguments = new object[] { true }
-                    },
-                arg => false);
+                    });
 
             Assert.That(finalConstructor == typeof(Foo).GetConstructor(new[] { typeof(bool) }));
         }

@@ -12,25 +12,28 @@ namespace LightCore.Tests.Activation.ArgumentCollector
     [TestFixture]
     public class WhenCollectArgumentsIsCalled
     {
-        private static object[] GetArgumentsWith(Func<Type, bool> dependecyTypeSelector, ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver)
+        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver)
         {
-            var argumentCollector = new LightCore.Activation.Components.ArgumentCollector
-                                        {
-                                            DependencyTypeSelector = dependecyTypeSelector,
-                                            Parameters = parameters,
-                                            Arguments = arguments,
-                                            RuntimeArguments = runtimeArguments,
-                                            DependencyResolver = dependencyResolver
-                                        };
+            return this.GetArgumentsWith(parameters, arguments, runtimeArguments, dependencyResolver, new Type[] { });
+        }
 
-            return argumentCollector.CollectArguments();
+        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver, params Type[] registeredTypes)
+        {
+            var resolutionContext = new LightCore.Activation.ResolutionContext(
+                null,
+                RegistrationHelper.GetRegistrationContainerFor(registeredTypes),
+                arguments,
+                runtimeArguments);
+
+            var argumentCollector = new LightCore.Activation.Components.ArgumentCollector();
+
+            return argumentCollector.CollectArguments(dependencyResolver, parameters, resolutionContext);
         }
 
         [Test]
         public void WithNoDependencyParameterAndNoArguments_EmptyArgumentsReturned()
         {
-            object[] arguments = GetArgumentsWith(
-                t => false,
+            object[] arguments = this.GetArgumentsWith(
                 new ParameterInfo[] { },
                 new ArgumentContainer(),
                 new ArgumentContainer(),
@@ -43,12 +46,12 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         [Test]
         public void WithDependecyParametersAndNoArguments_ADependencyInstanceReturned()
         {
-            object[] arguments = GetArgumentsWith(
-                t => t == typeof(IBar),
+            object[] arguments = this.GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[] { typeof(IBar) }).GetParameters(),
                 new ArgumentContainer(),
                 new ArgumentContainer(),
-                t => new Bar());
+                t => new Bar(),
+                typeof(IBar));
 
             Assert.AreEqual(1, arguments.Length);
             Assert.IsInstanceOf<Bar>(arguments[0]);
@@ -57,8 +60,7 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         [Test]
         public void WithStringAndBooleanArguments_AStringAndBooleanArgumentReturned()
         {
-            object[] arguments = GetArgumentsWith(
-                t => false,
+            object[] arguments = this.GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[]
                                                 {
                                                     typeof (string),
@@ -77,8 +79,7 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         [Test]
         public void WithDependencyAndStringArguments_ADependecyInstanceAndStringArgumentReturned()
         {
-            object[] arguments = GetArgumentsWith(
-                t => t == typeof(IBar),
+            object[] arguments = this.GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[]
                                                 {
                                                     typeof (IBar),
@@ -90,7 +91,8 @@ namespace LightCore.Tests.Activation.ArgumentCollector
                             new object[] { "Peter" }
                     },
                 new ArgumentContainer(),
-                t => new Bar());
+                t => new Bar(),
+                typeof(IBar));
 
             Assert.AreEqual(2, arguments.Length);
 
@@ -101,13 +103,12 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         [Test]
         public void WithAnonymousAndNamedStringArgument_NamedArgumentIsPrioredAndReturned()
         {
-            object[] arguments = GetArgumentsWith(
-                t => false,
-                typeof (Foo).GetConstructor(new[] {typeof (string)}).GetParameters(),
+            object[] arguments = this.GetArgumentsWith(
+                typeof(Foo).GetConstructor(new[] { typeof(string) }).GetParameters(),
                 new ArgumentContainer
                     {
-                        AnonymousArguments = new[] {"fail"},
-                        NamedArguments = new Dictionary<string, object> {{"arg1", "success"}}
+                        AnonymousArguments = new[] { "fail" },
+                        NamedArguments = new Dictionary<string, object> { { "arg1", "success" } }
                     },
                 new ArgumentContainer(),
                 null);

@@ -1,6 +1,4 @@
-﻿using LightCore.Registration;
-
-namespace LightCore.Activation
+﻿namespace LightCore.Activation
 {
     /// <summary>
     /// Represents an instance activator.
@@ -10,10 +8,8 @@ namespace LightCore.Activation
         /// <summary>
         /// Activates an instance with given arguments.
         /// </summary>
-        /// <param name="container">The container.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="runtimeArguments">The runtime arguments.</param>
+        /// <param name="resolutionContext">The resolution context.</param>
         /// <returns>The activated instance.</returns>
-        object ActivateInstance(Container container, ArgumentContainer arguments, ArgumentContainer runtimeArguments);
+        object ActivateInstance(ResolutionContext resolutionContext);
     }
 }
