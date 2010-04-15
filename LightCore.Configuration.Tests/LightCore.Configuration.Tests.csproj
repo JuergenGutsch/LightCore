@@ -47,6 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ConfigurationTests.cs" />
     <Compile Include="GroupConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

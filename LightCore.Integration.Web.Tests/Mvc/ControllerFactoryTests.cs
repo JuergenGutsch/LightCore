@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web;
-using System.Web.Routing;
-using LightCore.Integration.Web.Lifecycle;
-using LightCore.Integration.Web.Mvc;
-using LightCore.TestTypes;
-
-using NUnit.Framework;
-
-using Moq;
+﻿using NUnit.Framework;
 
 namespace LightCore.Integration.Web.Tests.Mvc
 {

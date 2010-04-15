@@ -2,9 +2,6 @@
 using System.Linq;
 using System.Reflection;
 
-using LightCore.ExtensionMethods.LightCore.Registration;
-using LightCore.Registration;
-
 namespace LightCore.Activation.Components
 {
     /// <summary>
@@ -17,14 +14,14 @@ namespace LightCore.Activation.Components
         /// </summary>
         /// <param name="constructors">The constructors.</param>
         /// <param name="resolutionContext">The resolution context.</param>
-        /// <returns></returns>
+        /// <returns>The selected constructor.</returns>
         public ConstructorInfo SelectConstructor(IEnumerable<ConstructorInfo> constructors, ResolutionContext resolutionContext)
         {
             var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
 
             ConstructorInfo finalConstructor = constructorsWithParameters.Last();
 
-            if (constructorsWithParameters.Count() == 1)
+            if (constructorsWithParameters.Count() == 1 && constructorsWithParameters.First().GetParameters().Length == 0)
             {
                 return finalConstructor;
             }
@@ -33,17 +30,7 @@ namespace LightCore.Activation.Components
             foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
             {
                 ParameterInfo[] parameters = constructorCandidate.GetParameters();
-                var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredAsAnything(p.ParameterType));
-
-                if (resolutionContext.Arguments == null)
-                {
-                    resolutionContext.Arguments = new ArgumentContainer();
-                }
-
-                if (resolutionContext.RuntimeArguments == null)
-                {
-                    resolutionContext.RuntimeArguments = new ArgumentContainer();
-                }
+                var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredOrSupportedContract(p.ParameterType));
 
                 // Parameters and registered dependencies match.
                 if (resolutionContext.Arguments.CountOfAllArguments + resolutionContext.RuntimeArguments.CountOfAllArguments == 0 && parameters.Length == dependencyParameters.Count())

@@ -49,6 +49,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ActiveGroupNotFoundException.cs" />
     <Compile Include="RegistrationBase.cs" />
     <Compile Include="RegistrationGroup.cs" />

@@ -3,7 +3,7 @@
 namespace LightCore.Activation
 {
     /// <summary>
-    /// Represents a context for resolve instances
+    /// Represents a context for resolving instances
     /// with most used arguments.
     /// </summary>
     internal class ResolutionContext
@@ -53,6 +53,9 @@ namespace LightCore.Activation
         {
             this.Container = container;
             this.Registrations = registrations;
+
+            this.Arguments = new ArgumentContainer();
+            this.RuntimeArguments = new ArgumentContainer();
         }
 
         /// <summary>

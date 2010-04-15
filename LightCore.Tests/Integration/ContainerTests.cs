@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using LightCore.TestTypes;
 
@@ -9,6 +10,67 @@ namespace LightCore.Tests.Integration
     [TestFixture]
     public class ContainerTests
     {
+        [Test]
+        public void Container_can_resolve_factories()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var fooFactory = container.Resolve<Func<IFoo>>();
+            var fooOne = fooFactory();
+            var fooTwo = fooFactory();
+
+            Assert.IsNotNull(fooFactory);
+            Assert.IsInstanceOf<Func<IFoo>>(fooFactory);
+
+            Assert.IsNotNull(fooOne);
+            Assert.IsInstanceOf<IFoo>(fooOne);
+
+            Assert.IsNotNull(fooTwo);
+            Assert.IsInstanceOf<IFoo>(fooTwo);
+        }
+
+        [Test]
+        public void Container_can_resolve_factories_with_arguments()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            string expected = "Hello World";
+
+            var container = builder.Build();
+
+            var fooFactory = container.Resolve<Func<string, IFoo>>();
+            var instance = fooFactory(expected);
+
+            Assert.IsNotNull(fooFactory);
+            Assert.IsNotNull(instance);
+            Assert.AreEqual(expected, ((Foo)instance).Arg1);
+
+            var fooFactoryTwo = container.Resolve<Func<string, bool, IFoo>>();
+            var fooTwo = fooFactoryTwo("Peter", true);
+
+            Assert.IsNotNull(fooFactoryTwo);
+            Assert.AreEqual("Peter", ((Foo) fooTwo).Arg1);
+            Assert.AreEqual(true, ((Foo) fooTwo).Arg2);
+        }
+
+        [Test]
+        public void Container_can_resolve_factories_as_dependendy()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var fooFactoryConsumer = container.Resolve<FooFactoryConsumer>();
+
+            Assert.IsNotNull(fooFactoryConsumer);
+            Assert.IsNotNull(fooFactoryConsumer.Foo);
+        }
+
         [Test]
         public void Container_can_resolve_open_generic_types()
         {

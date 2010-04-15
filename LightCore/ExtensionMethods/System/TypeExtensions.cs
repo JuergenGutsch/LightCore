@@ -19,6 +19,27 @@ namespace LightCore.ExtensionMethods.System
         }
 
         /// <summary>
+        /// Checks whether the type is a generic factory or not.
+        /// </summary>
+        /// <param name="source">The type to check.</param>
+        /// <returns><value>true</value> if the type is a generic factory, otherwise <value>false</value>.</returns>
+        internal static bool IsFactoryType(this Type source)
+        {
+            if (!source.IsGenericType)
+            {
+                return false;
+            }
+
+            Type genericTypeDefinition = source.GetGenericTypeDefinition();
+
+            return genericTypeDefinition == typeof(Func<>)
+                   || genericTypeDefinition == typeof(Func<,>)
+                   || genericTypeDefinition == typeof(Func<,,>)
+                   || genericTypeDefinition == typeof(Func<,,,>)
+                   || genericTypeDefinition == typeof(Func<,,,,>);
+        }
+
+        /// <summary>
         /// Checks whether a given type is type of generic enumerable.
         /// </summary>
         /// <param name="source">The source type.</param>
@@ -32,12 +53,12 @@ namespace LightCore.ExtensionMethods.System
 
             var typeArguments = source.GetGenericArguments();
 
-            if (typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(source))
+            if (typeArguments.Length > 1)
             {
-                return true;
+                return false;
             }
 
-            return false;
+            return typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(source);
         }
     }
 }

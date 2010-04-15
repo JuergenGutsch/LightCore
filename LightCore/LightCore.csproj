@@ -26,7 +26,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\LightCore.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,10 +48,10 @@
     <Compile Include="Activation\ResolutionContext.cs" />
     <Compile Include="Activation\Components\ArgumentCollector.cs" />
     <Compile Include="Activation\Components\ConstructorSelector.cs" />
-    <Compile Include="Activation\DelegateActivator.cs" />
-    <Compile Include="Activation\IActivator.cs" />
-    <Compile Include="Activation\InstanceActivator.cs" />
-    <Compile Include="Activation\ReflectionActivator.cs" />
+    <Compile Include="Activation\Activators\DelegateActivator.cs" />
+    <Compile Include="Activation\Activators\IActivator.cs" />
+    <Compile Include="Activation\Activators\InstanceActivator.cs" />
+    <Compile Include="Activation\Activators\ReflectionActivator.cs" />
     <Compile Include="ExtensionMethods\LightCore\Fluent\FluentRegistration.cs" />
     <Compile Include="ContractNotImplementedByTypeException.cs" />
     <Compile Include="ExtensionMethods\System\ObjectExtensions.cs" />
@@ -93,7 +93,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethods\LightCore\Registration\RegistrationContainer.cs" />
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Activation\Activators\GenericDelegateActivator.cs" />
+    <Compile Include="Registration\RegistrationSource\DynamicFactoryRegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\EnumerableRegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\RegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\IRegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\ConcreteTypeRegistrationSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
 
 using LightCore.Activation.Components;
-using LightCore.ExtensionMethods.System;
 
-namespace LightCore.Activation
+namespace LightCore.Activation.Activators
 {
     /// <summary>
     /// Represents an reflection instance activator.
@@ -87,40 +83,18 @@ namespace LightCore.Activation
             {
                 this._cachedArguments =
                     this._argumentCollector.CollectArguments(
-                        this.ResolveDependency,
+                        this._container.Resolve,
                         this._cachedConstructor.GetParameters(),
                         resolutionContext);
             }
 
-            return this._cachedConstructor.Invoke(this._cachedArguments);
-        }
-
-        /// <summary>
-        /// Resolves a dependency.
-        /// </summary>
-        /// <param name="parameterType">The parameter type.</param>
-        /// <returns>The resolved dependecy.</returns>
-        private object ResolveDependency(Type parameterType)
-        {
-            if (parameterType.IsGenericEnumerable())
+            if(this._cachedArguments.Length != this._cachedConstructor.GetParameters().Length)
             {
-                Type genericArgument = parameterType
-                    .GetGenericArguments()
-                    .FirstOrDefault();
-
-                object[] resolvedInstances = this._container.ResolveAll(genericArgument).ToArray();
-
-                Type openListType = typeof(List<>);
-                Type closedListType = openListType.MakeGenericType(genericArgument);
-
-                var list = (IList)Activator.CreateInstance(closedListType);
-
-                Array.ForEach(resolvedInstances, instance => list.Add(instance));
-
-                return list;
+                throw new ResolutionFailedException(
+                    "No suitable constructor found. Check registered dependencies and availability of default constructors");
             }
 
-            return this._container.Resolve(parameterType);
+            return this._cachedConstructor.Invoke(this._cachedArguments);
         }
     }
 }

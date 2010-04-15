@@ -1,22 +1,22 @@
 ﻿using System;
 
-namespace LightCore.Activation
+namespace LightCore.Activation.Activators
 {
     /// <summary>
     /// Represents a delegate instance activator.
     /// </summary>
-    internal class DelegateActivator<TContract> : IActivator
+    internal class DelegateActivator : IActivator
     {
         /// <summary>
         /// The activation function as a delegate.
         /// </summary>
-        private readonly Func<IContainer, TContract> _activationFunction;
+        private readonly Func<IContainer, object> _activationFunction;
 
         /// <summary>
-        /// Initializes a new instance of <see cref="DelegateActivator{TContract}" />.
+        /// Initializes a new instance of <see cref="DelegateActivator" />.
         /// </summary>
         /// <param name="activationFunction">The activator function.</param>
-        internal DelegateActivator(Func<IContainer, TContract> activationFunction)
+        internal DelegateActivator(Func<IContainer, object> activationFunction)
         {
             this._activationFunction = activationFunction;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LightCore.ExtensionMethods.System.Collections.Generic
 {
@@ -35,12 +36,9 @@ namespace LightCore.ExtensionMethods.System.Collections.Generic
             var result = new Dictionary<TKey, TValue>();
             var dictionaries = new List<IDictionary<TKey, TValue>>();
 
-            foreach (var dict in dictionaries)
+            foreach (var x in dictionaries.SelectMany(dict => dict))
             {
-                foreach (var x in dict)
-                {
-                    result[x.Key] = x.Value;
-                }
+                result[x.Key] = x.Value;
             }
 
             return result;

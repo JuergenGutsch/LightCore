@@ -64,6 +64,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="UseCases\AutofacUseCase.cs" />
     <Compile Include="UseCases\LightCoreDelegateUseCase.cs" />
     <Compile Include="UseCases\LightCoreUseCase.cs" />

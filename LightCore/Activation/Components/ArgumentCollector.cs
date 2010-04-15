@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using LightCore.ExtensionMethods.LightCore.Registration;
-
 namespace LightCore.Activation.Components
 {
     /// <summary>
-    /// Represents an collector for arguments.
+    /// Represents a collector for arguments.
     /// </summary>
     internal class ArgumentCollector
     {
@@ -18,13 +16,16 @@ namespace LightCore.Activation.Components
         /// <param name="dependencyResolver">The depenency resolver.</param>
         /// <param name="parameters">The parameters.</param>
         /// <param name="resolutionContext">The resolution context.</param>
-        /// <returns></returns>
+        /// <returns>The collected arguments.</returns>
         public object[] CollectArguments(Func<Type, object> dependencyResolver, ParameterInfo[] parameters, ResolutionContext resolutionContext)
         {
             var finalArguments = new List<object>();
 
-            var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredAsAnything(p.ParameterType));
+            var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredOrSupportedContract(p.ParameterType));
 
+            Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => argument.GetType() == parameter.ParameterType;
+
+            // Priority from heighest: Runtime arguments -> named / anonymous, Arguments -> named / anonymous / depdendency parameters.
             foreach (ParameterInfo parameter in parameters)
             {
                 if (resolutionContext.RuntimeArguments.NamedArguments != null && resolutionContext.RuntimeArguments.NamedArguments.ContainsKey(parameter.Name))
@@ -33,9 +34,9 @@ namespace LightCore.Activation.Components
                     continue;
                 }
 
-                if (resolutionContext.RuntimeArguments.AnonymousArguments != null && resolutionContext.RuntimeArguments.AnonymousArguments.Any(a => a.GetType() == parameter.ParameterType))
+                if (resolutionContext.RuntimeArguments.AnonymousArguments != null && resolutionContext.RuntimeArguments.AnonymousArguments.Any(argument => argumentSelector(argument, parameter)))
                 {
-                    finalArguments.Add(resolutionContext.RuntimeArguments.AnonymousArguments.FirstOrDefault(a => a.GetType() == parameter.ParameterType));
+                    finalArguments.Add(resolutionContext.RuntimeArguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, parameter)));
                     continue;
                 }
 
@@ -45,9 +46,9 @@ namespace LightCore.Activation.Components
                     continue;
                 }
 
-                if (resolutionContext.Arguments.AnonymousArguments != null && resolutionContext.Arguments.AnonymousArguments.Any(a => a.GetType() == parameter.ParameterType))
+                if (resolutionContext.Arguments.AnonymousArguments != null && resolutionContext.Arguments.AnonymousArguments.Any(argument => argumentSelector(argument, parameter)))
                 {
-                    finalArguments.Add(resolutionContext.Arguments.AnonymousArguments.FirstOrDefault(a => a.GetType() == parameter.ParameterType));
+                    finalArguments.Add(resolutionContext.Arguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, parameter)));
                     continue;
                 }
 

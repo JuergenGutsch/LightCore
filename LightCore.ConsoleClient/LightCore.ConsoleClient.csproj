@@ -62,6 +62,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Screens\ScreenBase.cs" />
     <Compile Include="Screens\WelcomeScreen.cs" />
     <Compile Include="Writers\ConsoleWriter.cs" />

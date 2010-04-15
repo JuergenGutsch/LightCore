@@ -1,4 +1,4 @@
-﻿namespace LightCore.Activation
+﻿namespace LightCore.Activation.Activators
 {
     /// <summary>
     /// Represents an instance activator.

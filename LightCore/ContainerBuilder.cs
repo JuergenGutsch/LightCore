@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 
 using LightCore.Activation;
+using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Fluent;
 using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
+using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
@@ -85,7 +87,21 @@ namespace LightCore
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
             this._registrationCallbacks.Clear();
 
-            return new Container(this._registrationContainer);
+            var registrationSources = new List<IRegistrationSource>
+                                          {
+                                              new OpenGenericRegistrationSource(),
+                                              new EnumerableRegistrationSource(),
+                                              new DynamicFactoryRegistrationSource(),
+                                              new ConcreteTypeRegistrationSource()
+                                          };
+
+            // Register registration sources dependency selectors, without the any one.
+            registrationSources
+                .Take(registrationSources.Count - 1)
+                .ForEach(registrationSource =>
+                         this._registrationContainer.RegistrationSelectors.Add(registrationSource.DependencySelector));
+
+            return new Container(this._registrationContainer, registrationSources);
         }
 
         /// <summary>
@@ -170,7 +186,7 @@ namespace LightCore
 
             var registration = new RegistrationItem(key)
             {
-                Activator = new DelegateActivator<TContract>(activatorFunction)
+                Activator = new GenericDelegateActivator<TContract>(activatorFunction)
             };
 
             this.AddToRegistrations(registration);

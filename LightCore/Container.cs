@@ -4,12 +4,11 @@ using System.Linq;
 using System.Reflection;
 
 using LightCore.Activation;
-using LightCore.ExtensionMethods.System;
+using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System.Collections.Generic;
-using LightCore.ExtensionMethods.LightCore.Registration;
 using LightCore.Lifecycle;
-using LightCore.Properties;
 using LightCore.Registration;
+using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
@@ -24,13 +23,21 @@ namespace LightCore
         private readonly RegistrationContainer _registrationContainer;
 
         /// <summary>
+        /// Holds the registration sources.
+        /// </summary>
+        private readonly IEnumerable<IRegistrationSource> _registrationSources;
+
+        /// <summary>
         /// Initializes a new instance of <see cref="Container" />.
         /// <param name="registrationContainer">The registrations for this container.</param>
+        /// <param name="registrationSources">The registration sources.</param>
         /// </summary>
-        internal Container(RegistrationContainer registrationContainer)
+        internal Container(RegistrationContainer registrationContainer, IEnumerable<IRegistrationSource> registrationSources)
         {
-            // Save registrations.
             this._registrationContainer = registrationContainer;
+
+            _registrationSources = registrationSources;
+            _registrationSources.ForEach(registrationSource => registrationSource.RegistrationContainer = this._registrationContainer);
 
             // Register the container itself for service locator reasons.
             var registrationKey = new RegistrationKey(typeof(IContainer));
@@ -110,74 +117,23 @@ namespace LightCore
 
             RegistrationItem registrationItem;
 
-            if (this._registrationContainer.Registrations.TryGetValue(key, out registrationItem))
+            if (!this._registrationContainer.Registrations.TryGetValue(key, out registrationItem))
             {
-                // Activate existing registration.
-                return this.Resolve(registrationItem);
+                // No registration found yet, try to create one with available registration sources.
+                foreach (var registrationSource in this._registrationSources)
+                {
+                    registrationItem = registrationSource.GetRegistrationFor(contractType, this);
+
+                    if (registrationItem != null)
+                    {
+                        this._registrationContainer.Registrations.Add(
+                            new KeyValuePair<RegistrationKey, RegistrationItem>(registrationItem.Key, registrationItem));
+                        break;
+                    }
+                }
             }
 
-            if (contractType.IsGenericType && this._registrationContainer.IsRegisteredOpenGeneric(contractType))
-            {
-                return ResolveOpenGeneric(contractType);
-            }
-
-            // No registration found for this type.
-            if (!contractType.IsConcreteType())
-            {
-                throw new RegistrationNotFoundException(
-                    Resources.RegistrationForContractAndNameNotFoundFormat);
-            }
-
-            // On-the-fly registration of concrete types. Equivalent to new-operator.
-            return ResolveConcrete(contractType, key);
-        }
-
-        /// <summary>
-        /// Resolves a conctrete type on the fly using a new registration item.
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <param name="key">The registration key.</param>
-        /// <returns>The resolved instance as object.</returns>
-        private object ResolveConcrete(Type contractType, RegistrationKey key)
-        {
-            var registrationItem = new RegistrationItem(key)
-                                                    {
-                                                        Activator = new ReflectionActivator(contractType),
-                                                        Lifecycle = new TransientLifecycle()
-                                                    };
-
-            this._registrationContainer.Registrations.Add(new KeyValuePair<RegistrationKey, RegistrationItem>(key,
-                                                                                                              registrationItem));
-
-            return this.Resolve(registrationItem);
-        }
-
-        /// <summary>
-        /// Resolves a open generic type.
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <returns>The resolved instance as object.</returns>
-        private object ResolveOpenGeneric(Type contractType)
-        {
-            Type[] genericArguments = contractType.GetGenericArguments();
-
-            // Get the Registration for the open generic type.
-            var key = new RegistrationKey(contractType.GetGenericTypeDefinition());
-            RegistrationItem registrationItem = this._registrationContainer.Registrations[key];
-
-            // Register close generic type on-the-fly.
-            key = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(genericArguments));
-
-            var activator = new ReflectionActivator(registrationItem.ImplementationType.MakeGenericType(genericArguments));
-
-            registrationItem = new RegistrationItem(key)
-                                   {
-                                       Activator = activator,
-                                       Lifecycle = registrationItem.Lifecycle
-                                   };
-
-            this._registrationContainer.Registrations.Add(registrationItem.Key, registrationItem);
-
+            // Activate existing registration.
             return this.Resolve(registrationItem);
         }
 
@@ -324,7 +280,7 @@ namespace LightCore
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this._registrationContainer.IsRegisteredAsAnything(p.PropertyType),
+                                                   p => this._registrationContainer.IsRegisteredOrSupportedContract(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
                                                };
 

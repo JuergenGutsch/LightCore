@@ -1,6 +1,7 @@
 ﻿using System;
 
 using LightCore.Activation;
+using LightCore.Activation.Activators;
 using LightCore.Lifecycle;
 
 namespace LightCore.Registration
