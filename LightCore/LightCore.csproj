@@ -96,7 +96,7 @@
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Activation\Activators\GenericDelegateActivator.cs" />
-    <Compile Include="Registration\RegistrationSource\DynamicFactoryRegistrationSource.cs" />
+    <Compile Include="Registration\RegistrationSource\FactoryRegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\EnumerableRegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\RegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\IRegistrationSource.cs" />

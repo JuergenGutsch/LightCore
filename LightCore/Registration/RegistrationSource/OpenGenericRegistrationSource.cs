@@ -6,6 +6,10 @@ namespace LightCore.Registration.RegistrationSource
 {
     /// <summary>
     /// Represents a registration source for open generic type support.
+    /// 
+    /// <example>
+    /// public Foo(IRepository{Bar} barRepository) {  }
+    /// </example>
     /// </summary>
     internal class OpenGenericRegistrationSource : RegistrationSource
     {

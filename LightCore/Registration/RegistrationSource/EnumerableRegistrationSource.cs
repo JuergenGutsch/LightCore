@@ -11,6 +11,10 @@ namespace LightCore.Registration.RegistrationSource
 {
     /// <summary>
     /// Represents a registration source for IEnumerable{TContract}, (ResolveAll as dependency) support.
+    /// 
+    /// <example>
+    /// public Foo(IEnumerable{IBar} bar) {  }
+    /// </example>
     /// </summary>
     internal class EnumerableRegistrationSource : RegistrationSource
     {

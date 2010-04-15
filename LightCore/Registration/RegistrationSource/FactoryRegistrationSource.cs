@@ -11,10 +11,18 @@ using LightCore.Lifecycle;
 namespace LightCore.Registration.RegistrationSource
 {
     /// <summary>
-    /// Represents an registration source for dynamic factory support. (Func{TContract} as dependency).
+    /// Represents an registration source for factory support. (Func{TContract} as dependency).
     /// It supports also get an parametrized function, for ad-hoc instantiation.
+    /// 
+    /// <example>
+    /// public Foo(Func{IBar} bar) {  }
+    /// </example>
+    /// 
+    /// <example>
+    /// public Foo(Func{string, IBar} bar) {  }
+    /// </example>
     /// </summary>
-    internal class DynamicFactoryRegistrationSource : RegistrationSource
+    internal class FactoryRegistrationSource : RegistrationSource
     {
         /// <summary>
         /// Holds the name for resolve methods.

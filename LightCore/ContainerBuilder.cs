@@ -90,9 +90,12 @@ namespace LightCore
                                           {
                                               new OpenGenericRegistrationSource(),
                                               new EnumerableRegistrationSource(),
-                                              new DynamicFactoryRegistrationSource(),
+                                              new FactoryRegistrationSource(),
                                               new ConcreteTypeRegistrationSource()
                                           };
+
+            // Adds possible registered registration source.
+            this.AddRegistrationSources(registrationSources);
 
             // Register registration sources dependency selectors, without the any one.
             registrationSources
@@ -101,6 +104,25 @@ namespace LightCore
                          this._registrationContainer.RegistrationSelectors.Add(registrationSource.DependencySelector));
 
             return new Container(this._registrationContainer, registrationSources);
+        }
+
+        /// <summary>
+        /// Adds implementors of <see cref="IRegistrationSource" /> and plug it in the system.
+        /// </summary>
+        /// <param name="currentRegistrationSources">The current registration sources.</param>
+        private void AddRegistrationSources(IList<IRegistrationSource> currentRegistrationSources)
+        {
+            var newRegistrationSources = this._registrationContainer
+                .Registrations
+                .Values
+                .Concat(this._registrationContainer.DuplicateRegistrations)
+                .OfType<IRegistrationSource>();
+
+            foreach (IRegistrationSource registrationSource in newRegistrationSources)
+            {
+                // Add it before the last, concrete, registration source because of the priority.
+                currentRegistrationSources.Insert(currentRegistrationSources.Count - 1, registrationSource);
+            }
         }
 
         /// <summary>

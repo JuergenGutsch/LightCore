@@ -8,6 +8,10 @@ namespace LightCore.Registration.RegistrationSource
 {
     /// <summary>
     /// Represents an registration source for concrete types.
+    /// 
+    /// <example>
+    /// public Foo(Bar bar) {  }
+    /// </example>
     /// </summary>
     internal class ConcreteTypeRegistrationSource : RegistrationSource
     {
