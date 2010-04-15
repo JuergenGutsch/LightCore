@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
-
+using LightCore.Configuration.Properties;
 using LightCore.Lifecycle;
 
 namespace LightCore.Configuration
@@ -94,8 +95,15 @@ namespace LightCore.Configuration
         {
             get
             {
+                const string sectionName = "LightCoreConfiguration";
+
                 var configSectionHandler =
-                    (XamlConfigSectionHandler)ConfigurationManager.GetSection("LightCoreConfiguration");
+                    (XamlConfigSectionHandler)ConfigurationManager.GetSection(sectionName);
+
+                if(configSectionHandler == null)
+                {
+                    throw new ArgumentException(string.Format(Resources.SectionNotFoundFormat, sectionName));
+                }
 
                 return configSectionHandler.GetInstance<LightCoreConfiguration>();
             }

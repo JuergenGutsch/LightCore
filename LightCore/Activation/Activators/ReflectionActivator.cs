@@ -2,6 +2,8 @@
 using System.Reflection;
 
 using LightCore.Activation.Components;
+using LightCore.ExtensionMethods.System;
+using LightCore.Properties;
 
 namespace LightCore.Activation.Activators
 {
@@ -88,10 +90,10 @@ namespace LightCore.Activation.Activators
                         resolutionContext);
             }
 
-            if(this._cachedArguments.Length != this._cachedConstructor.GetParameters().Length)
+            if (this._cachedArguments.Length != this._cachedConstructor.GetParameters().Length)
             {
                 throw new ResolutionFailedException(
-                    "No suitable constructor found. Check registered dependencies and availability of default constructors");
+                    Resources.NoSuitableConstructorFoundFormat.FormatWith(_implementationType));
             }
 
             return this._cachedConstructor.Invoke(this._cachedArguments);

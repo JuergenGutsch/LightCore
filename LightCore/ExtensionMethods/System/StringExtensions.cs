@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace LightCore.ExtensionMethods.System
 {
@@ -15,7 +16,7 @@ namespace LightCore.ExtensionMethods.System
         /// <returns>The formatted string.</returns>
         internal static string FormatWith(this string source, params object[] values)
         {
-            return string.Format(source, values);
+            return string.Format(CultureInfo.InvariantCulture, source, values);
         }
     }
 }

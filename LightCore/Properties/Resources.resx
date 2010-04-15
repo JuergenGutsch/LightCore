@@ -117,16 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConstructorNotFoundFormat" xml:space="preserve">
-    <value>Constructor for implementation type '{0}' not found.</value>
+  <data name="ContractNotImplementedByTypeFormat" xml:space="preserve">
+    <value>Contract '{0}' is not implemented by type '{1}'.</value>
   </data>
   <data name="InvalidRegistrationFormat" xml:space="preserve">
-    <value>Registration to self for type '{0}' is invalid, because the type is abstract or an interface type.</value>
+    <value>Registration to self failed, type '{0}' seems to be not concrete.</value>
   </data>
-  <data name="RegistrationForContractAndNameAlreadyExistsFormat" xml:space="preserve">
-    <value>Registration for contract '{0}' and name '{1}' already exists.</value>
+  <data name="NoConstructorAvailableForType" xml:space="preserve">
+    <value>No constructor available for type '{0}'. Please add a public constructor.</value>
   </data>
-  <data name="RegistrationForContractAndNameNotFoundFormat" xml:space="preserve">
-    <value>Registration for contract '{0}' and name '{1}' not found.</value>
+  <data name="NoSuitableConstructorFoundFormat" xml:space="preserve">
+    <value>No suitable constructor for implementation '{0}' found. Check registered dependencies and availability of default constructors.</value>
+  </data>
+  <data name="PassedTypeDoesNotImplementILifecycleFormat" xml:space="preserve">
+    <value>Passed type '{0}' does not implement the interface "ILifecycle".</value>
+  </data>
+  <data name="RegistrationNotFoundFormat" xml:space="preserve">
+    <value>Registration for contract '{0}' not found, please check your registrations.</value>
   </data>
 </root>

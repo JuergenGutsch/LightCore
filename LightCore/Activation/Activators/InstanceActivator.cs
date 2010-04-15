@@ -2,6 +2,7 @@
 {
     /// <summary>
     /// Represents a activator based on a instance.
+    /// This is always singleton per container.
     /// </summary>
     internal class InstanceActivator<TInstance> : IActivator
     {

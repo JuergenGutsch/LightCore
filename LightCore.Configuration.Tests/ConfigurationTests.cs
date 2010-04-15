@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
@@ -11,6 +12,14 @@ namespace LightCore.Configuration.Tests
     [TestFixture]
     public class ConfigurationTests
     {
+        [Test]
+        public void Set_lifecycle_on_fluent_registration_to_not_implementing_type_throws_argumentexception()
+        {
+            var builder = new ContainerBuilder();
+
+            Assert.That(() => builder.Register<IFoo, Foo>().ControlledBy(typeof (object)), Throws.ArgumentException);
+        }
+
         [Test]
         public void Enabled_or_disable_registrations_works()
         {
@@ -235,6 +244,26 @@ namespace LightCore.Configuration.Tests
             var barTwo = container.Resolve<IBar>();
 
             Assert.AreNotSame(bar, barTwo);
+        }
+
+        [Test]
+        public void RegistrationLoader_throws_argument_exception_on_missing_implementationtype()
+        {
+            var builder = new ContainerBuilder();
+            var configuration = new LightCoreConfiguration();
+            configuration.Registrations.Add(new Registration {ContractType = typeof (object).AssemblyQualifiedName});
+
+            Assert.That(() => RegistrationLoader.Instance.Register(builder, configuration), Throws.ArgumentException);
+        }
+
+        [Test]
+        public void RegistrationLoader_throws_argument_exception_on_missing_contracttype()
+        {
+            var builder = new ContainerBuilder();
+            var configuration = new LightCoreConfiguration();
+            configuration.Registrations.Add(new Registration { ImplementationType = typeof(object).AssemblyQualifiedName });
+
+            Assert.That(() => RegistrationLoader.Instance.Register(builder, configuration), Throws.ArgumentException);
         }
 
         [Test]

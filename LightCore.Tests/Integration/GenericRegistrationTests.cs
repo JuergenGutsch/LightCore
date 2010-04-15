@@ -29,7 +29,7 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            for(int i=0; i < 100; i++)
+            for(int i=0; i < 10; i++)
             {
                 var fooRepository = container.Resolve<IRepository<Foo>>();
                 var barRepository = container.Resolve<IRepository<Bar>>();

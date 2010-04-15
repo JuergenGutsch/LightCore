@@ -5,8 +5,10 @@ using System.Reflection;
 
 using LightCore.Activation;
 using LightCore.Activation.Activators;
+using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Lifecycle;
+using LightCore.Properties;
 using LightCore.Registration;
 using LightCore.Registration.RegistrationSource;
 
@@ -133,6 +135,11 @@ namespace LightCore
                 }
             }
 
+            if(registrationItem == null)
+            {
+                throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
+            }
+
             // Activate existing registration.
             return this.Resolve(registrationItem);
         }
@@ -217,8 +224,11 @@ namespace LightCore
         private object Resolve(RegistrationItem registrationItem)
         {
             var resolutionContext = new ResolutionContext(this, this._registrationContainer,
-                                                                        registrationItem.Arguments,
-                                                                        registrationItem.RuntimeArguments);
+                                                          registrationItem.Arguments,
+                                                          registrationItem.RuntimeArguments)
+                                        {
+                                            Registration = registrationItem
+                                        };
 
             object instance = registrationItem.ActivateInstance(resolutionContext);
 

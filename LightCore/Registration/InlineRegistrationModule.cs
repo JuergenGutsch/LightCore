@@ -13,7 +13,7 @@ namespace LightCore.Registration
         /// <summary>
         /// Gets or sets the registration callbacks.
         /// </summary>
-        public IEnumerable<Action<IContainerBuilder>> RegistrationCallBacks
+        public IEnumerable<Action<IContainerBuilder>> RegistrationCallbacks
         {
             get;
             set;
@@ -22,10 +22,10 @@ namespace LightCore.Registration
         /// <summary>
         /// Initializes a new instance of <see cref="InlineRegistrationModule" />.
         /// </summary>
-        /// <param name="registrationCallBacks">The registration callbacks.</param>
-        public InlineRegistrationModule(params Action<IContainerBuilder>[] registrationCallBacks)
+        /// <param name="registrationCallbacks">The registration callbacks.</param>
+        public InlineRegistrationModule(params Action<IContainerBuilder>[] registrationCallbacks)
         {
-            this.RegistrationCallBacks = registrationCallBacks;
+            this.RegistrationCallbacks = registrationCallbacks;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace LightCore.Registration
         /// <param name="containerBuilder">The ContainerBuilder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
-            this.RegistrationCallBacks.ForEach(callback => callback(containerBuilder));
+            this.RegistrationCallbacks.ForEach(callback => callback(containerBuilder));
         }
     }
 }

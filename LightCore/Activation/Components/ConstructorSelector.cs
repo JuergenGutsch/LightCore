@@ -2,6 +2,9 @@
 using System.Linq;
 using System.Reflection;
 
+using LightCore.ExtensionMethods.System;
+using LightCore.Properties;
+
 namespace LightCore.Activation.Components
 {
     /// <summary>
@@ -19,7 +22,12 @@ namespace LightCore.Activation.Components
         {
             var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
 
-            ConstructorInfo finalConstructor = constructorsWithParameters.Last();
+            ConstructorInfo finalConstructor = constructorsWithParameters.LastOrDefault();
+
+            if (finalConstructor == null)
+            {
+                throw new ResolutionFailedException(Resources.NoConstructorAvailableForType.FormatWith(resolutionContext.Registration.ImplementationType));
+            }
 
             if (constructorsWithParameters.Count() == 1 && constructorsWithParameters.First().GetParameters().Length == 0)
             {

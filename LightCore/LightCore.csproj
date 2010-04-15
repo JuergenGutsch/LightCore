@@ -75,7 +75,6 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="Fluent\IFluentRegistration.cs" />
     <Compile Include="IContainerBuilder.cs" />
-    <Compile Include="RegistrationAlreadyExistsException.cs" />
     <Compile Include="RegistrationNotFoundException.cs" />
     <Compile Include="Registration\RegistrationItem.cs" />
     <Compile Include="Registration\RegistrationKey.cs" />

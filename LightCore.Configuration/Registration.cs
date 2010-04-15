@@ -3,8 +3,17 @@
     /// <summary>
     /// Represents a registration configuration.
     /// </summary>
-    public class Registration : RegistrationBase
+    public class Registration
     {
+        /// <summary>
+        /// Gets or sets whether the registration group is enabled or not.
+        /// </summary>
+        public string Enabled
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// Gets or sets the identifier for the contract type.
         /// </summary>
@@ -39,6 +48,22 @@
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("ContractType: '{0}', ImplementationType: '{1}', Arguments: '{2}', Lifecycle: '{3}'",
+                                 this.ContractType,
+                                 this.ImplementationType,
+                                 this.Arguments,
+                                 this.Lifecycle);
         }
     }
 }

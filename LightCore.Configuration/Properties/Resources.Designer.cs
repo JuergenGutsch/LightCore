@@ -70,11 +70,56 @@ namespace LightCore.Configuration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load type: &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Bad stream content, empty or malformed not found..
+        /// </summary>
+        internal static string BadStreamContent {
+            get {
+                return ResourceManager.GetString("BadStreamContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Xml configuration file not found. Path: &apos;{0}&apos;..
+        /// </summary>
+        internal static string ConfigurationFileNotFoundFormat {
+            get {
+                return ResourceManager.GetString("ConfigurationFileNotFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contract type for following registration cannot be empty. Registration: &apos;{0}&apos;..
+        /// </summary>
+        internal static string ContractTypeCannotBeEmptyFormat {
+            get {
+                return ResourceManager.GetString("ContractTypeCannotBeEmptyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not load type: &apos;{0}&apos;, maybe wrong full qualified info. Try e.g.: &quot;Namespace.Type, Assembly&quot;. Or check bin folder and copy DLLs if necessary..
         /// </summary>
         internal static string CouldNotLoadTypeFormat {
             get {
                 return ResourceManager.GetString("CouldNotLoadTypeFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Implementation type for following registration cannot be empty. Registration: &apos;{0}&apos;..
+        /// </summary>
+        internal static string ImplementationTypeCannotBeEmptyFormat {
+            get {
+                return ResourceManager.GetString("ImplementationTypeCannotBeEmptyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuration section &apos;{0}&apos; not found..
+        /// </summary>
+        internal static string SectionNotFoundFormat {
+            get {
+                return ResourceManager.GetString("SectionNotFoundFormat", resourceCulture);
             }
         }
     }

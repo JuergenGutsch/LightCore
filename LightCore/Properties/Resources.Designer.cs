@@ -61,16 +61,16 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Constructor for implementation type &apos;{0}&apos; not found..
+        ///   Looks up a localized string similar to Contract &apos;{0}&apos; is not implemented by type &apos;{1}&apos;..
         /// </summary>
-        internal static string ConstructorNotFoundFormat {
+        internal static string ContractNotImplementedByTypeFormat {
             get {
-                return ResourceManager.GetString("ConstructorNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("ContractNotImplementedByTypeFormat", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration to self for type &apos;{0}&apos; is invalid, because the type is abstract or an interface type..
+        ///   Looks up a localized string similar to Registration to self failed, type &apos;{0}&apos; seems to be not concrete..
         /// </summary>
         internal static string InvalidRegistrationFormat {
             get {
@@ -79,20 +79,38 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; and name &apos;{1}&apos; already exists..
+        ///   Looks up a localized string similar to No constructor available for type &apos;{0}&apos;. Please add a public constructor..
         /// </summary>
-        internal static string RegistrationForContractAndNameAlreadyExistsFormat {
+        internal static string NoConstructorAvailableForType {
             get {
-                return ResourceManager.GetString("RegistrationForContractAndNameAlreadyExistsFormat", resourceCulture);
+                return ResourceManager.GetString("NoConstructorAvailableForType", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; and name &apos;{1}&apos; not found..
+        ///   Looks up a localized string similar to No suitable constructor for implementation &apos;{0}&apos; found. Check registered dependencies and availability of default constructors..
         /// </summary>
-        internal static string RegistrationForContractAndNameNotFoundFormat {
+        internal static string NoSuitableConstructorFoundFormat {
             get {
-                return ResourceManager.GetString("RegistrationForContractAndNameNotFoundFormat", resourceCulture);
+                return ResourceManager.GetString("NoSuitableConstructorFoundFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passed type &apos;{0}&apos; does not implement the interface &quot;ILifecycle&quot;..
+        /// </summary>
+        internal static string PassedTypeDoesNotImplementILifecycleFormat {
+            get {
+                return ResourceManager.GetString("PassedTypeDoesNotImplementILifecycleFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; not found, please check your registrations..
+        /// </summary>
+        internal static string RegistrationNotFoundFormat {
+            get {
+                return ResourceManager.GetString("RegistrationNotFoundFormat", resourceCulture);
             }
         }
     }

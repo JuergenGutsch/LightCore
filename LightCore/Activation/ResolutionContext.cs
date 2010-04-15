@@ -9,7 +9,7 @@ namespace LightCore.Activation
     internal class ResolutionContext
     {
         /// <summary>
-        /// The container.
+        /// Gets or sets the container.
         /// </summary>
         internal IContainer Container
         {
@@ -18,7 +18,16 @@ namespace LightCore.Activation
         }
 
         /// <summary>
-        /// The registrations.
+        /// Gets or sets the registration.
+        /// </summary>
+        internal RegistrationItem Registration
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or sets the registrations.
         /// </summary>
         internal RegistrationContainer Registrations
         {
@@ -27,7 +36,7 @@ namespace LightCore.Activation
         }
 
         /// <summary>
-        /// The arguments.
+        /// Gets or sets the arguments.
         /// </summary>
         internal ArgumentContainer Arguments
         {
@@ -36,7 +45,7 @@ namespace LightCore.Activation
         }
 
         /// <summary>
-        /// The runtime arguments.
+        /// Gets or sets the runtime arguments.
         /// </summary>
         internal ArgumentContainer RuntimeArguments
         {

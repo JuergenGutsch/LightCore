@@ -5,6 +5,7 @@ using System.Linq;
 using LightCore.Configuration.Properties;
 using LightCore.ExtensionMethods.System;
 using LightCore.Fluent;
+using LightCore.Lifecycle;
 
 namespace LightCore.Configuration
 {
@@ -95,7 +96,18 @@ namespace LightCore.Configuration
         private void ProcessRegistration(Registration registration)
         {
             string contractTypeName = this.ResolveAlias(registration.ContractType);
+            
+            if(string.IsNullOrEmpty(contractTypeName))
+            {
+                throw new ArgumentException(string.Format(Resources.ContractTypeCannotBeEmptyFormat, registration));
+            }
+
             string implementationTypeName = this.ResolveAlias(registration.ImplementationType);
+
+            if(string.IsNullOrEmpty(implementationTypeName))
+            {
+                throw new ArgumentException(string.Format(Resources.ImplementationTypeCannotBeEmptyFormat, registration));
+            }
 
             IFluentRegistration fluentRegistration = this._containerBuilder.Register(
                 LoadType(contractTypeName),
@@ -108,7 +120,7 @@ namespace LightCore.Configuration
             }
             else if (registration.Arguments == "")
             {
-                fluentRegistration.WithArguments(new[] {""});
+                fluentRegistration.WithArguments(new[] { "" });
             }
 
             string lifecycleTypeName = this.ResolveAlias(registration.Lifecycle);

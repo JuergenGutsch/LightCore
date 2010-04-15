@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using LightCore.ExtensionMethods.System;
 using LightCore.Lifecycle;
+using LightCore.Properties;
 using LightCore.Registration;
 
 namespace LightCore.Fluent
@@ -44,6 +45,11 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
         {
+            if (!typeof(ILifecycle).IsAssignableFrom(type))
+            {
+                throw new ArgumentException(Resources.PassedTypeDoesNotImplementILifecycleFormat.FormatWith(type));
+            }
+
             this._registrationItem.Lifecycle = (ILifecycle)Activator.CreateInstance(type);
             return this;
         }

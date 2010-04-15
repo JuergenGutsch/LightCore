@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
@@ -107,10 +106,10 @@ namespace LightCore
         /// <summary>
         /// Registers a module with registrations.
         /// </summary>
-        /// <param name="module">The module to register within this container builder.</param>
-        public void RegisterModule(RegistrationModule module)
+        /// <param name="registrationModule">The module to register within this container builder.</param>
+        public void RegisterModule(RegistrationModule registrationModule)
         {
-            module.Register(this);
+            registrationModule.Register(this);
         }
 
         /// <summary>
@@ -267,7 +266,8 @@ namespace LightCore
         {
             if (!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
-                throw new ContractNotImplementedByTypeException();
+                throw new ContractNotImplementedByTypeException(
+                    Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
             }
 
             var key = new RegistrationKey(typeOfContract);
