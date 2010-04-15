@@ -1,6 +1,4 @@
-﻿using System;
-
-using LightCore.Lifecycle;
+﻿using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -12,6 +10,34 @@ namespace LightCore.Configuration.Tests
     [TestFixture]
     public class ConfigurationTests
     {
+        [Test]
+        public void Can_register_and_use_generics_with_configuration_api()
+        {
+            var configuration = new LightCoreConfiguration();
+            var registrations = new List<Registration>
+                                    {
+                                        new Registration
+                                            {
+                                                // LightCore.TestTypes.IRepository`1, LightCore.TestTypes
+                                                ContractType = typeof (IRepository<>).AssemblyQualifiedName,
+                                                ImplementationType = typeof (Repository<>).AssemblyQualifiedName
+                                            }
+                                    };
+
+            configuration.Registrations = registrations;
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var repository = container.Resolve<IRepository<Foo>>();
+
+            Assert.That(repository, Is.Not.Null);
+            Assert.That(repository, Is.InstanceOf<Repository<Foo>>());
+        }
+
         [Test]
         public void Set_lifecycle_on_fluent_registration_to_not_implementing_type_throws_argumentexception()
         {
@@ -57,7 +83,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
                                                 ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
@@ -92,7 +117,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = "IBar",
                                                 ImplementationType = "Bar",
                                             }
@@ -123,7 +147,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
                                                 ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
@@ -157,7 +180,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
                                                 ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                             }
@@ -189,7 +211,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
                                                 ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                                 Lifecycle = "Transient"
@@ -222,7 +243,6 @@ namespace LightCore.Configuration.Tests
                                     {
                                         new Registration
                                             {
-                                                Arguments = String.Empty,
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
                                                 ImplementationType = typeof(Bar).AssemblyQualifiedName,
                                                 Lifecycle = typeof(TransientLifecycle).AssemblyQualifiedName

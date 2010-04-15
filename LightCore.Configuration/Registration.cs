@@ -1,4 +1,6 @@
-﻿namespace LightCore.Configuration
+﻿using System.Collections.Generic;
+
+namespace LightCore.Configuration
 {
     /// <summary>
     /// Represents a registration configuration.
@@ -33,21 +35,29 @@
         }
 
         /// <summary>
-        /// Gets or sets the arguments.
-        /// </summary>
-        public string Arguments
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Gets or sets the lifecycle
         /// </summary>
         public string Lifecycle
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the arguments.
+        /// </summary>
+        public List<Argument> Arguments
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="Registration" />.
+        /// </summary>
+        public Registration()
+        {
+            this.Arguments = new List<Argument>();
         }
 
         /// <summary>

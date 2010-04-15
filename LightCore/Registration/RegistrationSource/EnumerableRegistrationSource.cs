@@ -42,9 +42,9 @@ namespace LightCore.Registration.RegistrationSource
             var registrationKey = new RegistrationKey(contractType);
             var registrationItem = new RegistrationItem(registrationKey)
                                        {
-                                           Activator =
-                                               new DelegateActivator(c => ResolveEnumerable(contractType, c)),
-                                           Lifecycle = new TransientLifecycle()
+                                           Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c)),
+                                           Lifecycle = new TransientLifecycle(),
+                                           ImplementationType = contractType
                                        };
 
             return registrationItem;

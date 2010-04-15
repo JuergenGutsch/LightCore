@@ -55,16 +55,23 @@ namespace LightCore.Activation
 
         /// <summary>
         /// Initializes a new instance of <see cref="ResolutionContext" />.
+        /// </summary>
+        internal ResolutionContext()
+        {
+            this.Arguments = new ArgumentContainer();
+            this.RuntimeArguments = new ArgumentContainer();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="ResolutionContext" />.
         /// <param name="container">The container.</param>
         /// <param name="registrations">The registrations.</param>
         /// </summary>
         internal ResolutionContext(IContainer container, RegistrationContainer registrations)
+            : this()
         {
             this.Container = container;
             this.Registrations = registrations;
-
-            this.Arguments = new ArgumentContainer();
-            this.RuntimeArguments = new ArgumentContainer();
         }
 
         /// <summary>

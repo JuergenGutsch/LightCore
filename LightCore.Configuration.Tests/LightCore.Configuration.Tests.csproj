@@ -50,7 +50,9 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AliasTests.cs" />
     <Compile Include="ConfigurationTests.cs" />
+    <Compile Include="ConfigurationWithArgumentsTests.cs" />
     <Compile Include="GroupConfigurationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -20,7 +20,9 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsGenericType && IsRegisteredOpenGeneric(this.RegistrationContainer, contractType);
+                return contractType => contractType != null
+                    && contractType.IsGenericType
+                    && IsRegisteredOpenGeneric(this.RegistrationContainer, contractType);
             }
         }
 
@@ -41,12 +43,15 @@ namespace LightCore.Registration.RegistrationSource
             // Register close generic type on-the-fly.
             registrationKey = new RegistrationKey(registrationItem.Key.ContractType.MakeGenericType(genericArguments));
 
-            var activator = new ReflectionActivator(registrationItem.ImplementationType.MakeGenericType(genericArguments));
+            Type implementationType = registrationItem.ImplementationType.MakeGenericType(genericArguments);
+
+            var activator = new ReflectionActivator(implementationType);
 
             registrationItem = new RegistrationItem(registrationKey)
             {
                 Activator = activator,
-                Lifecycle = registrationItem.Lifecycle
+                Lifecycle = registrationItem.Lifecycle,
+                ImplementationType = implementationType
             };
 
             return registrationItem;

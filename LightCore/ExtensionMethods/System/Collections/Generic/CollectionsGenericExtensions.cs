@@ -7,7 +7,7 @@ namespace LightCore.ExtensionMethods.System.Collections.Generic
     /// <summary>
     /// Represents extensionmethods for System.Collection.Generic namespace.
     /// </summary>
-    internal static class SystemCollectionsGenericExtensions
+    internal static class CollectionsGenericExtensions
     {
         /// <summary>
         /// Executes an action for each item in the enumeration.

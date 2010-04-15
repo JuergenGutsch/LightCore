@@ -79,6 +79,10 @@
       <Project>{CC409020-9039-4478-8581-C230923A6064}</Project>
       <Name>LightCore.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
+      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
+      <Name>LightCore.TestTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>LightCore</Name>

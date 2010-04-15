@@ -4,8 +4,12 @@
         <TypeAlias Alias="HttpRequest" Type="LightCore.Integration.Web.Lifecycle.HttpRequestLifecycle, LightCore.Integration.Web" />
     </LightCoreConfiguration.TypeAliases>
     <LightCoreConfiguration.Registrations>
-        <Registration ContractType="System.ComponentModel.IDisposable" ImplementationType="System.IO.Stream, mscorlib"/>
-        <Registration Name="MyCustomKey" ContractType="System.ComponentModel.IDisposable" ImplementationType="System.IO.Stream, mscorlib"/>
+        <Registration ContractType="System.ComponentModel.IDisposable" ImplementationType="System.IO.Stream, mscorlib" />
+        <Registration ContractType="LightCore.TestTypes.IFoo" ImplementationType="LightCore.TestTypes.Foo">
+            <Registration.Arguments>
+                <Argument Value="true" Type="System.Boolean" />
+            </Registration.Arguments>
+        </Registration>
     </LightCoreConfiguration.Registrations>
     <LightCoreConfiguration.RegistrationGroups>
         <RegistrationGroup Name="Real">

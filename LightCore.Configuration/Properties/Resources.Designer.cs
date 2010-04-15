@@ -61,7 +61,7 @@ namespace LightCore.Configuration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Active registration group with name &apos;{0}&apos; was not found..
+        ///   Looks up a localized string similar to Active registration group with name &apos;{0}&apos; was not found. Maybe its the case sensitivity..
         /// </summary>
         internal static string ActiveRegistrationGroupNotFoundFormat {
             get {

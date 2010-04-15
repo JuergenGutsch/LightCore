@@ -35,13 +35,15 @@ namespace LightCore.Registration
         /// <param name="arguments">The anonymous arguments to add.</param>
         internal void AddToAnonymousArguments(IEnumerable<object> arguments)
         {
+            object[] argumentsArray = arguments != null ? arguments.ToArray() : new object[] {};
+
             if (this.AnonymousArguments == null)
             {
-                this.AnonymousArguments = arguments.ToArray();
+                this.AnonymousArguments = argumentsArray;
             }
             else
             {
-                this.AnonymousArguments = this.AnonymousArguments.Concat(arguments).ToArray();
+                this.AnonymousArguments = this.AnonymousArguments.Concat(argumentsArray).ToArray();
             }
         }
 

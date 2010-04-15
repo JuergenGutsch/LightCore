@@ -68,7 +68,7 @@
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="ResolutionFailedException.cs" />
-    <Compile Include="ExtensionMethods\System\Collections\Generic\SystemCollectionsGenericExtensions.cs" />
+    <Compile Include="ExtensionMethods\System\Collections\Generic\CollectionsGenericExtensions.cs" />
     <Compile Include="ExtensionMethods\System\StringExtensions.cs" />
     <Compile Include="Fluent\FluentRegistration.cs" />
     <Compile Include="Fluent\IFluentInterface.cs" />

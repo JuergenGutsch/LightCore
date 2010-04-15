@@ -2,6 +2,7 @@
 
 using LightCore.Configuration;
 using LightCore.ConsoleClient.Screens;
+using LightCore.TestTypes;
 
 namespace LightCore.ConsoleClient
 {
@@ -25,9 +26,10 @@ namespace LightCore.ConsoleClient
 
             var container = builder.Build();
 
-            var namedScreen = container
-                .Resolve<WelcomeScreen>("Hello World");
+            var foo = container.Resolve<IFoo>();
+            var repository = container.Resolve<IRepository<Foo, int>>();
 
+            var namedScreen = container.Resolve<WelcomeScreen>();
             namedScreen.WriteText();
 
             Console.Read();

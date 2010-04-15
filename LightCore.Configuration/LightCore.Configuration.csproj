@@ -53,6 +53,7 @@
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ActiveGroupNotFoundException.cs" />
+    <Compile Include="Argument.cs" />
     <Compile Include="RegistrationGroup.cs" />
     <Compile Include="XamlRegistrationException.cs" />
     <Compile Include="LightCoreConfiguration.cs" />

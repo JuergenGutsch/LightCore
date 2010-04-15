@@ -5,7 +5,6 @@ using System.Linq;
 using LightCore.Configuration.Properties;
 using LightCore.ExtensionMethods.System;
 using LightCore.Fluent;
-using LightCore.Lifecycle;
 
 namespace LightCore.Configuration
 {
@@ -96,15 +95,15 @@ namespace LightCore.Configuration
         private void ProcessRegistration(Registration registration)
         {
             string contractTypeName = this.ResolveAlias(registration.ContractType);
-            
-            if(string.IsNullOrEmpty(contractTypeName))
+
+            if (string.IsNullOrEmpty(contractTypeName))
             {
                 throw new ArgumentException(string.Format(Resources.ContractTypeCannotBeEmptyFormat, registration));
             }
 
             string implementationTypeName = this.ResolveAlias(registration.ImplementationType);
 
-            if(string.IsNullOrEmpty(implementationTypeName))
+            if (string.IsNullOrEmpty(implementationTypeName))
             {
                 throw new ArgumentException(string.Format(Resources.ImplementationTypeCannotBeEmptyFormat, registration));
             }
@@ -113,19 +112,39 @@ namespace LightCore.Configuration
                 LoadType(contractTypeName),
                 LoadType(implementationTypeName));
 
-            if (!String.IsNullOrEmpty(registration.Arguments))
+            if (registration.Arguments.Count > 0)
             {
-                var arguments = registration.Arguments.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-                fluentRegistration.WithArguments(arguments);
-            }
-            else if (registration.Arguments == "")
-            {
-                fluentRegistration.WithArguments(new[] { "" });
+                var namedArguments = new Dictionary<string, object>();
+
+                foreach (Argument argument in registration.Arguments)
+                {
+                    string argumentTypeName = this.ResolveAlias(argument.Type);
+                    Type argumentType = typeof(string);
+
+                    if (argumentTypeName != null)
+                    {
+                        argumentType = this.LoadType(argumentTypeName);
+                    }
+
+                    if (!string.IsNullOrEmpty(argument.Name))
+                    {
+                        namedArguments.Add(argument.Name, argument.Value.ToOrDefault(argumentType));
+                    }
+                    else
+                    {
+                        fluentRegistration.WithArguments(argument.Value.ToOrDefault(argumentType));
+                    }
+                }
+
+                if (namedArguments.Count > 0)
+                {
+                    fluentRegistration.WithNamedArguments(namedArguments);
+                }
             }
 
             string lifecycleTypeName = this.ResolveAlias(registration.Lifecycle);
 
-            if (String.IsNullOrEmpty(lifecycleTypeName) && !String.IsNullOrEmpty(this._configuration.DefaultLifecycle))
+            if (string.IsNullOrEmpty(lifecycleTypeName) && !String.IsNullOrEmpty(this._configuration.DefaultLifecycle))
             {
                 lifecycleTypeName = this.ResolveAlias(this._configuration.DefaultLifecycle);
             }
@@ -148,9 +167,19 @@ namespace LightCore.Configuration
         /// <returns>The rawType, if no alias found, otherwise the full qualified type string according to the alias data.</returns>
         private string ResolveAlias(string rawType)
         {
+            const string leadingBracket = "{";
+            const string followingBracket = "}";
+
+            // Replace for alternative generic syntax.
+            if (rawType != null && rawType.IndexOf(leadingBracket) > -1)
+            {
+                rawType = rawType.Replace(leadingBracket, "`");
+                rawType = rawType.Replace(followingBracket, "");
+            }
+
             if (rawType != null && !rawType.Contains("."))
             {
-                TypeAlias typeAlias = this._configuration.TypeAliases.Find(a => a.Alias == rawType);
+                TypeAlias typeAlias = this._configuration.TypeAliases.Find(a => FindAlias(a, rawType));
 
                 if (typeAlias != null)
                 {
@@ -159,6 +188,18 @@ namespace LightCore.Configuration
             }
 
             return rawType;
+        }
+
+        /// <summary>
+        /// Finds an alias. Supports multiple alias pro alias instance.
+        /// </summary>
+        /// <param name="alias">The alias.</param>
+        /// <param name="rawType">The rawType.</param>
+        /// <returns><value>true</value> if the alias was found, otherwise <value>false</value>.</returns>
+        private bool FindAlias(TypeAlias alias, string rawType)
+        {
+            string[] aliase = alias.Alias.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            return aliase.Any(a => a.Trim() == rawType.Trim());
         }
 
         /// <summary>

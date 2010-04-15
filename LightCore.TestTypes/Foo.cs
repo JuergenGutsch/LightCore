@@ -1,4 +1,6 @@
-﻿namespace LightCore.TestTypes
+﻿using System;
+
+namespace LightCore.TestTypes
 {
     public class Foo : FooBase
     {
@@ -14,9 +16,26 @@
             private set;
         }
 
+        public int Arg3
+        {
+            get;
+            set;
+        }
+
+        public Guid Arg4
+        {
+            get;
+            set;
+        }
+
         public Foo()
         {
 
+        }
+
+        public Foo(Guid arg4)
+        {
+            this.Arg4 = arg4;
         }
 
         public Foo(IBar bar)
@@ -27,6 +46,11 @@
         public Foo(Bar bar)
         {
             this.Bar = bar;
+        }
+
+        public Foo(int arg3)
+        {
+            this.Arg3 = arg3;
         }
 
         public Foo(Bar bar, string arg1)

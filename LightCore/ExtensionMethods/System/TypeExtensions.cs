@@ -15,6 +15,11 @@ namespace LightCore.ExtensionMethods.System
         /// <returns><value>true</value> if the type is concrete, otherwise <value>false</value>.</returns>
         internal static bool IsConcreteType(this Type source)
         {
+            if(source == null)
+            {
+                return false;
+            }
+
             return !source.IsAbstract && !source.IsInterface;
         }
 
@@ -25,7 +30,7 @@ namespace LightCore.ExtensionMethods.System
         /// <returns><value>true</value> if the type is a generic factory, otherwise <value>false</value>.</returns>
         internal static bool IsFactoryType(this Type source)
         {
-            if (!source.IsGenericType)
+            if (source == null || !source.IsGenericType)
             {
                 return false;
             }
@@ -46,7 +51,7 @@ namespace LightCore.ExtensionMethods.System
         /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
         internal static bool IsGenericEnumerable(this Type source)
         {
-            if (!source.IsGenericType)
+            if (source == null || !source.IsGenericType)
             {
                 return false;
             }

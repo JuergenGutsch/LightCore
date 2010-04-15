@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 
 using LightCore.Lifecycle;
+using LightCore.Tests.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -53,10 +54,10 @@ namespace LightCore.Tests.Integration
             var container = builder.Build();
 
             var threadData = new ThreadData(container);
-            var thread = new Thread(threadData.ResolveFoos);
+            var thread = new Thread(threadData.ResolveFoosWithContainer);
 
             var threadDataTwo = new ThreadData(container);
-            var threadTwo = new Thread(threadDataTwo.ResolveFoos);
+            var threadTwo = new Thread(threadDataTwo.ResolveFoosWithContainer);
 
             thread.Start();
             threadTwo.Start();
@@ -65,37 +66,7 @@ namespace LightCore.Tests.Integration
             threadTwo.Join();
 
             Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
-            Assert.IsTrue(ReferenceEquals(threadDataTwo.FooOne, threadDataTwo.FooOne));
-
             Assert.IsFalse(ReferenceEquals(threadData.FooOne, threadDataTwo.FooOne));
-        }
-
-        private class ThreadData
-        {
-            private readonly IContainer _container;
-
-            public ThreadData(IContainer container)
-            {
-                this._container = container;
-            }
-
-            public IFoo FooOne
-            {
-                get;
-                private set;
-            }
-
-            public IFoo FooTwo
-            {
-                get;
-                private set;
-            }
-
-            public void ResolveFoos()
-            {
-                this.FooOne = this._container.Resolve<IFoo>();
-                this.FooTwo = this._container.Resolve<IFoo>();
-            }
         }
     }
 }

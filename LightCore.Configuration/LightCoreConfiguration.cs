@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+
 using LightCore.Configuration.Properties;
 using LightCore.Lifecycle;
 
@@ -69,18 +70,43 @@ namespace LightCore.Configuration
                                               new TypeAlias
                                                   {
                                                       Alias = "Transient",
-                                                      Type = typeof(TransientLifecycle).AssemblyQualifiedName
+                                                      Type = typeof (TransientLifecycle).AssemblyQualifiedName
                                                   },
                                               new TypeAlias
                                                   {
                                                       Alias = "Singleton",
-                                                      Type = typeof(SingletonLifecycle).AssemblyQualifiedName
+                                                      Type = typeof (SingletonLifecycle).AssemblyQualifiedName
                                                   },
                                               new TypeAlias
                                                   {
                                                       Alias = "ThreadSingleton",
-                                                      Type = typeof(ThreadSingletonLifecycle).AssemblyQualifiedName
+                                                      Type = typeof (ThreadSingletonLifecycle).AssemblyQualifiedName
                                                   }
+                                          });
+
+            // Load default argument type alias.
+            this.TypeAliases.AddRange(new List<TypeAlias>
+                                          {
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "Int32, Integer, int",
+                                                      Type = "System.Int32, mscorlib"
+                                                  },
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "String, string",
+                                                      Type = "System.String, mscorlib"
+                                                  },
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "Boolean, bool",
+                                                      Type = "System.Boolean, mscorlib"
+                                                  },
+                                              new TypeAlias
+                                                  {
+                                                      Alias = "Guid",
+                                                      Type = "System.Guid, mscorlib"
+                                                  },
                                           });
 
             this.Registrations = new List<Registration>();
@@ -100,7 +126,7 @@ namespace LightCore.Configuration
                 var configSectionHandler =
                     (XamlConfigSectionHandler)ConfigurationManager.GetSection(sectionName);
 
-                if(configSectionHandler == null)
+                if (configSectionHandler == null)
                 {
                     throw new ArgumentException(string.Format(Resources.SectionNotFoundFormat, sectionName));
                 }

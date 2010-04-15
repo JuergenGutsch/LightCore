@@ -88,7 +88,8 @@ namespace LightCore.Registration.RegistrationSource
                                                                                  Expression.Call(
                                                                                      Expression.Constant(c),
                                                                                      genericResolveMethod)).Compile()),
-                                           Lifecycle = new TransientLifecycle()
+                                           Lifecycle = new TransientLifecycle(),
+                                           ImplementationType = contractType
                                        };
             }
             else
@@ -113,7 +114,8 @@ namespace LightCore.Registration.RegistrationSource
                                                                                          parameterExpressions.Select(
                                                                                              p => Expression.TypeAs(p, TypeOfObject))
                                                                                              .Cast<Expression>())), parameterExpressions).Compile()),
-                                           Lifecycle = new TransientLifecycle()
+                                           Lifecycle = new TransientLifecycle(),
+                                           ImplementationType = contractType
                                        };
             }
 
