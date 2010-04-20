@@ -9,6 +9,7 @@ using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Properties;
 using LightCore.Registration;
+using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
@@ -103,7 +104,7 @@ namespace LightCore
             if (!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
                 // No registration found yet, try to create one with available registration sources.
-                foreach (var registrationSource in
+                foreach (IRegistrationSource registrationSource in
                     this._registrationContainer.RegistrationSources
                     .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType)))
                 {

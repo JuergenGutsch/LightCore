@@ -95,8 +95,7 @@ namespace LightCore.Registration
         {
             return this.RegistrationSources
                        .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
-                       .Take(this.RegistrationSources.Count() - 1)
-                       .Any(selector => selector(contractType));
+                       .Any(sourceSupportsTypeSelector => sourceSupportsTypeSelector(contractType));
         }
     }
 }

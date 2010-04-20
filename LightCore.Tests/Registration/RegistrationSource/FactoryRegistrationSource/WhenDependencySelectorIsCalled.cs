@@ -27,11 +27,19 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         }
 
         [Test]
-        public void WithFunctionTypePlusArguments_TheSourceCannotHandle()
+        public void WithFunctionTypePlusArguments_TheSourceCanHandle()
         {
             var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
 
             Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<string, IFoo>)), Is.True);
+        }
+
+        [Test]
+        public void WithFunctionTypePlusTwoArguments_TheSourceCanHandle()
+        {
+            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<string, bool, IFoo>)), Is.True);
         }
     }
 }
