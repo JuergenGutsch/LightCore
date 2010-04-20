@@ -15,84 +15,58 @@ namespace LightCore.Tests.Registration.RegistrationSource
 
         internal IRegistrationSource GetEnumerableRegistrationSource()
         {
-            return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource
-                       {
-                           RegistrationContainer = new RegistrationContainer()
-                       };
+            return
+                new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(new RegistrationContainer());
         }
 
         internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister)
         {
-            var registrationKey = new RegistrationKey(typeToRegister);
-
-            return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource
-                       {
-                           RegistrationContainer = new RegistrationContainer
-                                                       {
-                                                           Registrations =
-                                                               new Dictionary<RegistrationKey, RegistrationItem>
-                                                                   {
-                                                                       {
-                                                                           registrationKey,
-                                                                           new RegistrationItem(registrationKey)
-                                                                           }
-                                                                   }
-                                                       }
-                       };
+            return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(
+                new RegistrationContainer
+                    {
+                        Registrations =
+                            new Dictionary<Type, RegistrationItem>
+                                {
+                                    {
+                                        typeToRegister,
+                                        new RegistrationItem(typeToRegister)
+                                        }
+                                }
+                    });
         }
 
         internal IRegistrationSource GetFactoryRegistrationSource(Type typeToRegister)
         {
-            var registrationKey = new RegistrationKey(typeToRegister);
-
-            return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource
-            {
-                RegistrationContainer = new RegistrationContainer
-                {
-                    Registrations = new Dictionary<RegistrationKey, RegistrationItem>
-                                                                                          {
-                                                                                              {
-                                                                                                  registrationKey,
-                                                                                                  new RegistrationItem(
-                                                                                                  registrationKey)
-                                                                                                  }
-                                                                                          }
-                }
-            };
+            return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource(
+                new RegistrationContainer
+                    {
+                        Registrations = new Dictionary<Type, RegistrationItem>
+                                            {
+                                                {
+                                                    typeToRegister,
+                                                    new RegistrationItem(typeToRegister)
+                                                    }
+                                            }
+                    });
         }
 
         internal IRegistrationSource GetOpenGenericRegistrationSource(Type contractType, Type implementationType)
         {
-            var registrationKey = new RegistrationKey(contractType);
-
-            return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource
-                       {
-                           RegistrationContainer = new RegistrationContainer
-                                                       {
-                                                           Registrations =
-                                                               new Dictionary<RegistrationKey, RegistrationItem>
-                                                                   {
-                                                                       {
-                                                                           registrationKey,
-                                                                           new RegistrationItem(registrationKey)
-                                                                               {ImplementationType = implementationType}
-                                                                           }
-                                                                   }
-                                                       }
-                       };
-        }
-
-        internal IRegistrationSource GetRegistrationSource()
-        {
-            return new RegistrationSourceMock();
-        }
-
-        private class RegistrationSourceMock : LightCore.Registration.RegistrationSource.RegistrationSource
-        {
-            protected override RegistrationItem GetRegistrationForCore(Type contractType, IContainer container)
-            {
-                throw new NotImplementedException();
-            }
+            return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource(
+                new RegistrationContainer
+                    {
+                        Registrations =
+                            new Dictionary<Type, RegistrationItem>
+                                {
+                                    {
+                                        contractType,
+                                        new RegistrationItem(contractType)
+                                            {
+                                                ImplementationType = implementationType
+                                            }
+                                        }
+                                }
+                    });
         }
     }
 }

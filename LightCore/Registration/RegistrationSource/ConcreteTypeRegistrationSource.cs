@@ -2,7 +2,6 @@
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
-using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -13,12 +12,12 @@ namespace LightCore.Registration.RegistrationSource
     /// public Foo(Bar bar) {  }
     /// </example>
     /// </summary>
-    internal class ConcreteTypeRegistrationSource : RegistrationSource
+    internal class ConcreteTypeRegistrationSource : IRegistrationSource
     {
         /// <summary>
-        /// The dependency selector. (Indicates whether the registration source can handle the type or not).
+        /// Gets whether the registration source supports a type or not.
         /// </summary>
-        public override Func<Type, bool> DependencySelector
+        public Func<Type, bool> SourceSupportsTypeSelector
         {
             get
             {
@@ -32,19 +31,13 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="contractType">The contract type.</param>
         /// <param name="container">The container.</param>
         /// <returns><value>The registration item</value> if this source can handle it, otherwise <value>null</value>.</returns>
-        protected override RegistrationItem GetRegistrationForCore(Type contractType, IContainer container)
+        public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
-            var registrationKey = new RegistrationKey(contractType);
-
             // On-the-fly registration of concrete types. Equivalent to new-operator.
-            var registrationItem = new RegistrationItem(registrationKey)
-                                       {
-                                           Activator = new ReflectionActivator(contractType),
-                                           Lifecycle = new TransientLifecycle(),
-                                           ImplementationType = contractType
-                                       };
-
-            return registrationItem;
+            return new RegistrationItem(contractType)
+                       {
+                           Activator = new ReflectionActivator(contractType)
+                       };
         }
     }
 }

@@ -92,8 +92,6 @@
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource\WhenDependencySelectorIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\RegistrationSourceFixture.cs" />
-    <Compile Include="Registration\RegistrationSource\RegistrationSource\WhenDependencySelectorIsCalled.cs" />
-    <Compile Include="Registration\RegistrationSource\RegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">

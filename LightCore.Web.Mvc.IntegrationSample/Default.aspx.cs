@@ -4,7 +4,7 @@ using System.Web.UI;
 
 namespace LightCore.Web.Mvc.IntegrationSample
 {
-    public partial class _Default : Page
+    public class _Default : Page
     {
         public void Page_Load(object sender, System.EventArgs e)
         {

@@ -33,30 +33,19 @@ namespace LightCore.TestTypes
 
         }
 
-        public Foo(Guid arg4)
-        {
-            this.Arg4 = arg4;
-        }
-
         public Foo(IBar bar)
         {
             this.Bar = bar;
         }
 
-        public Foo(Bar bar)
+        public Foo(Guid arg4)
         {
-            this.Bar = bar;
+            this.Arg4 = arg4;
         }
 
         public Foo(int arg3)
         {
             this.Arg3 = arg3;
-        }
-
-        public Foo(Bar bar, string arg1)
-        {
-            this.Bar = bar;
-            this.Arg1 = arg1;
         }
 
         public Foo(IBar bar, string arg1)

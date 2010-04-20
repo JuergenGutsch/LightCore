@@ -10,7 +10,7 @@ namespace LightCore.Activation.Components
     /// <summary>
     /// Represents the constructor search stratetgy.
     /// </summary>
-    internal class ConstructorSelector
+    internal class ConstructorSelector : IConstructorSelector
     {
         /// <summary>
         /// Selects the right constructor for current context.
@@ -38,7 +38,10 @@ namespace LightCore.Activation.Components
             foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
             {
                 ParameterInfo[] parameters = constructorCandidate.GetParameters();
-                var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredOrSupportedContract(p.ParameterType));
+                var dependencyParameters = parameters
+                    .Where(p => resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
+                                ||
+                                resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 
                 // Parameters and registered dependencies match.
                 if (resolutionContext.Arguments.CountOfAllArguments + resolutionContext.RuntimeArguments.CountOfAllArguments == 0 && parameters.Length == dependencyParameters.Count())

@@ -5,7 +5,6 @@ using System.Linq;
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
-using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -16,19 +15,33 @@ namespace LightCore.Registration.RegistrationSource
     /// public Foo(IEnumerable{IBar} bar) {  }
     /// </example>
     /// </summary>
-    internal class EnumerableRegistrationSource : RegistrationSource
+    internal class EnumerableRegistrationSource : IRegistrationSource
     {
         /// <summary>
-        /// The dependency selector. (Indicates whether the registration source can handle the type or not).
+        /// The regisration container.
         /// </summary>
-        public override Func<Type, bool> DependencySelector
+        private readonly IRegistrationContainer _registrationContainer;
+
+        /// <summary>
+        /// Gets whether the registration source supports a type or not.
+        /// </summary>
+        public Func<Type, bool> SourceSupportsTypeSelector
         {
             get
             {
                 return contractType => contractType.IsGenericEnumerable()
                                        &&
-                                       this.RegistrationContainer.IsRegisteredContract(contractType.GetGenericArguments().FirstOrDefault());
+                                       this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="EnumerableRegistrationSource" />.
+        /// </summary>
+        /// <param name="registrationContainer">The registration container.</param>
+        public EnumerableRegistrationSource(IRegistrationContainer registrationContainer)
+        {
+            this._registrationContainer = registrationContainer;
         }
 
         /// <summary>
@@ -37,17 +50,12 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="contractType">The contract type.</param>
         /// <param name="container">The container.</param>
         /// <returns><value>The registration item</value> if this source can handle it, otherwise <value>null</value>.</returns>
-        protected override RegistrationItem GetRegistrationForCore(Type contractType, IContainer container)
+        public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
-            var registrationKey = new RegistrationKey(contractType);
-            var registrationItem = new RegistrationItem(registrationKey)
-                                       {
-                                           Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c)),
-                                           Lifecycle = new TransientLifecycle(),
-                                           ImplementationType = contractType
-                                       };
-
-            return registrationItem;
+            return new RegistrationItem(contractType)
+                       {
+                           Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c))
+                       };
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         {
             var registrationSource = this.GetEnumerableRegistrationSource(typeof(object));
 
-            Assert.That(registrationSource.DependencySelector(typeof(IEnumerable<object>)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IEnumerable<object>)), Is.True);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         {
             var registrationSource = this.GetEnumerableRegistrationSource();
 
-            Assert.That(registrationSource.DependencySelector(typeof(FooBase)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(FooBase)), Is.False);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         {
             var registrationSource = this.GetEnumerableRegistrationSource();
 
-            Assert.That(registrationSource.DependencySelector(typeof(Foo)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Foo)), Is.False);
         }
     }
 }

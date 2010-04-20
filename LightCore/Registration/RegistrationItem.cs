@@ -14,10 +14,20 @@ namespace LightCore.Registration
         /// <summary>
         /// Gets the key for this registration.
         /// </summary>
-        internal RegistrationKey Key
+        internal Type ContractType
         {
             get;
             private set;
+        }
+        
+        /// <summary>
+        /// The group.
+        /// TODO: Use....
+        /// </summary>
+        internal string Group
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -72,16 +82,22 @@ namespace LightCore.Registration
         {
             this.Arguments = new ArgumentContainer();
             this.RuntimeArguments = new ArgumentContainer();
+            this.Lifecycle = new TransientLifecycle();
         }
 
         /// <summary>
         /// Creates a new instance of <see cref="RegistrationItem" />.
         /// </summary>
-        /// <param name="key">The registration key as <see cref="RegistrationKey" />.</param>
-        internal RegistrationItem(RegistrationKey key)
+        /// <param name="contractType">The contract type as <see cref="Type" />.</param>
+        internal RegistrationItem(Type contractType)
             : this()
         {
-            this.Key = key;
+            this.ContractType = contractType;
+
+            if (this.ImplementationType == null)
+            {
+                this.ImplementationType = contractType;
+            }
         }
 
         /// <summary>

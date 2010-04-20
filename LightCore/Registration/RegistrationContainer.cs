@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using LightCore.Registration.RegistrationSource;
+
 namespace LightCore.Registration
 {
     /// <summary>
-    /// Represents a container for registrations.
+    /// Represents an accessor interface for registration containers.
     /// </summary>
-    internal class RegistrationContainer
+    internal class RegistrationContainer : IRegistrationContainer
     {
         /// <summary>
         /// Holds the cache of allready visited types for speed.
@@ -15,18 +17,9 @@ namespace LightCore.Registration
         private readonly IDictionary<Type, bool> _registeredCache;
 
         /// <summary>
-        /// Gets or sets the registration selectors.
-        /// </summary>
-        internal IList<Func<Type, bool>> RegistrationSelectors
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Containes the unique registrations.
         /// </summary>
-        internal IDictionary<RegistrationKey, RegistrationItem> Registrations
+        public IDictionary<Type, RegistrationItem> Registrations
         {
             get;
             set;
@@ -35,7 +28,7 @@ namespace LightCore.Registration
         /// <summary>
         /// Contains the duplicate registrations, e.g. plugins.
         /// </summary>
-        internal IList<RegistrationItem> DuplicateRegistrations
+        public IList<RegistrationItem> DuplicateRegistrations
         {
             get;
             set;
@@ -46,37 +39,46 @@ namespace LightCore.Registration
         /// </summary>
         internal RegistrationContainer()
         {
-            this.RegistrationSelectors = new List<Func<Type, bool>>();
-            this.Registrations = new Dictionary<RegistrationKey, RegistrationItem>();
-            this.DuplicateRegistrations = new List<RegistrationItem>();
-
             this._registeredCache = new Dictionary<Type, bool>();
+
+            this.Registrations = new Dictionary<Type, RegistrationItem>();
+            this.DuplicateRegistrations = new List<RegistrationItem>();
+            this.RegistrationSources = new List<IRegistrationSource>();
+        }
+
+        /// <summary>
+        /// Gets all registrations. (Without IRegistrationSource{T}).
+        /// </summary>
+        public IEnumerable<RegistrationItem> AllRegistrations
+        {
+            get
+            {
+                return this.Registrations.Values.Concat(this.DuplicateRegistrations);
+            }
+        }
+
+        /// <summary>
+        /// Contains all registration sources.
+        /// </summary>
+        public IList<IRegistrationSource> RegistrationSources
+        {
+            get;
+            set;
         }
 
         /// <summary>
         /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
         /// </summary>
         /// <param name="contractType">The type of the contract.</param>
         /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
-        internal bool IsRegisteredOrSupportedContract(Type contractType)
-        {
-            return this.IsRegisteredContract(contractType) || this.IsSupportedByRegistrationSource(contractType);
-        }
-
-        /// <summary>
-        /// Determines whether a contracttype is registered or not.
-        /// </summary>
-        /// <param name="contractType">The type of contract.</param>
-        /// <returns><value>true</value> if an registration with the contracttype found, otherwise <value>false</value>.</returns>
-        internal bool IsRegisteredContract(Type contractType)
+        public bool IsRegistered(Type contractType)
         {
             bool isRegistered;
 
             if (!this._registeredCache.TryGetValue(contractType, out isRegistered))
             {
-                var allRegistrations = this.Registrations.Values.Concat(this.DuplicateRegistrations);
-
-                isRegistered = allRegistrations.Any(registration => registration.Key.ContractType == contractType);
+                isRegistered = this.AllRegistrations.Any(registration => registration.ContractType == contractType);
 
                 this._registeredCache.Add(contractType, isRegistered);
             }
@@ -89,9 +91,12 @@ namespace LightCore.Registration
         /// </summary>
         /// <param name="contractType">The type of the contract.</param>
         /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
-        internal bool IsSupportedByRegistrationSource(Type contractType)
+        public bool IsSupportedByRegistrationSource(Type contractType)
         {
-            return this.RegistrationSelectors.Any(selector => selector(contractType));
+            return this.RegistrationSources
+                       .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
+                       .Take(this.RegistrationSources.Count() - 1)
+                       .Any(selector => selector(contractType));
         }
     }
 }

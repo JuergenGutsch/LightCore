@@ -20,22 +20,22 @@ namespace LightCore.Activation.Activators
         /// <summary>
         /// The constructor selector.
         /// </summary>
-        private readonly ConstructorSelector _constructorSelector;
+        private readonly IConstructorSelector _constructorSelector;
 
         /// <summary>
         /// The argument collector.
         /// </summary>
-        private readonly ArgumentCollector _argumentCollector;
-
-        /// <summary>
-        /// The implementation type.
-        /// </summary>
-        private readonly Type _implementationType;
+        private readonly IArgumentCollector _argumentCollector;
 
         /// <summary>
         /// The cached constructor.
         /// </summary>
         private ConstructorInfo _cachedConstructor;
+
+        /// <summary>
+        /// The implementation type.
+        /// </summary>
+        private readonly Type _implementationType;
 
         /// <summary>
         /// The cached constructor arguments.
@@ -47,10 +47,22 @@ namespace LightCore.Activation.Activators
         ///</summary>
         ///<param name="implementationType">The implementation type.</param>
         internal ReflectionActivator(Type implementationType)
+            : this(implementationType, new ConstructorSelector(), new ArgumentCollector())
+        {
+
+        }
+
+        ///<summary>
+        /// Creates a new instance of <see cref="ReflectionActivator" />.
+        ///</summary>
+        ///<param name="implementationType">The implementation type.</param>
+        ///<param name="constructorSelector">The constructor selector.</param>
+        ///<param name="argumentCollector">The argument collector.</param>
+        internal ReflectionActivator(Type implementationType, IConstructorSelector constructorSelector, IArgumentCollector argumentCollector)
         {
             this._implementationType = implementationType;
-            this._constructorSelector = new ConstructorSelector();
-            this._argumentCollector = new ArgumentCollector();
+            this._constructorSelector = constructorSelector;
+            this._argumentCollector = argumentCollector;
         }
 
         /// <summary>
@@ -60,22 +72,21 @@ namespace LightCore.Activation.Activators
         /// <returns>The activated instance.</returns>
         public object ActivateInstance(ResolutionContext resolutionContext)
         {
+            var runtimeArguments = resolutionContext.RuntimeArguments;
+
             if (this._container == null)
             {
                 this._container = resolutionContext.Container;
             }
 
-            int countOfRuntimeArguments = resolutionContext.RuntimeArguments.CountOfAllArguments;
+            int countOfRuntimeArguments = runtimeArguments.CountOfAllArguments;
 
             if (_cachedConstructor != null && countOfRuntimeArguments == 0)
             {
                 return _cachedConstructor.Invoke(this._cachedArguments);
             }
 
-            var constructors = this._implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-            resolutionContext.Arguments = resolutionContext.Arguments;
-            resolutionContext.RuntimeArguments = resolutionContext.RuntimeArguments;
+            var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             ConstructorInfo finalConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
 

@@ -15,7 +15,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         {
             var registrationSource = this.GetFactoryRegistrationSource(typeof(object));
 
-            Assert.That(registrationSource.DependencySelector(typeof(IEnumerable<object>)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IEnumerable<object>)), Is.False);
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         {
             var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
 
-            Assert.That(registrationSource.DependencySelector(typeof(Func<IFoo>)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<IFoo>)), Is.True);
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         {
             var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
 
-            Assert.That(registrationSource.DependencySelector(typeof(Func<string, IFoo>)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<string, IFoo>)), Is.True);
         }
     }
 }

@@ -5,10 +5,22 @@ using System.Reflection;
 
 namespace LightCore.Activation.Components
 {
+    internal interface IArgumentCollector
+    {
+        /// <summary>
+        /// Collect the arguments from given parameter types.
+        /// </summary>
+        /// <param name="dependencyResolver">The depenency resolver.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="resolutionContext">The resolution context.</param>
+        /// <returns>The collected arguments.</returns>
+        object[] CollectArguments(Func<Type, object> dependencyResolver, ParameterInfo[] parameters, ResolutionContext resolutionContext);
+    }
+
     /// <summary>
     /// Represents a collector for arguments.
     /// </summary>
-    internal class ArgumentCollector
+    internal class ArgumentCollector : IArgumentCollector
     {
         /// <summary>
         /// Collect the arguments from given parameter types.
@@ -21,34 +33,42 @@ namespace LightCore.Activation.Components
         {
             var finalArguments = new List<object>();
 
-            var dependencyParameters = parameters.Where(p => resolutionContext.Registrations.IsRegisteredOrSupportedContract(p.ParameterType));
+            var dependencyParameters =
+                parameters.Where(
+                    p =>
+                    resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType) || resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 
             Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => argument.GetType() == parameter.ParameterType;
+
+            var runtimeArguments = resolutionContext.RuntimeArguments;
+            var arguments = resolutionContext.Arguments;
 
             // Priority from heighest: Runtime arguments -> named / anonymous, Arguments -> named / anonymous / depdendency parameters.
             foreach (ParameterInfo parameter in parameters)
             {
-                if (resolutionContext.RuntimeArguments.NamedArguments != null && resolutionContext.RuntimeArguments.NamedArguments.ContainsKey(parameter.Name))
+                ParameterInfo localParameter = parameter;
+
+                if (runtimeArguments.NamedArguments != null && runtimeArguments.NamedArguments.ContainsKey(parameter.Name))
                 {
-                    finalArguments.Add(resolutionContext.RuntimeArguments.NamedArguments[parameter.Name]);
+                    finalArguments.Add(runtimeArguments.NamedArguments[parameter.Name]);
                     continue;
                 }
 
-                if (resolutionContext.RuntimeArguments.AnonymousArguments != null && resolutionContext.RuntimeArguments.AnonymousArguments.Any(argument => argumentSelector(argument, parameter)))
+                if (runtimeArguments.AnonymousArguments != null && runtimeArguments.AnonymousArguments.Any(argument => argumentSelector(argument, localParameter)))
                 {
-                    finalArguments.Add(resolutionContext.RuntimeArguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, parameter)));
+                    finalArguments.Add(runtimeArguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, localParameter)));
                     continue;
                 }
 
-                if (resolutionContext.Arguments.NamedArguments != null && resolutionContext.Arguments.NamedArguments.ContainsKey(parameter.Name))
+                if (arguments.NamedArguments != null && arguments.NamedArguments.ContainsKey(parameter.Name))
                 {
-                    finalArguments.Add(resolutionContext.Arguments.NamedArguments[parameter.Name]);
+                    finalArguments.Add(arguments.NamedArguments[parameter.Name]);
                     continue;
                 }
 
-                if (resolutionContext.Arguments.AnonymousArguments != null && resolutionContext.Arguments.AnonymousArguments.Any(argument => argumentSelector(argument, parameter)))
+                if (arguments.AnonymousArguments != null && arguments.AnonymousArguments.Any(argument => argumentSelector(argument, localParameter)))
                 {
-                    finalArguments.Add(resolutionContext.Arguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, parameter)));
+                    finalArguments.Add(arguments.AnonymousArguments.FirstOrDefault(argument => argumentSelector(argument, localParameter)));
                     continue;
                 }
 

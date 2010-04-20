@@ -22,12 +22,9 @@ namespace LightCore.ConsoleClient
             var module = new XamlRegistrationModule();
 
             builder.RegisterModule(module);
-
+            builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
-
-            var foo = container.Resolve<IFoo>();
-            var repository = container.Resolve<IRepository<Foo, int>>();
 
             var namedScreen = container.Resolve<WelcomeScreen>();
             namedScreen.WriteText();

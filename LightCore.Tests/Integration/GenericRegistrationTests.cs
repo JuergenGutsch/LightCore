@@ -15,9 +15,7 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var fooRepository = container.Resolve<IRepository<Foo>>();
-
-            Assert.IsNotNull(fooRepository.GetData());
+            Assert.That(container.Resolve<IRepository<Foo>>(), Is.Not.Null);
         }
 
         [Test]
@@ -25,11 +23,11 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
 
             var container = builder.Build();
 
-            for(int i=0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var fooRepository = container.Resolve<IRepository<Foo>>();
                 var barRepository = container.Resolve<IRepository<Bar>>();

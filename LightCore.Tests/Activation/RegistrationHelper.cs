@@ -21,10 +21,9 @@ namespace LightCore.Tests.Activation
 
             foreach (Type registeredType in typesToRegister)
             {
-                var key = new RegistrationKey(registeredType);
-                var item = new RegistrationItem(key);
+                var item = new RegistrationItem(registeredType);
 
-                registrationContainer.Registrations.Add(new KeyValuePair<RegistrationKey, RegistrationItem>(key, item));
+                registrationContainer.Registrations.Add(new KeyValuePair<Type, RegistrationItem>(registeredType, item));
             }
 
             return registrationContainer;

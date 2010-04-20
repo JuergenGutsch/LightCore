@@ -10,30 +10,6 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
     public class WhenGetRegistrationForCoreIsCalled : RegistrationSourceFixture
     {
         [Test]
-        public void WithNull_NullReturned()
-        {
-            var registrationSource = this.GetConcreteRegistrationSource();
-
-            Assert.That(registrationSource.GetRegistrationFor(null, null), Is.Null);
-        }
-
-        [Test]
-        public void WithAbstractType_NullReturned()
-        {
-            var registrationSource = this.GetConcreteRegistrationSource();
-
-            Assert.That(registrationSource.GetRegistrationFor(typeof(FooBase), null), Is.Null);
-        }
-
-        [Test]
-        public void WithInterfaceType_NullReturned()
-        {
-            var registrationSource = this.GetConcreteRegistrationSource();
-
-            Assert.That(registrationSource.GetRegistrationFor(typeof(IFoo), null), Is.Null);
-        }
-
-        [Test]
         public void WithConcreteType_RegistrationItemReturned()
         {
             var registrationSource = this.GetConcreteRegistrationSource();
@@ -49,7 +25,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
             var registrationItem = registrationSource.GetRegistrationFor(typeof (Foo), null);
 
             Assert.That(registrationItem, Is.Not.Null);
-            Assert.That(registrationItem.Key.ContractType, Is.EqualTo(typeof(Foo)));
+            Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(Foo)));
             Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof (Foo)));
             Assert.That(registrationItem.Activator, Is.TypeOf<ReflectionActivator>());
             Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());

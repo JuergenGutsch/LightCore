@@ -8,14 +8,9 @@ namespace LightCore.Registration.RegistrationSource
     internal interface IRegistrationSource
     {
         /// <summary>
-        /// The registration container.
+        /// Gets whether the registration source supports a type or not.
         /// </summary>
-        RegistrationContainer RegistrationContainer { get; set; }
-
-        /// <summary>
-        /// The dependency selector. (Indicates whether the registration source can handle the type or not).
-        /// </summary>
-        Func<Type, bool> DependencySelector { get; }
+        Func<Type, bool> SourceSupportsTypeSelector { get; }
 
         /// <summary>
         /// Gets a registration for some contract type.

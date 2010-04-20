@@ -83,7 +83,6 @@ namespace LightCore.Fluent
         public IFluentRegistration WithNamedArguments(IDictionary<string, object> namedArguments)
         {
             this._registrationItem.Arguments.AddToNamedArguments(namedArguments);
-
             return this;
         }
 
@@ -94,7 +93,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration WithGroup(string group)
         {
-            this._registrationItem.Key.Group = group;
+            this._registrationItem.Group = group;
             return this;
         }
     }

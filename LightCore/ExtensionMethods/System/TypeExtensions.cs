@@ -20,7 +20,13 @@ namespace LightCore.ExtensionMethods.System
                 return false;
             }
 
-            return !source.IsAbstract && !source.IsInterface;
+            bool isConcreteType = !source.IsAbstract && !source.IsInterface;
+
+            isConcreteType &= !source.IsValueType;
+            isConcreteType &= source != typeof (string);
+            isConcreteType &= !IsFactoryType(source);
+
+            return isConcreteType;
         }
 
         /// <summary>

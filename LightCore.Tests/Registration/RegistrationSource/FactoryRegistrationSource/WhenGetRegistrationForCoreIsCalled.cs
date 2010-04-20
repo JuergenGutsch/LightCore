@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LightCore.Activation.Activators;
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
@@ -10,22 +11,6 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
     [TestFixture]
     public class WhenGetRegistrationForCoreIsCalled : RegistrationSourceFixture
     {
-        [Test]
-        public void WithNull_NullReturned()
-        {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(object));
-
-            Assert.That(registrationSource.GetRegistrationFor(null, null), Is.Null);
-        }
-
-        [Test]
-        public void WithNoFuncType_NullReturned()
-        {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(Foo));
-
-            Assert.That(registrationSource.GetRegistrationFor(typeof(Foo), null), Is.Null);
-        }
-
         [Test]
         public void WithFuncType_RegistrationItemReturned()
         {
@@ -50,7 +35,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
             var registrationItem = registrationSource.GetRegistrationFor(typeof(Func<string, IFoo>), null);
 
             Assert.That(registrationItem, Is.Not.Null);
-            Assert.That(registrationItem.Key.ContractType, Is.EqualTo(typeof(Func<string, IFoo>)));
+            Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(Func<string, IFoo>)));
             Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(Func<string, IFoo>)));
             Assert.That(registrationItem.Activator, Is.TypeOf<DelegateActivator>());
             Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());

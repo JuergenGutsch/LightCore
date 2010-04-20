@@ -12,7 +12,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.DependencySelector(typeof(Foo)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Foo)), Is.True);
         }
 
         [Test]
@@ -20,7 +20,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.DependencySelector(typeof(FooBase)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(FooBase)), Is.False);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.DependencySelector(typeof(IFoo)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IFoo)), Is.False);
         }
     }
 }

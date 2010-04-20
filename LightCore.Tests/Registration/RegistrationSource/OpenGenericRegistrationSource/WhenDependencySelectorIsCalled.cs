@@ -14,7 +14,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
 
-            Assert.That(registrationSource.DependencySelector(typeof(object)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(object)), Is.False);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
 
-            Assert.That(registrationSource.DependencySelector(typeof(List<object>)), Is.False);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(List<object>)), Is.False);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IList<>), typeof(List<>));
 
-            Assert.That(registrationSource.DependencySelector(typeof(IList<object>)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IList<object>)), Is.True);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<>));
 
-            Assert.That(registrationSource.DependencySelector(typeof(IRepository<Foo, int>)), Is.True);
+            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IRepository<Foo, int>)), Is.True);
         }
     }
 }

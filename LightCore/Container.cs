@@ -7,10 +7,8 @@ using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
-using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
-using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
@@ -22,42 +20,32 @@ namespace LightCore
         /// <summary>
         /// Holds the registration container.
         /// </summary>
-        private readonly RegistrationContainer _registrationContainer;
-
-        /// <summary>
-        /// Holds the registration sources.
-        /// </summary>
-        private readonly IEnumerable<IRegistrationSource> _registrationSources;
+        private readonly IRegistrationContainer _registrationContainer;
 
         /// <summary>
         /// Initializes a new instance of <see cref="Container" />.
         /// <param name="registrationContainer">The registrations for this container.</param>
-        /// <param name="registrationSources">The registration sources.</param>
         /// </summary>
-        internal Container(RegistrationContainer registrationContainer, IEnumerable<IRegistrationSource> registrationSources)
+        internal Container(IRegistrationContainer registrationContainer)
         {
             this._registrationContainer = registrationContainer;
 
-            _registrationSources = registrationSources;
-            _registrationSources.ForEach(registrationSource => registrationSource.RegistrationContainer = this._registrationContainer);
-
             // Register the container itself for service locator reasons.
-            var registrationKey = new RegistrationKey(typeof(IContainer));
+            var typeOfIContainer = typeof(IContainer);
 
             // The container is already registered from external.
-            if (this._registrationContainer.Registrations.ContainsKey(registrationKey))
+            if (this._registrationContainer.Registrations.ContainsKey(typeOfIContainer))
             {
-                this._registrationContainer.Registrations.Remove(registrationKey);
+                this._registrationContainer.Registrations.Remove(typeOfIContainer);
             }
 
-            var registrationItem = new RegistrationItem(registrationKey)
-                                       {
-                                           Activator = new InstanceActivator<IContainer>(this),
-                                           Lifecycle = new SingletonLifecycle()
-                                       };
+            var registrationItem = new RegistrationItem(typeOfIContainer)
+            {
+                Activator = new InstanceActivator<IContainer>(this)
+            };
 
             this._registrationContainer.Registrations.Add(
-                new KeyValuePair<RegistrationKey, RegistrationItem>(registrationKey, registrationItem));
+                new KeyValuePair<Type, RegistrationItem>(typeOfIContainer, registrationItem));
         }
 
         /// <summary>
@@ -110,32 +98,25 @@ namespace LightCore
         /// <returns>The resolved instance as object.</returns>
         public object Resolve(Type contractType)
         {
-            if (contractType == null)
-            {
-                throw new ArgumentNullException("contractType");
-            }
-
-            var key = new RegistrationKey(contractType);
-
             RegistrationItem registrationItem;
 
-            if (!this._registrationContainer.Registrations.TryGetValue(key, out registrationItem))
+            if (!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
                 // No registration found yet, try to create one with available registration sources.
-                foreach (var registrationSource in this._registrationSources)
+                foreach (var registrationSource in
+                    this._registrationContainer.RegistrationSources
+                    .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType)))
                 {
                     registrationItem = registrationSource.GetRegistrationFor(contractType, this);
 
-                    if (registrationItem != null)
-                    {
-                        this._registrationContainer.Registrations.Add(
-                            new KeyValuePair<RegistrationKey, RegistrationItem>(registrationItem.Key, registrationItem));
-                        break;
-                    }
+                    this._registrationContainer.Registrations.Add(
+                        new KeyValuePair<Type, RegistrationItem>(registrationItem.ContractType, registrationItem));
+
+                    break;
                 }
             }
 
-            if(registrationItem == null)
+            if (registrationItem == null)
             {
                 throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
             }
@@ -163,11 +144,6 @@ namespace LightCore
         ///<returns>The resolved instance as object.</returns>.
         public object Resolve(Type contractType, IEnumerable<object> arguments)
         {
-            if (arguments == null)
-            {
-                throw new ArgumentNullException("arguments");
-            }
-
             return this.ResolveWithArguments(contractType, arguments, null);
         }
 
@@ -179,11 +155,6 @@ namespace LightCore
         /// <returns>The resolved instance as object.</returns>
         public object Resolve(Type contractType, IDictionary<string, object> namedArguments)
         {
-            if (namedArguments == null)
-            {
-                throw new ArgumentNullException("namedArguments");
-            }
-
             return this.ResolveWithArguments(contractType, null, namedArguments);
         }
 
@@ -196,20 +167,18 @@ namespace LightCore
         /// <returns></returns>
         private object ResolveWithArguments(Type contractType, IEnumerable<object> arguments, IDictionary<string, object> namedArguments)
         {
-            var key = new RegistrationKey(contractType);
+            RegistrationItem registrationItem;
 
-            RegistrationItem registration;
-
-            if (this._registrationContainer.Registrations.TryGetValue(key, out registration))
+            if (this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
                 if (arguments != null)
                 {
-                    registration.RuntimeArguments.AddToAnonymousArguments(arguments);
+                    registrationItem.RuntimeArguments.AddToAnonymousArguments(arguments);
                 }
 
                 if (namedArguments != null)
                 {
-                    registration.RuntimeArguments.AddToNamedArguments(namedArguments);
+                    registrationItem.RuntimeArguments.AddToNamedArguments(namedArguments);
                 }
             }
 
@@ -223,9 +192,11 @@ namespace LightCore
         /// <returns>The resolved instance.</returns>
         private object Resolve(RegistrationItem registrationItem)
         {
-            var resolutionContext = new ResolutionContext(this, this._registrationContainer,
-                                                          registrationItem.Arguments,
-                                                          registrationItem.RuntimeArguments)
+            var resolutionContext = new ResolutionContext(
+                this,
+                this._registrationContainer,
+                registrationItem.Arguments,
+                registrationItem.RuntimeArguments)
                                         {
                                             Registration = registrationItem
                                         };
@@ -246,7 +217,9 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<TContract> ResolveAll<TContract>()
         {
-            return this.ResolveAll(typeof(TContract)).Cast<TContract>();
+            return
+                this.ResolveAll(typeof(TContract))
+                .Cast<TContract>();
         }
 
         /// <summary>
@@ -256,9 +229,7 @@ namespace LightCore
         public IEnumerable<object> ResolveAll()
         {
             return this._registrationContainer
-                .Registrations
-                .Values
-                .Concat(this._registrationContainer.DuplicateRegistrations)
+                .AllRegistrations
                 .Select(registration => this.Resolve(registration));
         }
 
@@ -270,10 +241,8 @@ namespace LightCore
         public IEnumerable<object> ResolveAll(Type contractType)
         {
             return this._registrationContainer
-                .Registrations
-                .Values
-                .Concat(this._registrationContainer.DuplicateRegistrations)
-                .Where(r => r.Key.ContractType == contractType)
+                .AllRegistrations
+                .Where(r => r.ContractType == contractType)
                 .Select(registration => this.Resolve(registration));
         }
 
@@ -283,19 +252,17 @@ namespace LightCore
         /// <param name="instance">The instance.</param>
         public void InjectProperties(object instance)
         {
-            Type instanceType = instance.GetType();
-            var properties =
-                instanceType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
+            var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this._registrationContainer.IsRegisteredOrSupportedContract(p.PropertyType),
+                                                   p => this._registrationContainer.IsRegistered(p.PropertyType) || this._registrationContainer.IsSupportedByRegistrationSource(p.PropertyType),
                                                    p => p.GetIndexParameters().Length == 0
                                                };
 
-            var validProperties = properties.Where(
-                validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
+            var validProperties = properties
+                .Where(validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
 
             validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
         }

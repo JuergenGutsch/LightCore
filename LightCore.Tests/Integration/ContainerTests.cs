@@ -11,6 +11,31 @@ namespace LightCore.Tests.Integration
     public class ContainerTests
     {
         [Test]
+        public void Container_can_resolve_concrete_types()
+        {
+            var builder = new ContainerBuilder();
+
+            var container = builder.Build();
+
+            var foo = container.Resolve<Foo>();
+
+            Assert.That(foo, Is.Not.Null);
+        }
+
+        [Test]
+        public void Container_can_resolve_with_arguments()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>().WithArguments(4);
+
+            var container = builder.Build();
+
+            var foo = container.Resolve<IFoo>();
+
+            Assert.That(((Foo) foo).Arg3, Is.EqualTo(4));
+        }
+
+        [Test]
         public void Container_can_resolve_factories()
         {
             var builder = new ContainerBuilder();
@@ -38,11 +63,12 @@ namespace LightCore.Tests.Integration
             var builder = new ContainerBuilder();
             builder.Register<IFoo, Foo>();
 
-            string expected = "Hello World";
-
             var container = builder.Build();
 
             var fooFactory = container.Resolve<Func<string, IFoo>>();
+
+            const string expected = "Hello World";
+
             var instance = fooFactory(expected);
 
             Assert.IsNotNull(fooFactory);
@@ -53,8 +79,8 @@ namespace LightCore.Tests.Integration
             var fooTwo = fooFactoryTwo("Peter", true);
 
             Assert.IsNotNull(fooFactoryTwo);
-            Assert.AreEqual("Peter", ((Foo) fooTwo).Arg1);
-            Assert.AreEqual(true, ((Foo) fooTwo).Arg2);
+            Assert.AreEqual("Peter", ((Foo)fooTwo).Arg1);
+            Assert.AreEqual(true, ((Foo)fooTwo).Arg2);
         }
 
         [Test]
@@ -107,14 +133,11 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var fooRepository = container.Resolve<IRepository<Foo>>();
-            var barRepository = container.Resolve<IRepository<Bar>>();
+            var fooRepository = container.Resolve<IRepository<IFoo>>();
+            var barRepository = container.Resolve<IRepository<IBar>>();
 
             Assert.NotNull(fooRepository);
             Assert.NotNull(barRepository);
-
-            Assert.IsInstanceOf<IRepository<Foo>>(fooRepository);
-            Assert.IsInstanceOf<IRepository<Bar>>(barRepository);
         }
 
         [Test]
@@ -158,8 +181,6 @@ namespace LightCore.Tests.Integration
 
             builder.Register<IFoo, Foo>();
             builder.Register<IFoo, FooTwo>();
-
-            //builder.Register<ILorem, TestLorem>();
 
             var container = builder.Build();
 

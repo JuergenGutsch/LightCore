@@ -49,7 +49,7 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo>(c => new Foo(new Bar()));
+            builder.Register<IFoo>(c => new Foo());
 
             var container = builder.Build();
         }

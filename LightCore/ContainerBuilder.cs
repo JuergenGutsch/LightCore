@@ -54,7 +54,7 @@ namespace LightCore
         /// <summary>
         /// Holds a container with registrations to register.
         /// </summary>
-        private readonly RegistrationContainer _registrationContainer;
+        private readonly IRegistrationContainer _registrationContainer;
 
         /// <summary>
         /// Holds a list with registering callbacks.
@@ -82,47 +82,23 @@ namespace LightCore
         /// <returns>The builded container.</returns>
         public IContainer Build()
         {
+            var allRegistrationSources = new List<IRegistrationSource>()
+                                             {
+                                                 new OpenGenericRegistrationSource(this._registrationContainer),
+                                                 new EnumerableRegistrationSource(this._registrationContainer),
+                                                 new FactoryRegistrationSource(this._registrationContainer),
+                                                 new ConcreteTypeRegistrationSource()
+                                             };
+
+            this._registrationContainer.RegistrationSources = allRegistrationSources;
+
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
             this._registrationCallbacks.Clear();
 
-            var registrationSources = new List<IRegistrationSource>
-                                          {
-                                              new OpenGenericRegistrationSource(),
-                                              new EnumerableRegistrationSource(),
-                                              new FactoryRegistrationSource(),
-                                              new ConcreteTypeRegistrationSource()
-                                          };
+            var container = new Container(this._registrationContainer);
 
-            // Adds possible registered registration source.
-            this.AddRegistrationSources(registrationSources);
-
-            // Register registration sources dependency selectors, without the any one.
-            registrationSources
-                .Take(registrationSources.Count - 1)
-                .ForEach(registrationSource =>
-                         this._registrationContainer.RegistrationSelectors.Add(registrationSource.DependencySelector));
-
-            return new Container(this._registrationContainer, registrationSources);
-        }
-
-        /// <summary>
-        /// Adds implementors of <see cref="IRegistrationSource" /> and plug it in the system.
-        /// </summary>
-        /// <param name="currentRegistrationSources">The current registration sources.</param>
-        private void AddRegistrationSources(IList<IRegistrationSource> currentRegistrationSources)
-        {
-            var newRegistrationSources = this._registrationContainer
-                .Registrations
-                .Values
-                .Concat(this._registrationContainer.DuplicateRegistrations)
-                .OfType<IRegistrationSource>();
-
-            foreach (IRegistrationSource registrationSource in newRegistrationSources)
-            {
-                // Add it before the last, concrete, registration source because of the priority.
-                currentRegistrationSources.Insert(currentRegistrationSources.Count - 1, registrationSource);
-            }
+            return container;
         }
 
         /// <summary>
@@ -178,11 +154,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         public IFluentRegistration Register<TInstance>(TInstance instance)
         {
-            Type typeOfInstance = (typeof(TInstance));
-
-            var key = new RegistrationKey(typeOfInstance);
-
-            var registration = new RegistrationItem(key)
+            var registration = new RegistrationItem(typeof(TInstance))
                                    {
                                        Activator = new InstanceActivator<TInstance>(instance)
                                    };
@@ -201,14 +173,10 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
         {
-            var typeOfContract = typeof(TContract);
-
-            var key = new RegistrationKey(typeOfContract);
-
-            var registration = new RegistrationItem(key)
-            {
-                Activator = new GenericDelegateActivator<TContract>(activatorFunction)
-            };
+            var registration = new RegistrationItem(typeof(TContract))
+                                   {
+                                       Activator = new GenericDelegateActivator<TContract>(activatorFunction)
+                                   };
 
             this.AddToRegistrations(registration);
 
@@ -232,11 +200,11 @@ namespace LightCore
                                  registrationItem.Lifecycle = this._defaultLifecycleFunction();
                              }
 
-                             if (this._activeRegistrationGroupsInternal != null && registrationItem.Key.Group != null)
+                             if (this._activeRegistrationGroupsInternal != null && registrationItem.Group != null)
                              {
                                  if (
                                      !this._activeRegistrationGroupsInternal.Any(
-                                         g => g.Trim() == registrationItem.Key.Group.Trim()))
+                                         g => g.Trim() == registrationItem.Group.Trim()))
                                  {
                                      // Do not add inactive registrationItem.
                                      return;
@@ -244,20 +212,20 @@ namespace LightCore
                              }
 
                              if (
-                                 this._registrationContainer.Registrations.ContainsKey(registrationItem.Key))
+                                 this._registrationContainer.Registrations.ContainsKey(registrationItem.ContractType))
                              {
                                  // Duplicate registration for enumerable requests.
                                  RegistrationItem duplicateItem =
-                                     this._registrationContainer.Registrations[registrationItem.Key];
+                                     this._registrationContainer.Registrations[registrationItem.ContractType];
 
                                  this._registrationContainer.DuplicateRegistrations.Add(registrationItem);
                                  this._registrationContainer.DuplicateRegistrations.Add(duplicateItem);
 
-                                 this._registrationContainer.Registrations.Remove(duplicateItem.Key);
+                                 this._registrationContainer.Registrations.Remove(duplicateItem.ContractType);
                              }
                              else
                              {
-                                 this._registrationContainer.Registrations.Add(registrationItem.Key, registrationItem);
+                                 this._registrationContainer.Registrations.Add(registrationItem.ContractType, registrationItem);
                              }
                          });
         }
@@ -292,10 +260,8 @@ namespace LightCore
                     Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
             }
 
-            var key = new RegistrationKey(typeOfContract);
-
             // Register the type with default lifetime.
-            var registration = new RegistrationItem(key)
+            var registration = new RegistrationItem(typeOfContract)
                                    {
                                        Activator = new ReflectionActivator(typeOfImplementation),
                                        Lifecycle = this._defaultLifecycleFunction(),

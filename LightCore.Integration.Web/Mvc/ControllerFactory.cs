@@ -1,5 +1,5 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace LightCore.Integration.Web.Mvc
 {
@@ -20,15 +20,15 @@ namespace LightCore.Integration.Web.Mvc
         }
 
         /// <summary>
-        /// Gets the controller instance.
+        /// Creates the controller.
         /// </summary>
-        /// <param name="controllerType">Type of the controller.</param>
+        /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
         /// <returns>
         /// A reference to the controller.
         /// </returns>
-        protected override IController GetControllerInstance(Type controllerType)
+        public override IController CreateController(RequestContext requestContext, string controllerName)
         {
-            return (IController)this._container.Resolve(controllerType);
+            return (IController)this._container.Resolve(this.GetControllerType(controllerName));
         }
     }
 }

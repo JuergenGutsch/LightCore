@@ -6,7 +6,6 @@ using System.Reflection;
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
-using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -22,7 +21,7 @@ namespace LightCore.Registration.RegistrationSource
     /// public Foo(Func{string, IBar} bar) {  }
     /// </example>
     /// </summary>
-    internal class FactoryRegistrationSource : RegistrationSource
+    internal class FactoryRegistrationSource : IRegistrationSource
     {
         /// <summary>
         /// Holds the name for resolve methods.
@@ -35,30 +34,33 @@ namespace LightCore.Registration.RegistrationSource
         private static readonly Type TypeOfObject = typeof(object);
 
         /// <summary>
-        /// Holds the container type.
-        /// </summary>
-        private static readonly Type TypeOfContainer = typeof(IContainer);
-
-        /// <summary>
-        /// Holds the resolve methodinfo.
-        /// </summary>
-        private static readonly MethodInfo ResolveMethod = TypeOfContainer.GetMethod(ResolveMethodName, Type.EmptyTypes);
-
-        /// <summary>
         /// Holds the resolve methodinfo with arguments.
         /// </summary>
-        private static readonly MethodInfo ResolveWithArgumentsMethod = TypeOfContainer.GetMethod(ResolveMethodName, new[] { typeof(IEnumerable<object>) });
+        private static readonly MethodInfo ResolveWithArgumentsMethod = typeof(IContainer).GetMethod(ResolveMethodName, new[] { typeof(IEnumerable<object>) });
 
         /// <summary>
-        /// The dependency selector. (Indicates whether the registration source can handle the type or not).
+        /// The regisration container.
         /// </summary>
-        public override Func<Type, bool> DependencySelector
+        private readonly IRegistrationContainer _registrationContainer;
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="FactoryRegistrationSource" />.
+        /// </summary>
+        /// <param name="registrationContainer">The registration container.</param>
+        public FactoryRegistrationSource(IRegistrationContainer registrationContainer)
+        {
+            this._registrationContainer = registrationContainer;
+        }
+
+        /// <summary>
+        /// Gets whether the registration source supports a type or not.
+        /// </summary>
+        public Func<Type, bool> SourceSupportsTypeSelector
         {
             get
             {
-                return
-                    contractType => contractType.IsFactoryType()
-                        && this.RegistrationContainer.IsRegisteredContract(contractType.GetGenericArguments().LastOrDefault());
+                // LastOrDefault for the lastest parameter, e.g.: Func<string, bool, IFoo>().
+                return contractType => contractType.IsFactoryType() && _registrationContainer.IsRegistered(contractType.GetGenericArguments().LastOrDefault());
             }
         }
 
@@ -68,58 +70,43 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="contractType">The contract type.</param>
         /// <param name="container">The container.</param>
         /// <returns><value>The registration item</value> if this source can handle it, otherwise <value>null</value>.</returns>
-        protected override RegistrationItem GetRegistrationForCore(Type contractType, IContainer container)
+        public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
             Type[] genericArguments = contractType.GetGenericArguments();
             Type returnType = genericArguments.Last();
 
-            var registrationKey = new RegistrationKey(contractType);
-            RegistrationItem registrationItem;
+            MethodInfo genericWithArgumentsMethod = ResolveWithArgumentsMethod.MakeGenericMethod(returnType);
 
-            if (genericArguments.Length == 1)
-            {
-                MethodInfo genericResolveMethod = ResolveMethod.MakeGenericMethod(returnType);
+            var parameterExpressions = genericArguments
+                .Take(genericArguments.Length - 1) // ReturnType (Length -1) will be ignored.
+                .Select(genericArgument => Expression.Parameter(genericArgument, genericArgument.Name))
+                .ToList();
 
-                registrationItem = new RegistrationItem(registrationKey)
-                                       {
-                                           Activator = new DelegateActivator(c =>
-                                                                             Expression.Lambda(
-                                                                                 contractType,
-                                                                                 Expression.Call(
-                                                                                     Expression.Constant(c),
-                                                                                     genericResolveMethod)).Compile()),
-                                           Lifecycle = new TransientLifecycle(),
-                                           ImplementationType = contractType
-                                       };
-            }
-            else
-            {
-                MethodInfo genericWithArgumentsMethod = ResolveWithArgumentsMethod.MakeGenericMethod(returnType);
+            return new RegistrationItem(contractType)
+                       {
+                           Activator = new DelegateActivator(c =>
+                                                                 {
+                                                                     var containerConstant = Expression.Constant(c);
 
-                var parameterExpressions = genericArguments
-                    .Take(genericArguments.Length - 1)
-                    .Select(genericArgument => Expression.Parameter(genericArgument, genericArgument.Name))
-                    .ToList();
+                                                                     var newArgumentArray = Expression.NewArrayInit(
+                                                                         TypeOfObject,
+                                                                         parameterExpressions
+                                                                             .Select(
+                                                                                 p => Expression.TypeAs(p, TypeOfObject))
+                                                                             .Cast<Expression>());
 
-                registrationItem = new RegistrationItem(registrationKey)
-                                       {
-                                           Activator = new DelegateActivator(c =>
-                                                                             Expression.Lambda(
-                                                                                 contractType,
-                                                                                 Expression.Call(
-                                                                                     Expression.Constant(c),
-                                                                                     genericWithArgumentsMethod,
-                                                                                     Expression.NewArrayInit(
-                                                                                         TypeOfObject,
-                                                                                         parameterExpressions.Select(
-                                                                                             p => Expression.TypeAs(p, TypeOfObject))
-                                                                                             .Cast<Expression>())), parameterExpressions).Compile()),
-                                           Lifecycle = new TransientLifecycle(),
-                                           ImplementationType = contractType
-                                       };
-            }
+                                                                     var resolveCall = Expression.Call(
+                                                                         containerConstant,
+                                                                         genericWithArgumentsMethod,
+                                                                         newArgumentArray);
 
-            return registrationItem;
+                                                                     var lambda = Expression.Lambda(contractType,
+                                                                                                    resolveCall,
+                                                                                                    parameterExpressions);
+
+                                                                     return lambda.Compile();
+                                                                 })
+                       };
         }
     }
 }

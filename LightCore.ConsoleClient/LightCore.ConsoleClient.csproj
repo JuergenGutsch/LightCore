@@ -75,20 +75,6 @@
     <Compile Include="Writers\DebugWriter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore.Configuration\LightCore.Configuration.csproj">
-      <Project>{CC409020-9039-4478-8581-C230923A6064}</Project>
-      <Name>LightCore.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
-      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
-      <Name>LightCore.TestTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightCore\LightCore.csproj">
-      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>LightCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -124,6 +110,20 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LightCore.Configuration\LightCore.Configuration.csproj">
+      <Project>{CC409020-9039-4478-8581-C230923A6064}</Project>
+      <Name>LightCore.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
+      <Project>{4478482F-075B-4146-B06D-A6B69AFA2816}</Project>
+      <Name>LightCore.TestTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LightCore\LightCore.csproj">
+      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
+      <Name>LightCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

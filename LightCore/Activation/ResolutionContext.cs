@@ -29,7 +29,7 @@ namespace LightCore.Activation
         /// <summary>
         /// Gets or sets the registrations.
         /// </summary>
-        internal RegistrationContainer Registrations
+        internal IRegistrationContainer RegistrationContainer
         {
             get;
             set;
@@ -67,11 +67,11 @@ namespace LightCore.Activation
         /// <param name="container">The container.</param>
         /// <param name="registrations">The registrations.</param>
         /// </summary>
-        internal ResolutionContext(IContainer container, RegistrationContainer registrations)
+        internal ResolutionContext(IContainer container, IRegistrationContainer registrations)
             : this()
         {
             this.Container = container;
-            this.Registrations = registrations;
+            this.RegistrationContainer = registrations;
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace LightCore.Activation
         /// <param name="arguments">The arguments.</param>
         /// <param name="runtimeArguments">The runtime arguments.</param>
         /// </summary>
-        internal ResolutionContext(IContainer container, RegistrationContainer registrations, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
+        internal ResolutionContext(IContainer container, IRegistrationContainer registrations, ArgumentContainer arguments, ArgumentContainer runtimeArguments)
             : this(container, registrations)
         {
             this.Arguments = arguments;

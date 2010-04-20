@@ -25,22 +25,19 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
         {
             var registrationContainer = new RegistrationContainer();
 
-            return new ResolutionContext(
-                new Container(registrationContainer, new List<IRegistrationSource>()),
-                registrationContainer);
+            return new ResolutionContext(new Container(registrationContainer), registrationContainer);
         }
 
         private ResolutionContext GetContext(Type contractType, Type implementationType)
         {
-            var registrationKey = new RegistrationKey(contractType);
             var registrationContainer = new RegistrationContainer
                                             {
                                                 Registrations =
-                                                    new Dictionary<RegistrationKey, RegistrationItem>
+                                                    new Dictionary<Type, RegistrationItem>
                                                         {
                                                             {
-                                                                registrationKey,
-                                                                new RegistrationItem(registrationKey)
+                                                                contractType,
+                                                                new RegistrationItem(contractType)
                                                                     {
                                                                         Activator =
                                                                             new LightCore.Activation.Activators.
@@ -51,8 +48,7 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
                                                         }
                                             };
 
-            return new ResolutionContext(
-                new Container(registrationContainer, new List<IRegistrationSource>()), registrationContainer);
+            return new ResolutionContext(new Container(registrationContainer), registrationContainer);
         }
 
         [Test]
