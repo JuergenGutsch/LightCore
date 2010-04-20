@@ -154,15 +154,11 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         public IFluentRegistration Register<TInstance>(TInstance instance)
         {
-            var registration = new RegistrationItem(typeof(TInstance))
-                                   {
-                                       Activator = new InstanceActivator<TInstance>(instance)
-                                   };
-
-            this.AddToRegistrations(registration);
-
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return new FluentRegistration(registration);
+            return this.AddToRegistrationFluent(new RegistrationItem(typeof(TInstance))
+                                                    {
+                                                        Activator = new InstanceActivator<TInstance>(instance)
+                                                    });
         }
 
         /// <summary>
@@ -173,61 +169,70 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
         {
-            var registration = new RegistrationItem(typeof(TContract))
-                                   {
-                                       Activator = new GenericDelegateActivator<TContract>(activatorFunction)
-                                   };
-
-            this.AddToRegistrations(registration);
-
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return new FluentRegistration(registration);
+            return this.AddToRegistrationFluent(new RegistrationItem(typeof(TContract))
+                                                    {
+                                                        Activator =
+                                                            new GenericDelegateActivator<TContract>(activatorFunction)
+                                                    });
         }
 
         /// <summary>
         /// Add a registrationItem to the registrations.
         /// </summary>
         /// <param name="registrationItem">The registration to add.</param>
-        private void AddToRegistrations(RegistrationItem registrationItem)
+        private IFluentRegistration AddToRegistrationFluent(RegistrationItem registrationItem)
         {
-            this._registrationCallbacks
-                .Add(() =>
-                         {
+            Action registrationCallback = () =>
+                                              {
 
-                             // Set default reuse scope, if not user defined. (System default is <see cref="TransientLifecycle" />.
-                             if (registrationItem.Lifecycle == null)
-                             {
-                                 registrationItem.Lifecycle = this._defaultLifecycleFunction();
-                             }
+                                                  // Set default reuse scope, if not user defined. (System default is <see cref="TransientLifecycle" />.
+                                                  if (registrationItem.Lifecycle == null)
+                                                  {
+                                                      registrationItem.Lifecycle = this._defaultLifecycleFunction();
+                                                  }
 
-                             if (this._activeRegistrationGroupsInternal != null && registrationItem.Group != null)
-                             {
-                                 if (
-                                     !this._activeRegistrationGroupsInternal.Any(
-                                         g => g.Trim() == registrationItem.Group.Trim()))
-                                 {
-                                     // Do not add inactive registrationItem.
-                                     return;
-                                 }
-                             }
+                                                  if (this._activeRegistrationGroupsInternal != null &&
+                                                      registrationItem.Group != null)
+                                                  {
+                                                      if (
+                                                          !this._activeRegistrationGroupsInternal.Any(
+                                                              g => g.Trim() == registrationItem.Group.Trim()))
+                                                      {
+                                                          // Do not add inactive registrationItem.
+                                                          return;
+                                                      }
+                                                  }
 
-                             if (
-                                 this._registrationContainer.Registrations.ContainsKey(registrationItem.ContractType))
-                             {
-                                 // Duplicate registration for enumerable requests.
-                                 RegistrationItem duplicateItem =
-                                     this._registrationContainer.Registrations[registrationItem.ContractType];
+                                                  if (
+                                                      this._registrationContainer.Registrations.ContainsKey(
+                                                          registrationItem.ContractType))
+                                                  {
+                                                      // Duplicate registration for enumerable requests.
+                                                      RegistrationItem duplicateItem =
+                                                          this._registrationContainer.Registrations[
+                                                              registrationItem.ContractType];
 
-                                 this._registrationContainer.DuplicateRegistrations.Add(registrationItem);
-                                 this._registrationContainer.DuplicateRegistrations.Add(duplicateItem);
+                                                      this._registrationContainer.DuplicateRegistrations.Add(
+                                                          registrationItem);
+                                                      this._registrationContainer.DuplicateRegistrations.Add(
+                                                          duplicateItem);
 
-                                 this._registrationContainer.Registrations.Remove(duplicateItem.ContractType);
-                             }
-                             else
-                             {
-                                 this._registrationContainer.Registrations.Add(registrationItem.ContractType, registrationItem);
-                             }
-                         });
+                                                      this._registrationContainer.Registrations.Remove(
+                                                          duplicateItem.ContractType);
+                                                  }
+                                                  else
+                                                  {
+                                                      this._registrationContainer.Registrations.Add(
+                                                          registrationItem.ContractType,
+                                                          registrationItem);
+                                                  }
+                                              };
+
+            this._registrationCallbacks.Add(registrationCallback);
+
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return new FluentRegistration(registrationItem);
         }
 
         /// <summary>
@@ -260,18 +265,13 @@ namespace LightCore
                     Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
             }
 
-            // Register the type with default lifetime.
-            var registration = new RegistrationItem(typeOfContract)
-                                   {
-                                       Activator = new ReflectionActivator(typeOfImplementation),
-                                       Lifecycle = this._defaultLifecycleFunction(),
-                                       ImplementationType = typeOfImplementation
-                                   };
-
-            this.AddToRegistrations(registration);
-
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return new FluentRegistration(registration);
+            return this.AddToRegistrationFluent(new RegistrationItem(typeOfContract)
+                                                    {
+                                                        Activator = new ReflectionActivator(typeOfImplementation),
+                                                        Lifecycle = this._defaultLifecycleFunction(),
+                                                        ImplementationType = typeOfImplementation
+                                                    });
         }
     }
 }

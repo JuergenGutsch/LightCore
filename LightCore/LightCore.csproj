@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Activation\Activators\GenericDelegateActivator.cs" />
     <Compile Include="Activation\Components\IConstructorSelector.cs" />
+    <Compile Include="AnonymousArgument.cs" />
     <Compile Include="Registration\IRegistrationContainer.cs" />
     <Compile Include="Registration\RegistrationSource\FactoryRegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\EnumerableRegistrationSource.cs" />

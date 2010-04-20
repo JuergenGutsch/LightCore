@@ -57,5 +57,21 @@ namespace LightCore.Tests.Integration
             Assert.IsTrue(((Foo)foo).Arg2);
             Assert.AreEqual("Peter", ((Foo)foo).Arg1);
         }
+
+        [Test]
+        public void Container_Can_Resolve_With_Anonymous_Named_Given_Runtime_Argument_Successfully()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IBar, Bar>();
+            builder.Register<IFoo, Foo>();
+
+            IContainer container = builder.Build();
+
+            var foo = container.Resolve<IFoo>(new AnonymousArgument(new { arg2 = true, arg1 = "Peter" }));
+
+            Assert.IsNotNull(foo);
+            Assert.IsTrue(((Foo)foo).Arg2);
+            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+        }
     }
 }

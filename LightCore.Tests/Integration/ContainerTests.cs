@@ -196,7 +196,6 @@ namespace LightCore.Tests.Integration
 
             builder.Register<IBar>(c => new Bar());
             builder.Register<IBar>(c => new Bar());
-            builder.Register<EnumerableTest>();
 
             var container = builder.Build();
 

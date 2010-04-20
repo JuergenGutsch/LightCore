@@ -100,6 +100,7 @@ namespace LightCore.Registration.RegistrationSource
                                                                          genericWithArgumentsMethod,
                                                                          newArgumentArray);
 
+                                                                     // () => value(LightCore.Container).Resolve(new [] {}).
                                                                      var lambda = Expression.Lambda(contractType,
                                                                                                     resolveCall,
                                                                                                     parameterExpressions);

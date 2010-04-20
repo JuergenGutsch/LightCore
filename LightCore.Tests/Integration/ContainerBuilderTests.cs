@@ -51,7 +51,7 @@ namespace LightCore.Tests.Integration
 
             builder.Register<IFoo>(c => new Foo());
 
-            var container = builder.Build();
+            builder.Build();
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace LightCore.Tests.Integration
 
             builder.Register<Foo>();
 
-            var container = builder.Build();
+            builder.Build();
         }
         
         [Test]

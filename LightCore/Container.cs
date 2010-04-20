@@ -31,8 +31,15 @@ namespace LightCore
         {
             this._registrationContainer = registrationContainer;
 
-            // Register the container itself for service locator reasons.
-            var typeOfIContainer = typeof(IContainer);
+            this.RegisterContainer();
+        }
+
+        /// <summary>
+        /// Register the container itself for service locator reasons. 
+        /// </summary>
+        private void RegisterContainer()
+        {
+            var typeOfIContainer = typeof (IContainer);
 
             // The container is already registered from external.
             if (this._registrationContainer.Registrations.ContainsKey(typeOfIContainer))
@@ -41,9 +48,9 @@ namespace LightCore
             }
 
             var registrationItem = new RegistrationItem(typeOfIContainer)
-            {
-                Activator = new InstanceActivator<IContainer>(this)
-            };
+                                       {
+                                           Activator = new InstanceActivator<IContainer>(this)
+                                       };
 
             this._registrationContainer.Registrations.Add(
                 new KeyValuePair<Type, RegistrationItem>(typeOfIContainer, registrationItem));
@@ -90,6 +97,18 @@ namespace LightCore
         public TContract Resolve<TContract>(IDictionary<string, object> namedArguments)
         {
             return (TContract)this.Resolve(typeof(TContract), namedArguments);
+        }
+
+        /// <summary>
+        /// Resolves a contract (include subcontracts) with anonymous named constructor arguments.
+        /// </summary>
+        /// <param name="namedArguments">The  named constructor arguments.</param>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/></returns>
+        public TContract Resolve<TContract>(AnonymousArgument namedArguments)
+        {
+            return (TContract) this.Resolve(typeof (TContract),
+                                            namedArguments.AnonymousType.ToNamedArgumentDictionary());
         }
 
         /// <summary>
@@ -258,8 +277,9 @@ namespace LightCore
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                {
                                                    p => !p.PropertyType.IsValueType,
-                                                   p => this._registrationContainer.IsRegistered(p.PropertyType) || this._registrationContainer.IsSupportedByRegistrationSource(p.PropertyType),
-                                                   p => p.GetIndexParameters().Length == 0
+                                                   p => this._registrationContainer.IsRegistered(p.PropertyType),
+                                                   p => p.GetIndexParameters().Length == 0,
+                                                   p => p.CanWrite
                                                };
 
             var validProperties = properties

@@ -40,6 +40,14 @@ namespace LightCore
         TContract Resolve<TContract>(IDictionary<string, object> namedArguments);
 
         /// <summary>
+        /// Resolves a contract (include subcontracts) with anonymous named constructor arguments.
+        /// </summary>
+        /// <param name="namedArguments">The  named constructor arguments.</param>
+        /// <typeparam name="TContract">The type of the contract.</typeparam>
+        /// <returns>The resolved instance as <typeparamref name="TContract"/></returns>
+        TContract Resolve<TContract>(AnonymousArgument namedArguments);
+
+        /// <summary>
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <param name="contractType">The contract type.</param>
