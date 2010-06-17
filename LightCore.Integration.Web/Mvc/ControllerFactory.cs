@@ -28,7 +28,7 @@ namespace LightCore.Integration.Web.Mvc
         /// </returns>
         public override IController CreateController(RequestContext requestContext, string controllerName)
         {
-            return (IController)this._container.Resolve(this.GetControllerType(controllerName));
+            return (IController)this._container.Resolve(base.GetControllerType(requestContext, controllerName));
         }
     }
 }
