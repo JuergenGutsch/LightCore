@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 using LightCore.Activation.Components;
@@ -33,14 +34,14 @@ namespace LightCore.Activation.Activators
         private ConstructorInfo _cachedConstructor;
 
         /// <summary>
+        /// The cached arguments.
+        /// </summary>
+        private object[] _cachedArguments;
+
+        /// <summary>
         /// The implementation type.
         /// </summary>
         private readonly Type _implementationType;
-
-        /// <summary>
-        /// The cached constructor arguments.
-        /// </summary>
-        private object[] _cachedArguments;
 
         ///<summary>
         /// Creates a new instance of <see cref="ReflectionActivator" />.
@@ -81,21 +82,15 @@ namespace LightCore.Activation.Activators
 
             int countOfRuntimeArguments = runtimeArguments.CountOfAllArguments;
 
-            if (_cachedConstructor != null && countOfRuntimeArguments == 0)
+            if (this._cachedConstructor == null || countOfRuntimeArguments > 0)
             {
-                return _cachedConstructor.Invoke(this._cachedArguments);
+                var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                _cachedConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
             }
 
-            var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-            ConstructorInfo finalConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
-
-            this._cachedConstructor = finalConstructor;
-
-            if (this._cachedArguments == null || countOfRuntimeArguments > 0)
+            if (this._cachedArguments == null || countOfRuntimeArguments > 0 || GetAnyDependencyParameter(resolutionContext))
             {
-                this._cachedArguments =
-                    this._argumentCollector.CollectArguments(
+                this._cachedArguments = this._argumentCollector.CollectArguments(
                         this._container.Resolve,
                         this._cachedConstructor.GetParameters(),
                         resolutionContext);
@@ -108,6 +103,19 @@ namespace LightCore.Activation.Activators
             }
 
             return this._cachedConstructor.Invoke(this._cachedArguments);
+        }
+
+        /// <summary>
+        /// Gets <value>true</value> if a dependency parameter exists, otherwise <value>false</value>.
+        /// </summary>
+        /// <param name="resolutionContext">The resolution context.</param>
+        /// <returns><value>true</value> if a dependency parameter exists, otherwise <value>false</value>.</returns>
+        private bool GetAnyDependencyParameter(ResolutionContext resolutionContext)
+        {
+            return this._cachedConstructor
+                .GetParameters()
+                .Any(p => resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
+                          || resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
         }
     }
 }

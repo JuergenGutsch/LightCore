@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 
+using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -10,6 +12,35 @@ namespace LightCore.Tests.Integration
     [TestFixture]
     public class ContainerTests
     {
+        private class StreamContainer
+        {
+            public StreamContainer(IDisposable disposable)
+            {
+                this.Stream = disposable;
+            }
+
+            public IDisposable Stream
+            {
+                get;
+                set;
+            }
+        }
+
+        [Test]
+        public void Container_resolves_properties_in_transient_lifecycle()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IDisposable>(c => new MemoryStream()).ControlledBy<TransientLifecycle>();
+            builder.DefaultControlledBy<TransientLifecycle>();
+
+            var container = builder.Build();
+            var streamContainerOne = container.Resolve<StreamContainer>();
+            var streamContainerTwo = container.Resolve<StreamContainer>();
+
+            Assert.IsFalse(ReferenceEquals(streamContainerOne, streamContainerTwo), "Root objects are equal");
+            Assert.IsFalse(ReferenceEquals(streamContainerOne.Stream, streamContainerTwo.Stream), "Contained objects are equal");
+        }
+
         [Test]
         public void Container_can_resolve_concrete_types()
         {
