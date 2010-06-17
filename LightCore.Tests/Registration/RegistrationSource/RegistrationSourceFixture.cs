@@ -19,9 +19,29 @@ namespace LightCore.Tests.Registration.RegistrationSource
                 new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(new RegistrationContainer());
         }
 
-        internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister)
-        {
+        internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister) {
             return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(
+                new RegistrationContainer {
+                    Registrations =
+                        new Dictionary<Type, RegistrationItem>
+                                {
+                                    {
+                                        typeToRegister,
+                                        new RegistrationItem(typeToRegister)
+                                        }
+                                }
+                });
+        }
+
+        internal IRegistrationSource GetArrayRegistrationSource()
+        {
+            return
+                new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(new RegistrationContainer());
+        }
+
+        internal IRegistrationSource GetArrayRegistrationSource(Type typeToRegister)
+        {
+            return new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(
                 new RegistrationContainer
                     {
                         Registrations =
