@@ -86,6 +86,7 @@ namespace LightCore
                                              {
                                                  new OpenGenericRegistrationSource(this._registrationContainer),
                                                  new EnumerableRegistrationSource(this._registrationContainer),
+                                                 new ArrayRegistrationSource(this._registrationContainer),
                                                  new FactoryRegistrationSource(this._registrationContainer),
                                                  new ConcreteTypeRegistrationSource()
                                              };
