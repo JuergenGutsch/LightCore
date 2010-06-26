@@ -4,7 +4,7 @@
         <BuildFolder>C:\Build\LightCore\</BuildFolder>
         <PublishFolder>C:\inetpub\wwwroot\LightCore\</PublishFolder>
         <ProjectName>LightCore</ProjectName>
-        <BuildTarget></BuildTarget>
+        <BuildTarget>CSharp</BuildTarget>
     </PropertyGroup>
 
     <ItemGroup>
