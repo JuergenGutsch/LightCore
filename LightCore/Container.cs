@@ -13,6 +13,19 @@ using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
+#if CF35
+    internal class CF35
+    {
+        
+    }
+#endif
+
+#if SL2
+  internal class SL2
+  {
+
+  }
+#endif
     /// <summary>
     /// Represents the implementation for an inversion of control container.
     /// </summary>
