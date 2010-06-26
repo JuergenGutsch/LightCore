@@ -30,7 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
 	ProjectSection(SolutionItems) = preProject
 		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
-		MSBuild.xml = MSBuild.xml
+		LightCore.xml = LightCore.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator", "LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj", "{AEB033B9-0F01-44A9-9642-A50BA90CA748}"
