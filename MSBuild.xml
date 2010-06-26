@@ -9,14 +9,15 @@
 
     <ItemGroup>
         <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
+        <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.Tests\\LightCore.Tests.csproj" />
         <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.CommonServiceLocator\\LightCore.CommonServiceLocator.csproj" />
         <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.Configuration\\LightCore.Configuration.csproj" />
         <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web\\LightCore.Integration.Web.csproj" />
+        <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web.Tests\\LightCore.Integration.Web.Tests.csproj" />
     </ItemGroup>
 
     <Target Name="Build">
         <!--<MSBuild Projects="$(ProjectName).sln" Targets="Build" />-->
-    
         <MSBuild
           Projects="@(ProjectReferences)"
           Targets="Build"
