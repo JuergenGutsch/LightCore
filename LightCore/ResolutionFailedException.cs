@@ -1,12 +1,17 @@
 ﻿using System;
+
+#if !SL2
 using System.Runtime.Serialization;
+#endif
 
 namespace LightCore
 {
-    /// <summary>
+    ///<summary>
     /// Thrown when resolving of a type failed.
-    /// </summary>
+    ///</summary>
+#if !SL2
     [Serializable]
+#endif
     public class ResolutionFailedException : Exception
     {
         /// <summary>
@@ -27,6 +32,7 @@ namespace LightCore
 
         }
 
+#if !SL2
         /// <summary>
         /// Initializes a new instance of the <see cref="ResolutionFailedException"/> type.
         /// </summary>
@@ -48,5 +54,6 @@ namespace LightCore
         {
 
         }
+#endif
     }
 }

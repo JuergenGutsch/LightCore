@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace LightCore.ExtensionMethods.System
@@ -16,10 +15,10 @@ namespace LightCore.ExtensionMethods.System
         /// <returns>A dictionary that holds the name / values of the passed object.</returns>
         internal static IDictionary<string, object> ToNamedArgumentDictionary(this object source)
         {
-            return TypeDescriptor
-                .GetProperties(source)
-                .Cast<PropertyDescriptor>()
-                .ToDictionary(property => property.Name, property => property.GetValue(source));
+            return source
+                .GetType()
+                .GetProperties()
+                .ToDictionary(property => property.Name, property => property.GetValue(source, null));
         }
     }
 }

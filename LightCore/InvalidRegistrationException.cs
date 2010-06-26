@@ -1,12 +1,17 @@
 ﻿using System;
+
+#if !SL2
 using System.Runtime.Serialization;
+#endif
 
 namespace LightCore
 {
     /// <summary>
     /// Thrown when a registration is invalid. e.g. Registration of interface to interface.
     /// </summary>
+#if !SL2
     [Serializable]
+#endif
     public class InvalidRegistrationException : Exception
     {
         /// <summary>
@@ -27,6 +32,7 @@ namespace LightCore
 
         }
 
+#if !SL2
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidRegistrationException"/> type.
         /// </summary>
@@ -48,5 +54,6 @@ namespace LightCore
         {
 
         }
+#endif
     }
 }
