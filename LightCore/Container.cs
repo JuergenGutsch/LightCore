@@ -13,6 +13,13 @@ using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
+#if CSharp
+    internal class CSHarp
+    {
+        
+    }
+#endif
+
 #if CF35
     internal class CF35
     {
