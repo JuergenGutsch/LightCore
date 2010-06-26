@@ -1,10 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Clean" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <BuildFolder>C:\Build\LightCore\</BuildFolder>
         <PublishFolder>C:\inetpub\wwwroot\LightCore\</PublishFolder>
         <ProjectName>LightCore</ProjectName>
-        <BuildTarget>CSharp</BuildTarget>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,11 +15,18 @@
         <ProjectReferences Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web.Tests\\LightCore.Integration.Web.Tests.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Cleanup  Include="**\Release\**" />
+        <Cleanup Include="**\Debug\**" />
+    </ItemGroup>
+
     <Target Name="Build">
-        <!--<MSBuild Projects="$(ProjectName).sln" Targets="Build" />-->
         <MSBuild
           Projects="@(ProjectReferences)"
           Targets="Build"
           Properties="Configuration=Release;Optimize=true;DefineConstants=$(BuildTarget)" />
+    </Target>
+    <Target Name="Clean" DependsOnTargets="Build">
+        <RemoveDir Directories="@Cleanup" />
     </Target>
 </Project>
