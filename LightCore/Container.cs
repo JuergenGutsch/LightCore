@@ -33,6 +33,20 @@ namespace LightCore
 
   }
 #endif
+
+#if SL3
+  internal class SL3
+  {
+
+  }
+#endif
+
+#if SL4
+  internal class SL4
+  {
+
+  }
+#endif
     /// <summary>
     /// Represents the implementation for an inversion of control container.
     /// </summary>
