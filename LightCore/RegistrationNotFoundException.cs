@@ -9,7 +9,7 @@ namespace LightCore
     /// <summary>
     /// Thrown when a mapping not found for resolving a type.
     /// </summary>
-#if !SL2 && !CF35
+#if !SL2 && !SL3 && !CF35
     [Serializable]
 #endif
     public class RegistrationNotFoundException : Exception
@@ -32,7 +32,7 @@ namespace LightCore
 
         }
 
-#if !SL2 && !CF35
+#if !SL2 && !SL3 && !CF35
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
