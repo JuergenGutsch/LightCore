@@ -8,6 +8,30 @@
         <MSBuild
           Projects="LightCore.sln"
           Targets="Clean;Build"
-          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;DefineConstants=$(BuildTarget)" />
+          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+    </Target>
+
+    <ItemGroup>
+        <ProjectReferencesLightCoreOnly Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <ProjectReferencesLightCoreAndConfiguration Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
+        <ProjectReferencesLightCoreAndConfiguration Include="$(MSBuildProjectDirectory)\\LightCore.Configuration\\LightCore.Configuration.csproj" />
+    </ItemGroup>
+
+    <Target Name="SL2">
+        <MSBuild
+          Projects="@(ProjectReferencesLightCoreOnly)"
+          Targets="Clean;Build"
+          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+    </Target>
+
+    <Target Name="CF35">
+        <MSBuild
+          Projects="@(ProjectReferencesLightCoreOnly)"
+          Targets="Clean;Build"
+          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
     </Target>
 </Project>

@@ -3,6 +3,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <PlatformFamilyName Condition="'$(BuildTarget)' == 'CF35'">PocketPC</PlatformFamilyName>
+     <PlatformID Condition="'$(BuildTarget)' == 'CF35'">WinCE</PlatformID>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>

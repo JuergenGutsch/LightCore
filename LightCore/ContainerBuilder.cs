@@ -47,7 +47,7 @@ namespace LightCore
                 }
 
                 this._activeRegistrationGroups = value;
-                this._activeRegistrationGroupsInternal = value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                this._activeRegistrationGroupsInternal = value.Split(new[] { ',' });
             }
         }
 
@@ -87,9 +87,12 @@ namespace LightCore
                                                  new OpenGenericRegistrationSource(this._registrationContainer),
                                                  new EnumerableRegistrationSource(this._registrationContainer),
                                                  new ArrayRegistrationSource(this._registrationContainer),
-                                                 new FactoryRegistrationSource(this._registrationContainer),
                                                  new ConcreteTypeRegistrationSource()
                                              };
+
+#if !CF35
+            allRegistrationSources.Add(new FactoryRegistrationSource(this._registrationContainer));
+#endif
 
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 

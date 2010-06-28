@@ -75,7 +75,10 @@ namespace LightCore.Registration.RegistrationSource
 
             var list = (IList)Activator.CreateInstance(closedListType);
 
-            Array.ForEach(resolvedInstances, instance => list.Add(instance));
+            foreach(var instance in resolvedInstances)
+            {
+                list.Add(instance);
+            }
 
             return list;
         }
