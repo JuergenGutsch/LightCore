@@ -4,7 +4,7 @@
         <OutputPath>C:\Build\LightCore\$(BuildTarget)\</OutputPath>
     </PropertyGroup>
 
-    <Target Name="Build">
+    <Target Name="Full">
         <MSBuild
           Projects="LightCore.sln"
           Targets="Clean;Build"
@@ -13,12 +13,6 @@
 
     <ItemGroup>
         <ProjectReferencesLightCoreOnly Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <ProjectReferencesLightCoreAndConfiguration Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
-        <ProjectReferencesLightCoreAndConfiguration Include="$(MSBuildProjectDirectory)\\LightCore.Configuration\\LightCore.Configuration.csproj" />
     </ItemGroup>
 
     <Target Name="LightCoreOnly">
