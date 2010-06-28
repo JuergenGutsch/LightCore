@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if !SL2
+#if !SL2 && !SL3 && !CF35
 using System.Runtime.Serialization;
 #endif
 
