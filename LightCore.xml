@@ -8,7 +8,7 @@
         <MSBuild
           Projects="LightCore.sln"
           Targets="Clean;Build"
-          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
     </Target>
 
     <ItemGroup>
@@ -19,6 +19,6 @@
         <MSBuild
           Projects="@(ProjectReferencesLightCoreOnly)"
           Targets="Clean;Build"
-          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
     </Target>
 </Project>
