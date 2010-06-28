@@ -29,7 +29,7 @@ namespace LightCore.ExtensionMethods.System
         /// <returns>An instance of the specified type.</returns>
         public static object ToOrDefault(this string value, Type typeToConvert)
         {
-#if SL2 || CF35
+#if !SL2 && !SL3 && !CF35
             try
             {
                 switch (Type.GetTypeCode(typeToConvert))
