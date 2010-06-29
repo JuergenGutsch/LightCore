@@ -37,6 +37,8 @@
                                     </xs:sequence>
                                     <xs:attribute name="ContractType" type="xs:string" use="required" />
                                     <xs:attribute name="ImplementationType" type="xs:string" use="required" />
+                                    <xs:attribute name="Lifecycle" type="xs:string" use="optional" />
+                                    <xs:attribute name="Enabled" type="xs:string" use="optional" />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>
@@ -80,6 +82,7 @@
                                         </xs:element>
                                     </xs:sequence>
                                     <xs:attribute name="Name" type="xs:string" use="required" />
+                                    <xs:attribute name="Enabled" type="xs:string" use="optional" />
                                 </xs:complexType>
                             </xs:element>
                         </xs:sequence>

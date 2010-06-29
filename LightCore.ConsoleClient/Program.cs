@@ -2,7 +2,6 @@
 
 using LightCore.Configuration;
 using LightCore.ConsoleClient.Screens;
-using LightCore.TestTypes;
 
 namespace LightCore.ConsoleClient
 {
@@ -22,7 +21,6 @@ namespace LightCore.ConsoleClient
             var module = new XamlRegistrationModule();
 
             builder.RegisterModule(module);
-            builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
 

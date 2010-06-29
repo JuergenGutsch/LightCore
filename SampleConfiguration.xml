@@ -5,9 +5,12 @@
     </LightCoreConfiguration.TypeAliases>
     <LightCoreConfiguration.Registrations>
         <Registration ContractType="System.ComponentModel.IDisposable" ImplementationType="System.IO.Stream, mscorlib" />
+        <Registration ContractType="LightCore.TestTypes.IRepository{2}, LightCore.TestTypes" ImplementationType="LightCore.TestTypes.Repository{2}, LightCore.TestTypes" />
         <Registration ContractType="LightCore.TestTypes.IFoo" ImplementationType="LightCore.TestTypes.Foo">
             <Registration.Arguments>
-                <Argument Value="true" Type="System.Boolean" />
+                <Argument Value="Alexander" />
+                <Argument Value="44" Type="int" Name="AgeProperty"/>
+                <Argument Value="true" Type="bool" />
             </Registration.Arguments>
         </Registration>
     </LightCoreConfiguration.Registrations>
