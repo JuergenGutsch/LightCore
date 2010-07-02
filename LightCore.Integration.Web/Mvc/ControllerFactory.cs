@@ -1,5 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web;
+using System.Web.Mvc;
 using System.Web.Routing;
+
+using LightCore.Integration.Web.Properties;
 
 namespace LightCore.Integration.Web.Mvc
 {
@@ -16,19 +20,47 @@ namespace LightCore.Integration.Web.Mvc
         /// <param name="container">The container.</param>
         public ControllerFactory(IContainer container)
         {
+            if (container == null)
+            {
+                throw new ArgumentNullException("container");
+            }
+
             this._container = container;
         }
 
         /// <summary>
-        /// Creates the controller.
+        /// Creates the controller internal for unit testing.
         /// </summary>
-        /// <param name="requestContext">The request context.</param><param name="controllerName">Name of the controller.</param>
-        /// <returns>
-        /// A reference to the controller.
-        /// </returns>
-        public override IController CreateController(RequestContext requestContext, string controllerName)
+        /// <param name="requestContext">The request context.</param>
+        /// <param name="controllerType">The controller type.</param>
+        /// <returns>The controller instance.</returns>
+        internal IController CreateControllerInternal(RequestContext requestContext, Type controllerType)
         {
-            return (IController)this._container.Resolve(base.GetControllerType(requestContext, controllerName));
+            return this.GetControllerInstance(requestContext, controllerType);
+        }
+
+        /// <summary>
+        /// Retrieves the controller instance for the specified request context and controller type.
+        /// </summary>
+        /// <returns>
+        /// The controller instance.
+        /// </returns>
+        /// <param name="requestContext">The context of the HTTP request, which includes the HTTP context and route data.</param><param name="controllerType">The type of the controller.</param><exception cref="T:System.Web.HttpException"><paramref name="controllerType"/> is null.</exception><exception cref="T:System.ArgumentException"><paramref name="controllerType"/> cannot be assigned.</exception><exception cref="T:System.InvalidOperationException">An instance of <paramref name="controllerType"/> cannot be created.</exception>
+        protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
+        {
+            if (requestContext == null)
+            {
+                throw new ArgumentNullException("requestContext");
+            }
+
+            if (controllerType == null)
+            {
+                throw new HttpException(404,
+                                        string.Format(Resources.NoControllerTypeFoundForPathFormat,
+                                                      requestContext.HttpContext.Request.Path));
+            }
+
+            return (IController)this._container.Resolve(controllerType);
         }
     }
 }
