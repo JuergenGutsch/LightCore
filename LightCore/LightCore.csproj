@@ -120,7 +120,7 @@
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\ConcreteTypeRegistrationSource.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="($(MSBuildTargets) == '') Or ($(MSBuildTargets) == 'CSharp')" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildTargets) == '' Or $(MSBuildTargets) == 'NET35' Or $(MSBuildTargets) == 'NET40'" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" Condition="$(MSBuildTargets) == 'CF35'" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" Condition="$(MSBuildTargets) == 'SL2'" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" Condition="$(MSBuildTargets) == 'SL3'" />
