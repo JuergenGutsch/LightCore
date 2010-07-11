@@ -1,4 +1,4 @@
-﻿#if !NET40
+﻿#if !NET35 && !CF35 && !SL3
 using System;
 using System.Linq;
 using System.Reflection;
