@@ -92,6 +92,7 @@
     <Compile Include="Integration\DelegateActivatorTests.cs" />
     <Compile Include="Integration\GenericRegistrationTests.cs" />
     <Compile Include="Integration\InjectPropertiesTests.cs" />
+    <Compile Include="Integration\LazyRegistrationSourceTests.cs" />
     <Compile Include="Integration\LifecycleTests.cs" />
     <Compile Include="Lifecycle\LifecycleFixture.cs" />
     <Compile Include="Lifecycle\SingletonLifecycle\WhenRetrieveInstanceInLifecycleIsCalled.cs" />
@@ -113,6 +114,8 @@
     <Compile Include="Registration\RegistrationSource\EnumerableRegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\FactoryRegistrationSource\WhenDependencySelectorIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\FactoryRegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
+    <Compile Include="Registration\RegistrationSource\LazyRegistrationSource\WhenDependencySelectorIsCalled.cs" />
+    <Compile Include="Registration\RegistrationSource\LazyRegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource\WhenDependencySelectorIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource\WhenGetRegistrationForCoreIsCalled.cs" />
     <Compile Include="Registration\RegistrationSource\RegistrationSourceFixture.cs" />

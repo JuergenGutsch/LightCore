@@ -93,8 +93,7 @@ namespace LightCore.Registration.RegistrationSource
                                                                          TypeOfObject,
                                                                          parameterExpressions
                                                                              .Select(
-                                                                                 p => Expression.TypeAs(p, TypeOfObject))
-                                                                             .Cast<Expression>());
+                                                                                 p => Expression.TypeAs(p, TypeOfObject)));
 
                                                                      var resolveCall = Expression.Call(
                                                                          containerConstant,

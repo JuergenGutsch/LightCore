@@ -80,6 +80,7 @@
     <Compile Include="Registration\RegistrationModule.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
+    <Compile Include="Registration\RegistrationSource\LazyRegistrationSource.cs" />
     <Compile Include="ResolutionFailedException.cs" />
     <Compile Include="ExtensionMethods\System\Collections\Generic\CollectionsGenericExtensions.cs" />
     <Compile Include="ExtensionMethods\System\StringExtensions.cs" />

@@ -16,12 +16,14 @@ namespace LightCore.Tests.Registration.RegistrationSource
         internal IRegistrationSource GetEnumerableRegistrationSource()
         {
             return
-                new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(new RegistrationContainer());
+                new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource( new RegistrationContainer() );
         }
 
-        internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister) {
+        internal IRegistrationSource GetEnumerableRegistrationSource( Type typeToRegister )
+        {
             return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(
-                new RegistrationContainer {
+                new RegistrationContainer
+                {
                     Registrations =
                         new Dictionary<Type, RegistrationItem>
                                 {
@@ -30,16 +32,16 @@ namespace LightCore.Tests.Registration.RegistrationSource
                                         new RegistrationItem(typeToRegister)
                                         }
                                 }
-                });
+                } );
         }
 
         internal IRegistrationSource GetArrayRegistrationSource()
         {
             return
-                new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(new RegistrationContainer());
+                new LightCore.Registration.RegistrationSource.ArrayRegistrationSource( new RegistrationContainer() );
         }
 
-        internal IRegistrationSource GetArrayRegistrationSource(Type typeToRegister)
+        internal IRegistrationSource GetArrayRegistrationSource( Type typeToRegister )
         {
             return new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(
                 new RegistrationContainer
@@ -52,10 +54,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
                                         new RegistrationItem(typeToRegister)
                                         }
                                 }
-                    });
+                    } );
         }
 
-        internal IRegistrationSource GetFactoryRegistrationSource(Type typeToRegister)
+        internal IRegistrationSource GetFactoryRegistrationSource( Type typeToRegister )
         {
             return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource(
                 new RegistrationContainer
@@ -67,10 +69,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
                                                     new RegistrationItem(typeToRegister)
                                                     }
                                             }
-                    });
+                    } );
         }
 
-        internal IRegistrationSource GetOpenGenericRegistrationSource(Type contractType, Type implementationType)
+        internal IRegistrationSource GetOpenGenericRegistrationSource( Type contractType, Type implementationType )
         {
             return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource(
                 new RegistrationContainer
@@ -86,7 +88,22 @@ namespace LightCore.Tests.Registration.RegistrationSource
                                             }
                                         }
                                 }
-                    });
+                    } );
+        }
+
+        internal IRegistrationSource GetLazyRegistrationSource( Type typeToRegister )
+        {
+            return new LightCore.Registration.RegistrationSource.LazyRegistrationSource(
+                new RegistrationContainer
+                    {
+                        Registrations = new Dictionary<Type, RegistrationItem>
+                                            {
+                                                {
+                                                    typeToRegister,
+                                                    new RegistrationItem(typeToRegister)
+                                                    }
+                                            }
+                    } );
         }
     }
 }

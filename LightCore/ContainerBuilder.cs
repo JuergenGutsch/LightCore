@@ -94,6 +94,10 @@ namespace LightCore
             allRegistrationSources.Add(new FactoryRegistrationSource(this._registrationContainer));
 #endif
 
+#if !NET35 && !CF35 && !SL3
+            allRegistrationSources.Add(new LazyRegistrationSource(this._registrationContainer));
+#endif
+
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
