@@ -13,8 +13,15 @@ using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
-#if CSharp
-    internal class CSHarp
+#if NET35
+    internal class NET35
+    {
+        
+    }
+#endif
+
+#if NET40
+    internal class NET40
     {
         
     }
@@ -27,13 +34,6 @@ namespace LightCore
     }
 #endif
 
-#if SL2
-  internal class SL2
-  {
-
-  }
-#endif
-
 #if SL3
   internal class SL3
   {
@@ -41,12 +41,6 @@ namespace LightCore
   }
 #endif
 
-#if SL4
-  internal class SL4
-  {
-
-  }
-#endif
     /// <summary>
     /// Represents the implementation for an inversion of control container.
     /// </summary>

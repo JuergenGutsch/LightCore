@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
 using System.Runtime.Serialization;
 #endif
 
@@ -9,7 +9,7 @@ namespace LightCore
     ///<summary>
     /// Thrown when resolving of a type failed.
     ///</summary>
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
     [Serializable]
 #endif
     public class ResolutionFailedException : Exception
@@ -32,7 +32,7 @@ namespace LightCore
 
         }
 
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
         /// <summary>
         /// Initializes a new instance of the <see cref="ResolutionFailedException"/> type.
         /// </summary>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
 using System.Runtime.Serialization;
 #endif
 
@@ -9,7 +9,7 @@ namespace LightCore
     /// <summary>
     /// Thrown when a registration is invalid. e.g. Registration of interface to interface.
     /// </summary>
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
     [Serializable]
 #endif
     public class InvalidRegistrationException : Exception
@@ -32,7 +32,7 @@ namespace LightCore
 
         }
 
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidRegistrationException"/> type.
         /// </summary>

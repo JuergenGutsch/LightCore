@@ -9,7 +9,7 @@ namespace LightCore
     /// <summary>
     /// Thrown when the contract type is not assignable from implementationtype.
     /// </summary>
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
     [Serializable]
 #endif
     public class ContractNotImplementedByTypeException : Exception
@@ -32,7 +32,7 @@ namespace LightCore
 
         }
 
-#if !SL2 && !SL3 && !CF35
+#if !SL3 && !CF35
         /// <summary>
         /// Initializes a new instance of the <see cref="ContractNotImplementedByTypeException"/> type.
         /// </summary>
