@@ -57,8 +57,7 @@ namespace LightCore
         /// </summary>
         private readonly IRegistrationContainer _registrationContainer;
 
-        /// <summary>
-        /// Initializes a new instance of <see cref="Container" />.
+        /// <summary> Initializes a new instance of <see cref="Container" />.
         /// <param name="registrationContainer">The registrations for this container.</param>
         /// </summary>
         internal Container(IRegistrationContainer registrationContainer)

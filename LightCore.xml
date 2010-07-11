@@ -1,16 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <OutputPath>C:\Build\LightCore\$(BuildTarget)\</OutputPath>
+        <OutputPath>C:\Build\LightCore\$(OuputSubFolderName)\</OutputPath>
     </PropertyGroup>
 
     <Target Name="Full">
         <MSBuild
           Projects="LightCore.sln"
           Targets="Clean;Build"
-          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+          Properties="OutputPath=$(OutputPath);Configuration=Release;ToolsVersion=$(ToolsVersion);TargetFrameworkVersion=$(TargetFrameworkVersion);Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget);$(ConstantForBuild)" />
     </Target>
+	
+    <ItemGroup>
+        <ProjectReferencesFullWithoutTestAndExamples Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
+        <ProjectReferencesFullWithoutTestAndExamples Include="$(MSBuildProjectDirectory)\\LightCore.Configuration\\LightCore.Configuration.csproj" />
+        <ProjectReferencesFullWithoutTestAndExamples Include="$(MSBuildProjectDirectory)\\LightCore.CommonServiceLocator\\LightCore.CommonServiceLocator.csproj" />
+        <ProjectReferencesFullWithoutTestAndExamples Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web\\LightCore.Integration.Web.csproj" />
+    </ItemGroup>
 
+    <Target Name="FullWithoutTestAndExamples">
+        <MSBuild
+          Projects="@(ProjectReferencesFullWithoutTestAndExamples)"
+          Targets="Clean;Build"
+          Properties="OutputPath=$(OutputPath);Configuration=Release;ToolsVersion=$(ToolsVersion);TargetFrameworkVersion=$(TargetFrameworkVersion);Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget);$(ConstantForBuild)" />
+    </Target>
+	
+	<ItemGroup>
+        <ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
+        <ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore.Configuration\\LightCore.Configuration.csproj" />
+        <ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore.CommonServiceLocator\\LightCore.CommonServiceLocator.csproj" />
+        <ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web\\LightCore.Integration.Web.csproj" />
+		<ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore.Tests\\LightCore.Tests.csproj" />
+		<ProjectReferencesUnitTests Include="$(MSBuildProjectDirectory)\\LightCore.Integration.Web.Tests\\LightCore.Integration.Web.Tests.csproj" />
+    </ItemGroup>
+
+	<Target Name="UnitTests">
+        <MSBuild
+          Projects="@(ProjectReferencesUnitTests)"
+          Targets="Clean;Build"
+          Properties="OutputPath=$(OutputPath);Configuration=Release;ToolsVersion=$(ToolsVersion);TargetFrameworkVersion=$(TargetFrameworkVersion);Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget);$(ConstantForBuild)" />
+    </Target>
+	
     <ItemGroup>
         <ProjectReferencesLightCoreOnly Include="$(MSBuildProjectDirectory)\\LightCore\\LightCore.csproj" />
     </ItemGroup>
@@ -19,6 +49,6 @@
         <MSBuild
           Projects="@(ProjectReferencesLightCoreOnly)"
           Targets="Clean;Build"
-          Properties="OutputPath=$(OutputPath);Configuration=Release;Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget)" />
+          Properties="OutputPath=$(OutputPath);Configuration=Release;ToolsVersion=$(ToolsVersion);TargetFrameworkVersion=$(TargetFrameworkVersion);Optimize=true;DebugType=none;BuildTarget=$(BuildTarget);MSBuildTargets=$(BuildTarget);DefineConstants=$(BuildTarget);$(ConstantForBuild)" />
     </Target>
 </Project>
