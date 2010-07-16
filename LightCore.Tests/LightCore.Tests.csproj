@@ -78,7 +78,6 @@
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Activation\Activators\DelegateActivator\WhenActivateInstanceIsCalled.cs" />
-    <Compile Include="Activation\Activators\GenericDelegateActivator\WhenActivateInstanceIsCalled.cs" />
     <Compile Include="Activation\Activators\InstanceActivator\WhenActivateInstanceIsCalled.cs" />
     <Compile Include="Activation\Activators\ReflectionActivator\WhenActivateInstanceIsCalled.cs" />
     <Compile Include="Activation\ArgumentCollector\WhenCollectArgumentsIsCalled.cs" />

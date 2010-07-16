@@ -180,8 +180,7 @@ namespace LightCore
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return this.AddToRegistrationFluent(new RegistrationItem(typeof(TContract))
                                                     {
-                                                        Activator =
-                                                            new GenericDelegateActivator<TContract>(activatorFunction)
+                                                        Activator = new DelegateActivator(c => activatorFunction(c))
                                                     });
         }
 

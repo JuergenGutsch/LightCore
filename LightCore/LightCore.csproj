@@ -108,7 +108,6 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Activation\Activators\GenericDelegateActivator.cs" />
     <Compile Include="Activation\Components\IArgumentCollector.cs" />
     <Compile Include="Activation\Components\IConstructorSelector.cs" />
     <Compile Include="AnonymousArgument.cs" />
