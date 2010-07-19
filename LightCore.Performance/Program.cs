@@ -10,7 +10,7 @@ namespace LightCore.Performance
     {
         static void Main(string[] args)
         {
-            int iterations = 10000;
+            int iterations = 100000;
 
             Console.WriteLine("Running {0} iterations for each use case.", iterations);
 
@@ -21,7 +21,9 @@ namespace LightCore.Performance
                                    new PlainUseCase(),
                                    new FunqUseCase(),
                                    new LightCoreUseCase(),
+                                   new UnityUseCase(),
                                    new LightCoreDelegateUseCase(),
+                                   new NinjectUseCase(),
                                    new AutofacUseCase()
                                };
 

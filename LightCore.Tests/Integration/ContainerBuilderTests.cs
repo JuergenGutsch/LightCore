@@ -9,6 +9,34 @@ namespace LightCore.Tests.Integration
     public class ContainerBuilderTests
     {
         [Test]
+        public void ContainerBuilder_with_registered_groups_reconice_these()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.ActiveRegistrationGroups = "Test";
+
+            builder.Register<IFoo, FooTwo>().WithGroup("Test");
+            builder.Register<IFoo, Foo>().WithGroup("Test2");
+
+            var container = builder.Build();
+
+            Assert.That(container.Resolve<IFoo>(), Is.InstanceOf<FooTwo>());
+        }
+
+        [Test]
+        public void ContainerBuilder_with_non_active_groups_throws_registrationNotFoundException()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register<IFoo, FooTwo>().WithGroup( "Test" );
+            builder.Register<IFoo, Foo>().WithGroup( "Test2" );
+
+            var container = builder.Build();
+
+            Assert.That(() => container.Resolve<IFoo>(), Throws.InstanceOf<RegistrationNotFoundException>());
+        }
+
+        [Test]
         public void ContainerBuilder_can_register_generic_type()
         {
             var builder = new ContainerBuilder();

@@ -26,17 +26,17 @@ namespace LightCore.Registration.RegistrationSource
         private readonly IRegistrationContainer _registrationContainer;
 
         /// <summary>
-        /// Holds the resolve methodinfo with arguments.
+        /// Holds the CreateLazyRegistration methodInfo.
         /// </summary>
         private static readonly MethodInfo CreateLazyRegistrationMethod =
-            typeof( LazyRegistrationSource )
-            .GetMethod( "CreateLazyRegistration", BindingFlags.Static | BindingFlags.NonPublic );
+            typeof(LazyRegistrationSource)
+            .GetMethod("CreateLazyRegistration", BindingFlags.Static | BindingFlags.NonPublic);
 
         /// <summary>
         /// Initializes a new instance of <see cref="FactoryRegistrationSource" />.
         /// </summary>
         /// <param name="registrationContainer">The registration container.</param>
-        public LazyRegistrationSource( IRegistrationContainer registrationContainer )
+        public LazyRegistrationSource(IRegistrationContainer registrationContainer)
         {
             this._registrationContainer = registrationContainer;
         }
@@ -49,9 +49,9 @@ namespace LightCore.Registration.RegistrationSource
             get
             {
                 return contractType => contractType.IsGenericType
-                    && contractType.GetGenericTypeDefinition() == typeof( Lazy<> )
+                    && contractType.GetGenericTypeDefinition() == typeof(Lazy<>)
                     &&
-                    this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault() );
+                    this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
             }
         }
 
@@ -61,18 +61,23 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="contractType">The contract type.</param>
         /// <param name="container">The container.</param>
         /// <returns><value>The registration item</value> if this source can handle it, otherwise <value>null</value>.</returns>
-        public RegistrationItem GetRegistrationFor( Type contractType, IContainer container )
+        public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
-            return ( RegistrationItem ) CreateLazyRegistrationMethod
-                                          .MakeGenericMethod( contractType.GetGenericArguments().FirstOrDefault() )
-                                          .Invoke( null, null );
+            return ( RegistrationItem )CreateLazyRegistrationMethod
+                                          .MakeGenericMethod(contractType.GetGenericArguments().FirstOrDefault())
+                                          .Invoke(null, null);
         }
 
+        /// <summary>
+        /// Creates a Lazy registration for a given type on the fly.
+        /// </summary>
+        /// <typeparam name="T">The type to use.</typeparam>
+        /// <returns>The new registrationItem for lazy resolve.</returns>
         private static RegistrationItem CreateLazyRegistration<T>()
         {
             return new RegistrationItem
                        {
-                           Activator = new DelegateActivator( c => new Lazy<T>( c.Resolve<T> ) )
+                           Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
                        };
         }
     }

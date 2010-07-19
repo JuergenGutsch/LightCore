@@ -211,6 +211,12 @@ namespace LightCore
                                                       }
                                                   }
 
+                                                  if(this._activeRegistrationGroupsInternal == null && registrationItem.Group != null)
+                                                  {
+                                                      // Do not add inactive registrationItem.
+                                                      return;
+                                                  }
+
                                                   if (
                                                       this._registrationContainer.Registrations.ContainsKey(
                                                           registrationItem.ContractType))
