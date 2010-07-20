@@ -8,6 +8,19 @@ namespace LightCore.Tests.Registration.RegistrationSource
 {
     public class RegistrationSourceFixture
     {
+        public RegistrationSourceFixture()
+        {
+            var builder = new ContainerBuilder();
+
+            this.BootStrapContainer = builder.Build();
+        }
+
+        internal IContainer BootStrapContainer
+        {
+            get;
+            set;
+        }
+
         internal IRegistrationSource GetConcreteRegistrationSource()
         {
             return new LightCore.Registration.RegistrationSource.ConcreteTypeRegistrationSource();

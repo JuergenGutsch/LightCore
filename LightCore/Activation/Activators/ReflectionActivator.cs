@@ -47,16 +47,6 @@ namespace LightCore.Activation.Activators
         /// Creates a new instance of <see cref="ReflectionActivator" />.
         ///</summary>
         ///<param name="implementationType">The implementation type.</param>
-        internal ReflectionActivator(Type implementationType)
-            : this(implementationType, new ConstructorSelector(), new ArgumentCollector())
-        {
-
-        }
-
-        ///<summary>
-        /// Creates a new instance of <see cref="ReflectionActivator" />.
-        ///</summary>
-        ///<param name="implementationType">The implementation type.</param>
         ///<param name="constructorSelector">The constructor selector.</param>
         ///<param name="argumentCollector">The argument collector.</param>
         internal ReflectionActivator(Type implementationType, IConstructorSelector constructorSelector, IArgumentCollector argumentCollector)

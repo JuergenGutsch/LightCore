@@ -24,10 +24,8 @@ namespace LightCore.Tests.Registration.RegistrationSource.ArrayRegistrationSourc
 
             var registrationItem = registrationSource.GetRegistrationFor(typeof(IBar[]), null);
 
-            Assert.That(registrationItem, Is.Not.Null);
             Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(IBar[])));
             Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(IBar[])));
-            Assert.That(registrationItem.Activator, Is.TypeOf<DelegateActivator>());
             Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());
         }
     }

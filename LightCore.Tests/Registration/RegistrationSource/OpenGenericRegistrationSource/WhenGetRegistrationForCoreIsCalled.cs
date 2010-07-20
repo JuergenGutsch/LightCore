@@ -13,7 +13,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<,>));
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), null), Is.Not.Null);
+            Assert.That(registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), this.BootStrapContainer), Is.Not.Null);
         }
 
         [Test]
@@ -21,7 +21,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<>), typeof(Repository<>));
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), null);
+            var registrationItem = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), this.BootStrapContainer);
 
             Assert.That(registrationItem, Is.Not.Null);
             Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(IRepository<Foo>)));

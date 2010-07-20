@@ -14,7 +14,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof (Foo), null), Is.Not.Null);
+            Assert.That(registrationSource.GetRegistrationFor(typeof(Foo), this.BootStrapContainer), Is.Not.Null);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrati
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof (Foo), null);
+            var registrationItem = registrationSource.GetRegistrationFor(typeof (Foo), this.BootStrapContainer);
 
             Assert.That(registrationItem, Is.Not.Null);
             Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(Foo)));

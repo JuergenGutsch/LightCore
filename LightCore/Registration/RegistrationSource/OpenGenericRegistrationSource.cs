@@ -1,6 +1,7 @@
 ﻿using System;
 
 using LightCore.Activation.Activators;
+using LightCore.Activation.Components;
 using LightCore.Fluent;
 
 namespace LightCore.Registration.RegistrationSource
@@ -62,7 +63,11 @@ namespace LightCore.Registration.RegistrationSource
 
             var closedGenericRegistration = new RegistrationItem(contractType)
                                                 {
-                                                    Activator = new ReflectionActivator(implementationType),
+                                                    Activator = new ReflectionActivator(
+                                                        implementationType,
+                                                        container.Resolve<IConstructorSelector>(),
+                                                        container.Resolve<IArgumentCollector>()
+                                                        ),
                                                     ImplementationType = implementationType
                                                 };
 

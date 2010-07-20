@@ -4,18 +4,18 @@
     /// Represents a activator based on a instance.
     /// This is always singleton per container.
     /// </summary>
-    internal class InstanceActivator<TInstance> : IActivator
+    internal class InstanceActivator<TContract> : IActivator
     {
         /// <summary>
         /// Holds the instance.
         /// </summary>
-        private readonly TInstance _instance;
+        private readonly TContract _instance;
 
         /// <summary>
         /// Initializes a new instance of <see cref="InstanceActivator{TContract}" />.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        internal InstanceActivator(TInstance instance)
+        internal InstanceActivator(TContract instance)
         {
             this._instance = instance;
         }

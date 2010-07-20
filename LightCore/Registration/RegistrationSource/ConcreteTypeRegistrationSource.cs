@@ -1,6 +1,7 @@
 ﻿using System;
 
 using LightCore.Activation.Activators;
+using LightCore.Activation.Components;
 using LightCore.ExtensionMethods.System;
 
 namespace LightCore.Registration.RegistrationSource
@@ -36,7 +37,10 @@ namespace LightCore.Registration.RegistrationSource
             // On-the-fly registration of concrete types. Equivalent to new-operator.
             return new RegistrationItem(contractType)
                        {
-                           Activator = new ReflectionActivator(contractType)
+                           Activator = new ReflectionActivator(
+                               contractType,
+                               container.Resolve<IConstructorSelector>(),
+                               container.Resolve<IArgumentCollector>())
                        };
         }
     }

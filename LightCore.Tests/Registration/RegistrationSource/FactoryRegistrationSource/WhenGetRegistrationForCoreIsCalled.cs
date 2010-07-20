@@ -37,7 +37,6 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
             Assert.That(registrationItem, Is.Not.Null);
             Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(Func<string, IFoo>)));
             Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(Func<string, IFoo>)));
-            Assert.That(registrationItem.Activator, Is.TypeOf<DelegateActivator>());
             Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());
         }
     }

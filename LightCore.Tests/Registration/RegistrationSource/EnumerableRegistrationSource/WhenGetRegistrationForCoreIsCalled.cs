@@ -16,7 +16,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         {
             var registrationSource = this.GetEnumerableRegistrationSource(typeof(IFoo));
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof(IEnumerable<IFoo>), null), Is.Not.Null);
+            Assert.That(registrationSource.GetRegistrationFor(typeof(IEnumerable<IFoo>), this.BootStrapContainer), Is.Not.Null);
         }
 
         [Test]
@@ -24,12 +24,11 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         {
             var registrationSource = this.GetEnumerableRegistrationSource(typeof(IBar));
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof(IEnumerable<IBar>), null);
+            var registrationItem = registrationSource.GetRegistrationFor(typeof(IEnumerable<IBar>), this.BootStrapContainer);
 
             Assert.That(registrationItem, Is.Not.Null);
             Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(IEnumerable<IBar>)));
             Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(IEnumerable<IBar>)));
-            Assert.That(registrationItem.Activator, Is.TypeOf<DelegateActivator>());
             Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());
         }
     }

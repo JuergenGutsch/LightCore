@@ -4,7 +4,6 @@ using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.Lifecycle;
 using LightCore.Registration;
-using LightCore.Registration.RegistrationSource;
 using LightCore.TestTypes;
 
 using NUnit.Framework;
@@ -18,7 +17,11 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
     {
         private IActivator GetActivator(Type implementationType)
         {
-            return new LightCore.Activation.Activators.ReflectionActivator(implementationType);
+            return new LightCore.Activation.Activators.ReflectionActivator(
+                implementationType,
+                new LightCore.Activation.Components.ConstructorSelector(),
+                new LightCore.Activation.Components.ArgumentCollector()
+                );
         }
 
         private ResolutionContext GetContext()
@@ -40,8 +43,11 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
                                                                 new RegistrationItem(contractType)
                                                                     {
                                                                         Activator =
-                                                                            new LightCore.Activation.Activators.
-                                                                            ReflectionActivator(implementationType),
+                                                                            new LightCore.Activation.Activators.ReflectionActivator
+                                                                                (implementationType,
+                                                                                new LightCore.Activation.Components.ConstructorSelector(),
+                                                                                new LightCore.Activation.Components.ArgumentCollector()
+                                                                                ),
                                                                         Lifecycle = new TransientLifecycle()
                                                                     }
                                                                 }

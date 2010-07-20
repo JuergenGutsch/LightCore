@@ -10,6 +10,7 @@ using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
 using LightCore.Registration.RegistrationSource;
+using LightCore.Activation.Components;
 
 namespace LightCore
 {
@@ -41,7 +42,7 @@ namespace LightCore
 
             set
             {
-                if (value == null)
+                if(value == null)
                 {
                     throw new ArgumentException("value");
                 }
@@ -50,6 +51,11 @@ namespace LightCore
                 this._activeRegistrationGroupsInternal = value.Split(new[] { ',' });
             }
         }
+
+        /// <summary>
+        /// Holds a container for bootstrapping LightCore.
+        /// </summary>
+        private readonly IContainer _bootStrappingContainer;
 
         /// <summary>
         /// Holds a container with registrations to register.
@@ -74,6 +80,8 @@ namespace LightCore
             this._registrationContainer = new RegistrationContainer();
             this._registrationCallbacks = new List<Action>();
             this._defaultLifecycleFunction = () => new TransientLifecycle();
+
+            this._bootStrappingContainer = this.Build();
         }
 
         /// <summary>
@@ -100,6 +108,8 @@ namespace LightCore
 
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 
+            this.BootStrappLightCore();
+
             // Invoke the callbacks, they assert if the registration already exists, if not, register the registration.
             this._registrationCallbacks.ForEach(registerCallback => registerCallback());
             this._registrationCallbacks.Clear();
@@ -107,6 +117,22 @@ namespace LightCore
             var container = new Container(this._registrationContainer);
 
             return container;
+        }
+
+        private void BootStrappLightCore()
+        {
+            Type typeOfArgumentCollector = typeof(IArgumentCollector);
+            Type typeOfConstructorSelector = typeof(IConstructorSelector);
+
+            if(!this._registrationContainer.Registrations.ContainsKey(typeOfArgumentCollector))
+            {
+                this.Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
+            }
+
+            if(!this._registrationContainer.Registrations.ContainsKey(typeOfConstructorSelector))
+            {
+                this.Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
+            }
         }
 
         /// <summary>
@@ -145,7 +171,7 @@ namespace LightCore
         {
             Type typeOfSelf = typeof(TSelf);
 
-            if (!typeOfSelf.IsConcreteType())
+            if(!typeOfSelf.IsConcreteType())
             {
                 throw new InvalidRegistrationException(
                     Resources.InvalidRegistrationFormat.FormatWith(typeOfSelf.ToString()));
@@ -194,15 +220,15 @@ namespace LightCore
                                               {
 
                                                   // Set default reuse scope, if not user defined. (System default is <see cref="TransientLifecycle" />.
-                                                  if (registrationItem.Lifecycle == null)
+                                                  if(registrationItem.Lifecycle == null)
                                                   {
                                                       registrationItem.Lifecycle = this._defaultLifecycleFunction();
                                                   }
 
-                                                  if (this._activeRegistrationGroupsInternal != null &&
+                                                  if(this._activeRegistrationGroupsInternal != null &&
                                                       registrationItem.Group != null)
                                                   {
-                                                      if (
+                                                      if(
                                                           !this._activeRegistrationGroupsInternal.Any(
                                                               g => g.Trim() == registrationItem.Group.Trim()))
                                                       {
@@ -217,7 +243,7 @@ namespace LightCore
                                                       return;
                                                   }
 
-                                                  if (
+                                                  if(
                                                       this._registrationContainer.Registrations.ContainsKey(
                                                           registrationItem.ContractType))
                                                   {
@@ -272,7 +298,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            if (!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
+            if(!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException(
                     Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
@@ -281,7 +307,10 @@ namespace LightCore
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return this.AddToRegistrationFluent(new RegistrationItem(typeOfContract)
                                                     {
-                                                        Activator = new ReflectionActivator(typeOfImplementation),
+                                                        Activator = new ReflectionActivator(
+                                                            typeOfImplementation,
+                                                            this._bootStrappingContainer.Resolve<IConstructorSelector>(),
+                                                            this._bootStrappingContainer.Resolve<IArgumentCollector>()),
                                                         Lifecycle = this._defaultLifecycleFunction(),
                                                         ImplementationType = typeOfImplementation
                                                     });
