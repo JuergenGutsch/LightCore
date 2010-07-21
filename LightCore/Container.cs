@@ -66,10 +66,10 @@ namespace LightCore
         /// </summary>
         private void RegisterContainer()
         {
-            var typeOfIContainer = typeof (IContainer);
+            var typeOfIContainer = typeof(IContainer);
 
             // The container is already registered from external.
-            if (this._registrationContainer.Registrations.ContainsKey(typeOfIContainer))
+            if(this._registrationContainer.Registrations.ContainsKey(typeOfIContainer))
             {
                 this._registrationContainer.Registrations.Remove(typeOfIContainer);
             }
@@ -90,7 +90,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract"/>.</returns>
         public TContract Resolve<TContract>()
         {
-            return (TContract)this.Resolve(typeof(TContract));
+            return ( TContract )this.Resolve(typeof(TContract));
         }
 
         ///<summary>
@@ -112,7 +112,7 @@ namespace LightCore
         ///<returns>The resolved instance as <typeparamref name="TContract"/></returns>.
         public TContract Resolve<TContract>(IEnumerable<object> arguments)
         {
-            return (TContract)this.Resolve(typeof(TContract), arguments);
+            return ( TContract )this.Resolve(typeof(TContract), arguments);
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract"/></returns>
         public TContract Resolve<TContract>(IDictionary<string, object> namedArguments)
         {
-            return (TContract)this.Resolve(typeof(TContract), namedArguments);
+            return ( TContract )this.Resolve(typeof(TContract), namedArguments);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract"/></returns>
         public TContract Resolve<TContract>(AnonymousArgument namedArguments)
         {
-            return (TContract) this.Resolve(typeof (TContract),
+            return ( TContract )this.Resolve(typeof(TContract),
                                             namedArguments.AnonymousType.ToNamedArgumentDictionary());
         }
 
@@ -145,12 +145,22 @@ namespace LightCore
         /// <returns>The resolved instance as object.</returns>
         public object Resolve(Type contractType)
         {
+            return this.ResolveInternal(contractType, null, null);
+        }
+
+        /// <summary>
+        /// Resolves a contract (include subcontracts).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns>The resolved instance as object.</returns>
+        private object ResolveInternal(Type contractType, IEnumerable<object> arguments, IDictionary<string, object> namedArguments)
+        {
             RegistrationItem registrationItem;
 
-            if (!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
+            if(!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
                 // No registration found yet, try to create one with available registration sources.
-                foreach (IRegistrationSource registrationSource in
+                foreach(IRegistrationSource registrationSource in
                     this._registrationContainer.RegistrationSources
                     .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType)))
                 {
@@ -163,13 +173,35 @@ namespace LightCore
                 }
             }
 
-            if (registrationItem == null)
+            if(registrationItem == null)
             {
                 throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
             }
 
+            // Add runtime arguments to registration.
+            this.AddArgumentsToRegistration(registrationItem, arguments, namedArguments);
+
             // Activate existing registration.
             return this.Resolve(registrationItem);
+        }
+
+        /// <summary>
+        /// Add all arguments to the passed registration.
+        /// </summary>
+        /// <param name="registrationItem">The registration.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="namedArguments">The named arguments.</param>
+        private void AddArgumentsToRegistration(RegistrationItem registrationItem, IEnumerable<object> arguments, IDictionary<string, object> namedArguments)
+        {
+            if(arguments != null)
+            {
+                registrationItem.RuntimeArguments.AddToAnonymousArguments(arguments);
+            }
+
+            if(namedArguments != null)
+            {
+                registrationItem.RuntimeArguments.AddToNamedArguments(namedArguments);
+            }
         }
 
         ///<summary>
@@ -180,7 +212,7 @@ namespace LightCore
         ///<returns>The resolved instance as object.</returns>.
         public object Resolve(Type contractType, params object[] arguments)
         {
-            return this.Resolve(contractType, (IEnumerable<object>)arguments);
+            return this.ResolveInternal(contractType, arguments, null);
         }
 
         ///<summary>
@@ -191,7 +223,7 @@ namespace LightCore
         ///<returns>The resolved instance as object.</returns>.
         public object Resolve(Type contractType, IEnumerable<object> arguments)
         {
-            return this.ResolveWithArguments(contractType, arguments, null);
+            return this.ResolveInternal(contractType, arguments, null);
         }
 
         /// <summary>
@@ -202,34 +234,7 @@ namespace LightCore
         /// <returns>The resolved instance as object.</returns>
         public object Resolve(Type contractType, IDictionary<string, object> namedArguments)
         {
-            return this.ResolveWithArguments(contractType, null, namedArguments);
-        }
-
-        /// <summary>
-        /// Resolves a dependency with arguments internally.
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="namedArguments">The named arguments.</param>
-        /// <returns></returns>
-        private object ResolveWithArguments(Type contractType, IEnumerable<object> arguments, IDictionary<string, object> namedArguments)
-        {
-            RegistrationItem registrationItem;
-
-            if (this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
-            {
-                if (arguments != null)
-                {
-                    registrationItem.RuntimeArguments.AddToAnonymousArguments(arguments);
-                }
-
-                if (namedArguments != null)
-                {
-                    registrationItem.RuntimeArguments.AddToNamedArguments(namedArguments);
-                }
-            }
-
-            return this.Resolve(contractType);
+            return this.ResolveInternal(contractType, null, namedArguments);
         }
 
         /// <summary>

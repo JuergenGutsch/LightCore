@@ -22,9 +22,10 @@ namespace LightCore.ConsoleClient
             var module = new XamlRegistrationModule();
 
             builder.Register("Test");
-            //builder.Register<Func<string>>(c => () => "Test");
 
             builder.RegisterModule(module);
+
+            builder.Register<IBar, Bar>();
 
             var container = builder.Build();
 
@@ -33,6 +34,7 @@ namespace LightCore.ConsoleClient
 
             var namedScreen = container.Resolve<WelcomeScreen>();
             namedScreen.WriteText();
+
 
             Console.Read();
         }
