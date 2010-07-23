@@ -51,6 +51,8 @@ namespace LightCore
         /// </summary>
         private readonly IRegistrationContainer _registrationContainer;
 
+        private Func<PropertyInfo, bool> _validPropertiesSelector;
+
         /// <summary> Initializes a new instance of <see cref="Container" />.
         /// <param name="registrationContainer">The registrations for this container.</param>
         /// </summary>
@@ -58,7 +60,24 @@ namespace LightCore
         {
             this._registrationContainer = registrationContainer;
 
+            this.CreateValidPropertiesSelector();
             this.RegisterContainer();
+        }
+
+        /// <summary>
+        /// Creates the valid properties selector and set it to the container.
+        /// </summary>
+        private void CreateValidPropertiesSelector()
+        {
+            var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
+                                                 {
+                                                     p => !p.PropertyType.IsValueType,
+                                                     p => this._registrationContainer.IsRegistered(p.PropertyType),
+                                                     p => p.GetIndexParameters().Length == 0,
+                                                     p => p.CanWrite
+                                                 };
+
+            this._validPropertiesSelector = validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p));
         }
 
         /// <summary>
@@ -304,20 +323,11 @@ namespace LightCore
         /// <param name="instance">The instance.</param>
         public void InjectProperties(object instance)
         {
-            var properties = instance.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
-
-            var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
-                                               {
-                                                   p => !p.PropertyType.IsValueType,
-                                                   p => this._registrationContainer.IsRegistered(p.PropertyType),
-                                                   p => p.GetIndexParameters().Length == 0,
-                                                   p => p.CanWrite
-                                               };
-
-            var validProperties = properties
-                .Where(validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p)));
-
-            validProperties.ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
+            instance
+                .GetType()
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
+                .Where(this._validPropertiesSelector)
+                .ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
         }
     }
 }
