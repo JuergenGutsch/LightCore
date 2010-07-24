@@ -10,6 +10,11 @@ namespace LightCore.TestTypes
             set;
         }
 
+        public FooFactoryConsumer()
+        {
+            
+        }
+
         public FooFactoryConsumer(Func<IFoo> foo)
         {
             this.Foo = foo();

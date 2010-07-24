@@ -14,6 +14,11 @@ namespace LightCore.Tests.Integration
     {
         private class StreamContainer
         {
+            public StreamContainer()
+            {
+                
+            }
+
             public StreamContainer(IDisposable disposable)
             {
                 this.Stream = disposable;

@@ -76,7 +76,7 @@ namespace LightCore.Registration
         {
             bool isRegistered;
 
-            if (!this._registeredCache.TryGetValue(contractType, out isRegistered))
+            if(!this._registeredCache.TryGetValue(contractType, out isRegistered))
             {
                 isRegistered = this.AllRegistrations.Any(registration => registration.ContractType == contractType);
 
