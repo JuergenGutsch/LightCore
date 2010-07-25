@@ -106,7 +106,7 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; not found, please check your registrations. (Check default whether default constructor is available)..
+        ///   Looks up a localized string similar to Registration for contract &apos;{0}&apos; not found, please check your registrations..
         /// </summary>
         internal static string RegistrationNotFoundFormat {
             get {

@@ -26,9 +26,6 @@ namespace LightCore.ExtensionMethods.System
             isConcreteType &= !source.IsValueType;
             isConcreteType &= source != typeof (string);
             isConcreteType &= !IsFactoryType(source);
-            isConcreteType &= source
-                .GetConstructors()
-                .Any(constructor => constructor.GetParameters().Length == 0);
 
             return isConcreteType;
         }

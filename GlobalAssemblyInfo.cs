@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly : AssemblyCompany("Peter Bucher")] 
 [assembly : AssemblyCopyright("\x00a9 Peter Bucher. All rights reserved.")] 
   
-[assembly : AssemblyVersion("1.4.0.0")] 
+[assembly : AssemblyVersion("1.4.1.0")] 
   
 #if DEBUG 
 [assembly : AssemblyConfiguration("Debug")] 

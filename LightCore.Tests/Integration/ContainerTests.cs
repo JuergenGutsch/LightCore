@@ -59,6 +59,19 @@ namespace LightCore.Tests.Integration
         }
 
         [Test]
+        public void Container_can_resolve_concrete_types_with_registered_dependencies()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IBar, Bar>();
+
+            var container = builder.Build();
+
+            var foo = container.Resolve<Foo>();
+
+            Assert.That(foo.Bar, Is.Not.Null);
+        }
+
+        [Test]
         public void Container_can_resolve_with_arguments()
         {
             var builder = new ContainerBuilder();

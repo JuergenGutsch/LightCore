@@ -44,5 +44,13 @@ namespace LightCore.Registration
         /// <param name="contractType">The type of the contract.</param>
         /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
         bool IsSupportedByRegistrationSource(Type contractType);
+
+        /// <summary>
+        /// Determines whether a contracttype is supported by registration sources.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <param name="registrationFilter">The registration filter.</param>
+        /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
+        bool IsSupportedByRegistrationSource(Type contractType, RegistrationFilter registrationFilter);
     }
 }

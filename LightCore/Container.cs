@@ -171,6 +171,8 @@ namespace LightCore
         /// Resolves a contract (include subcontracts).
         /// </summary>
         /// <param name="contractType">The contract type.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="namedArguments">The named arguments.</param>
         /// <returns>The resolved instance as object.</returns>
         private object ResolveInternal(Type contractType, IEnumerable<object> arguments, IDictionary<string, object> namedArguments)
         {
