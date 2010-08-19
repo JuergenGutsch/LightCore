@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 using LightCore.Lifecycle;
 using LightCore.Tests.Lifecycle;
@@ -11,6 +12,29 @@ namespace LightCore.Tests.Integration
     [TestFixture]
     public class LifecycleTests
     {
+        [Test]
+        public void ThreadSingletonShouldBecollectedwhenThreadFinished()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>().ControlledBy<ThreadSingletonLifecycle>();
+            var container = builder.Build();
+            WeakReference obj = null;
+            ;
+            Action action = () =>
+            {
+                var o = container.Resolve<IFoo>();
+                obj = new WeakReference(o);
+            };
+
+            var thread = new Thread(new ThreadStart(action));
+            thread.Start();
+            thread.Join();
+            Assert.IsTrue(obj.IsAlive);
+            thread = null;
+            GC.Collect(2);
+            Assert.IsFalse(obj.IsAlive, "Objekt sollte nicht mehr existieren");
+        }
+
         [Test]
         public void Instance_is_not_reused_when_controlled_by_transient_lifecycle()
         {

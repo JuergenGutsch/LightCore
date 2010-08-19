@@ -94,8 +94,7 @@ namespace LightCore
                                              {
                                                  new OpenGenericRegistrationSource(this._registrationContainer),
                                                  new EnumerableRegistrationSource(this._registrationContainer),
-                                                 new ArrayRegistrationSource(this._registrationContainer),
-                                                 new ConcreteTypeRegistrationSource()
+                                                 new ArrayRegistrationSource(this._registrationContainer)
                                              };
 
 #if !CF35
@@ -105,6 +104,7 @@ namespace LightCore
 #if !NET35 && !CF35 && !SL3
             allRegistrationSources.Add(new LazyRegistrationSource(this._registrationContainer));
 #endif
+            allRegistrationSources.Add(new ConcreteTypeRegistrationSource());
 
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 

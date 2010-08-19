@@ -181,17 +181,18 @@ namespace LightCore
             if(!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
                 // No registration found yet, try to create one with available registration sources.
-                foreach(IRegistrationSource registrationSource in
-                    this._registrationContainer.RegistrationSources
-                    .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType)))
+                var registrationSourceToUse = this._registrationContainer.RegistrationSources
+                    .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType))
+                    .FirstOrDefault();
+
+                if(registrationSourceToUse == null)
                 {
-                    registrationItem = registrationSource.GetRegistrationFor(contractType, this);
-
-                    this._registrationContainer.Registrations.Add(
-                        new KeyValuePair<Type, RegistrationItem>(registrationItem.ContractType, registrationItem));
-
-                    break;
+                    throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
                 }
+
+                registrationItem = registrationSourceToUse.GetRegistrationFor(contractType, this);
+
+                this._registrationContainer.Registrations.Add(new KeyValuePair<Type, RegistrationItem>(registrationItem.ContractType, registrationItem));
             }
 
             if(registrationItem == null)
@@ -290,9 +291,7 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<TContract> ResolveAll<TContract>()
         {
-            return
-                this.ResolveAll(typeof(TContract))
-                .Cast<TContract>();
+            return this.ResolveAll(typeof(TContract)).Cast<TContract>();
         }
 
         /// <summary>
@@ -301,9 +300,9 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<object> ResolveAll()
         {
-            return this._registrationContainer
-                .AllRegistrations
-                .Select(registration => this.Resolve(registration));
+            var allRegistrations = this._registrationContainer.AllRegistrations.ToList();
+
+            return allRegistrations.Select(registration => this.Resolve(registration));
         }
 
         /// <summary>
@@ -313,8 +312,9 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<object> ResolveAll(Type contractType)
         {
-            return this._registrationContainer
-                .AllRegistrations
+            var allRegistrations = this._registrationContainer.AllRegistrations.ToList();
+
+            return allRegistrations
                 .Where(r => r.ContractType == contractType)
                 .Select(registration => this.Resolve(registration));
         }

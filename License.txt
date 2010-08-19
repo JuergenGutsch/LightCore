@@ -7,19 +7,8 @@ Lizenzbedingungen
 Die Binaries von LightCore dürfen in jeglicher Art von Projekten (privat,
 kommerziell, ...) kostenlos genutzt werden.
 
-Der Quellcode von LightCore steht unter der MS-RSL-Lizenz, siehe
-http://www.microsoft.com/resources/sharedsource/referencesourcelicense.mspx
-(der Quellcodes des .NET Frameworks wurde mit der gleichen Lizenz 
-veröffentlicht).
-
-Weder die Binaries noch der Quellcode dürfen verändert werden. Zudem darf kein
-von LightCore abgeleitetes Werk erstellt werden.
-
-Das bedeutet:
-
-- Der Quellcode ist offen zum Anschauen, Nachschlagen und daraus Lernen.
-- Der Quellcode darf nicht verändert werden, zudem dürfen keine Kopien für
-  eigene oder abgeleitete Software erzeugt werden.
+Der Quellcode von LightCore steht unter der MS-PL-Lizenz, siehe
+http://www.microsoft.com/opensource/licenses.mspx.
 
 Bei abweichenden Anforderungen an die Lizenzierung besteht die Möglichkeit, den
 Autor von LightCore zu kontaktieren.
@@ -31,20 +20,11 @@ Licensing
 The LightCore binaries may be used in any kind of project (private, commercial,
 ...) for free.
 
-The LightCore sources are licensed under the MS-RSL license, see
-http://www.microsoft.com/resources/sharedsource/referencesourcelicense.mspx
-(the source code of the .NET Frameworks has been published under the same
-license).
-
-Neither the binaries nor the sources may be altered. Moreover it is not allowed
-to derive work based on LightCore.
-
-This means:
-
-- The source code is open for viewing it, looking things up in it and learning
-  from it.
-- The source code may not be altered, additionally the source code may not be
-  copied to create new or derived software.
+The LightCore sources are licensed under the MS-PL license, see
+http://www.microsoft.com/opensource/licenses.mspx.
 
 If you have any other requirements regarding the licensing feel free to contact
 the author of LightCore.
+
+- http://lightcore.ch/
+- http://peterbucher.ch/

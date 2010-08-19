@@ -74,7 +74,7 @@ namespace LightCore.Activation.Activators
 
             if (this._cachedConstructor == null || countOfRuntimeArguments > 0)
             {
-                var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
                 _cachedConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
             }
 

@@ -75,7 +75,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <returns>The new registrationItem for lazy resolve.</returns>
         private static RegistrationItem CreateLazyRegistration<T>()
         {
-            return new RegistrationItem
+            return new RegistrationItem(typeof(Lazy<T>))
                        {
                            Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
                        };
