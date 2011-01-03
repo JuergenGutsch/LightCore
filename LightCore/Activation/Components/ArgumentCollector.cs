@@ -28,7 +28,7 @@ namespace LightCore.Activation.Components
                     p =>
                     resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType) || resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType, RegistrationFilter.SkipResolveAnything));
 
-            Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => argument.GetType() == parameter.ParameterType;
+            Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => parameter.ParameterType.IsAssignableFrom(argument.GetType());
 
             var runtimeArguments = resolutionContext.RuntimeArguments;
             var arguments = resolutionContext.Arguments;

@@ -73,5 +73,19 @@ namespace LightCore.Tests.Integration
             Assert.IsTrue(((Foo)foo).Arg2);
             Assert.AreEqual("Peter", ((Foo)foo).Arg1);
         }
+
+        [Test]
+        public void Container_Uses_Bar_As_IBar_Argument()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            Bar bar = new Bar();
+            var instance = container.Resolve<IFoo>(bar);
+
+            Assert.AreSame(bar, instance.Bar);
+        }
     }
 }
