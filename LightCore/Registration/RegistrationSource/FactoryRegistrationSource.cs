@@ -7,6 +7,7 @@ using System.Reflection;
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -61,7 +62,14 @@ namespace LightCore.Registration.RegistrationSource
             get
             {
                 // LastOrDefault for the lastest parameter, e.g.: Func<string, bool, IFoo>().
-                return contractType => contractType.IsFactoryType() && _registrationContainer.IsRegistered(contractType.GetGenericArguments().LastOrDefault());
+                return contractType => contractType.IsFactoryType()
+                                       &&
+                                       ((this._registrationContainer.IsRegistered(
+                                           contractType.GetGenericArguments().LastOrDefault()))
+                                        ||
+                                        // Use ConcreteTypeRegistrationSource.
+                                        (this._registrationContainer.IsSupportedByRegistrationSource(
+                                            contractType.GetGenericArguments().LastOrDefault())));
             }
         }
 
@@ -106,7 +114,8 @@ namespace LightCore.Registration.RegistrationSource
                                                                                                     parameterExpressions);
 
                                                                      return lambda.Compile();
-                                                                 })
+                                                                 }),
+                           Lifecycle = new TransientLifecycle()
                        };
         }
     }

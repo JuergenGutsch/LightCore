@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 using LightCore.Configuration.Properties;
 using LightCore.ExtensionMethods.System;
 using LightCore.Fluent;
@@ -167,17 +167,70 @@ namespace LightCore.Configuration
         /// <returns>The rawType, if no alias found, otherwise the full qualified type string according to the alias data.</returns>
         private string ResolveAlias(string rawType)
         {
+            if(string.IsNullOrEmpty(rawType))
+            {
+                return null;
+            }
+
             const string leadingBracket = "{";
             const string followingBracket = "}";
 
-            // Replace for alternative generic syntax.
-            if (rawType != null && rawType.IndexOf(leadingBracket) > -1)
+            // Replacement and parsing for alternative generic syntax and type argument alias.
+            int indexOfLeadingBracket = rawType.IndexOf(leadingBracket);
+            int indexOfFollowingBracket = rawType.IndexOf(followingBracket);
+
+            if (indexOfLeadingBracket > -1)
             {
-                rawType = rawType.Replace(leadingBracket, "`");
-                rawType = rawType.Replace(followingBracket, "");
+                // Resolve possible generic type argument alias.
+                string genericArgumentsContent = rawType.Substring(indexOfLeadingBracket + 1,
+                                                                   indexOfFollowingBracket - indexOfLeadingBracket - 1);
+
+                string seperatorToSplit = "],";
+
+                if(!genericArgumentsContent.Contains("]"))
+                {
+                    seperatorToSplit = ",";
+                }
+
+                string[] genericArguments = genericArgumentsContent.Split(new[]
+                                                                              {
+                                                                                  seperatorToSplit,
+                                                                              }, StringSplitOptions.RemoveEmptyEntries);
+
+                genericArguments = genericArguments
+                    .Select(argument => (argument.Replace("[", "").Replace("]", "")).Trim())
+                    .ToArray();
+
+                int parsedGenericArgumentNumber;
+
+                if (genericArguments.Length > 0 && !int.TryParse(genericArguments[0], out parsedGenericArgumentNumber))
+                {
+                    foreach(string genericArgument in genericArguments)
+                    {
+                        const string typeMaskFormatString = "[{0}]";
+
+                        if (this.IsAlias(genericArgument))
+                        {
+                            TypeAlias typeAlias = this._configuration.TypeAliases.Find(a => FindAlias(a, genericArgument));
+
+                            if (typeAlias != null)
+                            {
+                                rawType = rawType.Replace(genericArgument, string.Format(typeMaskFormatString, typeAlias.Type));
+                            }
+                        }
+                    }
+
+                    rawType = rawType.Replace(leadingBracket, string.Format("`{0}", genericArguments.Length) + "[");
+                    rawType = rawType.Replace(followingBracket, "]");
+                }
+                else
+                {
+                    rawType = rawType.Replace(leadingBracket, "`");
+                    rawType = rawType.Replace(followingBracket, "");
+                }
             }
 
-            if (rawType != null && !rawType.Contains("."))
+            if (this.IsAlias(rawType))
             {
                 TypeAlias typeAlias = this._configuration.TypeAliases.Find(a => FindAlias(a, rawType));
 
@@ -190,8 +243,13 @@ namespace LightCore.Configuration
             return rawType;
         }
 
+        private bool IsAlias(string rawType)
+        {
+            return !rawType.Contains(".");
+        }
+
         /// <summary>
-        /// Finds an alias. Supports multiple alias pro alias instance.
+        /// Finds an alias. Supports multiple alias per alias instance.
         /// </summary>
         /// <param name="alias">The alias.</param>
         /// <param name="rawType">The rawType.</param>

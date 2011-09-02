@@ -39,6 +39,62 @@ namespace LightCore.Configuration.Tests
         }
 
         [Test]
+        public void Can_register_and_use_open_to_closed_generic_with_configuration_api()
+        {
+            var configuration = new LightCoreConfiguration();
+            var registrations = new List<Registration>
+                                    {
+                                        new Registration
+                                            {
+                                                // LightCore.TestTypes.IRepository`1, LightCore.TestTypes
+                                                ContractType = typeof (IRepository<>).AssemblyQualifiedName,
+                                                ImplementationType = typeof (BarRepository).AssemblyQualifiedName
+                                            }
+                                    };
+
+            configuration.Registrations = registrations;
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var repository = container.Resolve<IRepository<Bar>>();
+
+            Assert.That(repository, Is.Not.Null);
+            Assert.That(repository, Is.InstanceOf<BarRepository>());
+        }
+
+        [Test]
+        public void Can_register_and_use_closed_to_closed_generic_with_configuration_api()
+        {
+            var configuration = new LightCoreConfiguration();
+            var registrations = new List<Registration>
+                                    {
+                                        new Registration
+                                            {
+                                                // LightCore.TestTypes.IRepository`1, LightCore.TestTypes
+                                                ContractType = typeof (IRepository<Bar>).AssemblyQualifiedName,
+                                                ImplementationType = typeof (BarRepository).AssemblyQualifiedName
+                                            }
+                                    };
+
+            configuration.Registrations = registrations;
+
+            var builder = new ContainerBuilder();
+
+            RegistrationLoader.Instance.Register(builder, configuration);
+
+            var container = builder.Build();
+
+            var repository = container.Resolve<IRepository<Bar>>();
+
+            Assert.That(repository, Is.Not.Null);
+            Assert.That(repository, Is.InstanceOf<BarRepository>());
+        }
+
+        [Test]
         public void Set_lifecycle_on_fluent_registration_to_not_implementing_type_throws_argumentexception()
         {
             var builder = new ContainerBuilder();

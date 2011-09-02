@@ -23,11 +23,17 @@ namespace LightCore.ConsoleClient
 
             builder.Register("Test");
 
+            //builder.Register<IRepository<Foo>, FooRepository>();
+
             builder.RegisterModule(module);
 
             builder.Register<IBar, Bar>();
 
             var container = builder.Build();
+
+            var fooRepository = container.Resolve<IRepository<Foo, Bar>>();
+
+            var fsdfsdfd = fooRepository;
 
             var func = container.Resolve<Func<string>>();
             var test = func();

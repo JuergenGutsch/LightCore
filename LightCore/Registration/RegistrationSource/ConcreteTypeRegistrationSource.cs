@@ -3,6 +3,7 @@
 using LightCore.Activation.Activators;
 using LightCore.Activation.Components;
 using LightCore.ExtensionMethods.System;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -40,7 +41,8 @@ namespace LightCore.Registration.RegistrationSource
                            Activator = new ReflectionActivator(
                                contractType,
                                container.Resolve<IConstructorSelector>(),
-                               container.Resolve<IArgumentCollector>())
+                               container.Resolve<IArgumentCollector>()),
+                           Lifecycle = new TransientLifecycle()
                        };
         }
     }

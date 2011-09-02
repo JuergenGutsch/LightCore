@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using LightCore.Lifecycle;
 using LightCore.Registration;
 using LightCore.Registration.RegistrationSource;
 
@@ -97,7 +97,8 @@ namespace LightCore.Tests.Registration.RegistrationSource
                                         contractType,
                                         new RegistrationItem(contractType)
                                             {
-                                                ImplementationType = implementationType
+                                                ImplementationType = implementationType,
+                                                Lifecycle = new TransientLifecycle()
                                             }
                                         }
                                 }

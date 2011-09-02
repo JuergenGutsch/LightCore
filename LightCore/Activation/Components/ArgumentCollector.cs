@@ -26,7 +26,9 @@ namespace LightCore.Activation.Components
             var dependencyParameters =
                 parameters.Where(
                     p =>
-                    resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType) || resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType, RegistrationFilter.SkipResolveAnything));
+                    resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
+                    ||
+                    resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 
             Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => parameter.ParameterType.IsAssignableFrom(argument.GetType());
 

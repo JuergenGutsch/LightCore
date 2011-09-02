@@ -47,6 +47,19 @@ namespace LightCore.Tests.Integration
         }
 
         [Test]
+        [ExpectedException(typeof(RegistrationNotFoundException))]
+        public void Container_throws_exception_on_singleresolve_with_multiple_registrations()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IFoo, FooTwo>();
+            
+            var container = builder.Build();
+
+            var foo = container.Resolve<IFoo>();
+        }
+
+        [Test]
         public void Container_can_resolve_concrete_types()
         {
             var builder = new ContainerBuilder();
