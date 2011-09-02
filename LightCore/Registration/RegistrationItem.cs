@@ -82,7 +82,6 @@ namespace LightCore.Registration
         {
             this.Arguments = new ArgumentContainer();
             this.RuntimeArguments = new ArgumentContainer();
-            this.Lifecycle = new TransientLifecycle();
         }
 
         /// <summary>

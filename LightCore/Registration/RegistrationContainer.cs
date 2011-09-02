@@ -76,7 +76,7 @@ namespace LightCore.Registration
         {
             bool isRegistered;
 
-            if(!this._registeredCache.TryGetValue(contractType, out isRegistered))
+            if (!this._registeredCache.TryGetValue(contractType, out isRegistered))
             {
                 isRegistered = this.AllRegistrations.Any(registration => registration.ContractType == contractType);
 
@@ -93,29 +93,9 @@ namespace LightCore.Registration
         /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
         public bool IsSupportedByRegistrationSource(Type contractType)
         {
-            return this.IsSupportedByRegistrationSource(contractType, RegistrationFilter.None);
-        }
-
-        /// <summary>
-        /// Determines whether a contracttype is supported by registration sources.
-        /// </summary>
-        /// <param name="contractType">The type of the contract.</param>
-        /// <param name="registrationFilter">Exclude concrete types or not.</param>
-        /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
-        public bool IsSupportedByRegistrationSource(Type contractType, RegistrationFilter registrationFilter)
-        {
-            IEnumerable<IRegistrationSource> registrationSources = this.RegistrationSources;
-
-            if(registrationFilter == RegistrationFilter.SkipResolveAnything)
-            {
-                registrationSources =
-                    registrationSources
-                    .Where(registrationSource => registrationSource.GetType() != typeof (ConcreteTypeRegistrationSource));
-            }
-
-            return registrationSources
-                       .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
-                       .Any(sourceSupportsTypeSelector => sourceSupportsTypeSelector(contractType));
+            return this.RegistrationSources
+                .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
+                .Any(sourceSupportsTypeSelector => sourceSupportsTypeSelector(contractType));
         }
     }
 }

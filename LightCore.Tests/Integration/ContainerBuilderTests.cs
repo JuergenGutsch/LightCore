@@ -108,13 +108,30 @@ namespace LightCore.Tests.Integration
         }
 
         [Test]
-        public void CointainerBuilder_default_scope_can_be_altered_to_singleton()
+        public void CointainerBuilder_default_scope_can_be_altered_to_singleton_with_reflection_activator_registration()
         {
             var builder = new ContainerBuilder();
 
             builder.DefaultControlledBy<SingletonLifecycle>();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var instanceOne = container.Resolve<IFoo>();
+            var instanceTwo = container.Resolve<IFoo>();
+
+            Assert.AreSame(instanceOne, instanceTwo);
+        }
+
+        [Test]
+        public void CointainerBuilder_default_scope_can_be_altered_to_singleton_with_delegate_activator_registration()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.DefaultControlledBy<SingletonLifecycle>();
+            builder.Register<IBar>(c => new Bar());
+            builder.Register<IFoo>(c => new Foo());
 
             var container = builder.Build();
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using LightCore.Activation.Activators;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -48,10 +49,19 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsGenericType
-                    && contractType.GetGenericTypeDefinition() == typeof(Lazy<>)
-                    &&
-                    this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
+                Func<Type, bool> isGenericLazy = contractType => contractType.IsGenericType
+                                                                 &&
+                                                                 contractType.GetGenericTypeDefinition() ==
+                                                                 typeof (Lazy<>);
+
+                return contractType => isGenericLazy(contractType)
+                                       &&
+                                       ((this._registrationContainer.IsRegistered(
+                                           contractType.GetGenericArguments().FirstOrDefault()))
+                                        ||
+                                        // Use ConcreteTypeRegistrationSource.
+                                        (this._registrationContainer.IsSupportedByRegistrationSource(
+                                            contractType.GetGenericArguments().FirstOrDefault())));
             }
         }
 
@@ -77,7 +87,8 @@ namespace LightCore.Registration.RegistrationSource
         {
             return new RegistrationItem(typeof(Lazy<T>))
                        {
-                           Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
+                           Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>)),
+                           Lifecycle = new TransientLifecycle()
                        };
         }
     }

@@ -7,6 +7,7 @@ using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
+using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
 using LightCore.Registration.RegistrationSource;
@@ -95,7 +96,8 @@ namespace LightCore
 
             var registrationItem = new RegistrationItem(typeOfIContainer)
                                        {
-                                           Activator = new InstanceActivator<IContainer>(this)
+                                           Activator = new InstanceActivator<IContainer>(this),
+                                           Lifecycle = new TransientLifecycle()
                                        };
 
             this._registrationContainer.Registrations.Add(
@@ -180,10 +182,24 @@ namespace LightCore
 
             if(!this._registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
             {
+                if (this._registrationContainer.DuplicateRegistrations.Any(registration => registration.ContractType == contractType))
+                {
+                    throw new RegistrationNotFoundException(Resources.RegistrationNotFoundBecauseDuplicate.FormatWith(contractType));
+                }
+
                 // No registration found yet, try to create one with available registration sources.
-                var registrationSourceToUse = this._registrationContainer.RegistrationSources
-                    .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType))
-                    .FirstOrDefault();
+                IRegistrationSource registrationSourceToUse = null;
+
+                for(int i=0; i < this._registrationContainer.RegistrationSources.Count; i++)
+                {
+                    var currentRegistrationSource = this._registrationContainer.RegistrationSources[i];
+
+                    if(currentRegistrationSource.SourceSupportsTypeSelector(contractType))
+                    {
+                        registrationSourceToUse = currentRegistrationSource;
+                        break;
+                    }
+                }
 
                 if(registrationSourceToUse == null)
                 {
@@ -193,11 +209,6 @@ namespace LightCore
                 registrationItem = registrationSourceToUse.GetRegistrationFor(contractType, this);
 
                 this._registrationContainer.Registrations.Add(new KeyValuePair<Type, RegistrationItem>(registrationItem.ContractType, registrationItem));
-            }
-
-            if(registrationItem == null)
-            {
-                throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
             }
 
             // Add runtime arguments to registration.

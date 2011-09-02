@@ -311,7 +311,6 @@ namespace LightCore
                                                             typeOfImplementation,
                                                             this._bootStrappingContainer.Resolve<IConstructorSelector>(),
                                                             this._bootStrappingContainer.Resolve<IArgumentCollector>()),
-                                                        Lifecycle = this._defaultLifecycleFunction(),
                                                         ImplementationType = typeOfImplementation
                                                     });
         }

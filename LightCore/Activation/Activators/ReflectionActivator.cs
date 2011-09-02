@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 
 using LightCore.Activation.Components;
@@ -29,16 +28,6 @@ namespace LightCore.Activation.Activators
         private readonly IArgumentCollector _argumentCollector;
 
         /// <summary>
-        /// The cached constructor.
-        /// </summary>
-        private ConstructorInfo _cachedConstructor;
-
-        /// <summary>
-        /// The cached arguments.
-        /// </summary>
-        private object[] _cachedArguments;
-
-        /// <summary>
         /// The implementation type.
         /// </summary>
         private readonly Type _implementationType;
@@ -63,49 +52,26 @@ namespace LightCore.Activation.Activators
         /// <returns>The activated instance.</returns>
         public object ActivateInstance(ResolutionContext resolutionContext)
         {
-            var runtimeArguments = resolutionContext.RuntimeArguments;
-
             if (this._container == null)
             {
                 this._container = resolutionContext.Container;
             }
 
-            int countOfRuntimeArguments = runtimeArguments.CountOfAllArguments;
+            var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
+            var finalConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
 
-            if (this._cachedConstructor == null || countOfRuntimeArguments > 0)
-            {
-                var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-                _cachedConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
-            }
+            object[] finalArguments = this._argumentCollector.CollectArguments(
+                this._container.Resolve,
+                finalConstructor.GetParameters(),
+                resolutionContext);
 
-            if (this._cachedArguments == null || countOfRuntimeArguments > 0 || GetAnyDependencyParameter(resolutionContext))
-            {
-                this._cachedArguments = this._argumentCollector.CollectArguments(
-                        this._container.Resolve,
-                        this._cachedConstructor.GetParameters(),
-                        resolutionContext);
-            }
-
-            if (this._cachedArguments.Length != this._cachedConstructor.GetParameters().Length)
+            if (finalArguments != null && finalArguments.Length != finalConstructor.GetParameters().Length)
             {
                 throw new ResolutionFailedException(
                     Resources.NoSuitableConstructorFoundFormat.FormatWith(_implementationType));
             }
 
-            return this._cachedConstructor.Invoke(this._cachedArguments);
-        }
-
-        /// <summary>
-        /// Gets <value>true</value> if a dependency parameter exists, otherwise <value>false</value>.
-        /// </summary>
-        /// <param name="resolutionContext">The resolution context.</param>
-        /// <returns><value>true</value> if a dependency parameter exists, otherwise <value>false</value>.</returns>
-        private bool GetAnyDependencyParameter(ResolutionContext resolutionContext)
-        {
-            return this._cachedConstructor
-                .GetParameters()
-                .Any(p => resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
-                          || resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
+            return finalConstructor.Invoke(finalArguments);
         }
     }
 }

@@ -71,6 +71,7 @@
     <Compile Include="BarController.cs" />
     <Compile Include="BarRepository.cs" />
     <Compile Include="EnumerableTest.cs" />
+    <Compile Include="FooBarRepository.cs" />
     <Compile Include="FooFactoryConsumer.cs" />
     <Compile Include="FooTwo.cs" />
     <Compile Include="ILorem.cs" />

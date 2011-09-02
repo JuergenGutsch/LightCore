@@ -1,8 +1,9 @@
 ﻿using System;
-
+using System.Linq;
 using LightCore.Activation.Activators;
 using LightCore.Activation.Components;
 using LightCore.Fluent;
+using LightCore.Properties;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -53,13 +54,33 @@ namespace LightCore.Registration.RegistrationSource
         {
             Type[] genericArguments = contractType.GetGenericArguments();
 
-            // Get the Registration for the open generic type.
-            RegistrationItem openGenericTypeRegistration =
-                this._registrationContainer
-                    .Registrations[contractType.GetGenericTypeDefinition()];
+            // Try get the Registration for the open generic type.
+            RegistrationItem openGenericTypeRegistration = null;
+            this._registrationContainer.Registrations.TryGetValue(contractType.GetGenericTypeDefinition(), out openGenericTypeRegistration);
 
-            // Register closed generic type on-the-fly.
-            Type implementationType = openGenericTypeRegistration.ImplementationType.MakeGenericType(genericArguments);
+            if (openGenericTypeRegistration == null)
+            {
+                throw new RegistrationNotFoundException(string.Format(Resources.RegistrationNotFoundFormat,
+                                                                      contractType.GetGenericTypeDefinition()));
+            }
+
+            // Try to find a closed generic which passes the open signature.
+            var registrationItem = this._registrationContainer
+                .Registrations.SingleOrDefault(
+                    registration => contractType.IsAssignableFrom(registration.Value.ImplementationType));
+
+            Type implementationType = null;
+
+            if (registrationItem.Value != null)
+            {
+                implementationType = registrationItem.Value.ImplementationType;
+            }
+
+            // Register closed generic type on-the-fly, if no match until now.
+            if (implementationType == null)
+            {
+                implementationType = openGenericTypeRegistration.ImplementationType.MakeGenericType(genericArguments);
+            }
 
             var closedGenericRegistration = new RegistrationItem(contractType)
                                                 {

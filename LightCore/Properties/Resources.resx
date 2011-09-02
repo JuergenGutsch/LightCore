@@ -132,6 +132,9 @@
   <data name="PassedTypeDoesNotImplementILifecycleFormat" xml:space="preserve">
     <value>Passed type '{0}' does not implement the interface "ILifecycle".</value>
   </data>
+  <data name="RegistrationNotFoundBecauseDuplicate" xml:space="preserve">
+    <value>Registration for contract '{0}' was found to be duplicate. Either you want it duplicate or not. Duplicated registrations can only resolved all at once throught the 'ResolveAll'-Method.</value>
+  </data>
   <data name="RegistrationNotFoundFormat" xml:space="preserve">
     <value>Registration for contract '{0}' not found, please check your registrations.</value>
   </data>
