@@ -124,12 +124,12 @@ namespace LightCore
             Type typeOfArgumentCollector = typeof(IArgumentCollector);
             Type typeOfConstructorSelector = typeof(IConstructorSelector);
 
-            if(!this._registrationContainer.Registrations.ContainsKey(typeOfArgumentCollector))
+            if(!this._registrationContainer.HasRegistration(typeOfArgumentCollector))
             {
                 this.Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
             }
 
-            if(!this._registrationContainer.Registrations.ContainsKey(typeOfConstructorSelector))
+            if(!this._registrationContainer.HasRegistration(typeOfConstructorSelector))
             {
                 this.Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
             }
@@ -139,7 +139,7 @@ namespace LightCore
         /// Registers a module with registrations.
         /// </summary>
         /// <param name="registrationModule">The module to register within this container builder.</param>
-        public void RegisterModule(RegistrationModule registrationModule)
+        public void RegisterModule(RegistrationModuleBase registrationModule)
         {
             registrationModule.Register(this);
         }
@@ -243,29 +243,7 @@ namespace LightCore
                                                       return;
                                                   }
 
-                                                  if(
-                                                      this._registrationContainer.Registrations.ContainsKey(
-                                                          registrationItem.ContractType))
-                                                  {
-                                                      // Duplicate registration for enumerable requests.
-                                                      RegistrationItem duplicateItem =
-                                                          this._registrationContainer.Registrations[
-                                                              registrationItem.ContractType];
-
-                                                      this._registrationContainer.DuplicateRegistrations.Add(
-                                                          registrationItem);
-                                                      this._registrationContainer.DuplicateRegistrations.Add(
-                                                          duplicateItem);
-
-                                                      this._registrationContainer.Registrations.Remove(
-                                                          duplicateItem.ContractType);
-                                                  }
-                                                  else
-                                                  {
-                                                      this._registrationContainer.Registrations.Add(
-                                                          registrationItem.ContractType,
-                                                          registrationItem);
-                                                  }
+                                                  this._registrationContainer.AddRegistration(registrationItem);
                                               };
 
             this._registrationCallbacks.Add(registrationCallback);
@@ -301,7 +279,9 @@ namespace LightCore
             if(!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException(
-                    Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
+                    Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation),
+                    typeOfContract,
+                    typeOfImplementation);
             }
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.

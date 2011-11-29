@@ -56,7 +56,7 @@ namespace LightCore.Registration.RegistrationSource
 
                 return contractType => isGenericLazy(contractType)
                                        &&
-                                       ((this._registrationContainer.IsRegistered(
+                                       ((this._registrationContainer.HasRegistration(
                                            contractType.GetGenericArguments().FirstOrDefault()))
                                         ||
                                         // Use ConcreteTypeRegistrationSource.

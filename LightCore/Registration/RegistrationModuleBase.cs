@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents an abstract registration module for implementing custom registrations.
     /// </summary>
-    public abstract class RegistrationModule
+    public abstract class RegistrationModuleBase
     {
         /// <summary>
         /// Registers all candidates.

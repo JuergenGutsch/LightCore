@@ -15,6 +15,15 @@ namespace LightCore
     public class ResolutionFailedException : Exception
     {
         /// <summary>
+        /// Gets the implementationtype which was failed to construct.
+        /// </summary>
+        public Type ImplementationType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ResolutionFailedException"/> type.
         /// </summary>
         public ResolutionFailedException()
@@ -30,6 +39,16 @@ namespace LightCore
             : base(message)
         {
 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResolutionFailedException"/> type.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="implementationTypeFullName">The implementationtype.</param>
+        public ResolutionFailedException(string message, Type implementationType)
+        {
+            this.ImplementationType = implementationType;
         }
 
 #if !SL3 && !CF35

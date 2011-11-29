@@ -15,6 +15,24 @@ namespace LightCore
     public class ContractNotImplementedByTypeException : Exception
     {
         /// <summary>
+        /// Gets the contract type.
+        /// </summary>
+        public Type ContractType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the implementation type.
+        /// </summary>
+        public Type ImplementationType
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ContractNotImplementedByTypeException"/> type.
         /// </summary>
         public ContractNotImplementedByTypeException()
@@ -30,6 +48,19 @@ namespace LightCore
             : base(message)
         {
 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContractNotImplementedByTypeException"/> type.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="implementationType">The implementation type.</param>
+        public ContractNotImplementedByTypeException(string message, Type contractType, Type implementationType)
+            : base(message)
+        {
+            this.ContractType = contractType;
+            this.ImplementationType = implementationType;
         }
 
 #if !SL3 && !CF35

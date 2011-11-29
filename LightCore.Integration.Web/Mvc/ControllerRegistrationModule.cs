@@ -10,9 +10,9 @@ using LightCore.Registration;
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
-    /// Represents a <see cref="RegistrationModule" /> for ASP.NET MVC controllers.
+    /// Represents a <see cref="RegistrationModuleBase" /> for ASP.NET MVC controllers.
     /// </summary>
-    public class ControllerRegistrationModule : RegistrationModule
+    public class ControllerRegistrationModule : RegistrationModuleBase
     {
         /// <summary>
         /// The assembly from the controller implementation types.

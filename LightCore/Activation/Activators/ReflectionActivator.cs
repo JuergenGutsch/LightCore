@@ -67,8 +67,10 @@ namespace LightCore.Activation.Activators
 
             if (finalArguments != null && finalArguments.Length != finalConstructor.GetParameters().Length)
             {
-                throw new ResolutionFailedException(
-                    Resources.NoSuitableConstructorFoundFormat.FormatWith(_implementationType));
+                throw new ResolutionFailedException
+                    (Resources.NoSuitableConstructorFoundFormat.FormatWith(_implementationType),
+                     this._implementationType);
+
             }
 
             return finalConstructor.Invoke(finalArguments);

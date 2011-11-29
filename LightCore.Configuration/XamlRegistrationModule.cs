@@ -10,7 +10,7 @@ namespace LightCore.Configuration
     /// <summary>
     /// Represents a xaml registration module for LightCore.
     /// </summary>
-    public class XamlRegistrationModule : RegistrationModule
+    public class XamlRegistrationModule : RegistrationModuleBase
     {
         private readonly LightCoreConfiguration _configuration;
 

@@ -26,7 +26,7 @@ namespace LightCore.Registration.RegistrationSource
             {
                 return contractType => contractType.IsArray
                                        &&
-                                       (this._registrationContainer.IsRegistered(contractType.GetElementType())
+                                       (this._registrationContainer.HasRegistration(contractType.GetElementType())
                                         ||
                                         // Use ConcreteTypeRegistrationSource.
                                         (this._registrationContainer.IsSupportedByRegistrationSource(

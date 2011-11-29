@@ -27,7 +27,7 @@ namespace LightCore
         /// Registers a module with registrations.
         /// </summary>
         /// <param name="registrationModule">The module to register within this container builder.</param>
-        void RegisterModule(RegistrationModule registrationModule);
+        void RegisterModule(RegistrationModuleBase registrationModule);
 
         /// <summary>
         /// Sets the default lifecycle for this container. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).

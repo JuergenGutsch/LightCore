@@ -64,7 +64,7 @@ namespace LightCore.Registration.RegistrationSource
                 // LastOrDefault for the lastest parameter, e.g.: Func<string, bool, IFoo>().
                 return contractType => contractType.IsFactoryType()
                                        &&
-                                       ((this._registrationContainer.IsRegistered(
+                                       ((this._registrationContainer.HasRegistration(
                                            contractType.GetGenericArguments().LastOrDefault()))
                                         ||
                                         // Use ConcreteTypeRegistrationSource.

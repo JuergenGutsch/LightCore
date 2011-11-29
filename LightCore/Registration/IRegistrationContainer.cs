@@ -11,24 +11,36 @@ namespace LightCore.Registration
     internal interface IRegistrationContainer
     {
         /// <summary>
-        /// Containes the unique registrations.
-        /// </summary>
-        IDictionary<Type, RegistrationItem> Registrations { get; set; }
-
-        /// <summary>
-        /// Contains the duplicate registrations, e.g. plugins.
-        /// </summary>
-        IList<RegistrationItem> DuplicateRegistrations { get; set; }
-
-        /// <summary>
         /// Contains all registrations.
         /// </summary>
-        IEnumerable<RegistrationItem> AllRegistrations { get; }
+        IEnumerable<RegistrationItem> AllRegistrations
+        {
+            get;
+        }
 
         /// <summary>
         /// Contains all registration sources.
         /// </summary>
-        IList<IRegistrationSource> RegistrationSources { get; set; }
+        IList<IRegistrationSource> RegistrationSources
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Try get a registration based upon a contract type.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="registrationItem">The registration item.</param>
+        /// <returns>The registrationitem.</returns>
+        bool TryGetRegistration(Type contractType, out RegistrationItem registrationItem);
+
+        /// <summary>
+        /// Try get a registration based upon a contract type.
+        /// </summary>
+        /// <param name="predicate">the predicate.</param>
+        /// <returns>The registrationitem.</returns>
+        RegistrationItem GetRegistration(Func<RegistrationItem, bool> predicate);
 
         /// <summary>
         /// Determines whether a contracttype is at any place, registered / supported by the container, or not.
@@ -36,7 +48,26 @@ namespace LightCore.Registration
         /// </summary>
         /// <param name="contractType">The type of the contract.</param>
         /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
-        bool IsRegistered(Type contractType);
+        bool HasRegistration(Type contractType);
+
+        /// <summary>
+        /// Determines whether a contracttype is registered as duplicate (many of them).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns><value>true</value> if this type is registered many times.</returns>
+        bool HasDuplicateRegistration(Type contractType);
+
+        /// <summary>
+        /// Adds a registration.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        void AddRegistration(RegistrationItem registration);
+
+        /// <summary>
+        /// Removes a registration.
+        /// </summary>
+        /// <param name="contractType"></param>
+        void RemoveRegistration(Type contractType);
 
         /// <summary>
         /// Determines whether a contracttype is supported by registration sources.

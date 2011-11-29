@@ -32,7 +32,7 @@ namespace LightCore.Registration.RegistrationSource
             {
                 return contractType => contractType.IsGenericEnumerable()
                                        &&
-                                       ((this._registrationContainer.IsRegistered(
+                                       ((this._registrationContainer.HasRegistration(
                                            contractType.GetGenericArguments().FirstOrDefault()))
                                         ||
                     // Use ConcreteTypeRegistrationSource.

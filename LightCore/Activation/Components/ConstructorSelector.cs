@@ -27,7 +27,9 @@ namespace LightCore.Activation.Components
 
             if (finalConstructor == null)
             {
-                throw new ResolutionFailedException(Resources.NoConstructorAvailableForType.FormatWith(resolutionContext.Registration.ImplementationType));
+                throw new ResolutionFailedException(
+                    Resources.NoConstructorAvailableForType.FormatWith(resolutionContext.Registration.ImplementationType),
+                    resolutionContext.Registration.ImplementationType);
             }
 
             if (constructorsWithParameters.Count() == 1 && constructorsWithParameters.First().GetParameters().Length == 0)
@@ -40,7 +42,7 @@ namespace LightCore.Activation.Components
             {
                 ParameterInfo[] parameters = constructorCandidate.GetParameters();
                 var dependencyParameters = parameters
-                    .Where(p => resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
+                    .Where(p => resolutionContext.RegistrationContainer.HasRegistration(p.ParameterType)
                                 ||
                                 resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 

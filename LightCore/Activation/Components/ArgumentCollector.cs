@@ -26,7 +26,7 @@ namespace LightCore.Activation.Components
             var dependencyParameters =
                 parameters.Where(
                     p =>
-                    resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
+                    resolutionContext.RegistrationContainer.HasRegistration(p.ParameterType)
                     ||
                     resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 

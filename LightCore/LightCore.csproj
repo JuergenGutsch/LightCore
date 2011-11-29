@@ -78,7 +78,7 @@
     <Compile Include="Registration\ArgumentContainer.cs" />
     <Compile Include="Registration\RegistrationContainer.cs" />
     <Compile Include="Registration\RegistrationFilter.cs" />
-    <Compile Include="Registration\RegistrationModule.cs" />
+    <Compile Include="Registration\RegistrationModuleBase.cs" />
     <Compile Include="Container.cs" />
     <Compile Include="ContainerBuilder.cs" />
     <Compile Include="Registration\RegistrationSource\LazyRegistrationSource.cs" />

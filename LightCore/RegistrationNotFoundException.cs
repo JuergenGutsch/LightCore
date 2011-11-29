@@ -14,6 +14,12 @@ namespace LightCore
 #endif
     public class RegistrationNotFoundException : Exception
     {
+        public Type ContractType
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
@@ -30,6 +36,17 @@ namespace LightCore
             : base(message)
         {
 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
+        /// </summary>
+        /// <param name="message">The exception message.</param>
+        /// <param name="contractType">The contract type.</param>
+        public RegistrationNotFoundException(string message, Type contractType)
+            : base(message)
+        {
+            this.ContractType = contractType;
         }
 
 #if !SL2 && !SL3 && !CF35

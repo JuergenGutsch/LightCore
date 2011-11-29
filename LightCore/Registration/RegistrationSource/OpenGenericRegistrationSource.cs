@@ -56,24 +56,24 @@ namespace LightCore.Registration.RegistrationSource
 
             // Try get the Registration for the open generic type.
             RegistrationItem openGenericTypeRegistration = null;
-            this._registrationContainer.Registrations.TryGetValue(contractType.GetGenericTypeDefinition(), out openGenericTypeRegistration);
+            this._registrationContainer.TryGetRegistration(contractType.GetGenericTypeDefinition(), out openGenericTypeRegistration);
 
             if (openGenericTypeRegistration == null)
             {
                 throw new RegistrationNotFoundException(string.Format(Resources.RegistrationNotFoundFormat,
-                                                                      contractType.GetGenericTypeDefinition()));
+                                                                      contractType.GetGenericTypeDefinition()),
+                                                                      contractType.GetGenericTypeDefinition());
             }
 
             // Try to find a closed generic which passes the open signature.
             var registrationItem = this._registrationContainer
-                .Registrations.SingleOrDefault(
-                    registration => contractType.IsAssignableFrom(registration.Value.ImplementationType));
+                .GetRegistration(registration => contractType.IsAssignableFrom(registration.ImplementationType));
 
             Type implementationType = null;
 
-            if (registrationItem.Value != null)
+            if (registrationItem != null)
             {
-                implementationType = registrationItem.Value.ImplementationType;
+                implementationType = registrationItem.ImplementationType;
             }
 
             // Register closed generic type on-the-fly, if no match until now.
@@ -106,7 +106,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <returns><value>true</value> if the open generic type is registered, otherwise <value>false</value>.</returns>
         private bool IsRegisteredOpenGeneric(Type contractType)
         {
-            return this._registrationContainer.IsRegistered(contractType.GetGenericTypeDefinition());
+            return this._registrationContainer.HasRegistration(contractType.GetGenericTypeDefinition());
         }
     }
 }
