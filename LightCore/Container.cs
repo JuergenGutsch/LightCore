@@ -321,7 +321,7 @@ namespace LightCore
         {
             return this._registrationContainer
                 .AllRegistrations
-                .Select(this.Resolve);
+                .Select<RegistrationItem, object>(this.Resolve);
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ namespace LightCore
         {
             return this._registrationContainer.AllRegistrations
                 .Where(r => r.ContractType == contractType)
-                .Select(this.Resolve);
+                .Select<RegistrationItem, object>(this.Resolve);
         }
 
         /// <summary>
