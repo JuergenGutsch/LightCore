@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace LightCore.Registration
         /// <summary>
         /// Contains the duplicate registrations, e.g. plugins.
         /// </summary>
-        private readonly ISet<RegistrationItem> _duplicateRegistrations;
+        private readonly List<RegistrationItem> _duplicateRegistrations;
 
         /// <summary>
         /// Containes the unique registrations.
@@ -32,8 +31,8 @@ namespace LightCore.Registration
         /// </summary>
         internal RegistrationContainer()
         {
-            this._duplicateRegistrations = new HashSet<RegistrationItem>();
-            this._registrations = new ConcurrentDictionary<Type, RegistrationItem>();
+            this._duplicateRegistrations = new List<RegistrationItem>();
+            this._registrations = new Dictionary<Type, RegistrationItem>();
 
             this.RegistrationSources = new List<IRegistrationSource>();
         }
@@ -110,24 +109,27 @@ namespace LightCore.Registration
         /// <param name="registration">The registration.</param>
         public void AddRegistration(RegistrationItem registration)
         {
-            if (!this.HasRegistration(registration.ContractType))
+            lock (this._lock)
             {
-                this._registrations.Add(registration.ContractType, registration);
-            }
-            else
-            {
-                // Duplicate registration for enumerable requests.
-                RegistrationItem duplicateItem;
-
-                this._registrations.TryGetValue(registration.ContractType, out duplicateItem);
-
-                if (duplicateItem != null)
+                if (!this.HasRegistration(registration.ContractType))
                 {
-                    this._duplicateRegistrations.Add(duplicateItem);
-                    this.RemoveRegistration(duplicateItem.ContractType);
+                    this._registrations.Add(registration.ContractType, registration);
                 }
+                else
+                {
+                    // Duplicate registration for enumerable requests.
+                    RegistrationItem duplicateItem;
 
-                this._duplicateRegistrations.Add(registration);
+                    this._registrations.TryGetValue(registration.ContractType, out duplicateItem);
+
+                    if (duplicateItem != null)
+                    {
+                        this._duplicateRegistrations.Add(duplicateItem);
+                        this.RemoveRegistration(duplicateItem.ContractType);
+                    }
+
+                    this._duplicateRegistrations.Add(registration);
+                }
             }
         }
 
@@ -137,7 +139,10 @@ namespace LightCore.Registration
         /// <param name="contractType"></param>
         public void RemoveRegistration(Type contractType)
         {
-            this._registrations.Remove(contractType);
+            lock (this._lock)
+            {
+                this._registrations.Remove(contractType);
+            }
         }
 
         /// <summary>

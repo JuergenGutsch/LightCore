@@ -139,7 +139,7 @@ namespace LightCore
         /// Registers a module with registrations.
         /// </summary>
         /// <param name="registrationModule">The module to register within this container builder.</param>
-        public void RegisterModule(RegistrationModuleBase registrationModule)
+        public void RegisterModule(RegistrationModule registrationModule)
         {
             registrationModule.Register(this);
         }

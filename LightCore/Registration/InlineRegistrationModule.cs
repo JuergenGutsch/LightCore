@@ -8,7 +8,7 @@ namespace LightCore.Registration
     /// <summary>
     /// Represents an inline registration module.
     /// </summary>
-    public class InlineRegistrationModule : RegistrationModuleBase
+    public class InlineRegistrationModule : RegistrationModule
     {
         /// <summary>
         /// Gets or sets the registration callbacks.

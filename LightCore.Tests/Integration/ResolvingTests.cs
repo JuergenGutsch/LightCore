@@ -91,6 +91,7 @@ namespace LightCore.Tests.Integration
             var container = builder.Build();
 
             var bar = container.Resolve<IBar>();
+
             var foo = container.Resolve<IFoo>(bar);
 
             Assert.That(bar, Is.SameAs(foo.Bar));

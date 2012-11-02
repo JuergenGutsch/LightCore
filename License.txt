@@ -8,7 +8,7 @@ Die Binaries von LightCore dürfen in jeglicher Art von Projekten (privat,
 kommerziell, ...) kostenlos genutzt werden.
 
 Der Quellcode von LightCore steht unter der MS-PL-Lizenz, siehe
-http://www.microsoft.com/opensource/licenses.mspx.
+http://www.microsoft.com/en-us/openness/licenses.aspx.
 
 Bei abweichenden Anforderungen an die Lizenzierung besteht die Möglichkeit, den
 Autor von LightCore zu kontaktieren.
@@ -21,7 +21,7 @@ The LightCore binaries may be used in any kind of project (private, commercial,
 ...) for free.
 
 The LightCore sources are licensed under the MS-PL license, see
-http://www.microsoft.com/opensource/licenses.mspx.
+http://www.microsoft.com/en-us/openness/licenses.aspx.
 
 If you have any other requirements regarding the licensing feel free to contact
 the author of LightCore.

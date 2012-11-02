@@ -52,8 +52,6 @@ namespace LightCore
         /// </summary>
         private readonly IRegistrationContainer _registrationContainer;
 
-        private ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-
         private Func<PropertyInfo, bool> _validPropertiesSelector;
 
         /// <summary> Initializes a new instance of <see cref="Container" />.
@@ -220,7 +218,11 @@ namespace LightCore
             this.AddArgumentsToRegistration(registrationItem, arguments, namedArguments);
 
             // Activate existing registration.
-            return this.Resolve(registrationItem);
+            var result = this.Resolve(registrationItem);
+
+            this.InjectProperties(result);
+
+            return result;
         }
 
         /// <summary>
@@ -340,11 +342,22 @@ namespace LightCore
         /// <param name="instance">The instance.</param>
         public void InjectProperties(object instance)
         {
-            instance
-                .GetType()
+            var properties = GetValidProperties(instance.GetType());
+            foreach (PropertyInfo property in properties)
+            {
+                // Only write on empty properties.
+                if (property.GetValue(instance, null) == null)
+                {
+                    property.SetValue(instance, this.Resolve(property.PropertyType), null);
+                }
+            }
+        }
+
+        private IEnumerable<PropertyInfo> GetValidProperties(Type type)
+        {
+            return type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
-                .Where(this._validPropertiesSelector)
-                .ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
+                .Where(this._validPropertiesSelector);
         }
     }
 }

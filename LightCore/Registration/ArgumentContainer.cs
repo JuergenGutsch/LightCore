@@ -95,13 +95,13 @@ namespace LightCore.Registration
         {
             if (this.NamedArguments != null
                 && this.NamedArguments.Keys.Any(k => k == parameter.Name)
-                && this.NamedArguments.Values.Any(a => parameter.ParameterType.IsAssignableFrom(a.GetType())))
+                && this.NamedArguments.Values.Any(a => parameter.ParameterType.IsInstanceOfType(a)))
             {
                 return true;
             }
 
             if (this.AnonymousArguments != null
-                && this.AnonymousArguments.Any(a => parameter.ParameterType.IsAssignableFrom(a.GetType())))
+                && this.AnonymousArguments.Any(a => parameter.ParameterType.IsInstanceOfType(a)))
             {
                 return true;
             }
