@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-
 using LightCore.Integration.Web.Properties;
 
 namespace LightCore.Integration.Web.Mvc
@@ -60,7 +59,7 @@ namespace LightCore.Integration.Web.Mvc
                                                       requestContext.HttpContext.Request.Path));
             }
 
-            return (IController)this._container.Resolve(controllerType);
+            return (IController) this._container.Resolve(controllerType);
         }
     }
 }

@@ -353,6 +353,32 @@ namespace LightCore
             }
         }
 
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        public bool HasRegistration(Type contractType)
+        {
+            return this._registrationContainer.HasRegistration(contractType);
+        }
+
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        public bool HasRegistration<TContract>()
+        {
+            return this.HasRegistration(typeof (TContract));
+        }
+
+        /// <summary>
+        /// Gets the valid Properties for property injection.
+        /// </summary>
+        /// <param name="type">The type to use.</param>
+        /// <returns>All valid properties.</returns>
         private IEnumerable<PropertyInfo> GetValidProperties(Type type)
         {
             return type

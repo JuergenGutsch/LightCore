@@ -103,5 +103,20 @@ namespace LightCore
         /// </summary>
         /// <param name="instance">The instance.</param>
         void InjectProperties(object instance);
+
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        bool HasRegistration(Type contractType);
+
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        bool HasRegistration<TContract>();
     }
 }
