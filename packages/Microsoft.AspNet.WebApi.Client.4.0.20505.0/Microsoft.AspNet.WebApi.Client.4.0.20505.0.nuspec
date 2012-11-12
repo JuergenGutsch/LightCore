@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.WebApi.Client</id>
+    <version>4.0.20505.0</version>
+    <title>Microsoft ASP.NET Web API Client Libraries (RC)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/MVC4_prerelease_eula.htm</licenseUrl>
+    <projectUrl>http://www.asp.net/web-api</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package adds support for formatting and content negotiation to System.Net.Http. It includes support for JSON, XML, and form URL encoded data.</description>
+    <tags>Microsoft AspNet WebApi AspNetWebApi HttpClient</tags>
+    <dependencies>
+      <dependency id="Microsoft.Net.Http" version="2.0.20505.0" />
+      <dependency id="Newtonsoft.Json" version="4.5.1" />
+    </dependencies>
+  </metadata>
+</package>
