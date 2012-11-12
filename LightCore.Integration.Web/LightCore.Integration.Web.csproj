@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ContainerAccessorNotImplementedException.cs" />
     <Compile Include="DependencyInjectionModule.cs" />

@@ -64,7 +64,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(assembly => Assembly.Load(assembly)));
+            this._controllerAssemblies.AddRange(assemblyNames.Select(Assembly.Load));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(assembly => Assembly.Load(assembly)));
+            this._controllerAssemblies.AddRange(assemblyNames.Select(Assembly.Load));
         }
 
         /// <summary>

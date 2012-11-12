@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="LightCoreAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

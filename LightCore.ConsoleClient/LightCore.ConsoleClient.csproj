@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Screens\ScreenBase.cs" />
     <Compile Include="Screens\WelcomeScreen.cs" />

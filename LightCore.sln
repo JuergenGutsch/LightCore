@@ -40,7 +40,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLoca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator.Tests", "LightCore.CommonServiceLocator.Tests\LightCore.CommonServiceLocator.Tests.csproj", "{3E243370-7480-4559-B89B-B5A68A7E2AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc.IntegrationSample", "LightCore.Web.Mvc.IntegrationSample\LightCore.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc3.IntegrationSample", "LightCore.Web.Mvc3.IntegrationSample\LightCore.Web.Mvc3.IntegrationSample.csproj", "{67A750CD-24A8-4D2D-BB5D-B6323CE2E906}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc2.IntegrationSample", "LightCore.Web.Mvc2.IntegrationSample\LightCore.Web.Mvc2.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc4.IntegrationSample", "LightCore.Web.Mvc4.IntegrationSample\LightCore.Web.Mvc4.IntegrationSample.csproj", "{1EB82ED0-D58F-40DC-941E-AE34408759FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Integration.WebApi", "LightCore.Integration.WebApi\LightCore.Integration.WebApi.csproj", "{A8F93583-2712-4D10-A277-F6A67543226A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,10 +102,22 @@ Global
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67A750CD-24A8-4D2D-BB5D-B6323CE2E906}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67A750CD-24A8-4D2D-BB5D-B6323CE2E906}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67A750CD-24A8-4D2D-BB5D-B6323CE2E906}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67A750CD-24A8-4D2D-BB5D-B6323CE2E906}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1EB82ED0-D58F-40DC-941E-AE34408759FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB82ED0-D58F-40DC-941E-AE34408759FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB82ED0-D58F-40DC-941E-AE34408759FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB82ED0-D58F-40DC-941E-AE34408759FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8F93583-2712-4D10-A277-F6A67543226A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8F93583-2712-4D10-A277-F6A67543226A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8F93583-2712-4D10-A277-F6A67543226A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8F93583-2712-4D10-A277-F6A67543226A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,7 +125,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{14D79127-D7D7-402A-8C42-4A5FC698C8CF} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{22AD0900-A58F-4D1B-88F1-1B109835F956} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
+		{67A750CD-24A8-4D2D-BB5D-B6323CE2E906} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
+		{1EB82ED0-D58F-40DC-941E-AE34408759FD} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{10415A70-65B2-47CD-860C-6726F5626335} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{8267A0FD-66DF-46B1-851E-99B8471BF3C2} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}

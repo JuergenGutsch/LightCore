@@ -66,8 +66,8 @@
       <HintPath>..\Referenced DLLs\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-<HintPath>..\Referenced DLLs\Microsoft.Practices.Unity.dll</HintPath>
-</Reference>
+      <HintPath>..\Referenced DLLs\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject">
       <HintPath>..\Referenced DLLs\Ninject.dll</HintPath>
     </Reference>
@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\GlobalAssemblyInfo.cs">
-      <Link>GlobalAssemblyInfo.cs</Link>
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="UseCases\AutofacUseCase.cs" />
     <Compile Include="UseCases\LightCoreDelegateUseCase.cs" />
