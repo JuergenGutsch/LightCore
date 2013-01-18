@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace LightCore.Integration.Web.Mvc
 {
     /// <summary>
-    /// Represents a DependencyResolver for ASP.NET 3.0 / 4.0 that works with a <see cref="IContainer" />.
+    /// Represents a DependencyResolver for ASP.NET MVC 3.0 / 4.0 that works with a <see cref="IContainer" />.
     /// </summary>
     public class LightCoreDependencyResolver : IDependencyResolver
     {
