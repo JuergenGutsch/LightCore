@@ -45,7 +45,7 @@ namespace LightCore
         /// Initializes a new instance of the <see cref="ResolutionFailedException"/> type.
         /// </summary>
         /// <param name="message">The exception message.</param>
-        /// <param name="implementationTypeFullName">The implementationtype.</param>
+        /// <param name="implementationType">The implementationtype.</param>
         public ResolutionFailedException(string message, Type implementationType)
         {
             this.ImplementationType = implementationType;

@@ -14,6 +14,9 @@ namespace LightCore
 #endif
     public class RegistrationNotFoundException : Exception
     {
+        /// <summary>
+        /// The contract type.
+        /// </summary>
         public Type ContractType
         {
             get;

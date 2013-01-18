@@ -63,7 +63,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(Assembly.Load));
+            this._controllerAssemblies.AddRange(assemblyNames.Select<string, Assembly>(Assembly.Load));
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(Assembly.Load));
+            this._controllerAssemblies.AddRange(assemblyNames.Select<string, Assembly>(Assembly.Load));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace LightCore.Integration.Web.Mvc
         /// <param name="containerBuilder">The container builder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
-            this._controllerAssemblies.ForEach(a => this.RegisterControllers(a, containerBuilder));
+            this._controllerAssemblies.ForEach<Assembly>(a => this.RegisterControllers(a, containerBuilder));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace LightCore.Integration.Web.Mvc
 
             var controllerTypes = allPublicTypes.Where(t => typeOfController.IsAssignableFrom(t) && !t.IsAbstract);
 
-            controllerTypes.ForEach(t => containerBuilder.Register(t, t));
+            controllerTypes.ForEach<Type>(t => containerBuilder.Register(t, t));
         }
     }
 }
