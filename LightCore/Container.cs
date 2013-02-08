@@ -220,8 +220,6 @@ namespace LightCore
             // Activate existing registration.
             var result = this.Resolve(registrationItem);
 
-            this.InjectProperties(result);
-
             return result;
         }
 
