@@ -1,0 +1,1 @@
+C:\git\LightCore\LightCore.Integration.Web.Tests\obj\Debug\LightCore.Integration.Web.Tests.csprojResolveAssemblyReference.cache

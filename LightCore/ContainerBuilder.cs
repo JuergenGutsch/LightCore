@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Reflection;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
@@ -298,7 +298,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            if(!typeOfContract.IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
+            if(!typeOfContract.GetTypeInfo().IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException(
                     Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));

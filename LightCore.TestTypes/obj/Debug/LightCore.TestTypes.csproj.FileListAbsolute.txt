@@ -1,0 +1,5 @@
+C:\git\LightCore\LightCore.TestTypes\obj\Debug\LightCore.TestTypes.csprojResolveAssemblyReference.cache
+C:\git\LightCore\LightCore.TestTypes\bin\Debug\LightCore.TestTypes.dll
+C:\git\LightCore\LightCore.TestTypes\bin\Debug\LightCore.TestTypes.pdb
+C:\git\LightCore\LightCore.TestTypes\obj\Debug\LightCore.TestTypes.dll
+C:\git\LightCore\LightCore.TestTypes\obj\Debug\LightCore.TestTypes.pdb

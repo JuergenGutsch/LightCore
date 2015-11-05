@@ -1,0 +1,8 @@
+C:\git\LightCore\LightCore\bin\Debug\LightCore.XML
+C:\git\LightCore\LightCore\bin\Debug\LightCore.dll
+C:\git\LightCore\LightCore\bin\Debug\LightCore.pdb
+C:\git\LightCore\LightCore\obj\Debug\LightCore.csprojResolveAssemblyReference.cache
+C:\git\LightCore\LightCore\obj\Debug\LightCore.Properties.Resources.resources
+C:\git\LightCore\LightCore\obj\Debug\LightCore.csproj.GenerateResource.Cache
+C:\git\LightCore\LightCore\obj\Debug\LightCore.dll
+C:\git\LightCore\LightCore\obj\Debug\LightCore.pdb

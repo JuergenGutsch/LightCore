@@ -1,0 +1,13 @@
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.Performance.exe.config
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.Performance.exe
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.Performance.pdb
+C:\git\LightCore\LightCore.Performance\bin\Debug\Autofac.dll
+C:\git\LightCore\LightCore.Performance\bin\Debug\Funq.dll
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.dll
+C:\git\LightCore\LightCore.Performance\bin\Debug\Microsoft.Practices.Unity.dll
+C:\git\LightCore\LightCore.Performance\bin\Debug\Ninject.dll
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.pdb
+C:\git\LightCore\LightCore.Performance\bin\Debug\LightCore.xml
+C:\git\LightCore\LightCore.Performance\obj\Debug\LightCore.Performance.csprojResolveAssemblyReference.cache
+C:\git\LightCore\LightCore.Performance\obj\Debug\LightCore.Performance.exe
+C:\git\LightCore\LightCore.Performance\obj\Debug\LightCore.Performance.pdb

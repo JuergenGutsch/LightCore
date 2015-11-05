@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
 	ProjectSection(SolutionItems) = preProject
 		LightCore.xsd = LightCore.xsd
@@ -22,14 +24,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.ConsoleClient", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Performance", "LightCore.Performance\LightCore.Performance.csproj", "{8267A0FD-66DF-46B1-851E-99B8471BF3C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Integration.Web", "LightCore.Integration.Web\LightCore.Integration.Web.csproj", "{A5626363-3530-435B-8DFA-8C074D81CEB8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.IntegrationSample", "LightCore.Web.IntegrationSample\LightCore.Web.IntegrationSample.csproj", "{22AD0900-A58F-4D1B-88F1-1B109835F956}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Integration.Web.Tests", "LightCore.Integration.Web.Tests\LightCore.Integration.Web.Tests.csproj", "{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.TestTypes", "LightCore.TestTypes\LightCore.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore", "LightCore\LightCore.csproj", "{88D8ABC5-3FAE-489C-862B-5740059DDD58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Configuration", "LightCore.Configuration\LightCore.Configuration.csproj", "{CC409020-9039-4478-8581-C230923A6064}"
@@ -40,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLoca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator.Tests", "LightCore.CommonServiceLocator.Tests\LightCore.CommonServiceLocator.Tests.csproj", "{3E243370-7480-4559-B89B-B5A68A7E2AF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Web.Mvc.IntegrationSample", "LightCore.Web.Mvc.IntegrationSample\LightCore.Web.Mvc.IntegrationSample.csproj", "{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.TestTypes", "LightCore.TestTypes\LightCore.TestTypes.csproj", "{4478482F-075B-4146-B06D-A6B69AFA2816}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,22 +54,6 @@ Global
 		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5626363-3530-435B-8DFA-8C074D81CEB8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22AD0900-A58F-4D1B-88F1-1B109835F956}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88D8ABC5-3FAE-489C-862B-5740059DDD58}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -96,23 +74,20 @@ Global
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4478482F-075B-4146-B06D-A6B69AFA2816}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
-		{22AD0900-A58F-4D1B-88F1-1B109835F956} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
-		{2C0E7F47-A2D9-4105-B25E-2A1AF1402B8E} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{10415A70-65B2-47CD-860C-6726F5626335} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
+		{14D79127-D7D7-402A-8C42-4A5FC698C8CF} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{8267A0FD-66DF-46B1-851E-99B8471BF3C2} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
-		{4CB43E3E-711F-4812-8E7B-0AC0B96E75F5} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
-		{4478482F-075B-4146-B06D-A6B69AFA2816} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{0938377E-199E-4EC3-9EB0-E20957EF6B37} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{3E243370-7480-4559-B89B-B5A68A7E2AF8} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
+		{4478482F-075B-4146-B06D-A6B69AFA2816} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 	EndGlobalSection
 EndGlobal
