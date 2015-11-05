@@ -1,7 +1,7 @@
-﻿#if !NET35 && !CF35 && !SL3
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+
 
 using LightCore.Activation.Activators;
 
@@ -48,7 +48,7 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsGenericType
+                return contractType => contractType.GetTypeInfo().IsGenericType
                     && contractType.GetGenericTypeDefinition() == typeof(Lazy<>)
                     &&
                     this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
@@ -63,7 +63,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <returns><value>The registration item</value> if this source can handle it, otherwise <value>null</value>.</returns>
         public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
-            return ( RegistrationItem )CreateLazyRegistrationMethod
+            return (RegistrationItem)CreateLazyRegistrationMethod
                                           .MakeGenericMethod(contractType.GetGenericArguments().FirstOrDefault())
                                           .Invoke(null, null);
         }
@@ -76,10 +76,9 @@ namespace LightCore.Registration.RegistrationSource
         private static RegistrationItem CreateLazyRegistration<T>()
         {
             return new RegistrationItem
-                       {
-                           Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
-                       };
+            {
+                Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
+            };
         }
     }
 }
-#endif

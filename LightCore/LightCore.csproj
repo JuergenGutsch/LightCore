@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <PlatformFamilyName Condition="'$(BuildTarget)' == 'CF35'">PocketPC</PlatformFamilyName>
-    <PlatformID Condition="'$(BuildTarget)' == 'CF35'">WinCE</PlatformID>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</ProjectGuid>
@@ -123,11 +121,7 @@
     <Compile Include="Registration\RegistrationSource\OpenGenericRegistrationSource.cs" />
     <Compile Include="Registration\RegistrationSource\ConcreteTypeRegistrationSource.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" Condition="$(MSBuildTargets) == '' Or $(MSBuildTargets) == 'NET35' Or $(MSBuildTargets) == 'NET40'" />
-  <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" Condition="$(MSBuildTargets) == 'CF35'" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v2.0\Microsoft.Silverlight.CSharp.targets" Condition="$(MSBuildTargets) == 'SL2'" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" Condition="$(MSBuildTargets) == 'SL3'" />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v4.0\Microsoft.Silverlight.CSharp.targets" Condition="$(MSBuildTargets) == 'SL4'" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace LightCore.ExtensionMethods.System
 {
@@ -21,9 +22,9 @@ namespace LightCore.ExtensionMethods.System
                 return false;
             }
 
-            bool isConcreteType = !source.IsAbstract && !source.IsInterface;
+            bool isConcreteType = !source.IsAbstract && !source.GetTypeInfo().IsInterface;
 
-            isConcreteType &= !source.IsValueType;
+            isConcreteType &= !source.GetTypeInfo().IsValueType;
             isConcreteType &= source != typeof (string);
             isConcreteType &= !IsFactoryType(source);
 
@@ -37,12 +38,12 @@ namespace LightCore.ExtensionMethods.System
         /// <returns><value>true</value> if the type is a generic factory, otherwise <value>false</value>.</returns>
         internal static bool IsFactoryType(this Type source)
         {
-            if (source == null || !source.IsGenericType)
+            if (source == null || !source.GetTypeInfo().IsGenericType)
             {
                 return false;
             }
 
-            Type genericTypeDefinition = source.GetGenericTypeDefinition();
+            var genericTypeDefinition = source.GetGenericTypeDefinition();
 
             return genericTypeDefinition == typeof(Func<>)
                    || genericTypeDefinition == typeof(Func<,>)
@@ -58,7 +59,7 @@ namespace LightCore.ExtensionMethods.System
         /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
         internal static bool IsGenericEnumerable(this Type source)
         {
-            if (source == null || !source.IsGenericType)
+            if (source == null || !source.GetTypeInfo().IsGenericType)
             {
                 return false;
             }

@@ -75,10 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj">
-      <Project>{AEB033B9-0F01-44A9-9642-A50BA90CA748}</Project>
-      <Name>LightCore.CommonServiceLocator</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LightCore\LightCore.csproj">
       <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
       <Name>LightCore</Name>

@@ -98,14 +98,8 @@ namespace LightCore
                                                  new ConcreteTypeRegistrationSource()
                                              };
 
-#if !CF35
             allRegistrationSources.Add(new FactoryRegistrationSource(this._registrationContainer));
-#endif
-
-#if !NET35 && !CF35 && !SL3
-            allRegistrationSources.Add(new LazyRegistrationSource(this._registrationContainer));
-#endif
-
+            
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 
             this.BootStrappLightCore();

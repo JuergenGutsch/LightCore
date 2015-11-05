@@ -1,3 +1,0 @@
-C:\git\LightCore\LightCore.Integration.Web\obj\Debug\LightCore.Integration.Web.csprojResolveAssemblyReference.cache
-C:\git\LightCore\LightCore.Integration.Web\obj\Debug\LightCore.Integration.Web.Properties.Resources.resources
-C:\git\LightCore\LightCore.Integration.Web\obj\Debug\LightCore.Integration.Web.csproj.GenerateResource.Cache

@@ -13,33 +13,6 @@ using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
-#if NET35
-    internal class NET35
-    {
-        
-    }
-#endif
-
-#if NET40
-    internal class NET40
-    {
-        
-    }
-#endif
-
-#if CF35
-    internal class CF35
-    {
-        
-    }
-#endif
-
-#if SL3
-  internal class SL3
-  {
-
-  }
-#endif
 
     /// <summary>
     /// Represents the implementation for an inversion of control container.
@@ -71,7 +44,7 @@ namespace LightCore
         {
             var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
                                                  {
-                                                     p => !p.PropertyType.IsValueType,
+                                                     p => !p.PropertyType.GetTypeInfo().IsValueType,
                                                      p => this._registrationContainer.IsRegistered(p.PropertyType),
                                                      p => p.GetIndexParameters().Length == 0,
                                                      p => p.CanWrite

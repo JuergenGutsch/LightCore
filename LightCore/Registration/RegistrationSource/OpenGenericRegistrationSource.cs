@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 using LightCore.Activation.Activators;
 using LightCore.Activation.Components;
@@ -29,7 +30,7 @@ namespace LightCore.Registration.RegistrationSource
             {
                 return
                     contractType => contractType != null
-                                    && contractType.IsGenericType
+                                    && contractType.GetTypeInfo().IsGenericType
                                     && IsRegisteredOpenGeneric(contractType);
             }
         }
