@@ -1,13 +1,13 @@
-﻿using LightCore.TestTypes;
-
-using NUnit.Framework;
+﻿using FluentAssertions;
+using LightCore.TestTypes;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+    
     public class GenericRegistrationTest
     {
-        [Test]
+        [Fact]
         public void Generic_registration_can_registered_with_closed_type()
         {
             var builder = new ContainerBuilder();
@@ -15,10 +15,10 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            Assert.That(container.Resolve<IRepository<Foo>>(), Is.Not.Null);
+            container.Resolve<IRepository<Foo>>().Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Generic_registration_can_registered_with_open_type()
         {
             var builder = new ContainerBuilder();
@@ -27,16 +27,16 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var fooRepository = container.Resolve<IRepository<Foo>>();
                 var barRepository = container.Resolve<IRepository<Bar>>();
 
-                Assert.IsNotNull(fooRepository);
-                Assert.IsNotNull(barRepository);
+                fooRepository.Should().NotBeNull();
+                barRepository.Should().NotBeNull();
 
-                Assert.IsInstanceOf<Repository<Foo>>(fooRepository);
-                Assert.IsInstanceOf<Repository<Bar>>(barRepository);
+                fooRepository.Should().BeOfType<Repository<Foo>>();
+                barRepository.Should().BeOfType<Repository<Bar>>();
             }
         }
     }

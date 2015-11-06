@@ -5,18 +5,19 @@ using System.Linq;
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+
     public class ContainerTests
     {
         private class StreamContainer
         {
             public StreamContainer()
             {
-                
+
             }
 
             public StreamContainer(IDisposable disposable)
@@ -31,7 +32,7 @@ namespace LightCore.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_properties_in_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -42,11 +43,11 @@ namespace LightCore.Tests.Integration
             var streamContainerOne = container.Resolve<StreamContainer>();
             var streamContainerTwo = container.Resolve<StreamContainer>();
 
-            Assert.IsFalse(ReferenceEquals(streamContainerOne, streamContainerTwo), "Root objects are equal");
-            Assert.IsFalse(ReferenceEquals(streamContainerOne.Stream, streamContainerTwo.Stream), "Contained objects are equal");
+            streamContainerOne.Should().NotBeSameAs(streamContainerTwo);
+            streamContainerOne.Stream.Should().NotBeSameAs(streamContainerTwo.Stream);
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_concrete_types()
         {
             var builder = new ContainerBuilder();
@@ -55,10 +56,10 @@ namespace LightCore.Tests.Integration
 
             var foo = container.Resolve<Foo>();
 
-            Assert.That(foo, Is.Not.Null);
+            foo.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_concrete_types_with_registered_dependencies()
         {
             var builder = new ContainerBuilder();
@@ -68,23 +69,23 @@ namespace LightCore.Tests.Integration
 
             var foo = container.Resolve<Foo>();
 
-            Assert.That(foo.Bar, Is.Not.Null);
+            foo.Bar.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_with_arguments()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo, Foo>().WithArguments(4);
+            builder.Register<IFoo, Foo>().WithArguments(3);
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>();
+            var foo = container.Resolve<IFoo>() as Foo;
 
-            Assert.That(((Foo) foo).Arg3, Is.EqualTo(4));
+            foo.Arg3.Should().Be(3);
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_factories()
         {
             var builder = new ContainerBuilder();
@@ -96,17 +97,17 @@ namespace LightCore.Tests.Integration
             var fooOne = fooFactory();
             var fooTwo = fooFactory();
 
-            Assert.IsNotNull(fooFactory);
-            Assert.IsInstanceOf<Func<IFoo>>(fooFactory);
+            fooFactory.Should().NotBeNull();
+            fooFactory.Should().BeOfType<Func<IFoo>>();
 
-            Assert.IsNotNull(fooOne);
-            Assert.IsInstanceOf<IFoo>(fooOne);
+            fooOne.Should().NotBeNull();
+            fooOne.Should().BeAssignableTo<IFoo>();
 
-            Assert.IsNotNull(fooTwo);
-            Assert.IsInstanceOf<IFoo>(fooTwo);
+            fooTwo.Should().NotBeNull();
+            fooTwo.Should().BeAssignableTo<IFoo>();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_factories_with_arguments()
         {
             var builder = new ContainerBuilder();
@@ -118,21 +119,21 @@ namespace LightCore.Tests.Integration
 
             const string expected = "Hello World";
 
-            var instance = fooFactory(expected);
+            var instance = fooFactory(expected) as Foo;
 
-            Assert.IsNotNull(fooFactory);
-            Assert.IsNotNull(instance);
-            Assert.AreEqual(expected, ((Foo)instance).Arg1);
+            fooFactory.Should().NotBeNull();
+            instance.Should().NotBeNull();
+            instance.Arg1.Should().Be(expected);
 
             var fooFactoryTwo = container.Resolve<Func<string, bool, IFoo>>();
-            var fooTwo = fooFactoryTwo("Peter", true);
+            var fooTwo = fooFactoryTwo("Peter", true) as Foo;
 
-            Assert.IsNotNull(fooFactoryTwo);
-            Assert.AreEqual("Peter", ((Foo)fooTwo).Arg1);
-            Assert.AreEqual(true, ((Foo)fooTwo).Arg2);
+            fooFactoryTwo.Should().NotBeNull();
+            fooTwo.Arg1.Should().Be("Peter");
+            fooTwo.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_factories_as_dependendy()
         {
             var builder = new ContainerBuilder();
@@ -142,25 +143,25 @@ namespace LightCore.Tests.Integration
 
             var fooFactoryConsumer = container.Resolve<FooFactoryConsumer>();
 
-            Assert.IsNotNull(fooFactoryConsumer);
-            Assert.IsNotNull(fooFactoryConsumer.Foo);
+            fooFactoryConsumer.Should().NotBeNull();
+            fooFactoryConsumer.Foo.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
 
             var container = builder.Build();
 
             var fooRepository = container.Resolve<IRepository<Foo>>();
 
-            Assert.NotNull(fooRepository);
-            Assert.IsInstanceOf<IRepository<Foo>>(fooRepository);
+            fooRepository.Should().NotBeNull();
+            fooRepository.Should().BeOfType<Repository<Foo>>();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_open_generic_types_with_few_arguments()
         {
             var builder = new ContainerBuilder();
@@ -170,58 +171,58 @@ namespace LightCore.Tests.Integration
 
             var fooRepository = container.Resolve<IRepository<Foo, int>>();
 
-            Assert.NotNull(fooRepository);
-            Assert.IsInstanceOf<IRepository<Foo, int>>(fooRepository);
+            fooRepository.Should().NotBeNull();
+            fooRepository.Should().BeOfType<Repository<Foo, int>>();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_a_few_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
 
             var container = builder.Build();
 
             var fooRepository = container.Resolve<IRepository<IFoo>>();
             var barRepository = container.Resolve<IRepository<IBar>>();
 
-            Assert.NotNull(fooRepository);
-            Assert.NotNull(barRepository);
+            fooRepository.Should().NotBeNull();
+            barRepository.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_types_to_self_automatically()
         {
             var builder = new ContainerBuilder();
             var container = builder.Build();
 
-            Foo resolvedInstance = container.Resolve<Foo>();
+            var resolvedInstance = container.Resolve<Foo>();
 
-            Assert.IsNotNull(resolvedInstance);
+            resolvedInstance.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void IContainer_is_automatically_registered_when_container_was_build()
         {
             var builder = new ContainerBuilder();
             var container = builder.Build();
 
-            var resolvedContainer = container.Resolve<IContainer>();
+            var actual = container.Resolve<IContainer>();
 
-            Assert.NotNull(resolvedContainer);
-            Assert.IsInstanceOf<IContainer>(resolvedContainer);
+            actual.Should().NotBeNull();
+            actual.Should().BeAssignableTo<IContainer>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_can_initialize_container()
         {
             var builder = new ContainerBuilder();
-            var container = builder.Build();
+            var actual = builder.Build();
 
-            Assert.IsNotNull(container);
+            actual.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_all_instances_based_on_a_predicate()
         {
             var builder = new ContainerBuilder();
@@ -233,12 +234,12 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var allInstances = container.ResolveAll<IFoo>();
+            var actual = container.ResolveAll<IFoo>();
 
-            Assert.AreEqual(2, allInstances.Count());
+            actual.Count().Should().Be(2);
         }
 
-        [Test]
+        [Fact]
         public void Container_can_resolve_enumerables_of_contract()
         {
             var builder = new ContainerBuilder();
@@ -248,10 +249,10 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var instance = container.Resolve<EnumerableTest>();
+            var âctual = container.Resolve<EnumerableTest>();
 
-            Assert.IsNotNull(instance);
-            Assert.AreEqual(2, instance.Bars.Count());
+            âctual.Should().NotBeNull();
+            âctual.Bars.Count().Should().Be(2);
         }
     }
 }

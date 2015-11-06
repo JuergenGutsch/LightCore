@@ -1,13 +1,11 @@
 ﻿using System;
 
-using System.Runtime.Serialization;
 
 namespace LightCore
 {
     ///<summary>
     /// Thrown when resolving of a type failed.
     ///</summary>
-    [Serializable]
     public class ResolutionFailedException : Exception
     {
         /// <summary>

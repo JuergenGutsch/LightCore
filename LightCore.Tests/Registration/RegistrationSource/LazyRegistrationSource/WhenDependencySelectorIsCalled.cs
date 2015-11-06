@@ -1,37 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
 {
-    [TestFixture]
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithNoLazyType_TheSourceCannotHandle()
         {
             var registrationSource = this.GetLazyRegistrationSource( typeof( object ) );
 
-            Assert.That( registrationSource.SourceSupportsTypeSelector( typeof( Func<IFoo> ) ), Is.False );
+            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Func<IFoo> ) );
+
+            actual.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithLazyType_TheSourceCanHandle()
         {
             var registrationSource = this.GetLazyRegistrationSource( typeof( IFoo ) );
 
-            Assert.That( registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) ), Is.True );
+            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) );
+
+            actual.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithWithLazyTypeButNoRegisteredDependency_TheSourceCannotHandle()
         {
             var registrationSource = this.GetLazyRegistrationSource( typeof( string ) );
 
-            Assert.That( registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) ), Is.False );
+            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) );
+
+            actual.Should().BeFalse();
         }
     }
 }

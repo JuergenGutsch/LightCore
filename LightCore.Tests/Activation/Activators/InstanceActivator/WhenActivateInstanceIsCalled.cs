@@ -1,11 +1,12 @@
-﻿using LightCore.Activation;
+﻿using FluentAssertions;
+using LightCore.Activation;
 using LightCore.Activation.Activators;
+using Xunit;
 
-using NUnit.Framework;
 
 namespace LightCore.Tests.Activation.Activators.InstanceActivator
 {
-    [TestFixture]
+    
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator<TContract>(TContract instance)
@@ -13,26 +14,26 @@ namespace LightCore.Tests.Activation.Activators.InstanceActivator
             return new InstanceActivator<TContract>(instance);
         }
 
-        [Test]
+        [Fact]
         public void WithInstanceAndEmptyResolutionContext_SameInstanceReturned()
         {
-            object instance = new object();
-            var instanceActivator = this.GetActivator(instance);
+            var instance = new object();
+            var instanceActivator = GetActivator(instance);
 
-            object result = instanceActivator.ActivateInstance(new ResolutionContext());
+            var result = instanceActivator.ActivateInstance(new ResolutionContext());
 
-            Assert.That(result, Is.SameAs(instance));
+            result.Should().BeSameAs(instance);
         }
 
-        [Test]
+        [Fact]
         public void WithNullAndEmptyResolutionContext_NullReturned()
         {
             object instance = null;
-            var instanceActivator = this.GetActivator(instance);
+            var instanceActivator = GetActivator(instance);
 
-            object result = instanceActivator.ActivateInstance(new ResolutionContext());
+            var result = instanceActivator.ActivateInstance(new ResolutionContext());
 
-            Assert.That(result, Is.SameAs(null));
+            result.Should().BeSameAs(null);
         }
     }
 }

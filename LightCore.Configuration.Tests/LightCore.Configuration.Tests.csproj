@@ -81,20 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore.Configuration\LightCore.Configuration.csproj">
-      <Project>{CC409020-9039-4478-8581-C230923A6064}</Project>
-      <Name>LightCore.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightCore.TestTypes\LightCore.TestTypes.csproj">
-      <Project>{4478482f-075b-4146-b06d-a6b69afa2816}</Project>
-      <Name>LightCore.TestTypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LightCore\LightCore.csproj">
-      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>LightCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>

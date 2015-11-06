@@ -6,13 +6,14 @@ using LightCore.Lifecycle;
 using LightCore.Registration;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
 
 using System.Collections.Generic;
+using Xunit;
+using FluentAssertions;
 
 namespace LightCore.Tests.Activation.Activators.ReflectionActivator
 {
-    [TestFixture]
+    
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator(Type implementationType)
@@ -57,19 +58,19 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
             return new ResolutionContext(new Container(registrationContainer), registrationContainer);
         }
 
-        [Test]
+        [Fact]
         public void WithObjectImplementationAndEmptyResolutionContext_NewObjectReturned()
         {
             var reflectionActivator = this.GetActivator(typeof(object));
             var resolutionContext = this.GetContext();
 
-            object result = reflectionActivator.ActivateInstance(resolutionContext);
+            var result = reflectionActivator.ActivateInstance(resolutionContext);
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<object>());
+            result.Should().NotBeNull();
+            result.Should().BeOfType<object>();
         }
 
-        [Test]
+        [Fact]
         public void WithFooImplementationAndEmptyResolutionContext_NewFooReturned()
         {
             var reflectionActivator = this.GetActivator(typeof(Foo));
@@ -77,22 +78,22 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
 
             object result = reflectionActivator.ActivateInstance(resolutionContext);
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<Foo>());
+            result.Should().NotBeNull();
+            result.Should().BeOfType<Foo>();
         }
 
-        [Test]
+        [Fact]
         public void WithFooImplementationAndIBarAvailable_FooWithBarReturned()
         {
             var reflectionActivator = this.GetActivator(typeof(Foo));
             var resolutionContext = this.GetContext(typeof(IBar), typeof(Bar));
 
-            object result = reflectionActivator.ActivateInstance(resolutionContext);
+            var result = reflectionActivator.ActivateInstance(resolutionContext);
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.InstanceOf<Foo>());
+            result.Should().NotBeNull();
+            result.Should().BeOfType<Foo>();
 
-            Assert.That(((Foo)result).Bar, Is.Not.Null);
+            ((Foo)result).Bar.Should().NotBeNull();
         }
     }
 }

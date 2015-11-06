@@ -1,30 +1,30 @@
 ﻿using System.Collections.Generic;
+using FluentAssertions;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+
     public class ResolvingWithRuntimeArgumentsTests
     {
-        [Test]
+        [Fact]
         public void Container_Can_Resolve_With_Given_Runtime_Argument_Successfully()
         {
             var builder = new ContainerBuilder();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
-            IContainer container = builder.Build();
+            var container = builder.Build();
 
             var foo = (Foo)container.Resolve<IFoo>("yeah");
 
-            Assert.IsNotNull(foo);
-            Assert.IsNotNull(foo.Bar);
-            Assert.IsNotNull(foo.Arg1);
+            foo.Should().NotBeNull();
+            foo.Bar.Should().NotBeNull();
+            foo.Arg1.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_Does_Not_Reuse_Runtime_Arguments()
         {
             var builder = new ContainerBuilder();
@@ -34,44 +34,43 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>("first");
+            var foo = container.Resolve<IFoo>("yeah", true) as Foo;
 
-            var fooBlubs = container.Resolve<IFoo>("yeah", true);
-
-            Assert.AreEqual("yeah", (fooBlubs as Foo).Arg1);
-            Assert.IsTrue((fooBlubs as Foo).Arg2);
+            foo.Should().NotBeNull();
+            foo.Arg1.Should().BeEquivalentTo("yeah");
+            foo.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Container_Can_Resolve_With_Named_Given_Runtime_Argument_Successfully()
         {
             var builder = new ContainerBuilder();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
-            IContainer container = builder.Build();
+            var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>(new Dictionary<string, object> { { "arg2", true }, { "arg1", "Peter" } });
+            var foo = container.Resolve<IFoo>(new Dictionary<string, object> { { "arg2", true }, { "arg1", "Peter" } }) as Foo;
 
-            Assert.IsNotNull(foo);
-            Assert.IsTrue(((Foo)foo).Arg2);
-            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+            foo.Should().NotBeNull();
+            foo.Arg1.Should().BeEquivalentTo("Peter");
+            foo.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Container_Can_Resolve_With_Anonymous_Named_Given_Runtime_Argument_Successfully()
         {
             var builder = new ContainerBuilder();
             builder.Register<IBar, Bar>();
             builder.Register<IFoo, Foo>();
 
-            IContainer container = builder.Build();
+            var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>(new AnonymousArgument(new { arg2 = true, arg1 = "Peter" }));
+            var foo = container.Resolve<IFoo>(new AnonymousArgument(new { arg2 = true, arg1 = "Peter" })) as Foo;
 
-            Assert.IsNotNull(foo);
-            Assert.IsTrue(((Foo)foo).Arg2);
-            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
+            foo.Should().NotBeNull();
+            foo.Arg1.Should().BeEquivalentTo("Peter");
+            foo.Arg2.Should().BeTrue();
         }
     }
 }

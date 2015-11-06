@@ -1,17 +1,17 @@
 ﻿using System.Threading;
-
+using FluentAssertions;
 using LightCore.Lifecycle;
 using LightCore.Tests.Lifecycle;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+
     public class LifecycleTests
     {
-        [Test]
+        [Fact]
         public void Instance_is_not_reused_when_controlled_by_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -23,10 +23,10 @@ namespace LightCore.Tests.Integration
             var foo1 = container.Resolve<IFoo>();
             var foo2 = container.Resolve<IFoo>();
 
-            Assert.IsFalse(ReferenceEquals(foo1, foo2));
+            ReferenceEquals(foo1, foo2);
         }
 
-        [Test]
+        [Fact]
         public void Instance_is_reused_when_controlled_by_singleton_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -39,10 +39,11 @@ namespace LightCore.Tests.Integration
             var foo1 = container.Resolve<IFoo>();
             var foo2 = container.Resolve<IFoo>();
 
-            Assert.IsTrue(ReferenceEquals(foo1, foo2));
+            ReferenceEquals(foo1, foo2).Should().BeTrue();
         }
 
-        [Test]
+#if FALLSE
+        [Fact]
         public void Instance_is_reused_on_same_thread_when_controlled_by_threadsingleton_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -65,8 +66,8 @@ namespace LightCore.Tests.Integration
             thread.Join();
             threadTwo.Join();
 
-            Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
-            Assert.IsFalse(ReferenceEquals(threadData.FooOne, threadDataTwo.FooOne));
+            threadData.FooOne.Should().BeSameAs(threadData.FooTwo);
         }
+#endif
     }
 }

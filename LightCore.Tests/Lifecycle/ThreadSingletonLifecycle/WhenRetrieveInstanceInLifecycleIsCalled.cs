@@ -1,13 +1,16 @@
 ﻿using System.Threading;
-
-using NUnit.Framework;
+using FluentAssertions;
+using Xunit;
 
 namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
 {
-    [TestFixture]
+    
     public class WhenRetrieveInstanceInLifecycleIsCalled : LifecycleFixture
     {
-        [Test]
+
+#if FALSE
+
+        [Fact]
         public void WithActivationFunction_DifferentObjectsPerThreadAreReturned()
         {
             var lifecycle = new LightCore.Lifecycle.ThreadSingletonLifecycle();
@@ -25,8 +28,10 @@ namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
             thread.Join();
             threadTwo.Join();
 
-            Assert.IsTrue(ReferenceEquals(threadData.FooOne, threadData.FooTwo));
-            Assert.IsFalse(ReferenceEquals(threadData.FooOne, threadDataTwo.FooOne));
+            threadData.FooOne.Should().Be(threadData.FooTwo);
+            threadData.FooOne.Should().NotBe(threadDataTwo.FooOne);
         }
+
+#endif
     }
 }

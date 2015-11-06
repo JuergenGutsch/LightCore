@@ -1,13 +1,10 @@
 ﻿using System;
 
-using System.Runtime.Serialization;
-
 namespace LightCore
 {
     /// <summary>
     /// Thrown when the contract type is not assignable from implementationtype.
     /// </summary>
-    [Serializable]
     public class ContractNotImplementedByTypeException : Exception
     {
         /// <summary>

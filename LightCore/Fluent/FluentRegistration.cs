@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 
 using LightCore.ExtensionMethods.System;
@@ -45,7 +46,7 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
         {
-            if (!typeof(ILifecycle).IsAssignableFrom(type))
+            if (!typeof(ILifecycle).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
             {
                 throw new ArgumentException(Resources.PassedTypeDoesNotImplementILifecycleFormat.FormatWith(type));
             }

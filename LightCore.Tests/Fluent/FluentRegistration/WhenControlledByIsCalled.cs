@@ -1,14 +1,14 @@
-﻿using LightCore.Lifecycle;
+﻿using System;
+using FluentAssertions;
+using LightCore.Lifecycle;
 using LightCore.Registration;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Fluent.FluentRegistration
 {
-    [TestFixture]
     public class WhenControlledByIsCalled : FluentFixture
     {
-        [Test]
+        [Fact]
         public void WithGenericSingletonLifecycleArgument_LifecycleIsSetToSingleton()
         {
             var registrationItem = new RegistrationItem();
@@ -16,10 +16,10 @@ namespace LightCore.Tests.Fluent.FluentRegistration
 
             fluentRegistration.ControlledBy<SingletonLifecycle>();
 
-            Assert.That(registrationItem.Lifecycle, Is.InstanceOf<SingletonLifecycle>());
+            registrationItem.Lifecycle.Should().BeOfType<SingletonLifecycle>();
         }
 
-        [Test]
+        [Fact]
         public void WithGenericTransientLifecycleArgument_LifecycleIsSetToTransient()
         {
             var registrationItem = new RegistrationItem();
@@ -27,10 +27,10 @@ namespace LightCore.Tests.Fluent.FluentRegistration
 
             fluentRegistration.ControlledBy<TransientLifecycle>();
 
-            Assert.That(registrationItem.Lifecycle, Is.InstanceOf<TransientLifecycle>());
+            registrationItem.Lifecycle.Should().BeOfType<TransientLifecycle>();
         }
 
-        [Test]
+        [Fact]
         public void WithSingletonLifecycleTypeArgument_LifecycleIsSetToSingleton()
         {
             var registrationItem = new RegistrationItem();
@@ -38,25 +38,28 @@ namespace LightCore.Tests.Fluent.FluentRegistration
 
             fluentRegistration.ControlledBy(typeof(SingletonLifecycle));
 
-            Assert.That(registrationItem.Lifecycle, Is.InstanceOf<SingletonLifecycle>());
+            registrationItem.Lifecycle.Should().BeOfType<SingletonLifecycle>();
         }
 
-        [Test]
+        [Fact]
         public void WithObjectAsLifecycle_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
             var fluentRegistration = this.GetRegistration(registrationItem);
 
-            Assert.That(() => fluentRegistration.ControlledBy(typeof(object)), Throws.ArgumentException);
+            Action act = () => fluentRegistration.ControlledBy(typeof(object));
+
+            act.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void WithNullAsLifecycle_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
             var fluentRegistration = this.GetRegistration(registrationItem);
 
-            Assert.That(() => fluentRegistration.ControlledBy(null), Throws.ArgumentException);
+            Action act = () => fluentRegistration.ControlledBy(null);
+            act.ShouldThrow<ArgumentException>();
         }
     }
 }

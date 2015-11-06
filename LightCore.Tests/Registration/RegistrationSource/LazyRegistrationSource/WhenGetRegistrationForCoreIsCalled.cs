@@ -1,22 +1,21 @@
 ﻿using System;
-
-using LightCore.Activation.Activators;
-using LightCore.Lifecycle;
+using FluentAssertions;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
 {
-    [TestFixture]
     public class WhenGetRegistrationForCoreIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithLazyType_RegistrationItemReturned()
         {
             var registrationSource = this.GetLazyRegistrationSource( typeof( IFoo ) );
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof(Lazy<IFoo>), null), Is.Not.Null);
+            var actual = registrationSource.GetRegistrationFor(typeof(Lazy<IFoo>), null);
+
+            actual.Should().NotBeNull();
         }
     }
 }

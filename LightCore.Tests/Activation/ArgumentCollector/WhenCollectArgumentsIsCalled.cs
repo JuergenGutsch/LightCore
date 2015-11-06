@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-
+using FluentAssertions;
 using LightCore.Registration;
 using LightCore.TestTypes;
+using Xunit;
 
-using NUnit.Framework;
 
 namespace LightCore.Tests.Activation.ArgumentCollector
 {
-    [TestFixture]
+    
     public class WhenCollectArgumentsIsCalled
     {
         private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver)
         {
-            return this.GetArgumentsWith(parameters, arguments, runtimeArguments, dependencyResolver, new Type[] { });
+            return GetArgumentsWith(parameters, arguments, runtimeArguments, dependencyResolver, new Type[] { });
         }
 
         private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver, params Type[] registeredTypes)
@@ -30,37 +30,37 @@ namespace LightCore.Tests.Activation.ArgumentCollector
             return argumentCollector.CollectArguments(dependencyResolver, parameters, resolutionContext);
         }
 
-        [Test]
+        [Fact]
         public void WithNoDependencyParameterAndNoArguments_EmptyArgumentsReturned()
         {
-            object[] arguments = this.GetArgumentsWith(
+            var arguments = GetArgumentsWith(
                 new ParameterInfo[] { },
                 new ArgumentContainer(),
                 new ArgumentContainer(),
                 t => new object()
                 );
 
-            Assert.AreEqual(new object[] { }, arguments);
+            arguments.Should().BeEmpty();
         }
 
-        [Test]
+        [Fact]
         public void WithDependecyParametersAndNoArguments_ADependencyInstanceReturned()
         {
-            object[] arguments = this.GetArgumentsWith(
+            var arguments = GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[] { typeof(IBar) }).GetParameters(),
                 new ArgumentContainer(),
                 new ArgumentContainer(),
                 t => new Bar(),
                 typeof(IBar));
 
-            Assert.AreEqual(1, arguments.Length);
-            Assert.IsInstanceOf<Bar>(arguments[0]);
+            arguments.Length.Should().Be(1);
+            arguments[0].Should().BeOfType<Bar>();
         }
 
-        [Test]
+        [Fact]
         public void WithStringAndBooleanArguments_AStringAndBooleanArgumentReturned()
         {
-            object[] arguments = this.GetArgumentsWith(
+            var arguments = GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[]
                                                 {
                                                     typeof (string),
@@ -70,16 +70,16 @@ namespace LightCore.Tests.Activation.ArgumentCollector
                 new ArgumentContainer(),
                 t => new object());
 
-            Assert.AreEqual(2, arguments.Length);
 
-            Assert.AreEqual("Peter", arguments[0]);
-            Assert.AreEqual(true, arguments[1]);
+            arguments.Length.Should().Be(2);
+            arguments[0].Should().Be("Peter");
+            arguments[1].Should().Be(true);
         }
 
-        [Test]
+        [Fact]
         public void WithDependencyAndStringArguments_ADependecyInstanceAndStringArgumentReturned()
         {
-            object[] arguments = this.GetArgumentsWith(
+            var arguments = GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[]
                                                 {
                                                     typeof (IBar),
@@ -94,16 +94,16 @@ namespace LightCore.Tests.Activation.ArgumentCollector
                 t => new Bar(),
                 typeof(IBar));
 
-            Assert.AreEqual(2, arguments.Length);
 
-            Assert.IsInstanceOf<Bar>(arguments[0]);
-            Assert.AreEqual("Peter", arguments[1]);
+            arguments.Length.Should().Be(2);
+            arguments[0].Should().BeOfType<Bar>();
+            arguments[1].Should().Be("Peter");
         }
 
-        [Test]
+        [Fact]
         public void WithAnonymousAndNamedStringArgument_NamedArgumentIsPrioredAndReturned()
         {
-            object[] arguments = this.GetArgumentsWith(
+            var arguments = this.GetArgumentsWith(
                 typeof(Foo).GetConstructor(new[] { typeof(string) }).GetParameters(),
                 new ArgumentContainer
                     {
@@ -113,7 +113,7 @@ namespace LightCore.Tests.Activation.ArgumentCollector
                 new ArgumentContainer(),
                 null);
 
-            Assert.AreEqual("success", arguments[0]);
+            arguments[0].Should().Be("success");
         }
     }
 }

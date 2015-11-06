@@ -1,15 +1,13 @@
 ﻿using System;
-
+using FluentAssertions;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
     public class LazyRegistrationSourceTests
     {
-        [Test]
+        [Fact]
         public void LazyDependencies_AreNotSharedBetweenCallers()
         {
             var builder = new ContainerBuilder();
@@ -20,11 +18,11 @@ namespace LightCore.Tests.Integration
 
             var lazyInstance = container.Resolve<Lazy<IFoo>>();
 
-            IFoo value = lazyInstance.Value;
+            var value = lazyInstance.Value;
 
             var lazyInstanceTwo = container.Resolve<Lazy<IFoo>>();
 
-            Assert.That( lazyInstanceTwo.IsValueCreated, Is.False );
+            lazyInstanceTwo.IsValueCreated.Should().BeFalse();
         }
     }
 }

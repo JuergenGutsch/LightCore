@@ -1,44 +1,51 @@
 ﻿using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistrationSource
 {
-    [TestFixture]
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithNull_TheSourceCannotHandle()
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(object)), Is.False);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (object));
+
+            actual.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithNoOpenGenericType_TheSourceCannotHandle()
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(List<object>)), Is.False);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof(List<object>));
+
+            actual.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithOpenGenericTypeRegistered_TheSourceCanHandle()
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IList<>), typeof(List<>));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IList<object>)), Is.True);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof(IList<object>));
+
+            actual.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithOpenGenericTypeAndTwoTypeArguments_TheSourceCanHandle()
         {
             var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<>));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IRepository<Foo, int>)), Is.True);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof(IRepository<Foo, int>));
+
+            actual.Should().BeTrue();
         }
     }
 }

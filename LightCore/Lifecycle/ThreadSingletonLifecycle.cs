@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 
+
+#if FALSE
+
 namespace LightCore.Lifecycle
 {
     /// <summary>
@@ -34,17 +37,17 @@ namespace LightCore.Lifecycle
         /// <param name="newInstanceResolver">The function for lazy get an instance.</param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
-            int threadId = Thread.CurrentThread.ManagedThreadId;
+            var threadId = Thread.CurrentThread.ManagedThreadId;
 
-            lock (this._lock)
+            lock (_lock)
             {
-                if (this._instanceMap.ContainsKey(threadId))
+                if (_instanceMap.ContainsKey(threadId))
                 {
-                    return this._instanceMap[threadId];
+                    return _instanceMap[threadId];
                 }
 
                 var instance = newInstanceResolver();
-                this._instanceMap.Add(threadId, instance);
+                _instanceMap.Add(threadId, instance);
 
 
                 return instance;
@@ -52,3 +55,5 @@ namespace LightCore.Lifecycle
         }
     }
 }
+
+#endif

@@ -1,13 +1,14 @@
-﻿using LightCore.Registration;
+﻿using FluentAssertions;
+using LightCore.Registration;
+using Xunit;
 
-using NUnit.Framework;
 
 namespace LightCore.Tests.Fluent.FluentRegistration
 {
-    [TestFixture]
+    
     public class WhenWithGroupIsCalled : FluentFixture
     {
-        [Test]
+        [Fact]
         public void WithNull_GroupIsSetToNull()
         {
             var registrationItem = new RegistrationItem(null);
@@ -15,10 +16,10 @@ namespace LightCore.Tests.Fluent.FluentRegistration
 
             fluentRegistration.WithGroup(null);
 
-            Assert.That(registrationItem.Group, Is.EqualTo(null));
+            registrationItem.Group.Should().Be(null);
         }
 
-        [Test]
+        [Fact]
         public void WithString_GroupIsSetToStringValue()
         {
             var registrationItem = new RegistrationItem(null);
@@ -27,7 +28,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
 
             fluentRegistration.WithGroup(group);
 
-            Assert.That(registrationItem.Group, Is.EqualTo(group));
+            registrationItem.Group.Should().Be(group);
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using LightCore.TestTypes;
+﻿using FluentAssertions;
+using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+    
     public class InjectPropertiesTests
     {
-        [Test]
+        [Fact]
         public void Container_can_inject_properties()
         {
             var builder = new ContainerBuilder();
@@ -18,7 +19,7 @@ namespace LightCore.Tests.Integration
             var foo = new Foo();
             container.InjectProperties(foo);
 
-            Assert.IsNotNull(foo.Bar);
+            foo.Bar.Should().NotBeNull();
         }
     }
 }

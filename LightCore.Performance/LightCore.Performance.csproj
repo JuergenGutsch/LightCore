@@ -106,12 +106,6 @@
     <Compile Include="UseCases\UseCase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LightCore\LightCore.csproj">
-      <Project>{88D8ABC5-3FAE-489C-862B-5740059DDD58}</Project>
-      <Name>LightCore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>

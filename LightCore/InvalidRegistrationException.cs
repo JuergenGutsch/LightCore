@@ -1,13 +1,11 @@
 ﻿using System;
 
-using System.Runtime.Serialization;
 
 namespace LightCore
 {
     /// <summary>
     /// Thrown when a registration is invalid. e.g. Registration of interface to interface.
     /// </summary>
-    [Serializable]
     public class InvalidRegistrationException : Exception
     {
         /// <summary>

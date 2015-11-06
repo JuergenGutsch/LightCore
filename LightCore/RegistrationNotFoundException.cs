@@ -1,13 +1,11 @@
 ﻿using System;
 
-using System.Runtime.Serialization;
 
 namespace LightCore
 {
     /// <summary>
     /// Thrown when a mapping not found for resolving a type.
     /// </summary>
-    [Serializable]
     public class RegistrationNotFoundException : Exception
     {
         /// <summary>

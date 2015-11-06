@@ -1,68 +1,68 @@
 ﻿using System;
-
+using FluentAssertions;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
 
 using LightCore.ExtensionMethods.System;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+    
     public class TypeExtensionTests
     {
-        [Test]
+        [Fact]
         public void FooFooImplIsAConcreteType()
         {
-            Assert.IsTrue(typeof(Foo).IsConcreteType());
+            typeof (Foo).IsConcreteType().Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void FooFooIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(FooBase).IsConcreteType());
+            typeof (FooBase).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void IFooBarIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(IFoo).IsConcreteType());
+            typeof(IFoo).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void StringIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(string).IsConcreteType());
+            typeof(string).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void DateTimeIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(DateTime).IsConcreteType());
+            typeof(DateTime).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void CharIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(char).IsConcreteType());
+            typeof(char).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void GuidIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(Guid).IsConcreteType());
+            typeof(Guid).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void IntIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(int).IsConcreteType());
+            typeof(int).IsConcreteType().Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void NullableIntIsNotAConcreteType()
         {
-            Assert.IsFalse(typeof(int?).IsConcreteType());
+            typeof(int?).IsConcreteType();
         }
     }
 }

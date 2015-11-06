@@ -1,34 +1,34 @@
-﻿using LightCore.TestTypes;
-
-using NUnit.Framework;
+﻿using FluentAssertions;
+using LightCore.TestTypes;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrationSource
 {
-    [TestFixture]
+    
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithConcreteType_TheSourceCanHandle()
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Foo)), Is.True);
+            registrationSource.SourceSupportsTypeSelector(typeof(Foo)).Should().BeTrue();;
         }
 
-        [Test]
+        [Fact]
         public void WithAbstractType_TheSourceCannotHandle()
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(FooBase)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof(FooBase)).Should().BeFalse();;
         }
 
-        [Test]
+        [Fact]
         public void WithInterfaceType_TheSourceCannotHandle()
         {
             var registrationSource = this.GetConcreteRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IFoo)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof(IFoo)).Should().BeFalse();;
         }
     }
 }

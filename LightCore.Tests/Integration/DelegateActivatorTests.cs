@@ -1,13 +1,14 @@
-﻿using LightCore.TestTypes;
+﻿using FluentAssertions;
+using LightCore.TestTypes;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
+    
     public class DelegateActivatorTests
     {
-        [Test]
+        [Fact]
         public void DelegateActivator_can_return_an_instance_from_given_new_function()
         {
             var builder = new ContainerBuilder();
@@ -17,10 +18,10 @@ namespace LightCore.Tests.Integration
 
             var foo = container.Resolve<IFoo>();
 
-            Assert.IsNotNull(foo);
+            foo.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void DelegateActivator_can_return_new_object_with_default_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -31,7 +32,7 @@ namespace LightCore.Tests.Integration
             var foo = container.Resolve<IFoo>();
             var foo2 = container.Resolve<IFoo>();
 
-            Assert.AreNotSame(foo, foo2);
+            foo.Should().NotBeSameAs(foo2);
         }
     }
 }
