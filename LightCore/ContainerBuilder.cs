@@ -115,17 +115,17 @@ namespace LightCore
 
         private void BootStrappLightCore()
         {
-            Type typeOfArgumentCollector = typeof(IArgumentCollector);
-            Type typeOfConstructorSelector = typeof(IConstructorSelector);
+            var typeOfArgumentCollector = typeof(IArgumentCollector);
+            var typeOfConstructorSelector = typeof(IConstructorSelector);
 
-            if(!this._registrationContainer.Registrations.ContainsKey(typeOfArgumentCollector))
+            if(!_registrationContainer.Registrations.ContainsKey(typeOfArgumentCollector))
             {
-                this.Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
+                Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
             }
 
-            if(!this._registrationContainer.Registrations.ContainsKey(typeOfConstructorSelector))
+            if(!_registrationContainer.Registrations.ContainsKey(typeOfConstructorSelector))
             {
-                this.Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
+                Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
             }
         }
 
@@ -144,7 +144,7 @@ namespace LightCore
         /// <typeparam name="TLifecycle">The default lifecycle.</typeparam>
         public void DefaultControlledBy<TLifecycle>() where TLifecycle : ILifecycle, new()
         {
-            this._defaultLifecycleFunction = () => new TLifecycle();
+            _defaultLifecycleFunction = () => new TLifecycle();
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace LightCore
         /// <param name="lifecycleFunction">The creator function for default lifecycle.</param>
         public void DefaultControlledBy(Func<ILifecycle> lifecycleFunction)
         {
-            this._defaultLifecycleFunction = lifecycleFunction;
+            _defaultLifecycleFunction = lifecycleFunction;
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
         public IFluentRegistration Register<TSelf>()
         {
-            Type typeOfSelf = typeof(TSelf);
+            var typeOfSelf = typeof(TSelf);
 
             if(!typeOfSelf.IsConcreteType())
             {
@@ -172,7 +172,7 @@ namespace LightCore
             }
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.Register(typeOfSelf, typeOfSelf);
+            return Register(typeOfSelf, typeOfSelf);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace LightCore
         public IFluentRegistration Register<TInstance>(TInstance instance)
         {
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrationFluent(new RegistrationItem(typeof(TInstance))
+            return AddToRegistrationFluent(new RegistrationItem(typeof(TInstance))
                                                     {
                                                         Activator = new InstanceActivator<TInstance>(instance)
                                                     });
@@ -198,7 +198,7 @@ namespace LightCore
         public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
         {
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
-            return this.AddToRegistrationFluent(new RegistrationItem(typeof(TContract))
+            return AddToRegistrationFluent(new RegistrationItem(typeof(TContract))
                                                     {
                                                         Activator = new DelegateActivator(c => activatorFunction(c))
                                                     });
@@ -219,7 +219,7 @@ namespace LightCore
                                                       registrationItem.Lifecycle = this._defaultLifecycleFunction();
                                                   }
 
-                                                  if(this._activeRegistrationGroupsInternal != null &&
+                                                  if(_activeRegistrationGroupsInternal != null &&
                                                       registrationItem.Group != null)
                                                   {
                                                       if(
@@ -231,7 +231,7 @@ namespace LightCore
                                                       }
                                                   }
 
-                                                  if(this._activeRegistrationGroupsInternal == null && registrationItem.Group != null)
+                                                  if(_activeRegistrationGroupsInternal == null && registrationItem.Group != null)
                                                   {
                                                       // Do not add inactive registrationItem.
                                                       return;

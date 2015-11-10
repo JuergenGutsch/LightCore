@@ -4,31 +4,30 @@ using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.ConcreteTypeRegistrationSource
 {
-    
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
         [Fact]
         public void WithConcreteType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetConcreteRegistrationSource();
+            var registrationSource = GetConcreteRegistrationSource();
 
-            registrationSource.SourceSupportsTypeSelector(typeof(Foo)).Should().BeTrue();;
+            registrationSource.SourceSupportsTypeSelector(typeof (Foo)).Should().BeTrue();
         }
 
         [Fact]
         public void WithAbstractType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetConcreteRegistrationSource();
+            var registrationSource = GetConcreteRegistrationSource();
 
-            registrationSource.SourceSupportsTypeSelector(typeof(FooBase)).Should().BeFalse();;
+            registrationSource.SourceSupportsTypeSelector(typeof (FooBase)).Should().BeFalse();
         }
 
         [Fact]
         public void WithInterfaceType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetConcreteRegistrationSource();
+            var registrationSource = GetConcreteRegistrationSource();
 
-            registrationSource.SourceSupportsTypeSelector(typeof(IFoo)).Should().BeFalse();;
+            registrationSource.SourceSupportsTypeSelector(typeof (IFoo)).Should().BeFalse();
         }
     }
 }

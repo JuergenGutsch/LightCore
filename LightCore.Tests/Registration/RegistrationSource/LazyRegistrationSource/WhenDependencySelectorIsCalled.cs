@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
@@ -11,9 +10,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
         [Fact]
         public void WithNoLazyType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetLazyRegistrationSource( typeof( object ) );
+            var registrationSource = GetLazyRegistrationSource(typeof (object));
 
-            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Func<IFoo> ) );
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<IFoo>));
 
             actual.Should().BeFalse();
         }
@@ -21,9 +20,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
         [Fact]
         public void WithLazyType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetLazyRegistrationSource( typeof( IFoo ) );
+            var registrationSource = GetLazyRegistrationSource(typeof (IFoo));
 
-            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) );
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Lazy<IFoo>));
 
             actual.Should().BeTrue();
         }
@@ -31,9 +30,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
         [Fact]
         public void WithWithLazyTypeButNoRegisteredDependency_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetLazyRegistrationSource( typeof( string ) );
+            var registrationSource = GetLazyRegistrationSource(typeof (string));
 
-            var actual = registrationSource.SourceSupportsTypeSelector( typeof( Lazy<IFoo> ) );
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Lazy<IFoo>));
 
             actual.Should().BeFalse();
         }

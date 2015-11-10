@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
+using FluentAssertions;
 using Microsoft.Practices.ServiceLocation;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.CommonServiceLocator.Tests
 {
-    [TestFixture]
     public class LightCoreAdapterTests
     {
-        [Test]
+        [Fact]
         public void Can_resolve_one_instance()
         {
             var builder = new ContainerBuilder();
@@ -22,11 +22,11 @@ namespace LightCore.CommonServiceLocator.Tests
 
             var dictionary = locator.GetInstance(typeof(IDictionary<string, string>));
 
-            Assert.IsNotNull(dictionary);
-            Assert.IsInstanceOf<IDictionary<string, string>>(dictionary);
+            dictionary.Should().NotBeNull();
+            dictionary.Should().BeAssignableTo<IDictionary<string, string>>();
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_all_instances_of_type_object()
         {
             var builder = new ContainerBuilder();
@@ -42,11 +42,12 @@ namespace LightCore.CommonServiceLocator.Tests
 
             var instances = locator.GetAllInstances(typeof(object));
 
-            Assert.IsNotNull(instances);
-            Assert.IsInstanceOf<IEnumerable<object>>(instances);
+
+            instances.Should().NotBeNull();
+            instances.Should().BeAssignableTo<IEnumerable<object>>();
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_all_instances_generic()
         {
             var builder = new ContainerBuilder();
@@ -61,10 +62,10 @@ namespace LightCore.CommonServiceLocator.Tests
 
             IServiceLocator locator = new LightCoreAdapter(container);
 
-            var instances = locator.GetAllInstances<IList<string>>();
+            var instances = locator.GetAllInstances<List<string>>().ToList();
 
-            Assert.IsNotNull(instances);
-            Assert.IsInstanceOf<IEnumerable<IList<string>>>(instances);
+            instances.Should().NotBeNull();
+            instances.Should().BeAssignableTo<List<List<string>>>();
         }
     }
 }

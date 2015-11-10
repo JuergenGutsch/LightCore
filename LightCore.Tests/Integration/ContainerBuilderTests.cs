@@ -1,22 +1,21 @@
 ﻿using System;
 using FluentAssertions;
-using LightCore.Fluent;
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
 using Xunit;
 
-
 namespace LightCore.Tests.Integration
 {
-    
     public class ContainerBuilderTests
     {
         [Fact]
         public void ContainerBuilder_with_registered_groups_reconice_these()
         {
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder
+            {
+                ActiveRegistrationGroups = "Test"
+            };
 
-            builder.ActiveRegistrationGroups = "Test";
 
             builder.Register<IFoo, FooTwo>().WithGroup("Test");
             builder.Register<IFoo, Foo>().WithGroup("Test2");
@@ -31,8 +30,8 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo, FooTwo>().WithGroup( "Test" );
-            builder.Register<IFoo, Foo>().WithGroup( "Test2" );
+            builder.Register<IFoo, FooTwo>().WithGroup("Test");
+            builder.Register<IFoo, Foo>().WithGroup("Test2");
 
             var container = builder.Build();
 
@@ -70,12 +69,13 @@ namespace LightCore.Tests.Integration
         [Fact]
         public void ContainerBuilder_throws_on_not_assignable_contract_to_implementation()
         {
+            IContainer container = null;
             Action act = () =>
             {
                 var builder = new ContainerBuilder();
                 builder.Register(typeof (IFoo), typeof (Bar));
 
-                var container = builder.Build();
+                container = builder.Build();
             };
 
             act.ShouldThrow<ContractNotImplementedByTypeException>();
@@ -100,7 +100,7 @@ namespace LightCore.Tests.Integration
 
             builder.Build();
         }
-        
+
         [Fact]
         public void ContainerBuilders_default_scope_is_transient()
         {

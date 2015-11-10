@@ -1,14 +1,10 @@
-﻿using System.Threading;
-using FluentAssertions;
+﻿using FluentAssertions;
 using LightCore.Lifecycle;
-using LightCore.Tests.Lifecycle;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-
     public class LifecycleTests
     {
         [Fact]

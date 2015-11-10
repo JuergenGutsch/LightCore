@@ -1,15 +1,14 @@
 ﻿using LightCore.TestTypes;
 
-using NUnit.Framework;
-
 using System.Collections.Generic;
+using FluentAssertions;
+using Xunit;
 
 namespace LightCore.Configuration.Tests
 {
-    [TestFixture]
     public class ConfigurationWithArgumentsTests
     {
-        [Test]
+        [Fact]
         public void Can_register_and_use_named_arguments()
         {
             var configuration = new LightCoreConfiguration();
@@ -44,11 +43,11 @@ namespace LightCore.Configuration.Tests
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>();
+            var foo = container.Resolve<IFoo>() as Foo;
 
-            Assert.IsNotNull(foo);
-            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
-            Assert.AreEqual(true, ((Foo) foo).Arg2);
+            foo.Should().NotBeNull();
+            foo.Arg1.Should().Be("Peter");
+            foo.Arg2.Should().Be(true);
         }
     }
 }

@@ -179,7 +179,7 @@ namespace LightCore
         /// <param name="instance">The instance.</param>
         public void InjectProperties(object instance)
         {
-#if FALSE
+#if !DNXCORE50
             instance
                 .GetType()
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)

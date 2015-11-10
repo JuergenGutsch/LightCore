@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LightCore.ConsoleClient.Core
+﻿namespace LightCore.ConsoleClient.Core
 {
     public class Program
     {

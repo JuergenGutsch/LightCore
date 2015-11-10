@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistrationSource
@@ -11,7 +10,7 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithNull_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof (object), typeof (object));
 
             var actual = registrationSource.SourceSupportsTypeSelector(typeof (object));
 
@@ -21,9 +20,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithNoOpenGenericType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(object), typeof(object));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof (object), typeof (object));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(List<object>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (List<object>));
 
             actual.Should().BeFalse();
         }
@@ -31,9 +30,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithOpenGenericTypeRegistered_TheSourceCanHandle()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IList<>), typeof(List<>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof (IList<>), typeof (List<>));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(IList<object>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (IList<object>));
 
             actual.Should().BeTrue();
         }
@@ -41,9 +40,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithOpenGenericTypeAndTwoTypeArguments_TheSourceCanHandle()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof (IRepository<,>), typeof (Repository<>));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(IRepository<Foo, int>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (IRepository<Foo, int>));
 
             actual.Should().BeTrue();
         }

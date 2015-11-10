@@ -10,10 +10,10 @@ namespace LightCore.Tests.Lifecycle.TransientLifecycle
         public void WithActivationFunction_DifferentObjectsAreReturned()
         {
             var lifecycle = new LightCore.Lifecycle.TransientLifecycle();
-            var factory = this.GetActivationFactory();
+            var factory = GetActivationFactory();
 
-            object instanceOne = lifecycle.ReceiveInstanceInLifecycle(factory);
-            object instanceTwo = lifecycle.ReceiveInstanceInLifecycle(factory);
+            var instanceOne = lifecycle.ReceiveInstanceInLifecycle(factory);
+            var instanceTwo = lifecycle.ReceiveInstanceInLifecycle(factory);
 
             instanceOne.Should().NotBeSameAs(instanceTwo);
         }

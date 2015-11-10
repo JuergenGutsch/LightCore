@@ -22,6 +22,20 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
       },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
+      },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
@@ -310,6 +324,20 @@
           "System.Threading": "4.0.11-beta-23409"
         }
       },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.CSharp": "4.0.1-beta-23409",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409",
+          "System.Threading": "4.0.11-beta-23409"
+        }
+      },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
@@ -319,6 +347,20 @@
           "System.Linq": "4.0.1-beta-23409",
           "System.Runtime": "4.0.21-beta-23409",
           "System.Threading": "4.0.11-beta-23409"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.Primitives": "1.0.0-beta8",
+          "System.IO": "4.0.11-beta-23409",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23409": {
@@ -473,6 +515,19 @@
         },
         "runtime": {
           "lib/dnxcore50/Microsoft.Framework.Logging.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Framework.Primitives/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -1364,6 +1419,20 @@
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
       },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
+      },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
@@ -1628,6 +1697,20 @@
       "LightCore/2.0.0": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1"
+      },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
       },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
@@ -1917,6 +2000,20 @@
           "System.Threading": "4.0.11-beta-23409"
         }
       },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.CSharp": "4.0.1-beta-23409",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409",
+          "System.Threading": "4.0.11-beta-23409"
+        }
+      },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
@@ -1926,6 +2023,20 @@
           "System.Linq": "4.0.1-beta-23409",
           "System.Runtime": "4.0.21-beta-23409",
           "System.Threading": "4.0.11-beta-23409"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.Primitives": "1.0.0-beta8",
+          "System.IO": "4.0.11-beta-23409",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23409": {
@@ -2080,6 +2191,19 @@
         },
         "runtime": {
           "lib/dnxcore50/Microsoft.Framework.Logging.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Framework.Primitives/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -3265,6 +3389,20 @@
           "System.Threading": "4.0.11-beta-23409"
         }
       },
+      "LightCore.Configuration/1.0.0": {
+        "type": "project",
+        "framework": "DNXCore,Version=v5.0",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-beta8",
+          "Microsoft.CSharp": "4.0.1-beta-23409",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23409",
+          "System.Linq": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409",
+          "System.Threading": "4.0.11-beta-23409"
+        }
+      },
       "LightCore.TestTypes/1.0.0": {
         "type": "project",
         "framework": "DNXCore,Version=v5.0",
@@ -3274,6 +3412,20 @@
           "System.Linq": "4.0.1-beta-23409",
           "System.Runtime": "4.0.21-beta-23409",
           "System.Threading": "4.0.11-beta-23409"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Framework.Primitives": "1.0.0-beta8",
+          "System.IO": "4.0.11-beta-23409",
+          "System.Resources.ResourceManager": "4.0.1-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
         }
       },
       "Microsoft.CSharp/4.0.1-beta-23409": {
@@ -3428,6 +3580,19 @@
         },
         "runtime": {
           "lib/dnxcore50/Microsoft.Framework.Logging.Abstractions.dll": {}
+        }
+      },
+      "Microsoft.Framework.Primitives/1.0.0-beta8": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23409",
+          "System.Runtime": "4.0.21-beta-23409"
+        },
+        "compile": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dnxcore50/Microsoft.Framework.Primitives.dll": {}
         }
       },
       "Microsoft.Win32.Primitives/4.0.0": {
@@ -4576,6 +4741,10 @@
       "type": "project",
       "path": "../LightCore/project.json"
     },
+    "LightCore.Configuration/1.0.0": {
+      "type": "project",
+      "path": "../LightCore.Configuration/project.json"
+    },
     "LightCore.TestTypes/1.0.0": {
       "type": "project",
       "path": "../LightCore.TestTypes/project.json"
@@ -4665,6 +4834,22 @@
         "lib/xamarin.ios/FluentAssertions.Core.dll",
         "lib/xamarin.ios/FluentAssertions.Core.pdb",
         "lib/xamarin.ios/FluentAssertions.Core.xml"
+      ]
+    },
+    "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-beta8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "5tWBeetRF6s45E7iN3cfl0Vu8Zdd9mKVJLQB9LED3PUQ3O3k0dfnHmBDWK8HsZmDRJpPOKVk/NfDh46lG9n7VA==",
+      "files": [
+        "lib/dnx451/Microsoft.AspNet.FileProviders.Abstractions.dll",
+        "lib/dnx451/Microsoft.AspNet.FileProviders.Abstractions.xml",
+        "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.dll",
+        "lib/dnxcore50/Microsoft.AspNet.FileProviders.Abstractions.xml",
+        "lib/net45/Microsoft.AspNet.FileProviders.Abstractions.dll",
+        "lib/net45/Microsoft.AspNet.FileProviders.Abstractions.xml",
+        "Microsoft.AspNet.FileProviders.Abstractions.1.0.0-beta8.nupkg",
+        "Microsoft.AspNet.FileProviders.Abstractions.1.0.0-beta8.nupkg.sha512",
+        "Microsoft.AspNet.FileProviders.Abstractions.nuspec"
       ]
     },
     "Microsoft.CSharp/4.0.1-beta-23409": {
@@ -4817,6 +5002,24 @@
         "Microsoft.Framework.Logging.Abstractions.1.0.0-beta8.nupkg",
         "Microsoft.Framework.Logging.Abstractions.1.0.0-beta8.nupkg.sha512",
         "Microsoft.Framework.Logging.Abstractions.nuspec"
+      ]
+    },
+    "Microsoft.Framework.Primitives/1.0.0-beta8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "tCmbjiE+AgwTfikByvv0xEsnA/z5SOAecZT6gb7EbjuanlzzCUyqTSnvi5SRLGBQsTNKjLiQFFlVOeWHZPOcDg==",
+      "files": [
+        "lib/dnx451/Microsoft.Framework.Primitives.dll",
+        "lib/dnx451/Microsoft.Framework.Primitives.xml",
+        "lib/dnxcore50/Microsoft.Framework.Primitives.dll",
+        "lib/dnxcore50/Microsoft.Framework.Primitives.xml",
+        "lib/dotnet/Microsoft.Framework.Primitives.dll",
+        "lib/dotnet/Microsoft.Framework.Primitives.xml",
+        "lib/net45/Microsoft.Framework.Primitives.dll",
+        "lib/net45/Microsoft.Framework.Primitives.xml",
+        "Microsoft.Framework.Primitives.1.0.0-beta8.nupkg",
+        "Microsoft.Framework.Primitives.1.0.0-beta8.nupkg.sha512",
+        "Microsoft.Framework.Primitives.nuspec"
       ]
     },
     "Microsoft.Win32.Primitives/4.0.0": {
@@ -7060,6 +7263,7 @@
     "": [
       "LightCore ",
       "LightCore.TestTypes ",
+      "LightCore.Configuration ",
       "xunit >= 2.1.0",
       "xunit.runner.dnx >= 2.1.0-beta6-build191",
       "FluentAssertions >= 4.0.1"

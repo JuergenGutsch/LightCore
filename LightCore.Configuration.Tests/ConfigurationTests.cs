@@ -1,16 +1,17 @@
-﻿using LightCore.Lifecycle;
+﻿using System;
+using LightCore.Lifecycle;
 using LightCore.TestTypes;
 
-using NUnit.Framework;
-
 using System.Collections.Generic;
+using FluentAssertions;
+using LightCore.Fluent;
+using Xunit;
 
 namespace LightCore.Configuration.Tests
 {
-    [TestFixture]
     public class ConfigurationTests
     {
-        [Test]
+        [Fact]
         public void Can_register_and_use_generics_with_configuration_api()
         {
             var configuration = new LightCoreConfiguration();
@@ -34,19 +35,21 @@ namespace LightCore.Configuration.Tests
 
             var repository = container.Resolve<IRepository<Foo>>();
 
-            Assert.That(repository, Is.Not.Null);
-            Assert.That(repository, Is.InstanceOf<Repository<Foo>>());
+            repository.Should().NotBeNull();
+            repository.Should().BeOfType<Repository<Foo>>();
         }
 
-        [Test]
+        [Fact]
         public void Set_lifecycle_on_fluent_registration_to_not_implementing_type_throws_argumentexception()
         {
             var builder = new ContainerBuilder();
 
-            Assert.That(() => builder.Register<IFoo, Foo>().ControlledBy(typeof (object)), Throws.ArgumentException);
+            Action act = () => builder.Register<IFoo, Foo>().ControlledBy(typeof(object));
+
+            act.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void Enabled_or_disable_registrations_works()
         {
             var configuration = new LightCoreConfiguration();
@@ -71,10 +74,10 @@ namespace LightCore.Configuration.Tests
 
             var bar = container.Resolve<IBar>();
 
-            Assert.NotNull(bar);
+            bar.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_configure_and_resolve_explicite_type_registration()
         {
             var configuration = new LightCoreConfiguration();
@@ -89,9 +92,9 @@ namespace LightCore.Configuration.Tests
                                     };
 
             configuration.RegistrationGroups.Add(new RegistrationGroup()
-                                                     {
-                                                         Registrations = registrations
-                                                     });
+            {
+                Registrations = registrations
+            });
 
             var builder = new ContainerBuilder();
 
@@ -101,10 +104,10 @@ namespace LightCore.Configuration.Tests
 
             var bar = container.Resolve<IBar>();
 
-            Assert.NotNull(bar);
+            bar.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_configure_and_resolve_type_registration_with_alias()
         {
             var configuration = new LightCoreConfiguration();
@@ -135,10 +138,10 @@ namespace LightCore.Configuration.Tests
 
             var bar = container.Resolve<IBar>();
 
-            Assert.NotNull(bar);
+            bar.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Can_configure_and_resolve_with_default_transient_lifecycle()
         {
             var configuration = new LightCoreConfiguration();
@@ -148,7 +151,7 @@ namespace LightCore.Configuration.Tests
                                         new Registration
                                             {
                                                 ContractType = typeof(IBar).AssemblyQualifiedName,
-                                                ImplementationType = typeof(Bar).AssemblyQualifiedName,
+                                                ImplementationType = typeof(Bar).AssemblyQualifiedName
                                             }
                                     };
 
@@ -166,10 +169,10 @@ namespace LightCore.Configuration.Tests
             var bar = container.Resolve<IBar>();
             var barTwo = container.Resolve<IBar>();
 
-            Assert.AreNotSame(bar, barTwo);
+            bar.Should().BeSameAs(barTwo);
         }
 
-        [Test]
+        [Fact]
         public void Can_configure_and_resolve_with_registration_default_singleton_lifecycle()
         {
             var configuration = new LightCoreConfiguration();
@@ -199,10 +202,10 @@ namespace LightCore.Configuration.Tests
             var bar = container.Resolve<IBar>();
             var barTwo = container.Resolve<IBar>();
 
-            Assert.AreSame(bar, barTwo);
+            bar.Should().BeSameAs(barTwo);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_type_alias_for_lifecycles()
         {
             var configuration = new LightCoreConfiguration();
@@ -231,10 +234,10 @@ namespace LightCore.Configuration.Tests
             var bar = container.Resolve<IBar>();
             var barTwo = container.Resolve<IBar>();
 
-            Assert.AreNotSame(bar, barTwo);
+            bar.Should().NotBeSameAs(barTwo);
         }
 
-        [Test]
+        [Fact]
         public void Can_set_lifecycle_full_qualified()
         {
             var configuration = new LightCoreConfiguration();
@@ -263,30 +266,34 @@ namespace LightCore.Configuration.Tests
             var bar = container.Resolve<IBar>();
             var barTwo = container.Resolve<IBar>();
 
-            Assert.AreNotSame(bar, barTwo);
+            bar.Should().NotBeSameAs(barTwo);
         }
 
-        [Test]
+        [Fact]
         public void RegistrationLoader_throws_argument_exception_on_missing_implementationtype()
         {
             var builder = new ContainerBuilder();
             var configuration = new LightCoreConfiguration();
-            configuration.Registrations.Add(new Registration {ContractType = typeof (object).AssemblyQualifiedName});
+            configuration.Registrations.Add(new Registration { ContractType = typeof(object).AssemblyQualifiedName });
 
-            Assert.That(() => RegistrationLoader.Instance.Register(builder, configuration), Throws.ArgumentException);
+            Action act = () => RegistrationLoader.Instance.Register(builder, configuration);
+
+            act.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void RegistrationLoader_throws_argument_exception_on_missing_contracttype()
         {
             var builder = new ContainerBuilder();
             var configuration = new LightCoreConfiguration();
             configuration.Registrations.Add(new Registration { ImplementationType = typeof(object).AssemblyQualifiedName });
 
-            Assert.That(() => RegistrationLoader.Instance.Register(builder, configuration), Throws.ArgumentException);
+            Action act = () => RegistrationLoader.Instance.Register(builder, configuration);
+
+            act.ShouldThrow<ArgumentException>();
         }
 
-        [Test]
+        [Fact]
         public void Usage_of_global_registrations_and_grouped_registrations_work_together()
         {
             var configuration = new LightCoreConfiguration();
@@ -329,8 +336,8 @@ namespace LightCore.Configuration.Tests
             var objectInstance = container.Resolve<object>();
             var barInstance = container.Resolve<IBar>();
 
-            Assert.NotNull(objectInstance);
-            Assert.NotNull(barInstance);
+            objectInstance.Should().NotBeNull();
+            ; barInstance.Should().NotBeNull();
         }
     }
 }

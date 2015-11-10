@@ -14,17 +14,17 @@ namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistration
         [Fact]
         public void WithEnumerableType_RegistrationItemReturned()
         {
-            var registrationSource = this.GetEnumerableRegistrationSource(typeof(IFoo));
+            var registrationSource = GetEnumerableRegistrationSource(typeof(IFoo));
 
-            registrationSource.GetRegistrationFor(typeof(IEnumerable<IFoo>), this.BootStrapContainer).Should().NotBeNull();
+            registrationSource.GetRegistrationFor(typeof(IEnumerable<IFoo>), BootStrapContainer).Should().NotBeNull();
         }
 
         [Fact]
         public void WithEnumerableType_RegistrationItemReturnedAndHoldsRightData()
         {
-            var registrationSource = this.GetEnumerableRegistrationSource(typeof(IBar));
+            var registrationSource = GetEnumerableRegistrationSource(typeof(IBar));
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof(IEnumerable<IBar>), this.BootStrapContainer);
+            var registrationItem = registrationSource.GetRegistrationFor(typeof(IEnumerable<IBar>), BootStrapContainer);
 
             registrationItem.Should().NotBeNull();
             registrationItem.ContractType.Should().BeAssignableTo<IEnumerable<IBar>>();

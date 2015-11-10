@@ -1,17 +1,15 @@
 ﻿using System;
 
-using NUnit.Framework;
-
 using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.TestTypes;
+using Xunit;
 
 namespace LightCore.Configuration.Tests
 {
-    [TestFixture]
     public class AliasTests
     {
-        [Test]
+        [Fact]
         public void Can_register_and_use_generics_with_configuration_api()
         {
             var configuration = new LightCoreConfiguration();
@@ -40,9 +38,12 @@ namespace LightCore.Configuration.Tests
 
             var container = builder.Build();
 
-            Guid expected = new Guid("354c11f1-94e5-41b8-9a13-122e2df2b0c7");
+            var expected = new Guid("354c11f1-94e5-41b8-9a13-122e2df2b0c7");
 
-            Assert.AreEqual(expected, ((Foo)container.Resolve<IFoo>()).Arg4);
+            var actual = container.Resolve<IFoo>() as Foo;
+
+            actual.Should().NotBeNull();
+            actual.Arg4.Should().Be(expected);
         }
     }
 }

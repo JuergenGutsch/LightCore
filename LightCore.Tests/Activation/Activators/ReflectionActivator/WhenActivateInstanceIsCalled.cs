@@ -1,19 +1,15 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using FluentAssertions;
 using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.Lifecycle;
 using LightCore.Registration;
 using LightCore.TestTypes;
-
-
-using System.Collections.Generic;
 using Xunit;
-using FluentAssertions;
 
 namespace LightCore.Tests.Activation.Activators.ReflectionActivator
 {
-    
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator(Type implementationType)
@@ -35,25 +31,26 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
         private ResolutionContext GetContext(Type contractType, Type implementationType)
         {
             var registrationContainer = new RegistrationContainer
-                                            {
-                                                Registrations =
-                                                    new Dictionary<Type, RegistrationItem>
-                                                        {
-                                                            {
-                                                                contractType,
-                                                                new RegistrationItem(contractType)
-                                                                    {
-                                                                        Activator =
-                                                                            new LightCore.Activation.Activators.ReflectionActivator
-                                                                                (implementationType,
-                                                                                new LightCore.Activation.Components.ConstructorSelector(),
-                                                                                new LightCore.Activation.Components.ArgumentCollector()
-                                                                                ),
-                                                                        Lifecycle = new TransientLifecycle()
-                                                                    }
-                                                                }
-                                                        }
-                                            };
+            {
+                Registrations =
+                    new Dictionary<Type, RegistrationItem>
+                    {
+                        {
+                            contractType,
+                            new RegistrationItem(contractType)
+                            {
+                                Activator =
+                                    new LightCore.Activation.Activators.ReflectionActivator
+                                        (
+                                            implementationType,
+                                            new LightCore.Activation.Components.ConstructorSelector(),
+                                            new LightCore.Activation.Components.ArgumentCollector()
+                                        ),
+                                Lifecycle = new TransientLifecycle()
+                            }
+                        }
+                    }
+            };
 
             return new ResolutionContext(new Container(registrationContainer), registrationContainer);
         }
@@ -61,8 +58,8 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
         [Fact]
         public void WithObjectImplementationAndEmptyResolutionContext_NewObjectReturned()
         {
-            var reflectionActivator = this.GetActivator(typeof(object));
-            var resolutionContext = this.GetContext();
+            var reflectionActivator = GetActivator(typeof(object));
+            var resolutionContext = GetContext();
 
             var result = reflectionActivator.ActivateInstance(resolutionContext);
 
@@ -73,10 +70,10 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
         [Fact]
         public void WithFooImplementationAndEmptyResolutionContext_NewFooReturned()
         {
-            var reflectionActivator = this.GetActivator(typeof(Foo));
-            var resolutionContext = this.GetContext();
+            var reflectionActivator = GetActivator(typeof(Foo));
+            var resolutionContext = GetContext();
 
-            object result = reflectionActivator.ActivateInstance(resolutionContext);
+            var result = reflectionActivator.ActivateInstance(resolutionContext);
 
             result.Should().NotBeNull();
             result.Should().BeOfType<Foo>();
@@ -85,8 +82,8 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
         [Fact]
         public void WithFooImplementationAndIBarAvailable_FooWithBarReturned()
         {
-            var reflectionActivator = this.GetActivator(typeof(Foo));
-            var resolutionContext = this.GetContext(typeof(IBar), typeof(Bar));
+            var reflectionActivator = GetActivator(typeof(Foo));
+            var resolutionContext = GetContext(typeof(IBar), typeof(Bar));
 
             var result = reflectionActivator.ActivateInstance(resolutionContext);
 

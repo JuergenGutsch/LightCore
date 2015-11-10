@@ -1,14 +1,11 @@
 ﻿using System;
 using FluentAssertions;
-using LightCore.TestTypes;
-
-
 using LightCore.ExtensionMethods.System;
+using LightCore.TestTypes;
 using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    
     public class TypeExtensionTests
     {
         [Fact]
@@ -24,45 +21,45 @@ namespace LightCore.Tests.Integration
         }
 
         [Fact]
-        public void IFooBarIsNotAConcreteType()
+        public void FooBarIsNotAConcreteType()
         {
-            typeof(IFoo).IsConcreteType().Should().BeFalse();
+            typeof (IFoo).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void StringIsNotAConcreteType()
         {
-            typeof(string).IsConcreteType().Should().BeFalse();
+            typeof (string).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void DateTimeIsNotAConcreteType()
         {
-            typeof(DateTime).IsConcreteType().Should().BeFalse();
+            typeof (DateTime).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void CharIsNotAConcreteType()
         {
-            typeof(char).IsConcreteType().Should().BeFalse();
+            typeof (char).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void GuidIsNotAConcreteType()
         {
-            typeof(Guid).IsConcreteType().Should().BeFalse();
+            typeof (Guid).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void IntIsNotAConcreteType()
         {
-            typeof(int).IsConcreteType().Should().BeFalse();
+            typeof (int).IsConcreteType().Should().BeFalse();
         }
 
         [Fact]
         public void NullableIntIsNotAConcreteType()
         {
-            typeof(int?).IsConcreteType();
+            typeof (int?).IsConcreteType();
         }
     }
 }

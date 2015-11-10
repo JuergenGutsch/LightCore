@@ -1,9 +1,9 @@
 ﻿{
-  "version": "1.0.0-*",
+  "version": "2.0.0-*",
   "description": "LightCore Class Library",
-  "authors": [ "Juergen" ],
-  "tags": [ "" ],
-  "projectUrl": "",
+  "authors": [ "Juergen Gutsch", "Peter Bucher" ],
+  "tags": [ "IoC", "Dependency Injection" ],
+  "projectUrl": "http://lightcore.ch",
   "licenseUrl": "",
 
   "frameworks": {

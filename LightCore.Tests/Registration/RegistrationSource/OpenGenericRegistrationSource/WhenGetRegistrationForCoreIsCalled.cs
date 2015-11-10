@@ -10,9 +10,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithOpenGenericType_RegistrationItemReturned()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<,>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<,>));
 
-            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), this.BootStrapContainer);
+            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), BootStrapContainer);
 
             actual.Should().NotBeNull();
         }
@@ -20,9 +20,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistratio
         [Fact]
         public void WithOpenGenericType_RegistrationItemReturnedAndHoldsRightData()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<>), typeof(Repository<>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof(IRepository<>), typeof(Repository<>));
 
-            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), this.BootStrapContainer);
+            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), BootStrapContainer);
 
             actual.Should().NotBeNull();
             actual.ContractType.Should().BeAssignableTo<IRepository<Foo>>();

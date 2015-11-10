@@ -5,7 +5,6 @@ using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-
     public class ResolvingWithRuntimeArgumentsTests
     {
         [Fact]
@@ -17,7 +16,7 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = (Foo)container.Resolve<IFoo>("yeah");
+            var foo = (Foo) container.Resolve<IFoo>("yeah");
 
             foo.Should().NotBeNull();
             foo.Bar.Should().NotBeNull();
@@ -50,7 +49,7 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>(new Dictionary<string, object> { { "arg2", true }, { "arg1", "Peter" } }) as Foo;
+            var foo = container.Resolve<IFoo>(new Dictionary<string, object> {{"arg2", true}, {"arg1", "Peter"}}) as Foo;
 
             foo.Should().NotBeNull();
             foo.Arg1.Should().BeEquivalentTo("Peter");
@@ -66,7 +65,7 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>(new AnonymousArgument(new { arg2 = true, arg1 = "Peter" })) as Foo;
+            var foo = container.Resolve<IFoo>(new AnonymousArgument(new {arg2 = true, arg1 = "Peter"})) as Foo;
 
             foo.Should().NotBeNull();
             foo.Arg1.Should().BeEquivalentTo("Peter");

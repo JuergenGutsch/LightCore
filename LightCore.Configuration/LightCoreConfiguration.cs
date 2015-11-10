@@ -1,8 +1,10 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
+#if !DNXCORE50
+using System;
 using System.Configuration;
-
 using LightCore.Configuration.Properties;
+#endif
 using LightCore.Lifecycle;
 
 namespace LightCore.Configuration
@@ -62,10 +64,10 @@ namespace LightCore.Configuration
         /// </summary>
         public LightCoreConfiguration()
         {
-            this.TypeAliases = new List<TypeAlias>();
+            TypeAliases = new List<TypeAlias>();
 
             // Load default lifecycle type alias.
-            this.TypeAliases.AddRange(new List<TypeAlias>
+            TypeAliases.AddRange(new List<TypeAlias>
                                           {
                                               new TypeAlias
                                                   {
@@ -77,15 +79,17 @@ namespace LightCore.Configuration
                                                       Alias = "Singleton",
                                                       Type = typeof (SingletonLifecycle).AssemblyQualifiedName
                                                   },
+#if !DNXCORE50
                                               new TypeAlias
                                                   {
                                                       Alias = "ThreadSingleton",
                                                       Type = typeof (ThreadSingletonLifecycle).AssemblyQualifiedName
                                                   }
-                                          });
+#endif
+            });
 
             // Load default argument type alias.
-            this.TypeAliases.AddRange(new List<TypeAlias>
+            TypeAliases.AddRange(new List<TypeAlias>
                                           {
                                               new TypeAlias
                                                   {
@@ -109,10 +113,11 @@ namespace LightCore.Configuration
                                                   },
                                           });
 
-            this.Registrations = new List<Registration>();
-            this.RegistrationGroups = new List<RegistrationGroup>();
+            Registrations = new List<Registration>();
+            RegistrationGroups = new List<RegistrationGroup>();
         }
 
+#if !DNXCORE50
         /// <summary>
         /// Gets the configuration instance.
         /// </summary>
@@ -134,5 +139,6 @@ namespace LightCore.Configuration
                 return configSectionHandler.GetInstance<LightCoreConfiguration>();
             }
         }
+#endif
     }
 }

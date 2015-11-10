@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using System.Reflection;
 using FluentAssertions;
+using LightCore.Activation;
 using LightCore.Registration;
 using LightCore.TestTypes;
 using Xunit;
 
-
 namespace LightCore.Tests.Activation.ArgumentCollector
 {
-    
     public class WhenCollectArgumentsIsCalled
     {
-        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver)
+        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments,
+            ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver)
         {
-            return GetArgumentsWith(parameters, arguments, runtimeArguments, dependencyResolver, new Type[] { });
+            return GetArgumentsWith(parameters, arguments, runtimeArguments, dependencyResolver, new Type[] {});
         }
 
-        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments, ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver, params Type[] registeredTypes)
+        private object[] GetArgumentsWith(ParameterInfo[] parameters, ArgumentContainer arguments,
+            ArgumentContainer runtimeArguments, Func<Type, object> dependencyResolver, params Type[] registeredTypes)
         {
-            var resolutionContext = new LightCore.Activation.ResolutionContext(
+            var resolutionContext = new ResolutionContext(
                 null,
                 RegistrationHelper.GetRegistrationContainerFor(registeredTypes),
                 arguments,
@@ -34,7 +35,7 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         public void WithNoDependencyParameterAndNoArguments_EmptyArgumentsReturned()
         {
             var arguments = GetArgumentsWith(
-                new ParameterInfo[] { },
+                new ParameterInfo[] {},
                 new ArgumentContainer(),
                 new ArgumentContainer(),
                 t => new object()
@@ -47,11 +48,11 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         public void WithDependecyParametersAndNoArguments_ADependencyInstanceReturned()
         {
             var arguments = GetArgumentsWith(
-                typeof(Foo).GetConstructor(new[] { typeof(IBar) }).GetParameters(),
+                typeof (Foo).GetConstructor(new[] {typeof (IBar)}).GetParameters(),
                 new ArgumentContainer(),
                 new ArgumentContainer(),
                 t => new Bar(),
-                typeof(IBar));
+                typeof (IBar));
 
             arguments.Length.Should().Be(1);
             arguments[0].Should().BeOfType<Bar>();
@@ -61,12 +62,12 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         public void WithStringAndBooleanArguments_AStringAndBooleanArgumentReturned()
         {
             var arguments = GetArgumentsWith(
-                typeof(Foo).GetConstructor(new[]
-                                                {
-                                                    typeof (string),
-                                                    typeof (bool)
-                                                }).GetParameters(),
-                new ArgumentContainer { AnonymousArguments = new object[] { "Peter", true } },
+                typeof (Foo).GetConstructor(new[]
+                {
+                    typeof (string),
+                    typeof (bool)
+                }).GetParameters(),
+                new ArgumentContainer {AnonymousArguments = new object[] {"Peter", true}},
                 new ArgumentContainer(),
                 t => new object());
 
@@ -80,19 +81,19 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         public void WithDependencyAndStringArguments_ADependecyInstanceAndStringArgumentReturned()
         {
             var arguments = GetArgumentsWith(
-                typeof(Foo).GetConstructor(new[]
-                                                {
-                                                    typeof (IBar),
-                                                    typeof (string)
-                                                }).GetParameters(),
+                typeof (Foo).GetConstructor(new[]
+                {
+                    typeof (IBar),
+                    typeof (string)
+                }).GetParameters(),
                 new ArgumentContainer
-                    {
-                        AnonymousArguments =
-                            new object[] { "Peter" }
-                    },
+                {
+                    AnonymousArguments =
+                        new object[] {"Peter"}
+                },
                 new ArgumentContainer(),
                 t => new Bar(),
-                typeof(IBar));
+                typeof (IBar));
 
 
             arguments.Length.Should().Be(2);
@@ -103,13 +104,13 @@ namespace LightCore.Tests.Activation.ArgumentCollector
         [Fact]
         public void WithAnonymousAndNamedStringArgument_NamedArgumentIsPrioredAndReturned()
         {
-            var arguments = this.GetArgumentsWith(
-                typeof(Foo).GetConstructor(new[] { typeof(string) }).GetParameters(),
+            var arguments = GetArgumentsWith(
+                typeof (Foo).GetConstructor(new[] {typeof (string)}).GetParameters(),
                 new ArgumentContainer
-                    {
-                        AnonymousArguments = new[] { "fail" },
-                        NamedArguments = new Dictionary<string, object> { { "arg1", "success" } }
-                    },
+                {
+                    AnonymousArguments = new[] {"fail"},
+                    NamedArguments = new Dictionary<string, object> {{"arg1", "success"}}
+                },
                 new ArgumentContainer(),
                 null);
 

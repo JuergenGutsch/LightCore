@@ -2,17 +2,15 @@
 using LightCore.Registration;
 using Xunit;
 
-
 namespace LightCore.Tests.Fluent.FluentRegistration
 {
-    
     public class WhenWithGroupIsCalled : FluentFixture
     {
         [Fact]
         public void WithNull_GroupIsSetToNull()
         {
             var registrationItem = new RegistrationItem(null);
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.WithGroup(null);
 
@@ -23,7 +21,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithString_GroupIsSetToStringValue()
         {
             var registrationItem = new RegistrationItem(null);
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
             var group = "test";
 
             fluentRegistration.WithGroup(group);

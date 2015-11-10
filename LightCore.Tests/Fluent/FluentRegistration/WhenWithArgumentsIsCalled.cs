@@ -3,17 +3,15 @@ using LightCore.Registration;
 using LightCore.TestTypes;
 using Xunit;
 
-
 namespace LightCore.Tests.Fluent.FluentRegistration
 {
-    
     public class WhenWithArgumentIsCalled : FluentFixture
     {
         [Fact]
         public void WithNull_ArgumentCountStaysOnZero()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.WithArguments(null);
 
@@ -24,7 +22,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithTwoArguments_AnonymousArgumentCountIsTwo()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.WithArguments(2, 3);
 
@@ -35,7 +33,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithOneFooArgument_TheArgumentIsTheSame()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
             var foo = new Foo();
 
             fluentRegistration.WithArguments(foo);

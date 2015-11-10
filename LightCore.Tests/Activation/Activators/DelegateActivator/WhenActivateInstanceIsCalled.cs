@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using FluentAssertions;
 using LightCore.Activation;
 using LightCore.Activation.Activators;
-using LightCore.Registration;
-using LightCore.TestTypes;
-
 using Xunit;
-using FluentAssertions;
 
 namespace LightCore.Tests.Activation.Activators.DelegateActivator
 {
-    
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator(Func<IContainer, object> activatorFunction)
@@ -22,19 +17,20 @@ namespace LightCore.Tests.Activation.Activators.DelegateActivator
         public void WithFunctionAndEmptyResolutionContext_ObjectReturned()
         {
             Func<IContainer, object> activatorFunction = c => new object();
-            var delegateActivator = this.GetActivator(activatorFunction);
+            var delegateActivator = GetActivator(activatorFunction);
 
-            object result = delegateActivator.ActivateInstance(new ResolutionContext());
+            var result = delegateActivator.ActivateInstance(new ResolutionContext());
 
             result.Should().BeOfType<object>();
         }
 
-        //[Fact]
         //public void WithFunctionAndFullBlownResolutionContext_IFooWithDependendenciesReturned()
+
+        //[Fact]
         //{
         //    Func<IContainer, object> activatorFunction = c => new Foo(c.Resolve<IBar>());
         //    var delegateActivator = this.GetActivator(activatorFunction);
-            
+
         //    containerMock
         //        .Setup(c => c.Resolve<IBar>())
         //        .Returns(new Bar());
@@ -45,6 +41,5 @@ namespace LightCore.Tests.Activation.Activators.DelegateActivator
         //    result.Should().NotBeNull();
         //    result.Bar.Should().NotBeNull();
         //}
-
     }
 }

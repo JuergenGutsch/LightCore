@@ -12,7 +12,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithGenericSingletonLifecycleArgument_LifecycleIsSetToSingleton()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.ControlledBy<SingletonLifecycle>();
 
@@ -23,7 +23,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithGenericTransientLifecycleArgument_LifecycleIsSetToTransient()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.ControlledBy<TransientLifecycle>();
 
@@ -34,9 +34,9 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithSingletonLifecycleTypeArgument_LifecycleIsSetToSingleton()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
-            fluentRegistration.ControlledBy(typeof(SingletonLifecycle));
+            fluentRegistration.ControlledBy(typeof (SingletonLifecycle));
 
             registrationItem.Lifecycle.Should().BeOfType<SingletonLifecycle>();
         }
@@ -45,9 +45,9 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithObjectAsLifecycle_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
-            Action act = () => fluentRegistration.ControlledBy(typeof(object));
+            Action act = () => fluentRegistration.ControlledBy(typeof (object));
 
             act.ShouldThrow<ArgumentException>();
         }
@@ -56,7 +56,7 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         public void WithNullAsLifecycle_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             Action act = () => fluentRegistration.ControlledBy(null);
             act.ShouldThrow<ArgumentException>();

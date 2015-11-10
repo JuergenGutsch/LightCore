@@ -1,37 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-
+using FluentAssertions;
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
-
-using FluentAssertions;
 using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-
     public class ContainerTests
     {
-        private class StreamContainer
-        {
-            public StreamContainer()
-            {
-
-            }
-
-            public StreamContainer(IDisposable disposable)
-            {
-                this.Stream = disposable;
-            }
-
-            public IDisposable Stream
-            {
-                get;
-                set;
-            }
-        }
-
         [Fact]
         public void Container_resolves_properties_in_transient_lifecycle()
         {
@@ -151,7 +129,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof(IRepository<>), typeof(Repository<>));
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
 
             var container = builder.Build();
 
@@ -165,7 +143,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_open_generic_types_with_few_arguments()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof(IRepository<,>), typeof(Repository<,>));
+            builder.Register(typeof (IRepository<,>), typeof (Repository<,>));
 
             var container = builder.Build();
 
@@ -179,7 +157,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_a_few_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof(IRepository<>), typeof(Repository<>));
+            builder.Register(typeof (IRepository<>), typeof (Repository<>));
 
             var container = builder.Build();
 
@@ -253,6 +231,20 @@ namespace LightCore.Tests.Integration
 
             âctual.Should().NotBeNull();
             âctual.Bars.Count().Should().Be(2);
+        }
+
+        private class StreamContainer
+        {
+            public StreamContainer()
+            {
+            }
+
+            public StreamContainer(IDisposable disposable)
+            {
+                Stream = disposable;
+            }
+
+            public IDisposable Stream { get; }
         }
     }
 }

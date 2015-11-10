@@ -3,10 +3,8 @@ using LightCore.Activation;
 using LightCore.Activation.Activators;
 using Xunit;
 
-
 namespace LightCore.Tests.Activation.Activators.InstanceActivator
 {
-    
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator<TContract>(TContract instance)

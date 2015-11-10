@@ -1,14 +1,12 @@
-﻿using System.Threading;
-using FluentAssertions;
+﻿using FluentAssertions;
+using System.Threading;
 using Xunit;
 
 namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
 {
-    
     public class WhenRetrieveInstanceInLifecycleIsCalled : LifecycleFixture
     {
-
-#if FALSE
+#if !DNXCORE50
 
         [Fact]
         public void WithActivationFunction_DifferentObjectsPerThreadAreReturned()

@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
@@ -11,9 +10,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.LazyRegistrationSource
         [Fact]
         public void WithLazyType_RegistrationItemReturned()
         {
-            var registrationSource = this.GetLazyRegistrationSource( typeof( IFoo ) );
+            var registrationSource = GetLazyRegistrationSource(typeof (IFoo));
 
-            var actual = registrationSource.GetRegistrationFor(typeof(Lazy<IFoo>), null);
+            var actual = registrationSource.GetRegistrationFor(typeof (Lazy<IFoo>), null);
 
             actual.Should().NotBeNull();
         }

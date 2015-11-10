@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿#if !DNXCORE50
+using System.Configuration;
 using System.IO;
 using System.Windows.Markup;
 using System.Xml;
@@ -22,7 +23,7 @@ namespace LightCore.Configuration
         /// <returns>The configuration.</returns>
         public TConfiguration GetInstance<TConfiguration>()
         {
-            return (TConfiguration)this._lightCoreConfigSection;
+            return (TConfiguration)_lightCoreConfigSection;
         }
 
         /// <summary>Creates a configuration section handler.</summary>
@@ -35,9 +36,10 @@ namespace LightCore.Configuration
             var stringReader = new StringReader(section.OuterXml);
             var xmlReader = XmlReader.Create(stringReader);
 
-            this._lightCoreConfigSection = XamlReader.Load(xmlReader);
+            _lightCoreConfigSection = XamlReader.Load(xmlReader);
 
             return this;
         }
     }
 }
+#endif

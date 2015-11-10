@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 
-#if FALSE
+#if !DNXCORE50
 
 namespace LightCore.Lifecycle
 {

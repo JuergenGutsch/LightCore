@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    
     public class ResolvingWithArgumentsTests
     {
         [Fact]

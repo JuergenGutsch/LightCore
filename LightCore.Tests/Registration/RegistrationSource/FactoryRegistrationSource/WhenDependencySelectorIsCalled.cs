@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using LightCore.TestTypes;
-
 using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSource
@@ -12,9 +11,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         [Fact]
         public void WithNoFunctionType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(object));
+            var registrationSource = GetFactoryRegistrationSource(typeof (object));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(IEnumerable<object>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (IEnumerable<object>));
 
             actual.Should().BeFalse();
         }
@@ -22,9 +21,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         [Fact]
         public void WithFunctionType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(Func<IFoo>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<IFoo>));
 
             actual.Should().BeTrue();
         }
@@ -32,9 +31,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         [Fact]
         public void WithFunctionTypePlusArguments_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(Func<string, IFoo>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<string, IFoo>));
 
             actual.Should().BeTrue();
         }
@@ -42,9 +41,9 @@ namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSou
         [Fact]
         public void WithFunctionTypePlusTwoArguments_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            var actual = registrationSource.SourceSupportsTypeSelector(typeof(Func<string, bool, IFoo>));
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<string, bool, IFoo>));
 
             actual.Should().BeTrue();
         }
