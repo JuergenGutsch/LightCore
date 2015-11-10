@@ -4,7 +4,6 @@ using LightCore.TestTypes;
 
 using System.Collections.Generic;
 using FluentAssertions;
-using LightCore.Fluent;
 using Xunit;
 
 namespace LightCore.Configuration.Tests
@@ -296,8 +295,7 @@ namespace LightCore.Configuration.Tests
         [Fact]
         public void Usage_of_global_registrations_and_grouped_registrations_work_together()
         {
-            var configuration = new LightCoreConfiguration();
-            configuration.ActiveRegistrationGroups = "Test";
+            var configuration = new LightCoreConfiguration {ActiveRegistrationGroups = "Test"};
 
             var globalRegistrations = new List<Registration>()
                                     {
@@ -337,7 +335,7 @@ namespace LightCore.Configuration.Tests
             var barInstance = container.Resolve<IBar>();
 
             objectInstance.Should().NotBeNull();
-            ; barInstance.Should().NotBeNull();
+            barInstance.Should().NotBeNull();
         }
     }
 }
