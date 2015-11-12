@@ -15,7 +15,7 @@ namespace LightCore.Configuration
         ///     Contains the singleton instance.
         /// </summary>
         private static readonly RegistrationLoader _instance = new RegistrationLoader();
-
+        
         /// <summary>
         ///     Contains the configuration.
         /// </summary>
@@ -31,7 +31,10 @@ namespace LightCore.Configuration
         /// </summary>
         public static RegistrationLoader Instance
         {
-            get { return _instance; }
+            get
+            {
+                return _instance;
+            }
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace LightCore.Configuration
             }
             else
             {
-                var activeGroups = configuration.ActiveRegistrationGroups.Split(new[] {','},
+                var activeGroups = configuration.ActiveRegistrationGroups.Split(new[] { ',' },
                     StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var group in activeGroups)
@@ -115,7 +118,7 @@ namespace LightCore.Configuration
                 foreach (var argument in registration.Arguments)
                 {
                     var argumentTypeName = ResolveAlias(argument.Type);
-                    var argumentType = typeof (string);
+                    var argumentType = typeof(string);
 
                     if (argumentTypeName != null)
                     {
@@ -167,7 +170,7 @@ namespace LightCore.Configuration
             const string followingBracket = "}";
 
             // Replace for alternative generic syntax.
-            if (rawType != null && rawType.IndexOf(leadingBracket) > -1)
+            if (rawType != null && rawType.IndexOf(leadingBracket, StringComparison.CurrentCultureIgnoreCase) > -1)
             {
                 rawType = rawType.Replace(leadingBracket, "`");
                 rawType = rawType.Replace(followingBracket, "");
@@ -199,7 +202,7 @@ namespace LightCore.Configuration
         /// </returns>
         private bool FindAlias(TypeAlias alias, string rawType)
         {
-            var aliase = alias.Alias.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            var aliase = alias.Alias.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             return aliase.Any(a => a.Trim() == rawType.Trim());
         }
 

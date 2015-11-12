@@ -1,7 +1,5 @@
 ﻿using System;
 using LightCore.TestTypes;
-
-
 using System.Collections.Generic;
 using FluentAssertions;
 using Xunit;
@@ -13,61 +11,70 @@ namespace LightCore.Configuration.Tests
         [Fact]
         public void Exception_is_thrown_when_a_given_active_group_was_not_found()
         {
-            var configuration = new LightCoreConfiguration
+            lock (Locker.Lock)
             {
-                ActiveRegistrationGroups = "test",
-                RegistrationGroups = GetTestRegistrationGroups()
-            };
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "test",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            Action act = () => RegistrationLoader.Instance.Register(builder, configuration);
+                Action act = () => RegistrationLoader.Instance.Register(builder, configuration);
 
-            act.ShouldThrow<ActiveGroupNotFoundException>();
+                act.ShouldThrow<ActiveGroupNotFoundException>();
+            }
         }
 
         [Fact]
         public void Can_register_group_configurations()
         {
-            var configuration = new LightCoreConfiguration
+            lock (Locker.Lock)
             {
-                ActiveRegistrationGroups = "Sql",
-                RegistrationGroups = GetTestRegistrationGroups()
-            };
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Sql",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            builder.Build();
+                builder.Build();
+            }
         }
 
         [Fact]
         public void Can_resolve_active_group_configuration()
         {
-            var configuration = new LightCoreConfiguration
+            lock (Locker.Lock)
             {
-                ActiveRegistrationGroups = "Xml",
-                RegistrationGroups = GetTestRegistrationGroups()
-            };
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Xml",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            var container = builder.Build();
+                var container = builder.Build();
 
-            var actual = container.Resolve<IFoo>();
+                var actual = container.Resolve<IFoo>();
 
-            actual.Should().BeOfType<XmlFoo>();
+                actual.Should().BeOfType<XmlFoo>();
+            }
         }
 
         [Fact]
         public void Can_register_group_configurations_registered_by_code()
         {
-            var builder = new ContainerBuilder {ActiveRegistrationGroups = "Xml"};
+            var builder = new ContainerBuilder { ActiveRegistrationGroups = "Xml" };
 
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
@@ -85,7 +92,7 @@ namespace LightCore.Configuration.Tests
         [Fact]
         public void Can_register_multiple_group_configurations_registered_by_code()
         {
-            var builder = new ContainerBuilder {ActiveRegistrationGroups = "Xml, Test"};
+            var builder = new ContainerBuilder { ActiveRegistrationGroups = "Xml, Test" };
 
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
@@ -109,24 +116,26 @@ namespace LightCore.Configuration.Tests
         [Fact]
         public void Can_register_multiple_group_configurations_registered_configuration()
         {
-            var configuration = new LightCoreConfiguration
+            lock (Locker.Lock)
             {
-                ActiveRegistrationGroups = "Xml, Test",
-                RegistrationGroups = GetTestRegistrationGroups()
-            };
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Xml, Test",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
+                var builder = new ContainerBuilder();
 
-            var builder = new ContainerBuilder();
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                var container = builder.Build();
 
-            var container = builder.Build();
+                var actualFoo = container.Resolve<IFoo>();
+                var actualLorem = container.Resolve<ILorem>();
 
-            var actualFoo = container.Resolve<IFoo>();
-            var actualLorem = container.Resolve<ILorem>();
-
-            actualFoo.Should().BeOfType<XmlFoo>();
-            actualLorem.Should().BeOfType<TestLorem>();
+                actualFoo.Should().BeOfType<XmlFoo>();
+                actualLorem.Should().BeOfType<TestLorem>();
+            }
         }
 
         private static List<RegistrationGroup> GetTestRegistrationGroups()
