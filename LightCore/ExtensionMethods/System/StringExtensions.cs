@@ -38,7 +38,7 @@ namespace LightCore.ExtensionMethods.System
             }
 
             // Check whether string can be converted to the target type. If not, break.
-            TypeConverter converter = TypeDescriptor.GetConverter(typeToConvert);
+            var converter = TypeDescriptor.GetConverter(typeToConvert);
             if (!converter.CanConvertFrom(typeof(string)))
             {
                 return returnValue;

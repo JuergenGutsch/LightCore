@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace LightCore.ExtensionMethods.System
 {
     /// <summary>
-    /// Represents extensionmethods for <see cref="Type" /> type.
+    ///     Represents extensionmethods for <see cref="Type" /> type.
     /// </summary>
     internal static class SystemExtensions
     {
         /// <summary>
-        /// Checks whether the type is concrete or not.
+        ///     Checks whether the type is concrete or not.
         /// </summary>
         /// <param name="source">The type to check.</param>
-        /// <returns><value>true</value> if the type is concrete, otherwise <value>false</value>.</returns>
+        /// <returns>
+        ///     <value>true</value>
+        ///     if the type is concrete, otherwise
+        ///     <value>false</value>
+        ///     .
+        /// </returns>
         internal static bool IsConcreteType(this Type source)
         {
-            if(source == null)
+            if (source == null)
             {
                 return false;
             }
 
-            bool isConcreteType = !source.GetTypeInfo().IsAbstract && !source.GetTypeInfo().IsInterface;
+            var isConcreteType = !source.GetTypeInfo().IsAbstract && !source.GetTypeInfo().IsInterface;
 
             isConcreteType &= !source.GetTypeInfo().IsValueType;
             isConcreteType &= source != typeof (string);
@@ -32,10 +36,15 @@ namespace LightCore.ExtensionMethods.System
         }
 
         /// <summary>
-        /// Checks whether the type is a generic factory or not.
+        ///     Checks whether the type is a generic factory or not.
         /// </summary>
         /// <param name="source">The type to check.</param>
-        /// <returns><value>true</value> if the type is a generic factory, otherwise <value>false</value>.</returns>
+        /// <returns>
+        ///     <value>true</value>
+        ///     if the type is a generic factory, otherwise
+        ///     <value>false</value>
+        ///     .
+        /// </returns>
         internal static bool IsFactoryType(this Type source)
         {
             if (source == null || !source.GetTypeInfo().IsGenericType)
@@ -45,15 +54,15 @@ namespace LightCore.ExtensionMethods.System
 
             var genericTypeDefinition = source.GetGenericTypeDefinition();
 
-            return genericTypeDefinition == typeof(Func<>)
-                   || genericTypeDefinition == typeof(Func<,>)
-                   || genericTypeDefinition == typeof(Func<,,>)
-                   || genericTypeDefinition == typeof(Func<,,,>)
-                   || genericTypeDefinition == typeof(Func<,,,,>);
+            return genericTypeDefinition == typeof (Func<>)
+                   || genericTypeDefinition == typeof (Func<,>)
+                   || genericTypeDefinition == typeof (Func<,,>)
+                   || genericTypeDefinition == typeof (Func<,,,>)
+                   || genericTypeDefinition == typeof (Func<,,,,>);
         }
 
         /// <summary>
-        /// Checks whether a given type is type of generic enumerable.
+        ///     Checks whether a given type is type of generic enumerable.
         /// </summary>
         /// <param name="source">The source type.</param>
         /// <returns><true /> if the parameter type is a generic enumerable, otherwise <false /></returns>
@@ -71,7 +80,7 @@ namespace LightCore.ExtensionMethods.System
                 return false;
             }
 
-            return typeof(IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(source);
+            return typeof (IEnumerable<>).MakeGenericType(typeArguments).IsAssignableFrom(source);
         }
     }
 }
