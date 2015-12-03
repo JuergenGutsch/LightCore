@@ -1,4 +1,4 @@
-﻿#if !DNXCORE50
+﻿#if !DOTNET5_4
 using System;
 using System.Runtime.Serialization;
 

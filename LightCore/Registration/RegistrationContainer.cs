@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-
 using LightCore.Registration.RegistrationSource;
 
 namespace LightCore.Registration
@@ -12,38 +12,29 @@ namespace LightCore.Registration
     internal class RegistrationContainer : IRegistrationContainer
     {
         /// <summary>
-        /// Holds the cache of allready visited types for speed.
+        /// Contains the lock object for all registrations.
         /// </summary>
-        private readonly IDictionary<Type, bool> _registeredCache;
-
-        /// <summary>
-        /// Containes the unique registrations.
-        /// </summary>
-        public IDictionary<Type, RegistrationItem> Registrations
-        {
-            get;
-            set;
-        }
+        private readonly object _lock = new object();
 
         /// <summary>
         /// Contains the duplicate registrations, e.g. plugins.
         /// </summary>
-        public IList<RegistrationItem> DuplicateRegistrations
-        {
-            get;
-            set;
-        }
+        private readonly List<RegistrationItem> _duplicateRegistrations;
+
+        /// <summary>
+        /// Containes the unique registrations.
+        /// </summary>
+        private readonly IDictionary<Type, RegistrationItem> _registrations;
 
         /// <summary>
         /// Initializes a new instance of <see cref="RegistrationContainer" />.
         /// </summary>
         internal RegistrationContainer()
         {
-            this._registeredCache = new Dictionary<Type, bool>();
+            _duplicateRegistrations = new List<RegistrationItem>();
+            _registrations = new Dictionary<Type, RegistrationItem>();
 
-            this.Registrations = new Dictionary<Type, RegistrationItem>();
-            this.DuplicateRegistrations = new List<RegistrationItem>();
-            this.RegistrationSources = new List<IRegistrationSource>();
+            RegistrationSources = new List<IRegistrationSource>();
         }
 
         /// <summary>
@@ -53,17 +44,38 @@ namespace LightCore.Registration
         {
             get
             {
-                return this.Registrations.Values.Concat(this.DuplicateRegistrations);
+                lock (_lock)
+                {
+                    return new ReadOnlyCollection<RegistrationItem>(
+                        _registrations.Values.Concat(_duplicateRegistrations).ToList());
+                }
             }
         }
 
         /// <summary>
         /// Contains all registration sources.
         /// </summary>
-        public IList<IRegistrationSource> RegistrationSources
+        public IList<IRegistrationSource> RegistrationSources { get; set; }
+
+        /// <summary>
+        /// Try get a registration based upon a contract type.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="registrationItem">The registration item.</param>
+        /// <returns>The registrationitem.</returns>
+        public bool TryGetRegistration(Type contractType, out RegistrationItem registrationItem)
         {
-            get;
-            set;
+            return _registrations.TryGetValue(contractType, out registrationItem);
+        }
+
+        /// <summary>
+        /// Try get a registration based upon a contract type.
+        /// </summary>
+        /// <param name="predicate">the predicate.</param>
+        /// <returns>The registrationitem.</returns>
+        public RegistrationItem GetRegistration(Func<RegistrationItem, bool> predicate)
+        {
+            return _registrations.Values.SingleOrDefault(predicate);
         }
 
         /// <summary>
@@ -72,18 +84,61 @@ namespace LightCore.Registration
         /// </summary>
         /// <param name="contractType">The type of the contract.</param>
         /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
-        public bool IsRegistered(Type contractType)
+        public bool HasRegistration(Type contractType)
         {
-            bool isRegistered;
+            return AllRegistrations.Any(registration => registration.ContractType == contractType);
+        }
 
-            if(!this._registeredCache.TryGetValue(contractType, out isRegistered))
+        /// <summary>
+        /// Determines whether a contracttype is registered as duplicate (many of them).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <returns><value>true</value> if this type is registered many times.</returns>
+        public bool HasDuplicateRegistration(Type contractType)
+        {
+            return _duplicateRegistrations.Any(registration => registration.ContractType == contractType);
+        }
+
+        /// <summary>
+        /// Adds a registration.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        public void AddRegistration(RegistrationItem registration)
+        {
+            lock (_lock)
             {
-                isRegistered = this.AllRegistrations.Any(registration => registration.ContractType == contractType);
+                if (!HasRegistration(registration.ContractType))
+                {
+                    _registrations.Add(registration.ContractType, registration);
+                }
+                else
+                {
+                    // Duplicate registration for enumerable requests.
+                    RegistrationItem duplicateItem;
 
-                this._registeredCache.Add(contractType, isRegistered);
+                    _registrations.TryGetValue(registration.ContractType, out duplicateItem);
+
+                    if (duplicateItem != null)
+                    {
+                        _duplicateRegistrations.Add(duplicateItem);
+                        RemoveRegistration(duplicateItem.ContractType);
+                    }
+
+                    _duplicateRegistrations.Add(registration);
+                }
             }
+        }
 
-            return isRegistered;
+        /// <summary>
+        /// Removes a registration.
+        /// </summary>
+        /// <param name="contractType"></param>
+        public void RemoveRegistration(Type contractType)
+        {
+            lock (_lock)
+            {
+                _registrations.Remove(contractType);
+            }
         }
 
         /// <summary>
@@ -93,29 +148,9 @@ namespace LightCore.Registration
         /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
         public bool IsSupportedByRegistrationSource(Type contractType)
         {
-            return this.IsSupportedByRegistrationSource(contractType, RegistrationFilter.None);
-        }
-
-        /// <summary>
-        /// Determines whether a contracttype is supported by registration sources.
-        /// </summary>
-        /// <param name="contractType">The type of the contract.</param>
-        /// <param name="registrationFilter">Exclude concrete types or not.</param>
-        /// <returns><value>true</value> if the type is supported by a registration source, otherwise <value>false</value>.</returns>
-        public bool IsSupportedByRegistrationSource(Type contractType, RegistrationFilter registrationFilter)
-        {
-            IEnumerable<IRegistrationSource> registrationSources = this.RegistrationSources;
-
-            if(registrationFilter == RegistrationFilter.SkipResolveAnything)
-            {
-                registrationSources =
-                    registrationSources
-                    .Where(registrationSource => registrationSource.GetType() != typeof (ConcreteTypeRegistrationSource));
-            }
-
-            return registrationSources
-                       .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
-                       .Any(sourceSupportsTypeSelector => sourceSupportsTypeSelector(contractType));
+            return RegistrationSources
+                .Select(registrationSource => registrationSource.SourceSupportsTypeSelector)
+                .Any(sourceSupportsTypeSelector => sourceSupportsTypeSelector(contractType));
         }
     }
 }

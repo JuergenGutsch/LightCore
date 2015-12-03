@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B8E06B21-4FF2-459E-8735-0770133BDB98}"
 	ProjectSection(SolutionItems) = preProject
@@ -31,10 +31,6 @@ EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightCore.Configuration", "LightCore.Configuration\LightCore.Configuration.xproj", "{70B12149-3F55-4B29-BD4D-2430F25A6F20}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightCore.Configuration.Tests", "LightCore.Configuration.Tests\LightCore.Configuration.Tests.xproj", "{280CD873-95C3-466F-A041-17B85BE425D6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.Performance", "LightCore.Performance\LightCore.Performance.csproj", "{8267A0FD-66DF-46B1-851E-99B8471BF3C2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.ConsoleClient", "LightCore.ConsoleClient\LightCore.ConsoleClient.csproj", "{14D79127-D7D7-402A-8C42-4A5FC698C8CF}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "LightCore.ConsoleClient.Core", "LightCore.ConsoleClient.Core\LightCore.ConsoleClient.Core.xproj", "{C2274EE7-9A2F-41F3-AAFC-D02D080C5ADB}"
 EndProject
@@ -72,14 +68,6 @@ Global
 		{280CD873-95C3-466F-A041-17B85BE425D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{280CD873-95C3-466F-A041-17B85BE425D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{280CD873-95C3-466F-A041-17B85BE425D6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8267A0FD-66DF-46B1-851E-99B8471BF3C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C2274EE7-9A2F-41F3-AAFC-D02D080C5ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C2274EE7-9A2F-41F3-AAFC-D02D080C5ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2274EE7-9A2F-41F3-AAFC-D02D080C5ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,8 +81,6 @@ Global
 		{7C981359-E781-436D-B871-EA9FE5356265} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{2E16DF69-CF82-4A11-9AF6-DC10616B6367} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
 		{280CD873-95C3-466F-A041-17B85BE425D6} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
-		{8267A0FD-66DF-46B1-851E-99B8471BF3C2} = {1F5BFEA7-DB11-4E4D-92D3-F7E8E8CD0C12}
-		{14D79127-D7D7-402A-8C42-4A5FC698C8CF} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 		{C2274EE7-9A2F-41F3-AAFC-D02D080C5ADB} = {B8E06B21-4FF2-459E-8735-0770133BDB98}
 	EndGlobalSection
 EndGlobal

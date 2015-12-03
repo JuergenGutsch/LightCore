@@ -118,12 +118,12 @@ namespace LightCore
             var typeOfArgumentCollector = typeof(IArgumentCollector);
             var typeOfConstructorSelector = typeof(IConstructorSelector);
 
-            if(!_registrationContainer.Registrations.ContainsKey(typeOfArgumentCollector))
+            if(!_registrationContainer.HasRegistration(typeOfArgumentCollector))
             {
                 Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
             }
 
-            if(!_registrationContainer.Registrations.ContainsKey(typeOfConstructorSelector))
+            if(!_registrationContainer.HasRegistration(typeOfConstructorSelector))
             {
                 Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
             }
@@ -237,32 +237,11 @@ namespace LightCore
                                                       return;
                                                   }
 
-                                                  if(
-                                                      this._registrationContainer.Registrations.ContainsKey(
-                                                          registrationItem.ContractType))
-                                                  {
-                                                      // Duplicate registration for enumerable requests.
-                                                      RegistrationItem duplicateItem =
-                                                          this._registrationContainer.Registrations[
-                                                              registrationItem.ContractType];
+                                                  _registrationContainer.AddRegistration(registrationItem);
 
-                                                      this._registrationContainer.DuplicateRegistrations.Add(
-                                                          registrationItem);
-                                                      this._registrationContainer.DuplicateRegistrations.Add(
-                                                          duplicateItem);
-
-                                                      this._registrationContainer.Registrations.Remove(
-                                                          duplicateItem.ContractType);
-                                                  }
-                                                  else
-                                                  {
-                                                      this._registrationContainer.Registrations.Add(
-                                                          registrationItem.ContractType,
-                                                          registrationItem);
-                                                  }
                                               };
 
-            this._registrationCallbacks.Add(registrationCallback);
+            _registrationCallbacks.Add(registrationCallback);
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return new FluentRegistration(registrationItem);
@@ -295,7 +274,7 @@ namespace LightCore
             if(!typeOfContract.GetTypeInfo().IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException(
-                    Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation));
+                    Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation), typeOfContract, typeOfImplementation);
             }
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.

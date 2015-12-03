@@ -4,7 +4,6 @@ using System.Reflection;
 
 using LightCore.ExtensionMethods.System;
 using LightCore.Properties;
-using LightCore.Registration;
 
 namespace LightCore.Activation.Components
 {
@@ -23,11 +22,14 @@ namespace LightCore.Activation.Components
         {
             var constructorsWithParameters = constructors.OrderByDescending(constructor => constructor.GetParameters().Length);
 
-            ConstructorInfo finalConstructor = constructorsWithParameters.LastOrDefault();
+            var finalConstructor = constructorsWithParameters.LastOrDefault();
 
             if (finalConstructor == null)
             {
-                throw new ResolutionFailedException(Resources.NoConstructorAvailableForType.FormatWith(resolutionContext.Registration.ImplementationType));
+                throw new ResolutionFailedException(
+                    Resources.NoConstructorAvailableForType.FormatWith(resolutionContext.Registration.ImplementationType),
+                    resolutionContext.Registration.ImplementationType);
+
             }
 
             if (constructorsWithParameters.Count() == 1 && constructorsWithParameters.First().GetParameters().Length == 0)
@@ -36,13 +38,12 @@ namespace LightCore.Activation.Components
             }
 
             // Loop througth all constructors, from the most to the least parameters.
-            foreach (ConstructorInfo constructorCandidate in constructorsWithParameters)
+            foreach (var constructorCandidate in constructorsWithParameters)
             {
-                ParameterInfo[] parameters = constructorCandidate.GetParameters();
+                var parameters = constructorCandidate.GetParameters();
                 var dependencyParameters = parameters
-                    .Where(p => resolutionContext.RegistrationContainer.IsRegistered(p.ParameterType)
-                                ||
-                                resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType, RegistrationFilter.SkipResolveAnything));
+                    .Where(p => resolutionContext.RegistrationContainer.HasRegistration(p.ParameterType) ||
+                                resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 
                 // Parameters and registered dependencies match.
                 if (resolutionContext.Arguments.CountOfAllArguments + resolutionContext.RuntimeArguments.CountOfAllArguments == 0 && parameters.Length == dependencyParameters.Count())

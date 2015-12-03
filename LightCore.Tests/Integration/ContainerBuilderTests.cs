@@ -132,5 +132,23 @@ namespace LightCore.Tests.Integration
 
             instanceOne.Should().BeSameAs(instanceTwo);
         }
+
+        [Fact]
+        public void CointainerBuilder_default_scope_can_be_altered_to_singleton_with_delegate_activator_registration()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.DefaultControlledBy<SingletonLifecycle>();
+            builder.Register<IBar>(c => new Bar());
+            builder.Register<IFoo>(c => new Foo());
+
+            var container = builder.Build();
+
+            var instanceOne = container.Resolve<IFoo>();
+            var instanceTwo = container.Resolve<IFoo>();
+
+            instanceOne.Should().BeSameAs(instanceTwo);
+        }
+
     }
 }

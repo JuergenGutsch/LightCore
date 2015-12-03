@@ -6,6 +6,7 @@ using System.Linq;
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -31,8 +32,14 @@ namespace LightCore.Registration.RegistrationSource
             get
             {
                 return contractType => contractType.IsGenericEnumerable()
-                                       &&
-                                       this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
+                        &&
+                        ((this._registrationContainer.HasRegistration(
+                            contractType.GetGenericArguments().FirstOrDefault()))
+                         ||
+                         // Use ConcreteTypeRegistrationSource.
+                         (this._registrationContainer.IsSupportedByRegistrationSource(
+                             contractType.GetGenericArguments().FirstOrDefault())));
+
             }
         }
 
@@ -42,7 +49,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="registrationContainer">The registration container.</param>
         public EnumerableRegistrationSource(IRegistrationContainer registrationContainer)
         {
-            this._registrationContainer = registrationContainer;
+            _registrationContainer = registrationContainer;
         }
 
         /// <summary>
@@ -54,9 +61,10 @@ namespace LightCore.Registration.RegistrationSource
         public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c))
-                       };
+            {
+                Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c)),
+                Lifecycle = new TransientLifecycle()
+            };
         }
 
         /// <summary>

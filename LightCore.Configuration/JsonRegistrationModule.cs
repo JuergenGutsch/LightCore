@@ -1,7 +1,7 @@
 ﻿
 using System.IO;
 using LightCore.Registration;
-#if DNXCORE50
+#if DOTNET5_4
 using Microsoft.AspNet.FileProviders;
 #endif
 using Newtonsoft.Json;
@@ -12,7 +12,7 @@ namespace LightCore.Configuration
     {
         private readonly LightCoreConfiguration _configuration;
 
-#if !DNXCORE50
+#if !DOTNET5_4
         public JsonRegistrationModule(string configFilePath = "LightCore.json")
         {
             if (!File.Exists(configFilePath))

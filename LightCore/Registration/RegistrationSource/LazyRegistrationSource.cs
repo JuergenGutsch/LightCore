@@ -4,6 +4,7 @@ using System.Reflection;
 
 
 using LightCore.Activation.Activators;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -48,10 +49,19 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.GetTypeInfo().IsGenericType
-                    && contractType.GetGenericTypeDefinition() == typeof(Lazy<>)
-                    &&
-                    this._registrationContainer.IsRegistered(contractType.GetGenericArguments().FirstOrDefault());
+                Func<Type, bool> isGenericLazy = contractType => contractType.GetTypeInfo().IsGenericType
+                                                  &&
+                                                  contractType.GetGenericTypeDefinition() == typeof(Lazy<>);
+
+                return contractType => isGenericLazy(contractType)
+                                       &&
+                                       ((_registrationContainer.HasRegistration(
+                                           contractType.GetGenericArguments().FirstOrDefault()))
+                                        ||
+                                        // Use ConcreteTypeRegistrationSource.
+                                        (_registrationContainer.IsSupportedByRegistrationSource(
+                                            contractType.GetGenericArguments().FirstOrDefault())));
+
             }
         }
 
@@ -75,9 +85,10 @@ namespace LightCore.Registration.RegistrationSource
         /// <returns>The new registrationItem for lazy resolve.</returns>
         private static RegistrationItem CreateLazyRegistration<T>()
         {
-            return new RegistrationItem
+            return new RegistrationItem(typeof (Lazy<T>))
             {
-                Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>))
+                Activator = new DelegateActivator(c => new Lazy<T>(c.Resolve<T>)),
+                Lifecycle = new TransientLifecycle()
             };
         }
     }

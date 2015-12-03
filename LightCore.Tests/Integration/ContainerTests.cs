@@ -26,6 +26,21 @@ namespace LightCore.Tests.Integration
         }
 
         [Fact]
+        public void Container_throws_exception_on_singleresolve_with_multiple_registrations()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+            builder.Register<IFoo, FooTwo>();
+
+            var container = builder.Build();
+            
+            Action act = () => container.Resolve<IFoo>();
+
+            act.ShouldThrow<RegistrationNotFoundException>();
+        }
+
+
+        [Fact]
         public void Container_can_resolve_concrete_types()
         {
             var builder = new ContainerBuilder();
@@ -129,7 +144,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
 
             var container = builder.Build();
 
@@ -143,7 +158,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_open_generic_types_with_few_arguments()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof (IRepository<,>), typeof (Repository<,>));
+            builder.Register(typeof(IRepository<,>), typeof(Repository<,>));
 
             var container = builder.Build();
 
@@ -157,7 +172,7 @@ namespace LightCore.Tests.Integration
         public void Container_can_resolve_a_few_open_generic_types()
         {
             var builder = new ContainerBuilder();
-            builder.Register(typeof (IRepository<>), typeof (Repository<>));
+            builder.Register(typeof(IRepository<>), typeof(Repository<>));
 
             var container = builder.Build();
 
@@ -227,10 +242,10 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var âctual = container.Resolve<EnumerableTest>();
+            var actual = container.Resolve<EnumerableTest>();
 
-            âctual.Should().NotBeNull();
-            âctual.Bars.Count().Should().Be(2);
+            actual.Should().NotBeNull();
+            actual.Bars.Count().Should().Be(2);
         }
 
         private class StreamContainer

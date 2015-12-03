@@ -6,8 +6,10 @@ using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
 using LightCore.ExtensionMethods.System.Collections.Generic;
+using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;
+using LightCore.Registration.RegistrationSource;
 
 namespace LightCore
 {
@@ -33,6 +35,45 @@ namespace LightCore
 
             CreateValidPropertiesSelector();
             RegisterContainer();
+        }
+
+        /// <summary>
+        ///     Creates the valid properties selector and set it to the container.
+        /// </summary>
+        private void CreateValidPropertiesSelector()
+        {
+            var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
+            {
+                p => !p.PropertyType.GetTypeInfo().IsValueType,
+                p => _registrationContainer.HasRegistration(p.PropertyType),
+                p => p.GetIndexParameters().Length == 0,
+                p => p.CanWrite
+            };
+
+            _validPropertiesSelector = validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p));
+        }
+
+        /// <summary>
+        ///     Register the container itself for service locator reasons.
+        /// </summary>
+        private void RegisterContainer()
+        {
+            var typeOfIContainer = typeof(IContainer);
+
+            // The container is already registered from external.
+            if (_registrationContainer.HasRegistration(typeOfIContainer))
+            {
+                _registrationContainer.RemoveRegistration(typeOfIContainer);
+            }
+
+            var registrationItem = new RegistrationItem(typeOfIContainer)
+            {
+                Activator = new InstanceActivator<IContainer>(this),
+                Lifecycle = new TransientLifecycle()
+
+            };
+
+            _registrationContainer.AddRegistration(registrationItem);
         }
 
         /// <summary>
@@ -103,6 +144,80 @@ namespace LightCore
         }
 
         /// <summary>
+        ///     Resolves a contract (include subcontracts).
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="namedArguments">The named arguments.</param>
+        /// <returns>The resolved instance as object.</returns>
+        private object ResolveInternal(Type contractType, IEnumerable<object> arguments,
+            IDictionary<string, object> namedArguments)
+        {
+            RegistrationItem registrationItem;
+
+            if (!_registrationContainer.TryGetRegistration(contractType, out registrationItem))
+            {
+                if (_registrationContainer.HasDuplicateRegistration(contractType))
+                {
+                    throw new RegistrationNotFoundException(
+                        Resources.RegistrationNotFoundBecauseDuplicate.FormatWith(contractType), contractType);
+                }
+
+                // No registration found yet, try to create one with available registration sources.
+                IRegistrationSource registrationSourceToUse = null;
+
+                for (int i = 0; i < _registrationContainer.RegistrationSources.Count; i++)
+                {
+                    var currentRegistrationSource = _registrationContainer.RegistrationSources[i];
+
+                    if (currentRegistrationSource.SourceSupportsTypeSelector(contractType))
+                    {
+                        registrationSourceToUse = currentRegistrationSource;
+                        break;
+                    }
+                }
+
+                if (registrationSourceToUse == null)
+                {
+                    throw new RegistrationNotFoundException(
+                        Resources.RegistrationNotFoundFormat.FormatWith(contractType), contractType);
+                }
+
+                registrationItem = registrationSourceToUse.GetRegistrationFor(contractType, this);
+
+                _registrationContainer.AddRegistration(registrationItem);
+            }
+
+            // Add runtime arguments to registration.
+            AddArgumentsToRegistration(registrationItem, arguments, namedArguments);
+
+            // Activate existing registration.
+            var result = this.Resolve(registrationItem);
+
+            return result;
+        }
+
+        /// <summary>
+        ///     Add all arguments to the passed registration.
+        /// </summary>
+        /// <param name="registrationItem">The registration.</param>
+        /// <param name="arguments">The arguments.</param>
+        /// <param name="namedArguments">The named arguments.</param>
+        private void AddArgumentsToRegistration(RegistrationItem registrationItem, IEnumerable<object> arguments,
+            IDictionary<string, object> namedArguments)
+        {
+            if (arguments != null)
+            {
+                registrationItem.RuntimeArguments.AddToAnonymousArguments(arguments);
+            }
+
+            if (namedArguments != null)
+            {
+                registrationItem.RuntimeArguments.AddToNamedArguments(namedArguments);
+            }
+        }
+
+        /// <summary>
         ///     Resolves a contract (include subcontracts) with constructor arguments.
         /// </summary>
         /// <param name="contractType">The contract type.</param>
@@ -124,172 +239,6 @@ namespace LightCore
         public object Resolve(Type contractType, IEnumerable<object> arguments)
         {
             return ResolveInternal(contractType, arguments, null);
-        }
-
-        /// <summary>
-        ///     Resolves a contract (include subcontract) with named constructor arguments.
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <param name="namedArguments">The named constructor arguments.</param>
-        /// <returns>The resolved instance as object.</returns>
-        public object Resolve(Type contractType, IDictionary<string, object> namedArguments)
-        {
-            return ResolveInternal(contractType, null, namedArguments);
-        }
-
-        /// <summary>
-        ///     Resolves all contracts of type {TContract}.
-        /// </summary>
-        /// <typeparam name="TContract">The contract type contraining the result.</typeparam>
-        /// <returns>The resolved instances</returns>
-        public IEnumerable<TContract> ResolveAll<TContract>()
-        {
-            return
-                ResolveAll(typeof (TContract))
-                    .Cast<TContract>();
-        }
-
-        /// <summary>
-        ///     Resolves all contracts.
-        /// </summary>
-        /// <returns>The resolved instances</returns>
-        public IEnumerable<object> ResolveAll()
-        {
-            return _registrationContainer
-                .AllRegistrations
-                .Select(registration => Resolve(registration));
-        }
-
-        /// <summary>
-        ///     Resolves all contract of type <paramref name="contractType" />.
-        /// </summary>
-        /// <param name="contractType">The contract type contraining the result.</param>
-        /// <returns>The resolved instances</returns>
-        public IEnumerable<object> ResolveAll(Type contractType)
-        {
-            return _registrationContainer
-                .AllRegistrations
-                .Where(r => r.ContractType == contractType)
-                .Select(registration => Resolve(registration));
-        }
-
-        /// <summary>
-        ///     Injects properties to an existing instance.
-        /// </summary>
-        /// <param name="instance">The instance.</param>
-        public void InjectProperties(object instance)
-        {
-#if !DNXCORE50
-            instance
-                .GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
-                .Where(this._validPropertiesSelector)
-                .ForEach(p => p.SetValue(instance, this.Resolve(p.PropertyType), null));
-#else
-            instance
-                .GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(_validPropertiesSelector)
-                .ForEach(p => p.SetValue(instance, Resolve(p.PropertyType), null));
-#endif
-        }
-
-        /// <summary>
-        ///     Creates the valid properties selector and set it to the container.
-        /// </summary>
-        private void CreateValidPropertiesSelector()
-        {
-            var validPropertiesSelectors = new List<Func<PropertyInfo, bool>>
-            {
-                p => !p.PropertyType.GetTypeInfo().IsValueType,
-                p => _registrationContainer.IsRegistered(p.PropertyType),
-                p => p.GetIndexParameters().Length == 0,
-                p => p.CanWrite
-            };
-
-            _validPropertiesSelector = validPropertiesSelectors.Aggregate((current, next) => p => current(p) && next(p));
-        }
-
-        /// <summary>
-        ///     Register the container itself for service locator reasons.
-        /// </summary>
-        private void RegisterContainer()
-        {
-            var typeOfIContainer = typeof (IContainer);
-
-            // The container is already registered from external.
-            if (_registrationContainer.Registrations.ContainsKey(typeOfIContainer))
-            {
-                _registrationContainer.Registrations.Remove(typeOfIContainer);
-            }
-
-            var registrationItem = new RegistrationItem(typeOfIContainer)
-            {
-                Activator = new InstanceActivator<IContainer>(this)
-            };
-
-            _registrationContainer.Registrations.Add(
-                new KeyValuePair<Type, RegistrationItem>(typeOfIContainer, registrationItem));
-        }
-
-        /// <summary>
-        ///     Resolves a contract (include subcontracts).
-        /// </summary>
-        /// <param name="contractType">The contract type.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="namedArguments">The named arguments.</param>
-        /// <returns>The resolved instance as object.</returns>
-        private object ResolveInternal(Type contractType, IEnumerable<object> arguments,
-            IDictionary<string, object> namedArguments)
-        {
-            RegistrationItem registrationItem;
-
-            if (!_registrationContainer.Registrations.TryGetValue(contractType, out registrationItem))
-            {
-                // No registration found yet, try to create one with available registration sources.
-                foreach (var registrationSource in
-                    _registrationContainer.RegistrationSources
-                        .Where(registrationSource => registrationSource.SourceSupportsTypeSelector(contractType)))
-                {
-                    registrationItem = registrationSource.GetRegistrationFor(contractType, this);
-
-                    _registrationContainer.Registrations.Add(
-                        new KeyValuePair<Type, RegistrationItem>(registrationItem.ContractType, registrationItem));
-
-                    break;
-                }
-            }
-
-            if (registrationItem == null)
-            {
-                throw new RegistrationNotFoundException(Resources.RegistrationNotFoundFormat.FormatWith(contractType));
-            }
-
-            // Add runtime arguments to registration.
-            AddArgumentsToRegistration(registrationItem, arguments, namedArguments);
-
-            // Activate existing registration.
-            return Resolve(registrationItem);
-        }
-
-        /// <summary>
-        ///     Add all arguments to the passed registration.
-        /// </summary>
-        /// <param name="registrationItem">The registration.</param>
-        /// <param name="arguments">The arguments.</param>
-        /// <param name="namedArguments">The named arguments.</param>
-        private void AddArgumentsToRegistration(RegistrationItem registrationItem, IEnumerable<object> arguments,
-            IDictionary<string, object> namedArguments)
-        {
-            if (arguments != null)
-            {
-                registrationItem.RuntimeArguments.AddToAnonymousArguments(arguments);
-            }
-
-            if (namedArguments != null)
-            {
-                registrationItem.RuntimeArguments.AddToNamedArguments(namedArguments);
-            }
         }
 
         /// <summary>
@@ -315,6 +264,107 @@ namespace LightCore
             registrationItem.RuntimeArguments.NamedArguments = null;
 
             return instance;
+        }
+
+        /// <summary>
+        ///     Resolves a contract (include subcontract) with named constructor arguments.
+        /// </summary>
+        /// <param name="contractType">The contract type.</param>
+        /// <param name="namedArguments">The named constructor arguments.</param>
+        /// <returns>The resolved instance as object.</returns>
+        public object Resolve(Type contractType, IDictionary<string, object> namedArguments)
+        {
+            return ResolveInternal(contractType, null, namedArguments);
+        }
+
+        /// <summary>
+        ///     Resolves all contracts of type {TContract}.
+        /// </summary>
+        /// <typeparam name="TContract">The contract type contraining the result.</typeparam>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<TContract> ResolveAll<TContract>()
+        {
+            return ResolveAll(typeof (TContract)).Cast<TContract>();
+        }
+
+        /// <summary>
+        ///     Resolves all contracts.
+        /// </summary>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<object> ResolveAll()
+        {
+            return _registrationContainer
+                .AllRegistrations
+                .Select(Resolve);
+
+        }
+
+        /// <summary>
+        ///     Resolves all contract of type <paramref name="contractType" />.
+        /// </summary>
+        /// <param name="contractType">The contract type contraining the result.</param>
+        /// <returns>The resolved instances</returns>
+        public IEnumerable<object> ResolveAll(Type contractType)
+        {
+            return _registrationContainer.AllRegistrations
+                .Where(r => r.ContractType == contractType)
+                .Select(Resolve);
+        }
+
+        /// <summary>
+        /// Injects properties to an existing instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        public void InjectProperties(object instance)
+        {
+            var properties = GetValidProperties(instance.GetType());
+            foreach (PropertyInfo property in properties)
+            {
+                // Only write on empty properties.
+                if (property.GetValue(instance, null) == null)
+                {
+                    property.SetValue(instance, this.Resolve(property.PropertyType), null);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <param name="contractType">The type of the contract.</param>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        public bool HasRegistration(Type contractType)
+        {
+            return _registrationContainer.HasRegistration(contractType);
+        }
+
+        /// <summary>
+        /// Determines whether a contracttype is registered / supported by the container, or not.
+        ///  Search on all locations.
+        /// </summary>
+        /// <returns><value>true</value> if a registration with the contracttype found, or supported. Otherwise <value>false</value>.</returns>
+        public bool HasRegistration<TContract>()
+        {
+            return HasRegistration(typeof(TContract));
+        }
+
+        /// <summary>
+        /// Gets the valid Properties for property injection.
+        /// </summary>
+        /// <param name="type">The type to use.</param>
+        /// <returns>All valid properties.</returns>
+        private IEnumerable<PropertyInfo> GetValidProperties(Type type)
+        {
+#if !DOTNET5_4
+            return type
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
+                .Where(this._validPropertiesSelector);
+#else
+            return type
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(this._validPropertiesSelector);
+#endif
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 
 using LightCore.Activation.Activators;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -23,9 +24,10 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsArray
-                                       &&
-                                       this._registrationContainer.IsRegistered(contractType.GetElementType());
+                    return contractType => contractType.IsArray &&
+                                           (_registrationContainer.HasRegistration(contractType.GetElementType()) ||
+                                            (_registrationContainer.IsSupportedByRegistrationSource(
+                                                contractType.GetElementType())));
             }
         }
 
@@ -49,7 +51,8 @@ namespace LightCore.Registration.RegistrationSource
         {
             return new RegistrationItem(contractType)
             {
-                Activator = new DelegateActivator(c => ResolveArray(contractType, c))
+                Activator = new DelegateActivator(c => ResolveArray(contractType, c)),
+                Lifecycle = new TransientLifecycle()
             };
         }
 

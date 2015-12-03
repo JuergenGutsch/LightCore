@@ -71,5 +71,20 @@ namespace LightCore.Tests.Integration
             foo.Arg1.Should().BeEquivalentTo("Peter");
             foo.Arg2.Should().BeTrue();
         }
+
+        [Fact]
+        public void Container_Uses_Bar_As_IBar_Argument()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>();
+
+            var container = builder.Build();
+
+            var bar = new Bar();
+            var instance = container.Resolve<IFoo>(bar);
+
+            bar.Should().BeSameAs(instance.Bar);
+        }
+
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
+﻿#if !DOTNET5_4
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
-
-
-#if !DNXCORE50
 
 namespace LightCore.Lifecycle
 {
@@ -21,14 +20,14 @@ namespace LightCore.Lifecycle
         /// <summary>
         /// Holds an map with instances for different threads.
         /// </summary>
-        private readonly IDictionary<int, object> _instanceMap;
+        private readonly IDictionary<int, WeakReference> _instanceMap;
 
         /// <summary>
         /// Initializes a new instance of <see cref="ThreadSingletonLifecycle" />.
         /// </summary>
         public ThreadSingletonLifecycle()
         {
-            this._instanceMap = new Dictionary<int, object>();
+            _instanceMap = new Dictionary<int, WeakReference>();
         }
 
         /// <summary>
@@ -47,8 +46,7 @@ namespace LightCore.Lifecycle
                 }
 
                 var instance = newInstanceResolver();
-                _instanceMap.Add(threadId, instance);
-
+                _instanceMap.Add(threadId, new WeakReference(instance));
 
                 return instance;
             }

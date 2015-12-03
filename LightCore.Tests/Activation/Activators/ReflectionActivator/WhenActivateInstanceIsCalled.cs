@@ -30,28 +30,21 @@ namespace LightCore.Tests.Activation.Activators.ReflectionActivator
 
         private ResolutionContext GetContext(Type contractType, Type implementationType)
         {
-            var registrationContainer = new RegistrationContainer
-            {
-                Registrations =
-                    new Dictionary<Type, RegistrationItem>
-                    {
-                        {
-                            contractType,
-                            new RegistrationItem(contractType)
-                            {
-                                Activator =
-                                    new LightCore.Activation.Activators.ReflectionActivator
-                                        (
-                                            implementationType,
-                                            new LightCore.Activation.Components.ConstructorSelector(),
-                                            new LightCore.Activation.Components.ArgumentCollector()
-                                        ),
-                                Lifecycle = new TransientLifecycle()
-                            }
-                        }
-                    }
-            };
+            var registrationContainer = new RegistrationContainer();
 
+            var registration = new RegistrationItem(contractType)
+            {
+                Activator =
+                    new LightCore.Activation.Activators.ReflectionActivator
+                        (
+                            implementationType,
+                            new LightCore.Activation.Components.ConstructorSelector(),
+                            new LightCore.Activation.Components.ArgumentCollector()
+                        ),
+                Lifecycle = new TransientLifecycle()
+            };
+            registrationContainer.AddRegistration(registration);
+            
             return new ResolutionContext(new Container(registrationContainer), registrationContainer);
         }
 

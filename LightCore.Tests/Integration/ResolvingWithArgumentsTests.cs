@@ -41,6 +41,21 @@ namespace LightCore.Tests.Integration
         }
 
         [Fact]
+        public void Foo_is_resolved_with_IBar_argument_constructor_if_Bar_argument_is_provided()
+        {
+            var builder = new ContainerBuilder();
+
+            var bar = new Bar();
+            builder.Register<IFoo, Foo>().WithArguments(bar);
+
+            var container = builder.Build();
+
+            var instance = container.Resolve<IFoo>();
+
+            bar.Should().BeSameAs(instance.Bar);
+        }
+
+        [Fact]
         public void Container_resolves_instances_with_dependencies_and_arguments()
         {
             var builder = new ContainerBuilder();

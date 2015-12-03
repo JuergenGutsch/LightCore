@@ -4,6 +4,7 @@ using System.Reflection;
 using LightCore.Activation.Activators;
 using LightCore.Activation.Components;
 using LightCore.Fluent;
+using LightCore.Properties;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -41,7 +42,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="registrationContainer">The registration container.</param>
         public OpenGenericRegistrationSource(IRegistrationContainer registrationContainer)
         {
-            this._registrationContainer = registrationContainer;
+            _registrationContainer = registrationContainer;
         }
 
         /// <summary>
@@ -54,28 +55,49 @@ namespace LightCore.Registration.RegistrationSource
         {
             Type[] genericArguments = contractType.GetGenericArguments();
 
-            // Get the Registration for the open generic type.
-            RegistrationItem openGenericTypeRegistration =
-                this._registrationContainer
-                    .Registrations[contractType.GetGenericTypeDefinition()];
+            // Try get the Registration for the open generic type.
+            RegistrationItem openGenericTypeRegistration = null;
+            _registrationContainer.TryGetRegistration(contractType.GetGenericTypeDefinition(), out openGenericTypeRegistration);
 
-            // Register closed generic type on-the-fly.
-            Type implementationType = openGenericTypeRegistration.ImplementationType.MakeGenericType(genericArguments);
+            if (openGenericTypeRegistration == null)
+            {
+                throw new RegistrationNotFoundException(string.Format(Resources.RegistrationNotFoundFormat,
+                                                                      contractType.GetGenericTypeDefinition()),
+                                                                      contractType.GetGenericTypeDefinition());
+            }
+
+            // Try to find a closed generic which passes the open signature.
+            var registrationItem = _registrationContainer
+                .GetRegistration(registration => contractType.IsAssignableFrom(registration.ImplementationType));
+
+            Type implementationType = null;
+
+            if (registrationItem != null)
+            {
+                implementationType = registrationItem.ImplementationType;
+            }
+
+            // Register closed generic type on-the-fly, if no match until now.
+            if (implementationType == null)
+            {
+                implementationType = openGenericTypeRegistration.ImplementationType.MakeGenericType(genericArguments);
+            }
 
             var closedGenericRegistration = new RegistrationItem(contractType)
-                                                {
-                                                    Activator = new ReflectionActivator(
+            {
+                Activator = new ReflectionActivator(
                                                         implementationType,
                                                         container.Resolve<IConstructorSelector>(),
                                                         container.Resolve<IArgumentCollector>()
                                                         ),
-                                                    ImplementationType = implementationType
-                                                };
+                ImplementationType = implementationType
+            };
 
             var fluentRegistration = new FluentRegistration(closedGenericRegistration);
             fluentRegistration.ControlledBy(openGenericTypeRegistration.Lifecycle.GetType());
 
             return closedGenericRegistration;
+
         }
 
         /// <summary>
@@ -86,7 +108,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <returns><value>true</value> if the open generic type is registered, otherwise <value>false</value>.</returns>
         private bool IsRegisteredOpenGeneric(Type contractType)
         {
-            return this._registrationContainer.IsRegistered(contractType.GetGenericTypeDefinition());
+            return _registrationContainer.HasRegistration(contractType.GetGenericTypeDefinition());
         }
     }
 }

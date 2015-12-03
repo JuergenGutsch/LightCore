@@ -5,14 +5,14 @@
   "tags": [ "" ],
   "projectUrl": "",
   "licenseUrl": "",
-  
+
   "dependencies": {
     "LightCore": "",
     "LightCore.CommonServiceLocator": "",
     "LightCore.TestTypes": "",
     "xunit": "2.1.0",
-    "xunit.runner.dnx": "2.1.0-beta6-build191",
-    "FluentAssertions": "4.0.1" 
+    "xunit.runner.dnx": "2.1.0-*",
+    "FluentAssertions": "4.0.1"
   },
 
   "frameworks": {

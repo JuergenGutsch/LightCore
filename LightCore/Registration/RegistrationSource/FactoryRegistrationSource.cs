@@ -6,6 +6,7 @@ using System.Reflection;
 
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
+using LightCore.Lifecycle;
 
 namespace LightCore.Registration.RegistrationSource
 {
@@ -60,7 +61,14 @@ namespace LightCore.Registration.RegistrationSource
             get
             {
                 // LastOrDefault for the lastest parameter, e.g.: Func<string, bool, IFoo>().
-                return contractType => contractType.IsFactoryType() && _registrationContainer.IsRegistered(contractType.GetGenericArguments().LastOrDefault());
+                return contractType => contractType.IsFactoryType()
+                                       &&
+                                       ((this._registrationContainer.HasRegistration(
+                                           contractType.GetGenericArguments().LastOrDefault()))
+                                        ||
+                                        // Use ConcreteTypeRegistrationSource.
+                                        (this._registrationContainer.IsSupportedByRegistrationSource(
+                                            contractType.GetGenericArguments().LastOrDefault())));
             }
         }
 
@@ -83,30 +91,31 @@ namespace LightCore.Registration.RegistrationSource
                 .ToList();
 
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new DelegateActivator(c =>
-                                                                 {
-                                                                     var containerConstant = Expression.Constant(c);
+            {
+                Activator = new DelegateActivator(c =>
+                {
+                    var containerConstant = Expression.Constant(c);
 
-                                                                     var newArgumentArray = Expression.NewArrayInit(
-                                                                         TypeOfObject,
-                                                                         parameterExpressions
-                                                                             .Select(p => Expression.TypeAs(p, TypeOfObject))
-                                                                             .Cast<Expression>());
+                    var newArgumentArray = Expression.NewArrayInit(
+                        TypeOfObject,
+                        parameterExpressions
+                            .Select(p => Expression.TypeAs(p, TypeOfObject))
+                            .Cast<Expression>());
 
-                                                                     var resolveCall = Expression.Call(
-                                                                         containerConstant,
-                                                                         genericWithArgumentsMethod,
-                                                                         newArgumentArray);
+                    var resolveCall = Expression.Call(
+                        containerConstant,
+                        genericWithArgumentsMethod,
+                        newArgumentArray);
+                    
+                    var lambda = Expression.Lambda(contractType,
+                        resolveCall,
+                        parameterExpressions);
 
-                                                                     // () => value(LightCore.Container).Resolve(new [] {}).
-                                                                     var lambda = Expression.Lambda(contractType,
-                                                                                                    resolveCall,
-                                                                                                    parameterExpressions);
+                    return lambda.Compile();
+                }),
+                Lifecycle = new TransientLifecycle()
 
-                                                                     return lambda.Compile();
-                                                                 })
-                       };
+            };
         }
     }
 }

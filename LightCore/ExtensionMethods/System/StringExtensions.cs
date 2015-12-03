@@ -55,6 +55,7 @@ namespace LightCore.ExtensionMethods.System
 
             // Return to the caller.
             return returnValue;
+
         }
     }
 }

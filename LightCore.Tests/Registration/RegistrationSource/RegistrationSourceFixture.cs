@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using LightCore.Lifecycle;
 using LightCore.Registration;
 using LightCore.Registration.RegistrationSource;
 
@@ -30,18 +30,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
 
         internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister)
         {
-            return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(
-                new RegistrationContainer
-                {
-                    Registrations =
-                        new Dictionary<Type, RegistrationItem>
-                                {
-                                    {
-                                        typeToRegister,
-                                        new RegistrationItem(typeToRegister)
-                                        }
-                                }
-                });
+            var registrationContainer = new RegistrationContainer();
+            registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
+
+            return new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(registrationContainer);
         }
 
         internal IRegistrationSource GetArrayRegistrationSource()
@@ -52,67 +44,38 @@ namespace LightCore.Tests.Registration.RegistrationSource
 
         internal IRegistrationSource GetArrayRegistrationSource(Type typeToRegister)
         {
-            return new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(
-                new RegistrationContainer
-                {
-                    Registrations =
-                            new Dictionary<Type, RegistrationItem>
-                                {
-                                    {
-                                        typeToRegister,
-                                        new RegistrationItem(typeToRegister)
-                                        }
-                                }
-                });
+            var registrationContainer = new RegistrationContainer();
+            registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
+
+            return new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(registrationContainer);
         }
 
         internal IRegistrationSource GetFactoryRegistrationSource(Type typeToRegister)
         {
-            return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource(
-                new RegistrationContainer
-                {
-                    Registrations = new Dictionary<Type, RegistrationItem>
-                                            {
-                                                {
-                                                    typeToRegister,
-                                                    new RegistrationItem(typeToRegister)
-                                                    }
-                                            }
-                });
+            var registrationContainer = new RegistrationContainer();
+            registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
+
+            return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource(registrationContainer);
         }
 
         internal IRegistrationSource GetOpenGenericRegistrationSource(Type contractType, Type implementationType)
         {
-            return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource(
-                new RegistrationContainer
-                {
-                    Registrations =
-                            new Dictionary<Type, RegistrationItem>
-                                {
-                                    {
-                                        contractType,
-                                        new RegistrationItem(contractType)
-                                            {
-                                                ImplementationType = implementationType
-                                            }
-                                        }
-                                }
-                });
+            var registrationContainer = new RegistrationContainer();
+            registrationContainer.AddRegistration(new RegistrationItem(contractType)
+            {
+                ImplementationType = implementationType,
+                Lifecycle = new TransientLifecycle()
+            });
+
+            return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource(registrationContainer);
         }
 
         internal IRegistrationSource GetLazyRegistrationSource(Type typeToRegister)
         {
-            return new LightCore.Registration.RegistrationSource.LazyRegistrationSource(
-                new RegistrationContainer
-                {
-                    Registrations = new Dictionary<Type, RegistrationItem>
-                                            {
-                                                {
-                                                    typeToRegister,
-                                                    new RegistrationItem(typeToRegister)
-                                                    }
-                                            }
-                });
+            var registrationContainer = new RegistrationContainer();
+            registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
+
+            return new LightCore.Registration.RegistrationSource.LazyRegistrationSource(registrationContainer);
         }
     }
 }

@@ -218,7 +218,7 @@ namespace LightCore.Configuration
             // Type could not be loaded, throw exception with detailed message.
             if (type == null)
             {
-#if !DNXCORE50
+#if !DOTNET5_4
                 throw new XamlRegistrationException(
                     Resources.CouldNotLoadTypeFormat.FormatWith(typeName));
 #else

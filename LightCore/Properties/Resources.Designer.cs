@@ -105,6 +105,15 @@ namespace LightCore.Properties {
         }
         
         /// <summary>
+        ///    Looks up a localized string similar to Registration for contract &apos;{0}&apos; was found to be duplicate. Either you want to duplicate or not. Duplicate registrations can only resolved all at once through the &apos;ResolveAll&apos; method.
+        /// </summary>
+        internal static string RegistrationNotFoundBecauseDuplicate {
+            get {
+                return ResourceManager.GetString("RegistrationNotFoundBecauseDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///    Looks up a localized string similar to Registration for contract &apos;{0}&apos; not found, please check your registrations..
         /// </summary>
         internal static string RegistrationNotFoundFormat {

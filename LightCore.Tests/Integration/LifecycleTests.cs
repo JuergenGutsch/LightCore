@@ -1,5 +1,10 @@
-﻿using FluentAssertions;
+﻿using System;
+#if !DNXCORE50
+using System.Threading;
+#endif
+using FluentAssertions;
 using LightCore.Lifecycle;
+using LightCore.Tests.Lifecycle;
 using LightCore.TestTypes;
 using Xunit;
 
@@ -7,6 +12,31 @@ namespace LightCore.Tests.Integration
 {
     public class LifecycleTests
     {
+#if !DNXCORE50
+        [Fact]
+        public void ThreadSingletonShouldBecollectedwhenThreadFinished()
+        {
+            var builder = new ContainerBuilder();
+            builder.Register<IFoo, Foo>().ControlledBy<ThreadSingletonLifecycle>();
+            var container = builder.Build();
+            WeakReference obj = null;
+
+            Action action = () =>
+            {
+                var o = container.Resolve<IFoo>();
+                obj = new WeakReference(o);
+            };
+
+            var thread = new Thread(new ThreadStart(action));
+            thread.Start();
+            thread.Join();
+            obj.IsAlive.Should().BeTrue();
+            thread = null;
+            GC.Collect(2);
+            obj.IsAlive.Should().BeFalse("Objekt sollte nicht mehr existieren");
+        }
+#endif
+
         [Fact]
         public void Instance_is_not_reused_when_controlled_by_transient_lifecycle()
         {
@@ -38,7 +68,7 @@ namespace LightCore.Tests.Integration
             ReferenceEquals(foo1, foo2).Should().BeTrue();
         }
 
-#if FALLSE
+#if !DNXCORE50
         [Fact]
         public void Instance_is_reused_on_same_thread_when_controlled_by_threadsingleton_lifecycle()
         {

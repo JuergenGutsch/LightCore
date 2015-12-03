@@ -1,5 +1,7 @@
 ﻿using FluentAssertions;
+#if !DNXCORE50
 using System.Threading;
+#endif
 using Xunit;
 
 namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle

@@ -23,7 +23,7 @@ namespace LightCore.Tests.Activation
             {
                 var item = new RegistrationItem(registeredType);
 
-                registrationContainer.Registrations.Add(new KeyValuePair<Type, RegistrationItem>(registeredType, item));
+                registrationContainer.AddRegistration(item);
             }
 
             return registrationContainer;
