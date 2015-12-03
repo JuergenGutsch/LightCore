@@ -49,7 +49,7 @@ namespace LightCore.Tests.Integration
             var fooFunc = container.Resolve<Func<Test>>();
 
             fooFunc.Should().NotBeNull();
-            fooFunc.Should().BeOfType<Test>();
+            fooFunc().Should().BeOfType<Test>();
         }
 
         [Fact]
@@ -125,7 +125,7 @@ namespace LightCore.Tests.Integration
             var foo = container.Resolve<IFoo>(new Bar());
             var fooTwo = container.Resolve<IFoo>();
 
-            fooTwo.Bar.Should().NotBeNull();
+            fooTwo.Bar.Should().BeNull();
         }
 
         [Fact]
