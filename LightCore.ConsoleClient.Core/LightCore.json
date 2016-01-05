@@ -1,0 +1,47 @@
+﻿{
+  "ActiveRegistrationGroups": "Json",
+  "TypeAliases": [
+    {
+      "Alias": "Int",
+      "Type": "System.Int32, mscorelib"
+    },
+    {
+      "Alias": "Boolean",
+      "Type": "System.Boolean, mscorelib"
+    }
+  ],
+  "Registrations": [
+    {
+      "ContractType": "LightCore.TestTypes.IRepository{2}, LightCore.TestTypes",
+      "ImplementationType": "LightCore.TestTypes.Repository{2}, LightCore.TestTypes"
+    },
+    {
+      "ContractType": "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+      "ImplementationType": "LightCore.TestTypes.Foo, LightCore.TestTypes",
+      "Arguments": [
+        {
+          "Value": true,
+          "Type": "System.Boolean"
+        }
+      ]
+    }
+  ],
+  "RegistrationGroups": [
+    {
+      "Name": "Json",
+      "Registrations": [
+        {
+          "ContractType": "LightCore.ConsoleClient.IWriter, LightCore.ConsoleClient",
+          "ImplementationType": "LightCore.ConsoleClient.Writers.ConsoleWriter, LightCore.ConsoleClient"
+        },
+        {
+          "ContractType": "LightCore.ConsoleClient.Screens.WelcomeScreen, LightCore.ConsoleClient",
+          "ImplementationType": "LightCore.ConsoleClient.Screens.WelcomeScreen, LightCore.ConsoleClient",
+          "Arguments": [
+            { "Value": "Hello World" }
+          ]
+        }
+      ]
+    }
+  ]
+}

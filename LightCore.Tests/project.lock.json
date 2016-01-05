@@ -18,7 +18,7 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -296,7 +296,7 @@
           "lib/dotnet/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -1296,7 +1296,7 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -1560,7 +1560,7 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -1838,7 +1838,7 @@
           "lib/dotnet/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -3210,7 +3210,7 @@
           "lib/dotnet/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETPlatform,Version=v5.4",
         "dependencies": {
@@ -4554,7 +4554,7 @@
     }
   },
   "libraries": {
-    "LightCore/2.0.0": {
+    "LightCore/2.0.0-beta": {
       "type": "project",
       "path": "../LightCore/project.json"
     },

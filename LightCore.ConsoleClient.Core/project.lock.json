@@ -2,8 +2,92 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {},
+    ".NETFramework,Version=v4.5.1": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      }
+    },
     ".NETPlatform,Version=v5.4": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "1.0.0-rc1-final",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Resources.ResourceManager": "4.0.1-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -29,6 +113,28 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Primitives/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "System.Collections/4.0.11-beta-23516": {
@@ -117,15 +223,15 @@
           "ref/dotnet/System.Globalization.dll": {}
         }
       },
-      "System.IO/4.0.0": {
+      "System.IO/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Runtime": "4.0.0",
+          "System.Runtime": "4.0.20",
           "System.Text.Encoding": "4.0.0",
           "System.Threading.Tasks": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.IO.dll": {}
+          "ref/dotnet5.4/System.IO.dll": {}
         }
       },
       "System.Linq/4.0.1-beta-23516": {
@@ -210,7 +316,7 @@
           "ref/dotnet/System.Reflection.TypeExtensions.dll": {}
         }
       },
-      "System.Resources.ResourceManager/4.0.0": {
+      "System.Resources.ResourceManager/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Globalization": "4.0.0",
@@ -218,7 +324,7 @@
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Resources.ResourceManager.dll": {}
+          "ref/dotnet5.1/System.Resources.ResourceManager.dll": {}
         }
       },
       "System.Runtime/4.0.21-beta-23516": {
@@ -286,9 +392,125 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5.1/win7-x86": {},
-    ".NETFramework,Version=v4.5.1/win7-x64": {},
+    ".NETFramework,Version=v4.5.1/win7-x86": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      }
+    },
+    ".NETFramework,Version=v4.5.1/win7-x64": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1",
+        "dependencies": {
+          "LightCore": null,
+          "Newtonsoft.Json": "7.0.1"
+        },
+        "frameworkAssemblies": [
+          "PresentationFramework",
+          "System.Configuration",
+          "System.Xaml",
+          "System.Xml"
+        ]
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      }
+    },
     ".NETPlatform,Version=v5.4/win7-x86": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "1.0.0-rc1-final",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Resources.ResourceManager": "4.0.1-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -314,6 +536,28 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Primitives/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.win7.System.Threading/4.0.11-beta-23516": {
@@ -408,15 +652,15 @@
           "ref/dotnet/System.Globalization.dll": {}
         }
       },
-      "System.IO/4.0.0": {
+      "System.IO/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Runtime": "4.0.0",
+          "System.Runtime": "4.0.20",
           "System.Text.Encoding": "4.0.0",
           "System.Threading.Tasks": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.IO.dll": {}
+          "ref/dotnet5.4/System.IO.dll": {}
         }
       },
       "System.Linq/4.0.1-beta-23516": {
@@ -501,7 +745,7 @@
           "ref/dotnet/System.Reflection.TypeExtensions.dll": {}
         }
       },
-      "System.Resources.ResourceManager/4.0.0": {
+      "System.Resources.ResourceManager/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Globalization": "4.0.0",
@@ -509,7 +753,7 @@
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Resources.ResourceManager.dll": {}
+          "ref/dotnet5.1/System.Resources.ResourceManager.dll": {}
         }
       },
       "System.Runtime/4.0.21-beta-23516": {
@@ -578,6 +822,58 @@
       }
     },
     ".NETPlatform,Version=v5.4/win7-x64": {
+      "LightCore/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.ComponentModel": "4.0.1-beta-23516",
+          "System.ComponentModel.TypeConverter": "4.0.1-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.Configuration/2.0.0-beta": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "LightCore": null,
+          "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "Newtonsoft.Json": "7.0.1",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "LightCore.TestTypes/2.0.0": {
+        "type": "project",
+        "framework": ".NETPlatform,Version=v5.4",
+        "dependencies": {
+          "Microsoft.CSharp": "4.0.1-beta-23516",
+          "System.Collections": "4.0.11-beta-23516",
+          "System.Linq": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516",
+          "System.Threading": "4.0.11-beta-23516"
+        }
+      },
+      "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "1.0.0-rc1-final",
+          "System.IO": "4.0.11-beta-23516",
+          "System.Resources.ResourceManager": "4.0.1-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
@@ -603,6 +899,28 @@
         },
         "runtime": {
           "lib/dotnet5.4/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Extensions.Primitives/1.0.0-rc1-final": {
+        "type": "package",
+        "dependencies": {
+          "System.Resources.ResourceManager": "4.0.1-beta-23516",
+          "System.Runtime": "4.0.21-beta-23516"
+        },
+        "compile": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        },
+        "runtime": {
+          "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "runtime.win7.System.Threading/4.0.11-beta-23516": {
@@ -697,15 +1015,15 @@
           "ref/dotnet/System.Globalization.dll": {}
         }
       },
-      "System.IO/4.0.0": {
+      "System.IO/4.0.11-beta-23516": {
         "type": "package",
         "dependencies": {
-          "System.Runtime": "4.0.0",
+          "System.Runtime": "4.0.20",
           "System.Text.Encoding": "4.0.0",
           "System.Threading.Tasks": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.IO.dll": {}
+          "ref/dotnet5.4/System.IO.dll": {}
         }
       },
       "System.Linq/4.0.1-beta-23516": {
@@ -790,7 +1108,7 @@
           "ref/dotnet/System.Reflection.TypeExtensions.dll": {}
         }
       },
-      "System.Resources.ResourceManager/4.0.0": {
+      "System.Resources.ResourceManager/4.0.1-beta-23516": {
         "type": "package",
         "dependencies": {
           "System.Globalization": "4.0.0",
@@ -798,7 +1116,7 @@
           "System.Runtime": "4.0.0"
         },
         "compile": {
-          "ref/dotnet/System.Resources.ResourceManager.dll": {}
+          "ref/dotnet5.1/System.Resources.ResourceManager.dll": {}
         }
       },
       "System.Runtime/4.0.21-beta-23516": {
@@ -868,6 +1186,32 @@
     }
   },
   "libraries": {
+    "LightCore/2.0.0-beta": {
+      "type": "project",
+      "path": "../LightCore/project.json"
+    },
+    "LightCore.Configuration/2.0.0-beta": {
+      "type": "project",
+      "path": "../LightCore.Configuration/project.json"
+    },
+    "LightCore.TestTypes/2.0.0": {
+      "type": "project",
+      "path": "../LightCore.TestTypes/project.json"
+    },
+    "Microsoft.AspNet.FileProviders.Abstractions/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "Tv6YJk78cH+gFipRNjeMpzzUg3t4BQiS0xYVlv/8gVNl4sI6ytAMYYfIbx8pCacIRH5Nx/Tw9GVn28eyw+JZfA==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.dll",
+        "lib/dotnet5.4/Microsoft.AspNet.FileProviders.Abstractions.xml",
+        "lib/net451/Microsoft.AspNet.FileProviders.Abstractions.dll",
+        "lib/net451/Microsoft.AspNet.FileProviders.Abstractions.xml",
+        "Microsoft.AspNet.FileProviders.Abstractions.1.0.0-rc1-final.nupkg",
+        "Microsoft.AspNet.FileProviders.Abstractions.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.AspNet.FileProviders.Abstractions.nuspec"
+      ]
+    },
     "Microsoft.CSharp/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
@@ -916,6 +1260,44 @@
         "ref/wpa81/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
+      ]
+    },
+    "Microsoft.Extensions.Primitives/1.0.0-rc1-final": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "oHWqBARJveyM7LctuqQqvsTC58hxoq0gGnHr6Qsxie71LIkZpfE21IklhSLOsqmv4QIpes/G6k1vZbAQ+cC/nw==",
+      "files": [
+        "lib/dotnet5.4/Microsoft.Extensions.Primitives.dll",
+        "lib/dotnet5.4/Microsoft.Extensions.Primitives.xml",
+        "lib/net451/Microsoft.Extensions.Primitives.dll",
+        "lib/net451/Microsoft.Extensions.Primitives.xml",
+        "lib/netcore50/Microsoft.Extensions.Primitives.dll",
+        "lib/netcore50/Microsoft.Extensions.Primitives.xml",
+        "Microsoft.Extensions.Primitives.1.0.0-rc1-final.nupkg",
+        "Microsoft.Extensions.Primitives.1.0.0-rc1-final.nupkg.sha512",
+        "Microsoft.Extensions.Primitives.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/7.0.1": {
+      "type": "package",
+      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
+      "files": [
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
+        "Newtonsoft.Json.7.0.1.nupkg",
+        "Newtonsoft.Json.7.0.1.nupkg.sha512",
+        "Newtonsoft.Json.nuspec",
+        "tools/install.ps1"
       ]
     },
     "runtime.win7.System.Threading/4.0.11-beta-23516": {
@@ -1215,30 +1597,43 @@
         "System.Globalization.nuspec"
       ]
     },
-    "System.IO/4.0.0": {
+    "System.IO/4.0.11-beta-23516": {
       "type": "package",
-      "sha512": "MoCHQ0u5n0OMwUS8OX4Gl48qKiQziSW5cXvt82d+MmAcsLq9OL90+ihnu/aJ1h6OOYcBswrZAEuApfZha9w2lg==",
+      "serviceable": true,
+      "sha512": "dR1DaWrF0zsV2z/GVs8xVvMds6xu0ykuwv+VPou8wbpJ1XxGBK9g6v5F84DWL8Q1qi+6Kyb56wbZYdYQO8OMew==",
       "files": [
+        "lib/DNXCore50/System.IO.dll",
         "lib/MonoAndroid10/_._",
         "lib/MonoTouch10/_._",
         "lib/net45/_._",
+        "lib/netcore50/System.IO.dll",
         "lib/win8/_._",
         "lib/wp80/_._",
         "lib/wpa81/_._",
         "lib/xamarinios10/_._",
         "lib/xamarinmac20/_._",
-        "License.rtf",
-        "ref/dotnet/de/System.IO.xml",
-        "ref/dotnet/es/System.IO.xml",
-        "ref/dotnet/fr/System.IO.xml",
-        "ref/dotnet/it/System.IO.xml",
-        "ref/dotnet/ja/System.IO.xml",
-        "ref/dotnet/ko/System.IO.xml",
-        "ref/dotnet/ru/System.IO.xml",
-        "ref/dotnet/System.IO.dll",
-        "ref/dotnet/System.IO.xml",
-        "ref/dotnet/zh-hans/System.IO.xml",
-        "ref/dotnet/zh-hant/System.IO.xml",
+        "ref/dotnet5.1/de/System.IO.xml",
+        "ref/dotnet5.1/es/System.IO.xml",
+        "ref/dotnet5.1/fr/System.IO.xml",
+        "ref/dotnet5.1/it/System.IO.xml",
+        "ref/dotnet5.1/ja/System.IO.xml",
+        "ref/dotnet5.1/ko/System.IO.xml",
+        "ref/dotnet5.1/ru/System.IO.xml",
+        "ref/dotnet5.1/System.IO.dll",
+        "ref/dotnet5.1/System.IO.xml",
+        "ref/dotnet5.1/zh-hans/System.IO.xml",
+        "ref/dotnet5.1/zh-hant/System.IO.xml",
+        "ref/dotnet5.4/de/System.IO.xml",
+        "ref/dotnet5.4/es/System.IO.xml",
+        "ref/dotnet5.4/fr/System.IO.xml",
+        "ref/dotnet5.4/it/System.IO.xml",
+        "ref/dotnet5.4/ja/System.IO.xml",
+        "ref/dotnet5.4/ko/System.IO.xml",
+        "ref/dotnet5.4/ru/System.IO.xml",
+        "ref/dotnet5.4/System.IO.dll",
+        "ref/dotnet5.4/System.IO.xml",
+        "ref/dotnet5.4/zh-hans/System.IO.xml",
+        "ref/dotnet5.4/zh-hant/System.IO.xml",
         "ref/MonoAndroid10/_._",
         "ref/MonoTouch10/_._",
         "ref/net45/_._",
@@ -1258,8 +1653,9 @@
         "ref/wpa81/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
-        "System.IO.4.0.0.nupkg",
-        "System.IO.4.0.0.nupkg.sha512",
+        "runtimes/win8-aot/lib/netcore50/System.IO.dll",
+        "System.IO.4.0.11-beta-23516.nupkg",
+        "System.IO.4.0.11-beta-23516.nupkg.sha512",
         "System.IO.nuspec"
       ]
     },
@@ -1520,10 +1916,10 @@
         "System.Reflection.TypeExtensions.nuspec"
       ]
     },
-    "System.Resources.ResourceManager/4.0.0": {
+    "System.Resources.ResourceManager/4.0.1-beta-23516": {
       "type": "package",
       "serviceable": true,
-      "sha512": "qmqeZ4BJgjfU+G2JbrZt4Dk1LsMxO4t+f/9HarNY6w8pBgweO6jT+cknUH7c3qIrGvyUqraBhU45Eo6UtA0fAw==",
+      "sha512": "d1PiB1k57GP5EJZJKnJ+LgrOQCgHPnn5oySQAy4pL2MpEDDpTyTPKv+q9aRWUA25ICXaHkWJzeTkj898ePteWQ==",
       "files": [
         "lib/DNXCore50/System.Resources.ResourceManager.dll",
         "lib/net45/_._",
@@ -1531,26 +1927,35 @@
         "lib/win8/_._",
         "lib/wp80/_._",
         "lib/wpa81/_._",
-        "ref/dotnet/de/System.Resources.ResourceManager.xml",
-        "ref/dotnet/es/System.Resources.ResourceManager.xml",
-        "ref/dotnet/fr/System.Resources.ResourceManager.xml",
-        "ref/dotnet/it/System.Resources.ResourceManager.xml",
-        "ref/dotnet/ja/System.Resources.ResourceManager.xml",
-        "ref/dotnet/ko/System.Resources.ResourceManager.xml",
-        "ref/dotnet/ru/System.Resources.ResourceManager.xml",
-        "ref/dotnet/System.Resources.ResourceManager.dll",
-        "ref/dotnet/System.Resources.ResourceManager.xml",
-        "ref/dotnet/zh-hans/System.Resources.ResourceManager.xml",
-        "ref/dotnet/zh-hant/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/de/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/es/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/fr/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/it/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/ja/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/ko/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/ru/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/System.Resources.ResourceManager.dll",
+        "ref/dotnet5.1/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/zh-hans/System.Resources.ResourceManager.xml",
+        "ref/dotnet5.1/zh-hant/System.Resources.ResourceManager.xml",
         "ref/net45/_._",
+        "ref/netcore50/de/System.Resources.ResourceManager.xml",
+        "ref/netcore50/es/System.Resources.ResourceManager.xml",
+        "ref/netcore50/fr/System.Resources.ResourceManager.xml",
+        "ref/netcore50/it/System.Resources.ResourceManager.xml",
+        "ref/netcore50/ja/System.Resources.ResourceManager.xml",
+        "ref/netcore50/ko/System.Resources.ResourceManager.xml",
+        "ref/netcore50/ru/System.Resources.ResourceManager.xml",
         "ref/netcore50/System.Resources.ResourceManager.dll",
         "ref/netcore50/System.Resources.ResourceManager.xml",
+        "ref/netcore50/zh-hans/System.Resources.ResourceManager.xml",
+        "ref/netcore50/zh-hant/System.Resources.ResourceManager.xml",
         "ref/win8/_._",
         "ref/wp80/_._",
         "ref/wpa81/_._",
         "runtimes/win8-aot/lib/netcore50/System.Resources.ResourceManager.dll",
-        "System.Resources.ResourceManager.4.0.0.nupkg",
-        "System.Resources.ResourceManager.4.0.0.nupkg.sha512",
+        "System.Resources.ResourceManager.4.0.1-beta-23516.nupkg",
+        "System.Resources.ResourceManager.4.0.1-beta-23516.nupkg.sha512",
         "System.Resources.ResourceManager.nuspec"
       ]
     },
@@ -1887,7 +2292,11 @@
     }
   },
   "projectFileDependencyGroups": {
-    "": [],
+    "": [
+      "LightCore ",
+      "LightCore.Configuration ",
+      "LightCore.TestTypes "
+    ],
     ".NETFramework,Version=v4.5.1": [],
     ".NETPlatform,Version=v5.4": [
       "Microsoft.CSharp >= 4.0.1-beta-23516",

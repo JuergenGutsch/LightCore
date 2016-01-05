@@ -18,11 +18,11 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "LightCore.CommonServiceLocator/2.0.0": {
+      "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
@@ -294,11 +294,11 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "LightCore.CommonServiceLocator/2.0.0": {
+      "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
@@ -570,11 +570,11 @@
           "lib/net45/FluentAssertions.dll": {}
         }
       },
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
-      "LightCore.CommonServiceLocator/2.0.0": {
+      "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",
         "framework": "DNX,Version=v4.5.1",
         "dependencies": {
@@ -832,11 +832,11 @@
     }
   },
   "libraries": {
-    "LightCore/2.0.0": {
+    "LightCore/2.0.0-beta": {
       "type": "project",
       "path": "../LightCore/project.json"
     },
-    "LightCore.CommonServiceLocator/2.0.0": {
+    "LightCore.CommonServiceLocator/2.0.0-beta": {
       "type": "project",
       "path": "../LightCore.CommonServiceLocator/project.json"
     },

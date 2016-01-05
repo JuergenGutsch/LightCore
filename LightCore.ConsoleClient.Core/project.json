@@ -7,6 +7,9 @@
   "licenseUrl": "",
 
   "dependencies": {
+    "LightCore": "",
+    "LightCore.Configuration": "",
+    "LightCore.TestTypes": ""
   },
 
   "commands": {

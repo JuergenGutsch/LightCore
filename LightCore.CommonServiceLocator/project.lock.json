@@ -3,7 +3,7 @@
   "version": 2,
   "targets": {
     "DNX,Version=v4.5.1": {
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -13,7 +13,7 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -23,7 +23,7 @@
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
-      "LightCore/2.0.0": {
+      "LightCore/2.0.0-beta": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5.1"
       },
@@ -34,7 +34,7 @@
     }
   },
   "libraries": {
-    "LightCore/2.0.0": {
+    "LightCore/2.0.0-beta": {
       "type": "project",
       "path": "../LightCore/project.json"
     },
