@@ -5,7 +5,6 @@ using System.Reflection;
 using LightCore.Activation;
 using LightCore.Activation.Activators;
 using LightCore.ExtensionMethods.System;
-using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Lifecycle;
 using LightCore.Properties;
 using LightCore.Registration;

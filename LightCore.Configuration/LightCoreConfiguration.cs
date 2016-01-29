@@ -79,13 +79,11 @@ namespace LightCore.Configuration
                                                       Alias = "Singleton",
                                                       Type = typeof (SingletonLifecycle).AssemblyQualifiedName
                                                   },
-#if !DNXCORE50
                                               new TypeAlias
                                                   {
                                                       Alias = "ThreadSingleton",
                                                       Type = typeof (ThreadSingletonLifecycle).AssemblyQualifiedName
                                                   }
-#endif
             });
 
             // Load default argument type alias.

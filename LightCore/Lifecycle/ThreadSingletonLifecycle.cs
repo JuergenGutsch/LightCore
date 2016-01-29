@@ -1,6 +1,4 @@
-﻿#if !DNXCORE50
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -53,5 +51,3 @@ namespace LightCore.Lifecycle
         }
     }
 }
-
-#endif
