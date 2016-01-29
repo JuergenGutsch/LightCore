@@ -12,7 +12,7 @@
   },
 
   "frameworks": {
-    "net451": {
+    "dnx451": {
       "dependencies": {
       },
       "frameworkAssemblies": {
@@ -22,7 +22,7 @@
         "System.Configuration": "4.0.0.0"
       }
     },
-    "dotnet5.4": {
+    "dnxcore5": {
       "dependencies": {
         "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
         "Microsoft.CSharp": "4.0.1-beta-23516",

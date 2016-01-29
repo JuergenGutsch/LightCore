@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-#if !DOTNET5_4
+#if !DNXCORE50
 using System;
 using System.Configuration;
 using LightCore.Configuration.Properties;
@@ -79,7 +79,7 @@ namespace LightCore.Configuration
                                                       Alias = "Singleton",
                                                       Type = typeof (SingletonLifecycle).AssemblyQualifiedName
                                                   },
-#if !DOTNET5_4
+#if !DNXCORE50
                                               new TypeAlias
                                                   {
                                                       Alias = "ThreadSingleton",
@@ -117,7 +117,7 @@ namespace LightCore.Configuration
             RegistrationGroups = new List<RegistrationGroup>();
         }
 
-#if !DOTNET5_4
+#if !DNXCORE50
         /// <summary>
         /// Gets the configuration instance.
         /// </summary>

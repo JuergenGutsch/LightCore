@@ -1,5 +1,5 @@
 ﻿using System;
-#if !DOTNET5_4
+#if !DNXCORE50
 using System.Runtime.Serialization;
 #endif
 
@@ -8,7 +8,7 @@ namespace LightCore
     /// <summary>
     /// Thrown when the contract type is not assignable from implementationtype.
     /// </summary>
-#if !DOTNET5_4
+#if !DNXCORE50
     [Serializable]
 #endif
     public class ContractNotImplementedByTypeException : Exception
@@ -62,7 +62,7 @@ namespace LightCore
         {
         }
 
-#if !DOTNET5_4
+#if !DNXCORE50
         /// <summary>
         /// Initializes a new instance of the <see cref="ContractNotImplementedByTypeException"/> type.
         /// </summary>

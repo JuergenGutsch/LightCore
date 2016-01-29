@@ -31,12 +31,12 @@
       "Name": "Json",
       "Registrations": [
         {
-          "ContractType": "LightCore.ConsoleClient.IWriter, LightCore.ConsoleClient",
-          "ImplementationType": "LightCore.ConsoleClient.Writers.ConsoleWriter, LightCore.ConsoleClient"
+          "ContractType": "LightCore.ConsoleClient.Core.IWriter, LightCore.ConsoleClient.Core",
+          "ImplementationType": "LightCore.ConsoleClient.Core.Writers.ConsoleWriter, LightCore.ConsoleClient.Core"
         },
         {
-          "ContractType": "LightCore.ConsoleClient.Screens.WelcomeScreen, LightCore.ConsoleClient",
-          "ImplementationType": "LightCore.ConsoleClient.Screens.WelcomeScreen, LightCore.ConsoleClient",
+          "ContractType": "LightCore.ConsoleClient.Core.Screens.WelcomeScreen, LightCore.ConsoleClient.Core",
+          "ImplementationType": "LightCore.ConsoleClient.Core.Screens.WelcomeScreen, LightCore.ConsoleClient.Core",
           "Arguments": [
             { "Value": "Hello World" }
           ]

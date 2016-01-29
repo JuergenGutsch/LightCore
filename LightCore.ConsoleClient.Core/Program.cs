@@ -1,5 +1,6 @@
 ﻿using System;
 using LightCore.Configuration;
+using LightCore.ConsoleClient.Core.Screens;
 using LightCore.TestTypes;
 
 namespace LightCore.ConsoleClient.Core
@@ -10,8 +11,11 @@ namespace LightCore.ConsoleClient.Core
         {
             var builder = new ContainerBuilder();
 
+#if !DNXCORE50
             var module = new JsonRegistrationModule();
-
+#else
+            var module = new JsonRegistrationModule(null);
+#endif
             builder.Register("Test");
 
             builder.RegisterModule(module);
@@ -26,6 +30,7 @@ namespace LightCore.ConsoleClient.Core
             var namedScreen = container.Resolve<WelcomeScreen>();
             namedScreen.WriteText();
 
+            Console.ReadKey();
         }
     }
 }

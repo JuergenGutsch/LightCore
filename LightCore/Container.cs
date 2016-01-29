@@ -356,7 +356,7 @@ namespace LightCore
         /// <returns>All valid properties.</returns>
         private IEnumerable<PropertyInfo> GetValidProperties(Type type)
         {
-#if !DOTNET5_4
+#if !DNXCORE50
             return type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
                 .Where(this._validPropertiesSelector);

@@ -1,5 +1,5 @@
 ﻿using System;
-#if !DOTNET5_4
+#if !DNXCORE50
 using System.Runtime.Serialization;
 #endif
 
@@ -9,7 +9,7 @@ namespace LightCore
     /// <summary>
     /// Thrown when a mapping not found for resolving a type.
     /// </summary>
-#if !DOTNET5_4
+#if !DNXCORE50
     [Serializable]
 #endif
     public class RegistrationNotFoundException : Exception
@@ -62,7 +62,7 @@ namespace LightCore
 
         }
 
-#if !DOTNET5_4
+#if !DNXCORE50
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.

@@ -1,4 +1,4 @@
-﻿#if !DOTNET5_4
+﻿#if !DNXCORE50
 
 using System;
 using System.Collections.Generic;

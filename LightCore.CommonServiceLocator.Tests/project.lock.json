@@ -20,7 +20,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",
@@ -296,7 +296,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",
@@ -572,7 +572,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.CommonServiceLocator/2.0.0-beta": {
         "type": "project",

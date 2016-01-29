@@ -1,5 +1,5 @@
 ﻿using System;
-#if !DOTNET5_4
+#if !DNXCORE50
 using System.Runtime.Serialization;
 #endif
 
@@ -8,8 +8,8 @@ namespace LightCore
     /// <summary>
     /// Thrown when a registration is invalid. e.g. Registration of interface to interface.
     /// </summary>
-#if !DOTNET5_4
-        [Serializable]
+#if !DNXCORE50
+    [Serializable]
 #endif
     public class InvalidRegistrationException : Exception
     {
@@ -42,7 +42,7 @@ namespace LightCore
 
         }
 
-#if !DOTNET5_4
+#if !DNXCORE50
         /// <summary>
         /// Initializes a new instance of the <see cref="InvalidRegistrationException"/> type.
         /// </summary>

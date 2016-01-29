@@ -20,11 +20,11 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "LightCore": null,
           "Newtonsoft.Json": "7.0.1"
@@ -312,7 +312,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",
@@ -325,7 +325,7 @@
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "LightCore": null,
           "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
@@ -1353,11 +1353,11 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "LightCore": null,
           "Newtonsoft.Json": "7.0.1"
@@ -1631,11 +1631,11 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1",
+        "framework": "DNX,Version=v4.5.1",
         "dependencies": {
           "LightCore": null,
           "Newtonsoft.Json": "7.0.1"
@@ -1923,7 +1923,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",
@@ -1936,7 +1936,7 @@
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "LightCore": null,
           "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
@@ -3336,7 +3336,7 @@
       },
       "LightCore/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",
@@ -3349,7 +3349,7 @@
       },
       "LightCore.Configuration/2.0.0-beta": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "LightCore": null,
           "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
