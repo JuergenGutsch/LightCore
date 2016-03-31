@@ -24,7 +24,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
@@ -312,7 +312,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",
@@ -1303,7 +1303,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
@@ -1567,7 +1567,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
@@ -1855,7 +1855,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",
@@ -3184,7 +3184,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETPlatform,Version=v5.4",
+        "framework": "DNXCore,Version=v5.0",
         "dependencies": {
           "Microsoft.CSharp": "4.0.1-beta-23516",
           "System.Collections": "4.0.11-beta-23516",

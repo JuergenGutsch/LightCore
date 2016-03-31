@@ -42,7 +42,7 @@ namespace LightCore
 
             set
             {
-                if(value == null)
+                if (value == null)
                 {
                     throw new ArgumentException("value");
                 }
@@ -99,7 +99,7 @@ namespace LightCore
                                              };
 
             allRegistrationSources.Add(new FactoryRegistrationSource(this._registrationContainer));
-            
+
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 
             this.BootStrappLightCore();
@@ -118,14 +118,14 @@ namespace LightCore
             var typeOfArgumentCollector = typeof(IArgumentCollector);
             var typeOfConstructorSelector = typeof(IConstructorSelector);
 
-            if(!_registrationContainer.HasRegistration(typeOfArgumentCollector))
+            if (!_registrationContainer.HasRegistration(typeOfArgumentCollector))
             {
-                Register<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
+                RegisterFactory<IArgumentCollector>(c => new ArgumentCollector()).ControlledBy<SingletonLifecycle>();
             }
 
-            if(!_registrationContainer.HasRegistration(typeOfConstructorSelector))
+            if (!_registrationContainer.HasRegistration(typeOfConstructorSelector))
             {
-                Register<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
+                RegisterFactory<IConstructorSelector>(c => new ConstructorSelector()).ControlledBy<SingletonLifecycle>();
             }
         }
 
@@ -165,7 +165,7 @@ namespace LightCore
         {
             var typeOfSelf = typeof(TSelf);
 
-            if(!typeOfSelf.IsConcreteType())
+            if (!typeOfSelf.IsConcreteType())
             {
                 throw new InvalidRegistrationException(
                     Resources.InvalidRegistrationFormat.FormatWith(typeOfSelf.ToString()));
@@ -179,14 +179,35 @@ namespace LightCore
         /// Registers a type an instance.
         /// </summary>
         /// <typeparam name="TInstance">The instance type.</typeparam>
+        /// <param name="instance">Instance to return</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
-        public IFluentRegistration Register<TInstance>(TInstance instance)
+        public IFluentRegistration RegisterInstance<TInstance>(TInstance instance)
         {
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return AddToRegistrationFluent(new RegistrationItem(typeof(TInstance))
-                                                    {
-                                                        Activator = new InstanceActivator<TInstance>(instance)
-                                                    });
+            {
+                Activator = new InstanceActivator<TInstance>(instance)
+            });
+        }
+
+        /// <summary>
+        /// Registers a type an instance.
+        /// </summary>
+        /// <param name="contractType">The type of the contract</param>
+        /// <param name="instance">Instance to return</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        public IFluentRegistration RegisterInstance(Type contractType, object instance)
+        {
+            var classType = typeof(InstanceActivator<>);
+            var typeParams = new Type[] { contractType };
+            var constructedType = classType.MakeGenericType(typeParams);
+
+            var activator = Activator.CreateInstance(constructedType, new object[] { instance });
+
+            return AddToRegistrationFluent(new RegistrationItem(contractType)
+            {
+                Activator = (IActivator)activator
+            });
         }
 
         /// <summary>
@@ -195,13 +216,28 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        public IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction)
+        public IFluentRegistration RegisterFactory<TContract>(Func<IContainer, TContract> activatorFunction)
         {
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return AddToRegistrationFluent(new RegistrationItem(typeof(TContract))
-                                                    {
-                                                        Activator = new DelegateActivator(c => activatorFunction(c))
-                                                    });
+            {
+                Activator = new DelegateActivator(c => activatorFunction(c))
+            });
+        }
+
+        /// <summary>
+        /// Registers a contract with an activator function.
+        /// </summary>
+        /// <param name="contractType">The type of the contract</param>
+        /// <param name="activatorFunction">The activator as function..</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        public IFluentRegistration RegisterFactory(Type contractType, Func<IContainer, object> activatorFunction)
+        {
+            // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
+            return AddToRegistrationFluent(new RegistrationItem(contractType)
+            {
+                Activator = new DelegateActivator(c => activatorFunction(c))
+            });
         }
 
         /// <summary>
@@ -214,15 +250,15 @@ namespace LightCore
                                               {
 
                                                   // Set default reuse scope, if not user defined. (System default is <see cref="TransientLifecycle" />.
-                                                  if(registrationItem.Lifecycle == null)
+                                                  if (registrationItem.Lifecycle == null)
                                                   {
                                                       registrationItem.Lifecycle = this._defaultLifecycleFunction();
                                                   }
 
-                                                  if(_activeRegistrationGroupsInternal != null &&
+                                                  if (_activeRegistrationGroupsInternal != null &&
                                                       registrationItem.Group != null)
                                                   {
-                                                      if(
+                                                      if (
                                                           !this._activeRegistrationGroupsInternal.Any(
                                                               g => g.Trim() == registrationItem.Group.Trim()))
                                                       {
@@ -231,7 +267,7 @@ namespace LightCore
                                                       }
                                                   }
 
-                                                  if(_activeRegistrationGroupsInternal == null && registrationItem.Group != null)
+                                                  if (_activeRegistrationGroupsInternal == null && registrationItem.Group != null)
                                                   {
                                                       // Do not add inactive registrationItem.
                                                       return;
@@ -271,7 +307,7 @@ namespace LightCore
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
         public IFluentRegistration Register(Type typeOfContract, Type typeOfImplementation)
         {
-            if(!typeOfContract.GetTypeInfo().IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
+            if (!typeOfContract.GetTypeInfo().IsGenericTypeDefinition && !typeOfContract.IsAssignableFrom(typeOfImplementation))
             {
                 throw new ContractNotImplementedByTypeException(
                     Resources.ContractNotImplementedByTypeFormat.FormatWith(typeOfContract, typeOfImplementation), typeOfContract, typeOfImplementation);
@@ -279,14 +315,14 @@ namespace LightCore
 
             // Return a new instance of <see cref="IFluentRegistration" /> for supporting a fluent interface for registration configuration.
             return this.AddToRegistrationFluent(new RegistrationItem(typeOfContract)
-                                                    {
-                                                        Activator = new ReflectionActivator(
+            {
+                Activator = new ReflectionActivator(
                                                             typeOfImplementation,
                                                             this._bootStrappingContainer.Resolve<IConstructorSelector>(),
                                                             this._bootStrappingContainer.Resolve<IArgumentCollector>()),
-                                                        Lifecycle = this._defaultLifecycleFunction(),
-                                                        ImplementationType = typeOfImplementation
-                                                    });
+                Lifecycle = this._defaultLifecycleFunction(),
+                ImplementationType = typeOfImplementation
+            });
         }
     }
 }

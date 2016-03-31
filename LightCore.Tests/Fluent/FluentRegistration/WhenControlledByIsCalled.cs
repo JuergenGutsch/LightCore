@@ -42,6 +42,17 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         }
 
         [Fact]
+        public void WithSingletonLifecycleInstanceArgument_LifecycleIsSetToSingleton()
+        {
+            var registrationItem = new RegistrationItem();
+            var fluentRegistration = GetRegistration(registrationItem);
+
+            fluentRegistration.ControlledBy(new SingletonLifecycle());
+
+            registrationItem.Lifecycle.Should().BeOfType<SingletonLifecycle>();
+        }
+
+        [Fact]
         public void WithObjectAsLifecycle_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
@@ -53,13 +64,23 @@ namespace LightCore.Tests.Fluent.FluentRegistration
         }
 
         [Fact]
-        public void WithNullAsLifecycle_ArgumentExceptionThrown()
+        public void WithNullAsLifecycleType_ArgumentExceptionThrown()
         {
             var registrationItem = new RegistrationItem();
             var fluentRegistration = GetRegistration(registrationItem);
 
-            Action act = () => fluentRegistration.ControlledBy(null);
+            Action act = () => fluentRegistration.ControlledBy((Type)null);
             act.ShouldThrow<ArgumentException>();
+        }
+
+        [Fact]
+        public void WithNullAsLifecycleInstance_ArgumentExceptionThrown()
+        {
+            var registrationItem = new RegistrationItem();
+            var fluentRegistration = GetRegistration(registrationItem);
+
+            Action act = () => fluentRegistration.ControlledBy((ILifecycle)null);
+            act.ShouldThrow<ArgumentNullException>();
         }
     }
 }

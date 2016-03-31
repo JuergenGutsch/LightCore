@@ -12,7 +12,7 @@ namespace LightCore.Tests.Integration
         public void DelegateActivator_can_return_an_instance_from_given_new_function()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             var container = builder.Build();
 
@@ -25,7 +25,7 @@ namespace LightCore.Tests.Integration
         public void DelegateActivator_can_return_new_object_with_default_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             var container = builder.Build();
 

@@ -25,6 +25,13 @@ namespace LightCore.Fluent
         IFluentRegistration ControlledBy(Type type);
 
         /// <summary>
+        /// Treat the current registration to use the passed lifecycle. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
+        /// </summary>
+        /// <param name="livecycle">The lifecycle instance</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        IFluentRegistration ControlledBy(ILifecycle livecycle);
+
+        /// <summary>
         /// Adds arguments to the registration.
         /// </summary>
         /// <param name="arguments">The arguments.</param>

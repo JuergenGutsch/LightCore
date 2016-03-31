@@ -32,7 +32,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
@@ -308,7 +308,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",
@@ -584,7 +584,7 @@
       },
       "LightCore.TestTypes/2.0.0": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5.1"
+        "framework": "DNX,Version=v4.5.1"
       },
       "Microsoft.Dnx.Compilation.Abstractions/1.0.0-rc1-final": {
         "type": "package",

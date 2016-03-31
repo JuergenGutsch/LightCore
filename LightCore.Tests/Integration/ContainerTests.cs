@@ -14,7 +14,7 @@ namespace LightCore.Tests.Integration
         public void Container_resolves_properties_in_transient_lifecycle()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IDisposable>(c => new MemoryStream()).ControlledBy<TransientLifecycle>();
+            builder.RegisterFactory<IDisposable>(c => new MemoryStream()).ControlledBy<TransientLifecycle>();
             builder.DefaultControlledBy<TransientLifecycle>();
 
             var container = builder.Build();
@@ -237,8 +237,8 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IBar>(c => new Bar());
-            builder.Register<IBar>(c => new Bar());
+            builder.RegisterFactory<IBar>(c => new Bar());
+            builder.RegisterFactory<IBar>(c => new Bar());
 
             var container = builder.Build();
 

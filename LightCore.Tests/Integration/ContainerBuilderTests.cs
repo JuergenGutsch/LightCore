@@ -86,7 +86,7 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             builder.Build();
         }
@@ -139,8 +139,8 @@ namespace LightCore.Tests.Integration
             var builder = new ContainerBuilder();
 
             builder.DefaultControlledBy<SingletonLifecycle>();
-            builder.Register<IBar>(c => new Bar());
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IBar>(c => new Bar());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             var container = builder.Build();
 

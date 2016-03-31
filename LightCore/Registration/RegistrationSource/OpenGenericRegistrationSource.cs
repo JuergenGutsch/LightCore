@@ -77,7 +77,7 @@ namespace LightCore.Registration.RegistrationSource
                 implementationType = registrationItem.ImplementationType;
             }
 
-            // Register closed generic type on-the-fly, if no match until now.
+            // RegisterInstance closed generic type on-the-fly, if no match until now.
             if (implementationType == null)
             {
                 implementationType = openGenericTypeRegistration.ImplementationType.MakeGenericType(genericArguments);

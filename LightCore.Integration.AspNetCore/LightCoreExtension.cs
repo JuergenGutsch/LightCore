@@ -1,55 +1,62 @@
 ﻿using System;
+using LightCore.Integration.AspNetCore.Lifecycle;
 using LightCore.Lifecycle;
+using Microsoft.AspNet.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LightCore.Integration.AspNetCore
 {
     public static class LightCoreExtension
     {
-        public static IServiceProvider GetServiceProvider(this IContainer container)
+        public static void Populate(this IContainerBuilder builder, IServiceCollection services, IHttpContextAccessor httpContextAccessor)
         {
-            return new LightCoreServiceProvider(container);
-        }
-
-        public static void Populate(this IContainerBuilder builder, IServiceCollection services)
-        {
-            builder.Register<IServiceProvider>(container => container.GetServiceProvider())
+            builder.RegisterFactory<IServiceProvider>(container => new LightCoreServiceProvider(container))
+                .ControlledBy<SingletonLifecycle>();
+            builder.RegisterFactory<IServiceScopeFactory>(container => new LightCoreServiceScopeFactory(container))
                 .ControlledBy<SingletonLifecycle>();
 
+            RegisterServices(builder, services, httpContextAccessor);
+        }
+
+        private static void RegisterServices(IContainerBuilder builder, IServiceCollection services, IHttpContextAccessor httpContextAccessor)
+        {
             foreach (var serviceDescriptor in services)
             {
                 switch (serviceDescriptor.Lifetime)
                 {
                     case ServiceLifetime.Singleton:
-                        Register<SingletonLifecycle>(builder, serviceDescriptor);
+                        Register(builder, serviceDescriptor, new SingletonLifecycle());
                         break;
                     case ServiceLifetime.Scoped:
-                        Register<ThreadSingletonLifecycle>(builder, serviceDescriptor);
+                        Register(builder, serviceDescriptor, new HttpRequestLifecycle(httpContextAccessor));
                         break;
                     case ServiceLifetime.Transient:
-                        Register<TransientLifecycle>(builder, serviceDescriptor);
+                        Register(builder, serviceDescriptor, new SingletonLifecycle());
                         break;
                 }
-
             }
         }
 
-        private static void Register<T>(IContainerBuilder builder, ServiceDescriptor serviceDescriptor) where T: ILifecycle, new()
+        private static void Register(IContainerBuilder builder, ServiceDescriptor serviceDescriptor, ILifecycle lifecycle)
         {
-            if (serviceDescriptor.ImplementationFactory != null)
+            if (serviceDescriptor.ImplementationType != null)
             {
-                builder.Register(serviceDescriptor.ImplementationFactory)
-                    .ControlledBy<T>();
+                builder.Register(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType)
+                    .ControlledBy(lifecycle);
+            }
+            else if (serviceDescriptor.ImplementationFactory != null)
+            {
+                builder.RegisterFactory(serviceDescriptor.ServiceType, container =>
+                    {
+                        var c = container.Resolve<IServiceProvider>();
+                        return serviceDescriptor.ImplementationFactory(c);
+                    })
+                    .ControlledBy(lifecycle);
             }
             else if (serviceDescriptor.ImplementationInstance != null)
             {
-                builder.Register(serviceDescriptor.ImplementationInstance)
-                    .ControlledBy<T>();
-            }
-            else
-            {
-                builder.Register(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType)
-                    .ControlledBy<T>();
+                builder.RegisterInstance(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationInstance)
+                    .ControlledBy(lifecycle);
             }
         }
     }

@@ -151,5 +151,9 @@ namespace LightCore.Registration
             return this.ContractType.GetHashCode() ^ this.ImplementationType.GetHashCode();
         }
 
+        public override string ToString()
+        {
+            return this.ContractType.ToString();
+        }
     }
 }

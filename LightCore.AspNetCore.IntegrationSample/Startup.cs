@@ -5,23 +5,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using LightCore.Integration.AspNetCore;
+using Microsoft.AspNet.Http;
 
 namespace LightCore.AspNetCore.IntegrationSample
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        private readonly IHttpContextAccessor _contextAccessor;
+
+        public Startup(IHostingEnvironment env, IHttpContextAccessor contextAccessor)
         {
+            _contextAccessor = contextAccessor;
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
-            {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
             Configuration = builder.Build();
         }
 
@@ -31,12 +30,10 @@ namespace LightCore.AspNetCore.IntegrationSample
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
-
             services.AddMvc();
-
+            
             var builder = new ContainerBuilder();
-            builder.Populate(services);
+            builder.Populate(services, _contextAccessor);
 
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();
@@ -45,14 +42,16 @@ namespace LightCore.AspNetCore.IntegrationSample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.Use(r =>
+            {
+                loggerFactory.CreateLogger("Startup").LogDebug("start");
+                return r;
+            });
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
@@ -61,8 +60,6 @@ namespace LightCore.AspNetCore.IntegrationSample
             }
 
             app.UseIISPlatformHandler();
-
-            app.UseApplicationInsightsExceptionTelemetry();
 
             app.UseStaticFiles();
 

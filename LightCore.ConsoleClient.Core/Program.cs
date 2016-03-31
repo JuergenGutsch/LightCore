@@ -16,7 +16,7 @@ namespace LightCore.ConsoleClient.Core
 #else
             var module = new JsonRegistrationModule(null);
 #endif
-            builder.Register("Test");
+            builder.RegisterInstance("Test");
 
             builder.RegisterModule(module);
 

@@ -53,7 +53,7 @@ namespace LightCore
         }
 
         /// <summary>
-        ///     Register the container itself for service locator reasons.
+        ///     RegisterInstance the container itself for service locator reasons.
         /// </summary>
         private void RegisterContainer()
         {

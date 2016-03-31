@@ -14,7 +14,7 @@ namespace LightCore.CommonServiceLocator.Tests
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IDictionary<string, string>>(c => new Dictionary<string, string>());
+            builder.RegisterFactory<IDictionary<string, string>>(c => new Dictionary<string, string>());
 
             var container = builder.Build();
 
@@ -33,7 +33,7 @@ namespace LightCore.CommonServiceLocator.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                builder.Register(c => new object());
+                builder.RegisterFactory(c => new object());
             }
 
             var container = builder.Build();
@@ -55,7 +55,7 @@ namespace LightCore.CommonServiceLocator.Tests
             for (int i = 0; i < 10; i++)
             {
                 builder
-                    .Register(c => new List<string>());
+                    .RegisterFactory(c => new List<string>());
             }
 
             var container = builder.Build();

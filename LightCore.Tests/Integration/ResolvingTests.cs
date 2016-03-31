@@ -57,7 +57,7 @@ namespace LightCore.Tests.Integration
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.Register<IBar>(c => new Bar());
+            containerBuilder.RegisterFactory<IBar>(c => new Bar());
 
             containerBuilder.Register<Foo, Foo>();
             containerBuilder.Register<FooTestTwo, FooTestTwo>();
@@ -222,7 +222,7 @@ namespace LightCore.Tests.Integration
         public void Can_resolve_dependencies_with_injected_container()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IBar>(c => new Bar());
+            builder.RegisterFactory<IBar>(c => new Bar());
 
             var container = builder.Build();
 
