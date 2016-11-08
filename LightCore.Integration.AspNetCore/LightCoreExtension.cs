@@ -31,7 +31,7 @@ namespace LightCore.Integration.AspNetCore
                         Register(builder, serviceDescriptor, new HttpRequestLifecycle(httpContextAccessor));
                         break;
                     case ServiceLifetime.Transient:
-                        Register(builder, serviceDescriptor, new SingletonLifecycle());
+                        Register(builder, serviceDescriptor, new TransientLifecycle());
                         break;
                 }
             }
@@ -48,8 +48,8 @@ namespace LightCore.Integration.AspNetCore
             {
                 builder.RegisterFactory(serviceDescriptor.ServiceType, container =>
                     {
-                        var c = container.Resolve<IServiceProvider>();
-                        return serviceDescriptor.ImplementationFactory(c);
+                        var serviceProvider = container.Resolve<IServiceProvider>();
+                        return serviceDescriptor.ImplementationFactory(serviceProvider);
                     })
                     .ControlledBy(lifecycle);
             }
