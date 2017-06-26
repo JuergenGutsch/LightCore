@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "LightCore.Tests Class Library",
   "authors": [ "Juergen" ],
@@ -7,15 +7,17 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "LightCore": "",
-    "LightCore.TestTypes": "",
+    "LightCore.TestTypes": "*",
     "xunit": "2.1.0",
     "xunit.runner.dnx": "2.1.0-*",
     "FluentAssertions": "4.0.1"
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+      }
+    },
     "dnxcore5": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",

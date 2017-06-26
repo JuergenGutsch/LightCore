@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "description": "LightCore.ConsoleClient.Core Console Application",
   "authors": [ "Juergen" ],
@@ -7,7 +7,6 @@
   "licenseUrl": "",
 
   "dependencies": {
-    "LightCore": "",
     "LightCore.Configuration": "",
     "LightCore.TestTypes": ""
   },
@@ -17,7 +16,10 @@
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+      }
+    },
     "dnxcore5": {
       "dependencies": {
         "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",

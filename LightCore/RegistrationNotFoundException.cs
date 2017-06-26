@@ -1,17 +1,10 @@
 ﻿using System;
-#if !DNXCORE50
-using System.Runtime.Serialization;
-#endif
-
 
 namespace LightCore
 {
     /// <summary>
     /// Thrown when a mapping not found for resolving a type.
     /// </summary>
-#if !DNXCORE50
-    [Serializable]
-#endif
     public class RegistrationNotFoundException : Exception
     {
         /// <summary>
@@ -62,19 +55,6 @@ namespace LightCore
 
         }
 
-#if !DNXCORE50
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The context.</param>
-        protected RegistrationNotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-
-        }
-#endif
 
     }
 }

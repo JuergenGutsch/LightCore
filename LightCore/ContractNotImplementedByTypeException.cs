@@ -1,16 +1,10 @@
 ﻿using System;
-#if !DNXCORE50
-using System.Runtime.Serialization;
-#endif
 
 namespace LightCore
 {
     /// <summary>
     /// Thrown when the contract type is not assignable from implementationtype.
     /// </summary>
-#if !DNXCORE50
-    [Serializable]
-#endif
     public class ContractNotImplementedByTypeException : Exception
     {
         /// <summary>
@@ -61,17 +55,5 @@ namespace LightCore
             : base(message, innerException)
         {
         }
-
-#if !DNXCORE50
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContractNotImplementedByTypeException"/> type.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The context.</param>
-        protected ContractNotImplementedByTypeException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-        }
-#endif
     }
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet5-LightCore.AspNetCore.IntegrationSample-698cb2c9-9c48-451c-9b47-f2b9e038a5a6",
   "version": "1.0.0-*",
   "compilationOptions": {
@@ -8,7 +8,6 @@
   "dependencies": {
     "EntityFramework.Commands": "7.0.0-rc1-final",
     "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
-    "LightCore": "2.0.0-beta-*",
     "LightCore.Integration.AspNetCore": "2.0.0-beta-*",
     "Microsoft.ApplicationInsights.AspNet": "1.0.0-rc1",
     "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final",
@@ -36,8 +35,14 @@
   },
 
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": { }
+    "dnx451": {
+      "dependencies": {
+      }
+    },
+    "dnxcore50": {
+      "dependencies": {
+      }
+    }
   },
 
   "exclude": [

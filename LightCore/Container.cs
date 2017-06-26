@@ -82,7 +82,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract" />.</returns>
         public TContract Resolve<TContract>()
         {
-            return (TContract) Resolve(typeof (TContract));
+            return (TContract)Resolve(typeof(TContract));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace LightCore
         /// .
         public TContract Resolve<TContract>(IEnumerable<object> arguments)
         {
-            return (TContract) Resolve(typeof (TContract), arguments);
+            return (TContract)Resolve(typeof(TContract), arguments);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract" /></returns>
         public TContract Resolve<TContract>(IDictionary<string, object> namedArguments)
         {
-            return (TContract) Resolve(typeof (TContract), namedArguments);
+            return (TContract)Resolve(typeof(TContract), namedArguments);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace LightCore
         /// <returns>The resolved instance as <typeparamref name="TContract" /></returns>
         public TContract Resolve<TContract>(AnonymousArgument namedArguments)
         {
-            return (TContract) Resolve(typeof (TContract),
+            return (TContract)Resolve(typeof(TContract),
                 namedArguments.AnonymousType.ToNamedArgumentDictionary());
         }
 
@@ -283,7 +283,7 @@ namespace LightCore
         /// <returns>The resolved instances</returns>
         public IEnumerable<TContract> ResolveAll<TContract>()
         {
-            return ResolveAll(typeof (TContract)).Cast<TContract>();
+            return ResolveAll(typeof(TContract)).Cast<TContract>();
         }
 
         /// <summary>
@@ -355,15 +355,9 @@ namespace LightCore
         /// <returns>All valid properties.</returns>
         private IEnumerable<PropertyInfo> GetValidProperties(Type type)
         {
-#if !DNXCORE50
             return type
                 .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty)
                 .Where(this._validPropertiesSelector);
-#else
-            return type
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(this._validPropertiesSelector);
-#endif
         }
     }
 }

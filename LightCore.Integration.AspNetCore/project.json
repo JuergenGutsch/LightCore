@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "2.0.0-beta-*",
   "description": "LightCore.Integration.AspNetCore Class Library",
   "authors": [ "Juergen" ],
@@ -8,12 +8,14 @@
 
 
   "dependencies": {
-    "LightCore": "",
     "Microsoft.AspNet.Mvc": "6.0.0-rc1-final"
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": {
+      }
+    },
     "dnxcore50": {
       "dependencies": {
         "Microsoft.CSharp": "4.0.1-beta-23516",

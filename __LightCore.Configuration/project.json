@@ -1,0 +1,35 @@
+{
+  "version": "2.0.0-beta-*",
+  "description": "LightCore.Configuration Class Library",
+  "authors": [ "Juergen" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+
+  "dependencies": {
+    "Newtonsoft.Json": "7.0.1"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "dependencies": {
+      },
+      "frameworkAssemblies": {
+        "PresentationFramework": "4.0.0.0",
+        "System.Xml": "4.0.0.0",
+        "System.Xaml": "4.0.0.0",
+        "System.Configuration": "4.0.0.0"
+      }
+    },
+    "dnxcore5": {
+      "dependencies": {
+        "Microsoft.AspNet.FileProviders.Abstractions": "1.0.0-rc1-final",
+        "Microsoft.CSharp": "4.0.1-beta-23516",
+        "System.Collections": "4.0.11-beta-23516",
+        "System.Linq": "4.0.1-beta-23516",
+        "System.Runtime": "4.0.21-beta-23516",
+        "System.Threading": "4.0.11-beta-23516"
+      }
+    }
+  }
+}
