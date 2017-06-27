@@ -1,10 +1,8 @@
 ﻿
 using System.Collections.Generic;
-#if !DNXCORE50
 using System;
 using System.Configuration;
 using LightCore.Configuration.Properties;
-#endif
 using LightCore.Lifecycle;
 
 namespace LightCore.Configuration
@@ -115,7 +113,7 @@ namespace LightCore.Configuration
             RegistrationGroups = new List<RegistrationGroup>();
         }
 
-#if !DNXCORE50
+#if false
         /// <summary>
         /// Gets the configuration instance.
         /// </summary>
@@ -126,8 +124,9 @@ namespace LightCore.Configuration
             {
                 const string sectionName = "LightCoreConfiguration";
 
-                var configSectionHandler =
-                    (XamlConfigSectionHandler)ConfigurationManager.GetSection(sectionName);
+                var mod = new JsonRegistrationModule();
+                
+                var configSectionHandler = (XamlConfigSectionHandler)ConfigurationManager.GetSection(sectionName);
 
                 if (configSectionHandler == null)
                 {

@@ -1,4 +1,4 @@
-﻿#if !DNXCORE50
+﻿#if false
 using System;
 using System.IO;
 using System.Windows.Markup;

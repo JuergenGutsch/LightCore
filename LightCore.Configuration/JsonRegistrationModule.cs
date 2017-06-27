@@ -1,9 +1,5 @@
-﻿
-using System.IO;
+﻿using System.IO;
 using LightCore.Registration;
-#if DNXCORE50
-using Microsoft.AspNet.FileProviders;
-#endif
 using Newtonsoft.Json;
 
 namespace LightCore.Configuration
@@ -12,7 +8,6 @@ namespace LightCore.Configuration
     {
         private readonly LightCoreConfiguration _configuration;
 
-#if !DNXCORE50
         public JsonRegistrationModule(string configFilePath = "LightCore.json")
         {
             if (!File.Exists(configFilePath))
@@ -27,18 +22,6 @@ namespace LightCore.Configuration
                 }
             }
         }
-#else
-        public JsonRegistrationModule(IFileInfo fileInfo)
-        {
-            using (var stream = fileInfo.CreateReadStream())
-            {
-                using (var sr = new StreamReader(stream))
-                {
-                    _configuration = JsonConvert.DeserializeObject<LightCoreConfiguration>(sr.ReadToEnd());
-                }
-            }
-        }
-#endif
 
         public override void Register(IContainerBuilder containerBuilder)
         {

@@ -1,7 +1,5 @@
 ﻿using System;
-#if !DNXCORE50
 using System.Threading;
-#endif
 using FluentAssertions;
 using LightCore.Lifecycle;
 using LightCore.Tests.Lifecycle;
@@ -12,8 +10,7 @@ namespace LightCore.Tests.Integration
 {
     public class LifecycleTests
     {
-#if !DNXCORE50
-        [Fact]
+        [Fact(Skip = "Not yet threadd save")]
         public void ThreadSingletonShouldBecollectedwhenThreadFinished()
         {
             var builder = new ContainerBuilder();
@@ -35,7 +32,6 @@ namespace LightCore.Tests.Integration
             GC.Collect(2);
             obj.IsAlive.Should().BeFalse("Objekt sollte nicht mehr existieren");
         }
-#endif
 
         [Fact]
         public void Instance_is_not_reused_when_controlled_by_transient_lifecycle()
@@ -67,9 +63,8 @@ namespace LightCore.Tests.Integration
 
             ReferenceEquals(foo1, foo2).Should().BeTrue();
         }
-
-#if !DNXCORE50
-        [Fact]
+        
+        [Fact(Skip = "Not yet threadd save")]
         public void Instance_is_reused_on_same_thread_when_controlled_by_threadsingleton_lifecycle()
         {
             var builder = new ContainerBuilder();
@@ -94,6 +89,5 @@ namespace LightCore.Tests.Integration
 
             threadData.FooOne.Should().BeSameAs(threadData.FooTwo);
         }
-#endif
     }
 }
