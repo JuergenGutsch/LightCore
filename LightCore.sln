@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26510.0
+VisualStudioVersion = 15.0.26621.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".shared", ".shared", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
 	ProjectSection(SolutionItems) = preProject
@@ -34,6 +34,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.CommonServiceLocator", "LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj", "{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.Integration.AspNetCore", "LightCore.Integration.AspNetCore\LightCore.Integration.AspNetCore.csproj", "{B46B4993-F877-484C-9E59-ACED17D6D82E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LightCore.CommonServiceLocator.Tests", "LightCore.CommonServiceLocator.Tests\LightCore.CommonServiceLocator.Tests.csproj", "{692EDA18-9555-46D8-9494-000389D71F22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{692EDA18-9555-46D8-9494-000389D71F22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{692EDA18-9555-46D8-9494-000389D71F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{692EDA18-9555-46D8-9494-000389D71F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{692EDA18-9555-46D8-9494-000389D71F22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,5 +84,9 @@ Global
 		{1CD53578-DC44-4E02-A6C6-67F3AC49A481} = {FEB21646-1224-4E30-8539-C389C55541C3}
 		{CCFBF268-5A6E-4E2C-A953-D4A657909204} = {FEB21646-1224-4E30-8539-C389C55541C3}
 		{B46B4993-F877-484C-9E59-ACED17D6D82E} = {57786DD9-9F98-4328-BD58-F6EC45411D7E}
+		{692EDA18-9555-46D8-9494-000389D71F22} = {FEB21646-1224-4E30-8539-C389C55541C3}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D78A2B92-CF6C-4237-88BE-664A4AE0DA74}
 	EndGlobalSection
 EndGlobal
