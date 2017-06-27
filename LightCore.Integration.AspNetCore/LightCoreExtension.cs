@@ -1,7 +1,7 @@
 ﻿using System;
 using LightCore.Integration.AspNetCore.Lifecycle;
 using LightCore.Lifecycle;
-using Microsoft.AspNet.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LightCore.Integration.AspNetCore

@@ -3,8 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26510.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".shared", ".shared", "{0C628DF3-B0E8-4D3F-95A1-3968FFFF18A0}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		GlobalAssemblyInfo.cs = GlobalAssemblyInfo.cs
 		License.txt = License.txt
 		LightCore.xml = LightCore.xml
@@ -21,6 +22,18 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.TestTypes", "LightCore.TestTypes\LightCore.TestTypes.csproj", "{1CD53578-DC44-4E02-A6C6-67F3AC49A481}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.Configuration.Tests", "LightCore.Configuration.Tests\LightCore.Configuration.Tests.csproj", "{CCFBF268-5A6E-4E2C-A953-D4A657909204}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{57786DD9-9F98-4328-BD58-F6EC45411D7E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{2600791D-7532-458C-BD31-5C13DFD83212}"
+	ProjectSection(SolutionItems) = preProject
+		build.cake = build.cake
+		build.ps1 = build.ps1
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.CommonServiceLocator", "LightCore.CommonServiceLocator\LightCore.CommonServiceLocator.csproj", "{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LightCore.Integration.AspNetCore", "LightCore.Integration.AspNetCore\LightCore.Integration.AspNetCore.csproj", "{B46B4993-F877-484C-9E59-ACED17D6D82E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +61,14 @@ Global
 		{CCFBF268-5A6E-4E2C-A953-D4A657909204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCFBF268-5A6E-4E2C-A953-D4A657909204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCFBF268-5A6E-4E2C-A953-D4A657909204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C160E14-9F88-4DAA-B9EC-E6F688B79FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46B4993-F877-484C-9E59-ACED17D6D82E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +77,6 @@ Global
 		{D9E2668B-F43D-49F6-A6F0-87BAB83A4825} = {FEB21646-1224-4E30-8539-C389C55541C3}
 		{1CD53578-DC44-4E02-A6C6-67F3AC49A481} = {FEB21646-1224-4E30-8539-C389C55541C3}
 		{CCFBF268-5A6E-4E2C-A953-D4A657909204} = {FEB21646-1224-4E30-8539-C389C55541C3}
+		{B46B4993-F877-484C-9E59-ACED17D6D82E} = {57786DD9-9F98-4328-BD58-F6EC45411D7E}
 	EndGlobalSection
 EndGlobal
