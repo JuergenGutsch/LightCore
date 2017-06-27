@@ -6,18 +6,30 @@ Task("NuGetRestore")
 		NuGetRestore("./LightCore.sln");
 	});
 
-Task("Build")
+Task("DotNetBuild")
 	.IsDependentOn("NuGetRestore")
 	.Does(() => 
 	{	
 		MSBuild("./LightCore.sln");
 	});
 
+Task("DotNetTest")
+	.IsDependentOn("DotNetBuild")
+	.Does(() => {
+	
+	});
+
+Task("DotNetPack")
+	.IsDependentOn("DotNetTest")
+	.Does(() => {
+	
+	});
+
 Task("Default")
-	.IsDependentOn("Build")
+	.IsDependentOn("DotNetPack")
 	.Does(() =>
 	{
-	  Information("You build is done!");
+	  Information("You build is done! :-)");
 	});
 
 RunTarget(target);
