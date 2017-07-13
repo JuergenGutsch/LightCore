@@ -38,21 +38,21 @@ namespace LightCore.Integration.Web.Lifecycle
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
 
-            HttpContextBase context = this.CurrentContext;
+            HttpContextBase context = CurrentContext;
 
-            lock (this._lock)
+            lock (_lock)
             {
                 if (context == null)
                 {
                     context = new HttpContextWrapper(HttpContext.Current);
                 }
 
-                object instanceToReturn = context.Items[this._instanceIdentifier];
+                object instanceToReturn = context.Items[_instanceIdentifier];
 
                 if (instanceToReturn == null)
                 {
                     instanceToReturn = newInstanceResolver();
-                    context.Items[this._instanceIdentifier] = instanceToReturn;
+                    context.Items[_instanceIdentifier] = instanceToReturn;
                 }
 
                 return instanceToReturn;

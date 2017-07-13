@@ -26,9 +26,9 @@ namespace LightCore.Integration.Web
         /// <param name="context">An <see cref="T:System.Web.HttpApplication"/> that provides access to the methods, properties, and events common to all application objects within an ASP.NET application </param>
         public void Init(HttpApplication context)
         {
-            this._application = context;
+            _application = context;
 
-            var accessor = this._application as IContainerAccessor;
+            var accessor = _application as IContainerAccessor;
 
             if (accessor == null)
             {
@@ -37,7 +37,7 @@ namespace LightCore.Integration.Web
 
             _container = accessor.Container;
 
-            this._application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
+            _application.PreRequestHandlerExecute += OnPreRequestHandlerExecute;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace LightCore.Integration.Web
         /// <param name="e">The eventargs.</param>
         private void OnPreRequestHandlerExecute(object sender, System.EventArgs e)
         {
-            object handler = this._application.Context.CurrentHandler;
+            object handler = _application.Context.CurrentHandler;
 
             if (handler == null)
             {
@@ -72,7 +72,7 @@ namespace LightCore.Integration.Web
             if (page != null)
             {
                 // Inject properties on all controls.
-                page.PreLoad += (s, a) => this.InjectPropertiesOnControls(page);
+                page.PreLoad += (s, a) => InjectPropertiesOnControls(page);
             }
         }
 

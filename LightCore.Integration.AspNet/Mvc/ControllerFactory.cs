@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-
 using LightCore.Integration.Web.Properties;
 
 namespace LightCore.Integration.Web.Mvc
@@ -25,7 +24,7 @@ namespace LightCore.Integration.Web.Mvc
                 throw new ArgumentNullException("container");
             }
 
-            this._container = container;
+            _container = container;
         }
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace LightCore.Integration.Web.Mvc
         /// <returns>The controller instance.</returns>
         internal IController CreateControllerInternal(RequestContext requestContext, Type controllerType)
         {
-            return this.GetControllerInstance(requestContext, controllerType);
+            return GetControllerInstance(requestContext, controllerType);
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace LightCore.Integration.Web.Mvc
                                                       requestContext.HttpContext.Request.Path));
             }
 
-            return (IController)this._container.Resolve(controllerType);
+            return (IController) _container.Resolve(controllerType);
         }
     }
 }

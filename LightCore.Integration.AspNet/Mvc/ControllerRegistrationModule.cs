@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-
 using LightCore.ExtensionMethods.System.Collections.Generic;
 using LightCore.Registration;
 
@@ -24,7 +23,7 @@ namespace LightCore.Integration.Web.Mvc
         /// </summary>
         protected ControllerRegistrationModule()
         {
-            this._controllerAssemblies = new List<Assembly>();
+            _controllerAssemblies = new List<Assembly>();
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(Assembly controllerAssembly)
             : this()
         {
-            this._controllerAssemblies.Add(controllerAssembly);
+            _controllerAssemblies.Add(controllerAssembly);
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(params Assembly[] controllerAssemblies)
             : this()
         {
-            this._controllerAssemblies.AddRange(controllerAssemblies);
+            _controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
@@ -54,7 +53,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(IEnumerable<Assembly> controllerAssemblies)
             : this()
         {
-            this._controllerAssemblies.AddRange(controllerAssemblies);
+            _controllerAssemblies.AddRange(controllerAssemblies);
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(params string[] assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(assembly => Assembly.Load(assembly)));
+            _controllerAssemblies.AddRange(assemblyNames.Select<string, Assembly>(Assembly.Load));
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace LightCore.Integration.Web.Mvc
         public ControllerRegistrationModule(IEnumerable<string> assemblyNames)
             : this()
         {
-            this._controllerAssemblies.AddRange(assemblyNames.Select(assembly => Assembly.Load(assembly)));
+            _controllerAssemblies.AddRange(assemblyNames.Select<string, Assembly>(Assembly.Load));
         }
 
         /// <summary>
@@ -83,7 +82,7 @@ namespace LightCore.Integration.Web.Mvc
         /// <param name="containerBuilder">The container builder.</param>
         public override void Register(IContainerBuilder containerBuilder)
         {
-            this._controllerAssemblies.ForEach(a => this.RegisterControllers(a, containerBuilder));
+            _controllerAssemblies.ForEach<Assembly>(a => RegisterControllers(a, containerBuilder));
         }
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace LightCore.Integration.Web.Mvc
 
             var controllerTypes = allPublicTypes.Where(t => typeOfController.IsAssignableFrom(t) && !t.IsAbstract);
 
-            controllerTypes.ForEach(t => containerBuilder.Register(t, t));
+            controllerTypes.ForEach<Type>(t => containerBuilder.Register(t, t));
         }
     }
 }
