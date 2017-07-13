@@ -1,4 +1,5 @@
-﻿namespace LightCore.Configuration
+﻿
+namespace LightCore.Configuration
 {
     /// <summary>
     ///     Represents a registration argument.

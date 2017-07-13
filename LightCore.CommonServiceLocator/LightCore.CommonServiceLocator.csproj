@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>2.0.0-preview1</Version>
-    <Authors>Peter Bucher, Jürgen Gutsch</Authors>
-    <Company>Peter Bucher, Jürgen Gutsch</Company>
+    <Authors>Peter Bucher, JÃ¼rgen Gutsch</Authors>
+    <Company>Peter Bucher, JÃ¼rgen Gutsch</Company>
     <Product>LightCore</Product>
     <Description>CommonServiceLocator implementation for LightCore.</Description>
     <Copyright>\x00a9 Peter Bucher. All rights reserved.</Copyright>
