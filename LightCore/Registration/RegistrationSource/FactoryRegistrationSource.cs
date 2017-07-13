@@ -1,5 +1,4 @@
-﻿#if !CF35
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -92,32 +91,31 @@ namespace LightCore.Registration.RegistrationSource
                 .ToList();
 
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new DelegateActivator(c =>
-                                                                 {
-                                                                     var containerConstant = Expression.Constant(c);
+            {
+                Activator = new DelegateActivator(c =>
+                {
+                    var containerConstant = Expression.Constant(c);
 
-                                                                     var newArgumentArray = Expression.NewArrayInit(
-                                                                         TypeOfObject,
-                                                                         parameterExpressions
-                                                                             .Select(p => Expression.TypeAs(p, TypeOfObject))
-                                                                             .Cast<Expression>());
+                    var newArgumentArray = Expression.NewArrayInit(
+                        TypeOfObject,
+                        parameterExpressions
+                            .Select(p => Expression.TypeAs(p, TypeOfObject))
+                            .Cast<Expression>());
 
-                                                                     var resolveCall = Expression.Call(
-                                                                         containerConstant,
-                                                                         genericWithArgumentsMethod,
-                                                                         newArgumentArray);
+                    var resolveCall = Expression.Call(
+                        containerConstant,
+                        genericWithArgumentsMethod,
+                        newArgumentArray);
+                    
+                    var lambda = Expression.Lambda(contractType,
+                        resolveCall,
+                        parameterExpressions);
 
-                                                                     // () => value(LightCore.Container).Resolve(new [] {}).
-                                                                     var lambda = Expression.Lambda(contractType,
-                                                                                                    resolveCall,
-                                                                                                    parameterExpressions);
+                    return lambda.Compile();
+                }),
+                Lifecycle = new TransientLifecycle()
 
-                                                                     return lambda.Compile();
-                                                                 }),
-                           Lifecycle = new TransientLifecycle()
-                       };
+            };
         }
     }
 }
-#endif

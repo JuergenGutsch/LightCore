@@ -37,13 +37,13 @@ namespace LightCore.Registration.RegistrationSource
         {
             // On-the-fly registration of concrete types. Equivalent to new-operator.
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new ReflectionActivator(
-                               contractType,
-                               container.Resolve<IConstructorSelector>(),
-                               container.Resolve<IArgumentCollector>()),
-                           Lifecycle = new TransientLifecycle()
-                       };
+            {
+                Activator = new ReflectionActivator(
+                    contractType,
+                    container.Resolve<IConstructorSelector>(),
+                    container.Resolve<IArgumentCollector>()),
+                Lifecycle = new TransientLifecycle()
+            };
         }
     }
 }

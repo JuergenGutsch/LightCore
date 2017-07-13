@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using LightCore.Registration;
-
 namespace LightCore.Activation.Components
 {
     /// <summary>
@@ -24,10 +22,8 @@ namespace LightCore.Activation.Components
             var finalArguments = new List<object>();
 
             var dependencyParameters =
-                parameters.Where(
-                    p =>
-                    resolutionContext.RegistrationContainer.HasRegistration(p.ParameterType)
-                    ||
+                parameters.Where(p =>
+                    resolutionContext.RegistrationContainer.HasRegistration(p.ParameterType) ||
                     resolutionContext.RegistrationContainer.IsSupportedByRegistrationSource(p.ParameterType));
 
             Func<object, ParameterInfo, bool> argumentSelector = (argument, parameter) => parameter.ParameterType.IsInstanceOfType(argument);

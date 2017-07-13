@@ -1,20 +1,21 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using Xunit;
 
 namespace LightCore.Tests.Lifecycle.TransientLifecycle
 {
-    [TestFixture]
+    
     public class WhenRetrieveInstanceInLifecycleIsCalled : LifecycleFixture
     {
-        [Test]
+        [Fact]
         public void WithActivationFunction_DifferentObjectsAreReturned()
         {
             var lifecycle = new LightCore.Lifecycle.TransientLifecycle();
-            var factory = this.GetActivationFactory();
+            var factory = GetActivationFactory();
 
-            object instanceOne = lifecycle.ReceiveInstanceInLifecycle(factory);
-            object instanceTwo = lifecycle.ReceiveInstanceInLifecycle(factory);
+            var instanceOne = lifecycle.ReceiveInstanceInLifecycle(factory);
+            var instanceTwo = lifecycle.ReceiveInstanceInLifecycle(factory);
 
-            Assert.That(instanceOne, Is.Not.SameAs(instanceTwo));
+            instanceOne.Should().NotBeSameAs(instanceTwo);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 using System.Runtime.Serialization;
 
 namespace LightCore.Configuration
@@ -50,3 +51,4 @@ namespace LightCore.Configuration
         }
     }
 }
+#endif

@@ -1,42 +1,46 @@
-﻿using LightCore.Lifecycle;
+﻿using System;
+using FluentAssertions;
+using LightCore.Lifecycle;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
     public class ContainerBuilderTests
     {
-        [Test]
+        [Fact]
         public void ContainerBuilder_with_registered_groups_reconice_these()
         {
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder
+            {
+                ActiveRegistrationGroups = "Test"
+            };
 
-            builder.ActiveRegistrationGroups = "Test";
 
             builder.Register<IFoo, FooTwo>().WithGroup("Test");
             builder.Register<IFoo, Foo>().WithGroup("Test2");
 
             var container = builder.Build();
 
-            Assert.That(container.Resolve<IFoo>(), Is.InstanceOf<FooTwo>());
+            container.Resolve<IFoo>().Should().BeOfType<FooTwo>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_with_non_active_groups_throws_registrationNotFoundException()
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo, FooTwo>().WithGroup( "Test" );
-            builder.Register<IFoo, Foo>().WithGroup( "Test2" );
+            builder.Register<IFoo, FooTwo>().WithGroup("Test");
+            builder.Register<IFoo, Foo>().WithGroup("Test2");
 
             var container = builder.Build();
 
-            Assert.That(() => container.Resolve<IFoo>(), Throws.InstanceOf<RegistrationNotFoundException>());
+            Action act = () => container.Resolve<IFoo>();
+
+            act.ShouldThrow<RegistrationNotFoundException>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_can_register_generic_type()
         {
             var builder = new ContainerBuilder();
@@ -44,15 +48,17 @@ namespace LightCore.Tests.Integration
             builder.Register(typeof (IRepository<>), typeof (Repository<>));
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_throws_exception_on_interface_to_interface_registration()
         {
             var builder = new ContainerBuilder();
 
-            Assert.Throws<InvalidRegistrationException>(() => builder.Register<IFoo>());
+            Action act = () => builder.Register<IFoo>();
+
+            act.ShouldThrow<InvalidRegistrationException>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_can_register_types()
         {
             var builder = new ContainerBuilder();
@@ -60,29 +66,32 @@ namespace LightCore.Tests.Integration
             builder.Register<IFoo, Foo>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_throws_on_not_assignable_contract_to_implementation()
         {
-            Assert.Throws<ContractNotImplementedByTypeException>(() =>
-                                                                     {
-                                                                         var builder = new ContainerBuilder();
-                                                                         builder.Register(typeof (IFoo), typeof (Bar));
+            IContainer container = null;
+            Action act = () =>
+            {
+                var builder = new ContainerBuilder();
+                builder.Register(typeof (IFoo), typeof (Bar));
 
-                                                                         var container = builder.Build();
-                                                                     });
+                container = builder.Build();
+            };
+
+            act.ShouldThrow<ContractNotImplementedByTypeException>();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_can_register_activation_functions()
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             builder.Build();
         }
 
-        [Test]
+        [Fact]
         public void ContainerBuilder_can_register_type_to_self()
         {
             var builder = new ContainerBuilder();
@@ -91,8 +100,8 @@ namespace LightCore.Tests.Integration
 
             builder.Build();
         }
-        
-        [Test]
+
+        [Fact]
         public void ContainerBuilders_default_scope_is_transient()
         {
             var builder = new ContainerBuilder();
@@ -104,11 +113,11 @@ namespace LightCore.Tests.Integration
             var instanceOne = container.Resolve<IFoo>();
             var instanceTwo = container.Resolve<IFoo>();
 
-            Assert.AreNotSame(instanceOne, instanceTwo);
+            instanceOne.Should().NotBeSameAs(instanceTwo);
         }
 
-        [Test]
-        public void CointainerBuilder_default_scope_can_be_altered_to_singleton_with_reflection_activator_registration()
+        [Fact]
+        public void CointainerBuilder_default_scope_can_be_altered_to_singleton()
         {
             var builder = new ContainerBuilder();
 
@@ -121,24 +130,25 @@ namespace LightCore.Tests.Integration
             var instanceOne = container.Resolve<IFoo>();
             var instanceTwo = container.Resolve<IFoo>();
 
-            Assert.AreSame(instanceOne, instanceTwo);
+            instanceOne.Should().BeSameAs(instanceTwo);
         }
 
-        [Test]
+        [Fact]
         public void CointainerBuilder_default_scope_can_be_altered_to_singleton_with_delegate_activator_registration()
         {
             var builder = new ContainerBuilder();
 
             builder.DefaultControlledBy<SingletonLifecycle>();
-            builder.Register<IBar>(c => new Bar());
-            builder.Register<IFoo>(c => new Foo());
+            builder.RegisterFactory<IBar>(c => new Bar());
+            builder.RegisterFactory<IFoo>(c => new Foo());
 
             var container = builder.Build();
 
             var instanceOne = container.Resolve<IFoo>();
             var instanceTwo = container.Resolve<IFoo>();
 
-            Assert.AreSame(instanceOne, instanceTwo);
+            instanceOne.Should().BeSameAs(instanceTwo);
         }
+
     }
 }

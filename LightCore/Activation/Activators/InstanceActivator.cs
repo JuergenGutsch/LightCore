@@ -15,7 +15,7 @@
         /// Initializes a new instance of <see cref="InstanceActivator{TContract}" />.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        internal InstanceActivator(TContract instance)
+        public InstanceActivator(TContract instance)
         {
             this._instance = instance;
         }

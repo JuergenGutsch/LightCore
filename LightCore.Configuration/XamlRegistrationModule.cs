@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if false
+using System;
 using System.IO;
 using System.Windows.Markup;
 
@@ -20,7 +21,7 @@ namespace LightCore.Configuration
         ///</summary>
         public XamlRegistrationModule()
         {
-            this._configuration = LightCoreConfiguration.Instance;
+            _configuration = LightCoreConfiguration.Instance;
         }
 
         ///<summary>
@@ -36,7 +37,7 @@ namespace LightCore.Configuration
 
             using (var file = File.Open(configurationPath, FileMode.Open))
             {
-                this._configuration = (LightCoreConfiguration)XamlReader.Load(file);
+                _configuration = (LightCoreConfiguration)XamlReader.Load(file);
             }
         }
 
@@ -51,7 +52,7 @@ namespace LightCore.Configuration
                 throw new ArgumentException(string.Format(Resources.BadStreamContent, configurationStream));
             }
 
-            this._configuration = (LightCoreConfiguration)XamlReader.Load(configurationStream);
+            _configuration = (LightCoreConfiguration)XamlReader.Load(configurationStream);
         }
 
         /// <summary>
@@ -66,3 +67,4 @@ namespace LightCore.Configuration
         }
     }
 }
+#endif

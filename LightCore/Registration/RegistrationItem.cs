@@ -19,7 +19,7 @@ namespace LightCore.Registration
             get;
             private set;
         }
-
+        
         /// <summary>
         /// The group.
         /// </summary>
@@ -149,6 +149,11 @@ namespace LightCore.Registration
         public override int GetHashCode()
         {
             return this.ContractType.GetHashCode() ^ this.ImplementationType.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return this.ContractType.ToString();
         }
     }
 }

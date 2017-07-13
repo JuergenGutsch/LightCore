@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using LightCore.TestTypes;
+using Xunit;
 
-using NUnit.Framework;
 
 namespace LightCore.Tests.Integration
 {
@@ -22,49 +21,50 @@ namespace LightCore.Tests.Integration
 
     public class TestBar
     {
-        
+
     }
+
 
     /// <summary>
     /// Summary description for ResolvingTests
     /// </summary>
-    [TestFixture]
+
     public class ResolvingTests
     {
-        [Test]
+        [Fact]
         public void Lazy_RegistrationSource_Supports_ConcreteTypes_Without_PreInitialization_And_Depdendencies()
         {
-            IContainerBuilder builder = new ContainerBuilder();
-            IContainer container = builder.Build();
+            var builder = new ContainerBuilder();
+            var container = builder.Build();
             var lazyFoo = container.Resolve<Lazy<Test>>().Value;
 
-            Assert.That(lazyFoo, Is.Not.Null);
+            lazyFoo.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Factory_RegistrationSource_Supports_ConcreteTypes_Without_PreInitialization_And_Depdendencies()
         {
-            IContainerBuilder builder = new ContainerBuilder();
-            IContainer container = builder.Build();
+            var builder = new ContainerBuilder();
+            var container = builder.Build();
             var fooFunc = container.Resolve<Func<Test>>();
 
-            Assert.That(fooFunc, Is.Not.Null);
-            Assert.That(fooFunc(), Is.TypeOf<Test>());
+            fooFunc.Should().NotBeNull();
+            fooFunc().Should().BeOfType<Test>();
         }
 
-        [Test]
+        [Fact]
         public void RegistrationContainer_Is_ThreadSafe()
         {
             var containerBuilder = new ContainerBuilder();
 
-            containerBuilder.Register<IBar>(c => new Bar());
+            containerBuilder.RegisterFactory<IBar>(c => new Bar());
 
             containerBuilder.Register<Foo, Foo>();
             containerBuilder.Register<FooTestTwo, FooTestTwo>();
 
             var container = containerBuilder.Build();
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var task1 = Task.Factory.StartNew(() => Assert.True(null != container.Resolve<Foo>()));
                 var task2 = Task.Factory.StartNew(() => Assert.True(null != container.Resolve<FooTestTwo>()));
@@ -77,11 +77,11 @@ namespace LightCore.Tests.Integration
         {
             public FooTestTwo(IBar bar)
             {
-                
+
             }
         }
 
-        [Test]
+        [Fact]
         public void Bar_as_argument_will_be_reference_equal_to_the_resolved_bar()
         {
             var builder = new ContainerBuilder();
@@ -94,10 +94,10 @@ namespace LightCore.Tests.Integration
 
             var foo = container.Resolve<IFoo>(bar);
 
-            Assert.That(bar, Is.SameAs(foo.Bar));
+            bar.Should().BeSameAs(foo.Bar);
         }
 
-        [Test]
+        [Fact]
         public void Bar_as_reference_argument_Should_Not_ReUse_Previous_Cached_Arguments()
         {
             var builder = new ContainerBuilder();
@@ -111,10 +111,10 @@ namespace LightCore.Tests.Integration
             var foo = container.Resolve<IFoo>(bar);
             var fooWithOtherBarInstance = container.Resolve<IFoo>(new Bar());
 
-            Assert.That(foo.Bar, Is.Not.SameAs(fooWithOtherBarInstance.Bar));
+            bar.Should().NotBeSameAs(fooWithOtherBarInstance.Bar);
         }
 
-        [Test]
+        [Fact]
         public void A_Second_Resolve_Invocation_With_No_Arguments_Should_Not_ReUse_Previous_Cached_Reference_Arguments()
         {
             var builder = new ContainerBuilder();
@@ -125,10 +125,10 @@ namespace LightCore.Tests.Integration
             var foo = container.Resolve<IFoo>(new Bar());
             var fooTwo = container.Resolve<IFoo>();
 
-            Assert.That(fooTwo.Bar, Is.Null);
+            fooTwo.Bar.Should().BeNull();
         }
 
-        [Test]
+        [Fact]
         public void A_Second_Resolve_Invocation_With_No_Arguments_Should_Not_ReUse_Previous_Cached_Arguments()
         {
             var builder = new ContainerBuilder();
@@ -139,7 +139,7 @@ namespace LightCore.Tests.Integration
             var firstInstance = container.Resolve<TextHolder>("test");
             var secondInstance = container.Resolve<TextHolder>();
 
-            Assert.That(secondInstance.Text, Is.Null);
+            secondInstance.Text.Should().BeNull();
         }
 
         public class TextHolder
@@ -152,7 +152,7 @@ namespace LightCore.Tests.Integration
 
             public TextHolder()
             {
-                
+
             }
 
             public TextHolder(string text)
@@ -161,7 +161,7 @@ namespace LightCore.Tests.Integration
             }
         }
 
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_default_constructor_if_no_bar_is_registered()
         {
             var builder = new ContainerBuilder();
@@ -172,7 +172,7 @@ namespace LightCore.Tests.Integration
             var instance = container.Resolve<IFoo>();
         }
 
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_the_bar_only_constructor_if_bar_is_registered()
         {
             var builder = new ContainerBuilder();
@@ -181,13 +181,13 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var instance = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>();
 
-            Assert.IsNotNull(instance);
-            Assert.IsNotNull(instance.Bar);
+            actual.Should().NotBeNull();
+            actual.Bar.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_the_bar_with_arguments_constructor_if_bar_registered_and_arguments_supported()
         {
             var builder = new ContainerBuilder();
@@ -204,7 +204,7 @@ namespace LightCore.Tests.Integration
             //Assert.AreEqual(true, (instance as Foo).Arg2);
         }
 
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_bool_argument_constructor_if_only_that_argument_is_supported()
         {
             var builder = new ContainerBuilder();
@@ -212,31 +212,31 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var instance = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>() as Foo;
 
-            Assert.IsNotNull(instance);
-            Assert.AreEqual(true, (instance as Foo).Arg2);
+            actual.Should().NotBeNull();
+            actual.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_dependencies_with_injected_container()
         {
             var builder = new ContainerBuilder();
-            builder.Register<IBar>(c => new Bar());
+            builder.RegisterFactory<IBar>(c => new Bar());
 
             var container = builder.Build();
 
             var resolvedContainer = container.Resolve<IContainer>();
-            var bar = resolvedContainer.Resolve<IBar>();
+            var actual = resolvedContainer.Resolve<IBar>();
 
-            Assert.NotNull(bar);
-            Assert.IsInstanceOf<IBar>(bar);
+            actual.Should().NotBeNull();
+            actual.Should().BeOfType<Bar>();
 
-            Assert.NotNull(resolvedContainer);
-            Assert.IsInstanceOf<IContainer>(resolvedContainer);
+            resolvedContainer.Should().NotBeNull();
+            resolvedContainer.Should().BeAssignableTo<IContainer>();
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_registered_interface_registration()
         {
             var builder = new ContainerBuilder();
@@ -245,12 +245,13 @@ namespace LightCore.Tests.Integration
             builder.Register<IFoo, Foo>();
 
             var container = builder.Build();
-            var instance = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>();
 
-            Assert.IsInstanceOf<Foo>(instance);
+            actual.Should().NotBeNull();
+            actual.Should().BeOfType<Foo>();
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_registed_abstract_class()
         {
             var builder = new ContainerBuilder();
@@ -258,24 +259,25 @@ namespace LightCore.Tests.Integration
             builder.Register<FooBase, Foo>();
 
             var container = builder.Build();
-            var instance = container.Resolve<FooBase>();
+            var actual = container.Resolve<FooBase>();
 
-            Assert.IsInstanceOf<FooBase>(instance);
+            actual.Should().NotBeNull();
+            actual.Should().BeOfType<Foo>();
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_registered_class_mapped_to_itself()
         {
             var builder = new ContainerBuilder();
             builder.Register<Bar>();
 
             var container = builder.Build();
-            var instance = container.Resolve<Bar>();
+            var actual = container.Resolve<Bar>();
 
-            Assert.NotNull(instance);
+            actual.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_a_whole_object_tree()
         {
             var builder = new ContainerBuilder();
@@ -283,10 +285,11 @@ namespace LightCore.Tests.Integration
             builder.Register<IBar, Bar>();
 
             var container = builder.Build();
-            var instance = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>();
 
-            Assert.IsInstanceOf<Foo>(instance);
-            Assert.IsNotNull(instance.Bar);
+            actual.Should().NotBeNull();
+            actual.Should().BeOfType<Foo>();
+            actual.Bar.Should().NotBeNull();
         }
     }
 }

@@ -1,34 +1,33 @@
+using FluentAssertions;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.ArrayRegistrationSource
 {
-    [TestFixture]
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithArrayType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetArrayRegistrationSource(typeof(object));
+            var registrationSource = GetArrayRegistrationSource(typeof(object));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(object[])), Is.True);
+            registrationSource.SourceSupportsTypeSelector(typeof(object[])).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithAbstractType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetArrayRegistrationSource();
+            var registrationSource = GetArrayRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(FooBase)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof(FooBase)).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithConcreteType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetArrayRegistrationSource();
+            var registrationSource = GetArrayRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Foo)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof(Foo)).Should().BeFalse();
         }
     }
 }

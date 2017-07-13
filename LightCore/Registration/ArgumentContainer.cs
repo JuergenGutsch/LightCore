@@ -96,6 +96,7 @@ namespace LightCore.Registration
             if (this.NamedArguments != null
                 && this.NamedArguments.Keys.Any(k => k == parameter.Name)
                 && this.NamedArguments.Values.Any(a => parameter.ParameterType.IsInstanceOfType(a)))
+
             {
                 return true;
             }

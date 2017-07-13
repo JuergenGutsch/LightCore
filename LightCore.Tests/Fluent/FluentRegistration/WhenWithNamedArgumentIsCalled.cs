@@ -1,51 +1,49 @@
 ﻿using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.Registration;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Fluent.FluentRegistration
 {
-    [TestFixture]
     public class WhenWithNamedArgumentIsCalled : FluentFixture
     {
-        [Test]
+        [Fact]
         public void WithNull_ArgumentCountStaysOnZero()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
             fluentRegistration.WithNamedArguments(null);
 
-            Assert.That(registrationItem.Arguments.CountOfAllArguments, Is.EqualTo(0));
+            registrationItem.Arguments.CountOfAllArguments.Should().Be(0);
         }
 
-        [Test]
+        [Fact]
         public void WithOneNamedFooArgument_TheArgumentIsTheSame()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
             var key = "test";
             var foo = new Foo();
 
-            fluentRegistration.WithNamedArguments(new Dictionary<string, object> { { key, foo } });
+            fluentRegistration.WithNamedArguments(new Dictionary<string, object> {{key, foo}});
 
-            Assert.That(registrationItem.Arguments.NamedArguments.Count, Is.EqualTo(1));
-            Assert.That(registrationItem.Arguments.NamedArguments[key], Is.SameAs(foo));
+            registrationItem.Arguments.NamedArguments.Count.Should().Be(1);
+            registrationItem.Arguments.NamedArguments[key].Should().BeSameAs(foo);
         }
 
-        [Test]
+        [Fact]
         public void WithTwoNamedAnonymousTypeArguments_TheArgumentsAreCommited()
         {
             var registrationItem = new RegistrationItem();
-            var fluentRegistration = this.GetRegistration(registrationItem);
+            var fluentRegistration = GetRegistration(registrationItem);
 
-            fluentRegistration.WithNamedArguments(new { Foo = "foo", Bar = new Bar() });
+            fluentRegistration.WithNamedArguments(new {Foo = "foo", Bar = new Bar()});
 
-            Assert.That(registrationItem.Arguments.NamedArguments.Count, Is.EqualTo(2));
-            Assert.That(registrationItem.Arguments.NamedArguments["Foo"], Is.InstanceOf<string>());
-            Assert.That(registrationItem.Arguments.NamedArguments["Bar"], Is.InstanceOf<Bar>());
+            registrationItem.Arguments.NamedArguments.Count.Should().Be(2);
+            registrationItem.Arguments.NamedArguments["Foo"].Should().BeOfType<string>();
+            registrationItem.Arguments.NamedArguments["Bar"].Should().BeOfType<Bar>();
         }
     }
 }

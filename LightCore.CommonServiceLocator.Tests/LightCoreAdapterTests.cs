@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
+using FluentAssertions;
 using Microsoft.Practices.ServiceLocation;
 
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.CommonServiceLocator.Tests
 {
-    [TestFixture]
     public class LightCoreAdapterTests
     {
-        [Test]
+        [Fact]
         public void Can_resolve_one_instance()
         {
             var builder = new ContainerBuilder();
 
-            builder.Register<IDictionary<string, string>>(c => new Dictionary<string, string>());
+            builder.RegisterFactory<IDictionary<string, string>>(c => new Dictionary<string, string>());
 
             var container = builder.Build();
 
@@ -22,18 +22,18 @@ namespace LightCore.CommonServiceLocator.Tests
 
             var dictionary = locator.GetInstance(typeof(IDictionary<string, string>));
 
-            Assert.IsNotNull(dictionary);
-            Assert.IsInstanceOf<IDictionary<string, string>>(dictionary);
+            dictionary.Should().NotBeNull();
+            dictionary.Should().BeAssignableTo<IDictionary<string, string>>();
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_all_instances_of_type_object()
         {
             var builder = new ContainerBuilder();
 
             for (int i = 0; i < 10; i++)
             {
-                builder.Register(c => new object());
+                builder.RegisterFactory(c => new object());
             }
 
             var container = builder.Build();
@@ -42,11 +42,12 @@ namespace LightCore.CommonServiceLocator.Tests
 
             var instances = locator.GetAllInstances(typeof(object));
 
-            Assert.IsNotNull(instances);
-            Assert.IsInstanceOf<IEnumerable<object>>(instances);
+
+            instances.Should().NotBeNull();
+            instances.Should().BeAssignableTo<IEnumerable<object>>();
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_all_instances_generic()
         {
             var builder = new ContainerBuilder();
@@ -54,17 +55,17 @@ namespace LightCore.CommonServiceLocator.Tests
             for (int i = 0; i < 10; i++)
             {
                 builder
-                    .Register(c => new List<string>());
+                    .RegisterFactory(c => new List<string>());
             }
 
             var container = builder.Build();
 
             IServiceLocator locator = new LightCoreAdapter(container);
 
-            var instances = locator.GetAllInstances<IList<string>>();
+            var instances = locator.GetAllInstances<List<string>>().ToList();
 
-            Assert.IsNotNull(instances);
-            Assert.IsInstanceOf<IEnumerable<IList<string>>>(instances);
+            instances.Should().NotBeNull();
+            instances.Should().BeAssignableTo<List<List<string>>>();
         }
     }
 }

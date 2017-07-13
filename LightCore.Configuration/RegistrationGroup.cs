@@ -39,7 +39,7 @@ namespace LightCore.Configuration
         /// </summary>
         public RegistrationGroup()
         {
-            this.Registrations = new List<Registration>();
+            Registrations = new List<Registration>();
         }
 
         /// <summary>
@@ -51,9 +51,7 @@ namespace LightCore.Configuration
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format("Name: '{0}', Enabled: '{1}', Arguments: '{2}', Lifecycle: '{3}'",
-                                 this.Name,
-                                 this.Enabled);
+            return $"Name: '{Name}', Enabled: '{Enabled}'";
         }
     }
 }

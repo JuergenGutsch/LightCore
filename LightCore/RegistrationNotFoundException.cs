@@ -1,27 +1,17 @@
 ﻿using System;
 
-#if !SL2 && !SL3 && !CF35
-using System.Runtime.Serialization;
-#endif
-
 namespace LightCore
 {
     /// <summary>
     /// Thrown when a mapping not found for resolving a type.
     /// </summary>
-#if !SL3 && !CF35
-    [Serializable]
-#endif
     public class RegistrationNotFoundException : Exception
     {
         /// <summary>
         /// The contract type.
         /// </summary>
-        public Type ContractType
-        {
-            get;
-            private set;
-        }
+        public Type ContractType { get; private set; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
@@ -49,10 +39,11 @@ namespace LightCore
         public RegistrationNotFoundException(string message, Type contractType)
             : base(message)
         {
-            this.ContractType = contractType;
+            ContractType = contractType;
         }
 
-#if !SL2 && !SL3 && !CF35
+
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
         /// </summary>
@@ -64,16 +55,6 @@ namespace LightCore
 
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RegistrationNotFoundException"/> type.
-        /// </summary>
-        /// <param name="info">The serialization info.</param>
-        /// <param name="context">The context.</param>
-        protected RegistrationNotFoundException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
 
-        }
-#endif
     }
 }

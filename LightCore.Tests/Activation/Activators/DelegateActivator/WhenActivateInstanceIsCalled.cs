@@ -1,17 +1,14 @@
 ﻿using System;
-
+using FluentAssertions;
 using LightCore.Activation;
 using LightCore.Activation.Activators;
+using Xunit;
+using Moq;
 using LightCore.Registration;
 using LightCore.TestTypes;
 
-using Moq;
-
-using NUnit.Framework;
-
 namespace LightCore.Tests.Activation.Activators.DelegateActivator
 {
-    [TestFixture]
     public class WhenActivateInstanceIsCalled
     {
         private IActivator GetActivator(Func<IContainer, object> activatorFunction)
@@ -19,25 +16,25 @@ namespace LightCore.Tests.Activation.Activators.DelegateActivator
             return new LightCore.Activation.Activators.DelegateActivator(activatorFunction);
         }
 
-        [Test]
+        [Fact]
         public void WithFunctionAndEmptyResolutionContext_ObjectReturned()
         {
             Func<IContainer, object> activatorFunction = c => new object();
-            var delegateActivator = this.GetActivator(activatorFunction);
+            var delegateActivator = GetActivator(activatorFunction);
 
-            object result = delegateActivator.ActivateInstance(new ResolutionContext());
+            var result = delegateActivator.ActivateInstance(new ResolutionContext());
 
-            Assert.That(result, Is.InstanceOf<object>());
+            result.Should().BeOfType<object>();
         }
 
-        [Test]
+        [Fact]
         public void WithFunctionAndFullBlownResolutionContext_IFooWithDependendenciesReturned()
+
         {
             Func<IContainer, object> activatorFunction = c => new Foo(c.Resolve<IBar>());
             var delegateActivator = this.GetActivator(activatorFunction);
 
             var containerMock = new Mock<IContainer>();
-
             containerMock
                 .Setup(c => c.Resolve<IBar>())
                 .Returns(new Bar());
@@ -45,8 +42,36 @@ namespace LightCore.Tests.Activation.Activators.DelegateActivator
             var result = (IFoo)delegateActivator.ActivateInstance(
                 new ResolutionContext(containerMock.Object, new RegistrationContainer()));
 
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Bar, Is.Not.Null);
+            result.Should().NotBeNull();
+            result.Bar.Should().NotBeNull();
         }
     }
+
+    //internal interface IFoo
+    //{
+    //    IBar Bar { get; }
+    //}
+
+    //internal class Bar : IBar
+    //{
+    //}
+
+    //internal interface IBar
+    //{
+    //}
+
+    //internal class Foo : IFoo
+    //{
+    //    private IBar _bar;
+
+    //    public Foo(IBar bar)
+    //    {
+    //        _bar = bar;
+    //    }
+
+    //    public IBar Bar
+    //    {
+    //        get => _bar;
+    //    }
+    //}
 }

@@ -1,32 +1,30 @@
-using LightCore.Activation.Activators;
+using FluentAssertions;
 using LightCore.Lifecycle;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.ArrayRegistrationSource
 {
-    [TestFixture]
     public class WhenGetRegistrationForCoreIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithArrayType_RegistrationItemReturned()
         {
-            var registrationSource = this.GetArrayRegistrationSource(typeof(IFoo));
+            var registrationSource = GetArrayRegistrationSource(typeof (IFoo));
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof(IFoo[]), null), Is.Not.Null);
+            registrationSource.GetRegistrationFor(typeof (IFoo[]), null).Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void WithArrayType_RegistrationItemReturnedAndHoldsRightData()
         {
-            var registrationSource = this.GetArrayRegistrationSource(typeof(IBar));
+            var registrationSource = GetArrayRegistrationSource(typeof (IBar));
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof(IBar[]), null);
+            var registrationItem = registrationSource.GetRegistrationFor(typeof (IBar[]), null);
 
-            Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(IBar[])));
-            Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(IBar[])));
-            Assert.That(registrationItem.Lifecycle, Is.TypeOf<TransientLifecycle>());
+            registrationItem.ContractType.Should().BeAssignableTo<IBar[]>();
+            registrationItem.ImplementationType.Should().BeAssignableTo<IBar[]>();
+            registrationItem.Lifecycle.Should().BeOfType<TransientLifecycle>();
         }
     }
 }

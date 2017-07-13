@@ -1,66 +1,81 @@
-﻿using LightCore.TestTypes;
-
-using NUnit.Framework;
-
+﻿using System;
+using LightCore.TestTypes;
 using System.Collections.Generic;
+using FluentAssertions;
+using Xunit;
 
 namespace LightCore.Configuration.Tests
 {
-    [TestFixture]
     public class GroupConfigurationTests
     {
-        [Test]
+        [Fact]
         public void Exception_is_thrown_when_a_given_active_group_was_not_found()
         {
-            var configuration = new LightCoreConfiguration();
-            configuration.ActiveRegistrationGroups = "test";
+            lock (Locker.Lock)
+            {
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "test",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
-            configuration.RegistrationGroups = GetTestRegistrationGroups();
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            Assert.Throws<ActiveGroupNotFoundException>(
-                () => RegistrationLoader.Instance.Register(builder, configuration));
+                Action act = () => RegistrationLoader.Instance.Register(builder, configuration);
+
+                act.ShouldThrow<ActiveGroupNotFoundException>();
+            }
         }
 
-        [Test]
+        [Fact]
         public void Can_register_group_configurations()
         {
-            var configuration = new LightCoreConfiguration();
-            configuration.ActiveRegistrationGroups = "Sql";
+            lock (Locker.Lock)
+            {
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Sql",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
-            configuration.RegistrationGroups = GetTestRegistrationGroups();
 
-            var builder = new ContainerBuilder();
+                var builder = new ContainerBuilder();
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            builder.Build();
+                builder.Build();
+            }
         }
 
-        [Test]
+        [Fact]
         public void Can_resolve_active_group_configuration()
         {
-            var configuration = new LightCoreConfiguration();
-            configuration.ActiveRegistrationGroups = "Xml";
+            lock (Locker.Lock)
+            {
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Xml",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
-            configuration.RegistrationGroups = GetTestRegistrationGroups();
+                var builder = new ContainerBuilder();
 
-            var builder = new ContainerBuilder();
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                var container = builder.Build();
 
-            var container = builder.Build();
+                var actual = container.Resolve<IFoo>();
 
-            Assert.IsInstanceOf<XmlFoo>(container.Resolve<IFoo>());
+                actual.Should().BeOfType<XmlFoo>();
+            }
         }
 
-        [Test]
+        [Fact]
         public void Can_register_group_configurations_registered_by_code()
         {
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder { ActiveRegistrationGroups = "Xml" };
 
-            builder.ActiveRegistrationGroups = "Xml";
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
             builder.Register<IFoo, XmlFoo>().WithGroup("Xml");
@@ -69,16 +84,16 @@ namespace LightCore.Configuration.Tests
             builder.Register<IFoo, SqlFoo>().WithGroup("Sql");
 
             var container = builder.Build();
+            var actual = container.Resolve<IFoo>();
 
-            Assert.IsInstanceOf<XmlFoo>(container.Resolve<IFoo>());
+            actual.Should().BeOfType<XmlFoo>();
         }
 
-        [Test]
+        [Fact]
         public void Can_register_multiple_group_configurations_registered_by_code()
         {
-            var builder = new ContainerBuilder();
+            var builder = new ContainerBuilder { ActiveRegistrationGroups = "Xml, Test" };
 
-            builder.ActiveRegistrationGroups = "Xml, Test";
 
             builder.Register<IBar, XmlBar>().WithGroup("Xml");
             builder.Register<IFoo, XmlFoo>().WithGroup("Xml");
@@ -91,26 +106,36 @@ namespace LightCore.Configuration.Tests
 
             var container = builder.Build();
 
-            Assert.IsInstanceOf<XmlFoo>(container.Resolve<IFoo>());
-            Assert.IsInstanceOf<TestLorem>(container.Resolve<ILorem>());
+            var actualFoo = container.Resolve<IFoo>();
+            var actualLorem = container.Resolve<ILorem>();
+
+            actualFoo.Should().BeOfType<XmlFoo>();
+            actualLorem.Should().BeOfType<TestLorem>();
         }
 
-        [Test]
+        [Fact]
         public void Can_register_multiple_group_configurations_registered_configuration()
         {
-            var configuration = new LightCoreConfiguration();
-            configuration.ActiveRegistrationGroups = "Xml, Test";
+            lock (Locker.Lock)
+            {
+                var configuration = new LightCoreConfiguration
+                {
+                    ActiveRegistrationGroups = "Xml, Test",
+                    RegistrationGroups = GetTestRegistrationGroups()
+                };
 
-            configuration.RegistrationGroups = GetTestRegistrationGroups();
+                var builder = new ContainerBuilder();
 
-            var builder = new ContainerBuilder();
+                RegistrationLoader.Instance.Register(builder, configuration);
 
-            RegistrationLoader.Instance.Register(builder, configuration);
+                var container = builder.Build();
 
-            var container = builder.Build();
+                var actualFoo = container.Resolve<IFoo>();
+                var actualLorem = container.Resolve<ILorem>();
 
-            Assert.IsInstanceOf<XmlFoo>(container.Resolve<IFoo>());
-            Assert.IsInstanceOf<TestLorem>(container.Resolve<ILorem>());
+                actualFoo.Should().BeOfType<XmlFoo>();
+                actualLorem.Should().BeOfType<TestLorem>();
+            }
         }
 
         private static List<RegistrationGroup> GetTestRegistrationGroups()

@@ -1,36 +1,34 @@
 ﻿using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.EnumerableRegistrationSource
 {
-    [TestFixture]
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithEnumerableType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetEnumerableRegistrationSource(typeof(object));
+            var registrationSource = GetEnumerableRegistrationSource(typeof (object));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IEnumerable<object>)), Is.True);
+            registrationSource.SourceSupportsTypeSelector(typeof (IEnumerable<object>)).Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithAbstractType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetEnumerableRegistrationSource();
+            var registrationSource = GetEnumerableRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(FooBase)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof (FooBase)).Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithConcreteType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetEnumerableRegistrationSource();
+            var registrationSource = GetEnumerableRegistrationSource();
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Foo)), Is.False);
+            registrationSource.SourceSupportsTypeSelector(typeof (Foo)).Should().BeFalse();
         }
     }
 }

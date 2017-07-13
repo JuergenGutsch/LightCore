@@ -24,13 +24,10 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsArray
-                                       &&
-                                       (this._registrationContainer.HasRegistration(contractType.GetElementType())
-                                        ||
-                                        // Use ConcreteTypeRegistrationSource.
-                                        (this._registrationContainer.IsSupportedByRegistrationSource(
-                                            contractType.GetElementType())));
+                    return contractType => contractType.IsArray &&
+                                           (_registrationContainer.HasRegistration(contractType.GetElementType()) ||
+                                            (_registrationContainer.IsSupportedByRegistrationSource(
+                                                contractType.GetElementType())));
             }
         }
 
@@ -53,9 +50,9 @@ namespace LightCore.Registration.RegistrationSource
         public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new DelegateActivator(c => ResolveArray(contractType, c)),
-                           Lifecycle = new TransientLifecycle()
+            {
+                Activator = new DelegateActivator(c => ResolveArray(contractType, c)),
+                Lifecycle = new TransientLifecycle()
             };
         }
 

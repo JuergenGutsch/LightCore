@@ -13,19 +13,12 @@ namespace LightCore.Registration
         /// <summary>
         /// Contains all registrations.
         /// </summary>
-        IEnumerable<RegistrationItem> AllRegistrations
-        {
-            get;
-        }
+        IEnumerable<RegistrationItem> AllRegistrations { get; }
 
         /// <summary>
         /// Contains all registration sources.
         /// </summary>
-        IList<IRegistrationSource> RegistrationSources
-        {
-            get;
-            set;
-        }
+        IList<IRegistrationSource> RegistrationSources { get; set; }
 
         /// <summary>
         /// Try get a registration based upon a contract type.

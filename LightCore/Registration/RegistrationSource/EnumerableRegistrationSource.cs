@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,13 +32,14 @@ namespace LightCore.Registration.RegistrationSource
             get
             {
                 return contractType => contractType.IsGenericEnumerable()
-                                       &&
-                                       ((this._registrationContainer.HasRegistration(
-                                           contractType.GetGenericArguments().FirstOrDefault()))
-                                        ||
-                    // Use ConcreteTypeRegistrationSource.
-                                        (this._registrationContainer.IsSupportedByRegistrationSource(
-                                            contractType.GetGenericArguments().FirstOrDefault())));
+                        &&
+                        ((this._registrationContainer.HasRegistration(
+                            contractType.GetGenericArguments().FirstOrDefault()))
+                         ||
+                         // Use ConcreteTypeRegistrationSource.
+                         (this._registrationContainer.IsSupportedByRegistrationSource(
+                             contractType.GetGenericArguments().FirstOrDefault())));
+
             }
         }
 
@@ -47,7 +49,7 @@ namespace LightCore.Registration.RegistrationSource
         /// <param name="registrationContainer">The registration container.</param>
         public EnumerableRegistrationSource(IRegistrationContainer registrationContainer)
         {
-            this._registrationContainer = registrationContainer;
+            _registrationContainer = registrationContainer;
         }
 
         /// <summary>
@@ -59,10 +61,10 @@ namespace LightCore.Registration.RegistrationSource
         public RegistrationItem GetRegistrationFor(Type contractType, IContainer container)
         {
             return new RegistrationItem(contractType)
-                       {
-                           Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c)),
-                           Lifecycle = new TransientLifecycle()
-                       };
+            {
+                Activator = new DelegateActivator(c => ResolveEnumerable(contractType, c)),
+                Lifecycle = new TransientLifecycle()
+            };
         }
 
         /// <summary>

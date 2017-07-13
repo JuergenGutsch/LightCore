@@ -1,13 +1,12 @@
-﻿using LightCore.TestTypes;
-
-using NUnit.Framework;
+﻿using FluentAssertions;
+using LightCore.TestTypes;
+using Xunit;
 
 namespace LightCore.Tests.Integration
 {
-    [TestFixture]
     public class ResolvingWithArgumentsTests
     {
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_bool_argument_constructor_if_only_that_argument_is_supported()
         {
             var builder = new ContainerBuilder();
@@ -15,13 +14,13 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var instance = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>() as Foo;
 
-            Assert.IsNotNull(instance);
-            Assert.AreEqual(true, (instance as Foo).Arg2);
+            actual.Should().NotBeNull();
+            actual.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_instances_with_arguments()
         {
             var builder = new ContainerBuilder();
@@ -34,28 +33,29 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>() as Foo;
 
-            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
-            Assert.AreEqual(true, ((Foo)foo).Arg2);
+            actual.Should().NotBeNull();
+            actual.Arg1.Should().Be("Peter");
+            actual.Arg2.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void Foo_is_resolved_with_IBar_argument_constructor_if_Bar_argument_is_provided()
         {
             var builder = new ContainerBuilder();
 
-            Bar bar = new Bar();
+            var bar = new Bar();
             builder.Register<IFoo, Foo>().WithArguments(bar);
 
             var container = builder.Build();
 
             var instance = container.Resolve<IFoo>();
 
-            Assert.AreSame(bar, instance.Bar);
+            bar.Should().BeSameAs(instance.Bar);
         }
 
-        [Test]
+        [Fact]
         public void Container_resolves_instances_with_dependencies_and_arguments()
         {
             var builder = new ContainerBuilder();
@@ -64,11 +64,11 @@ namespace LightCore.Tests.Integration
 
             var container = builder.Build();
 
-            var foo = container.Resolve<IFoo>();
+            var actual = container.Resolve<IFoo>() as Foo;
 
-            Assert.IsNotNull(foo.Bar);
-            Assert.AreEqual("Peter", ((Foo)foo).Arg1);
-            Assert.AreEqual(true, ((Foo)foo).Arg2);
+            actual.Should().NotBeNull();
+            actual.Arg1.Should().Be("Peter");
+            actual.Arg2.Should().BeTrue();
         }
     }
 }

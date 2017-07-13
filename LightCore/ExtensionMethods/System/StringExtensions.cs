@@ -29,31 +29,6 @@ namespace LightCore.ExtensionMethods.System
         /// <returns>An instance of the specified type.</returns>
         public static object ToOrDefault(this string value, Type typeToConvert)
         {
-#if SL3 || CF35
-            try
-            {
-                switch (Type.GetTypeCode(typeToConvert))
-                {
-                    case TypeCode.Int32:
-                        return int.Parse(value);
-                    case TypeCode.Boolean:
-                        return bool.Parse(value);
-                    case TypeCode.DateTime:
-                        return DateTime.Parse(value);
-                    default:
-                        if (typeToConvert == typeof(Guid))
-                        {
-                            return new Guid(value);
-                        }
-
-                        return value;
-                }
-            }
-            catch (Exception)
-            {
-                return value;
-            }
-#else
             object returnValue = value;
 
             // If there is no source string, break.
@@ -63,7 +38,7 @@ namespace LightCore.ExtensionMethods.System
             }
 
             // Check whether string can be converted to the target type. If not, break.
-            TypeConverter converter = TypeDescriptor.GetConverter(typeToConvert);
+            var converter = TypeDescriptor.GetConverter(typeToConvert);
             if (!converter.CanConvertFrom(typeof(string)))
             {
                 return returnValue;
@@ -80,7 +55,7 @@ namespace LightCore.ExtensionMethods.System
 
             // Return to the caller.
             return returnValue;
-#endif
+
         }
     }
 }

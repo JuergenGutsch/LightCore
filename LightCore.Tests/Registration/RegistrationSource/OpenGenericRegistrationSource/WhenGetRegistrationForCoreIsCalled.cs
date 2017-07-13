@@ -1,32 +1,33 @@
-﻿using LightCore.Activation.Activators;
+﻿using FluentAssertions;
+using LightCore.Activation.Activators;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.OpenGenericRegistrationSource
 {
-    [TestFixture]
     public class WhenGetRegistrationForCoreIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithOpenGenericType_RegistrationItemReturned()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<,>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof(IRepository<,>), typeof(Repository<,>));
 
-            Assert.That(registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), this.BootStrapContainer), Is.Not.Null);
+            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo, int>), BootStrapContainer);
+
+            actual.Should().NotBeNull();
         }
 
-        [Test]
+        [Fact]
         public void WithOpenGenericType_RegistrationItemReturnedAndHoldsRightData()
         {
-            var registrationSource = this.GetOpenGenericRegistrationSource(typeof(IRepository<>), typeof(Repository<>));
+            var registrationSource = GetOpenGenericRegistrationSource(typeof(IRepository<>), typeof(Repository<>));
 
-            var registrationItem = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), this.BootStrapContainer);
+            var actual = registrationSource.GetRegistrationFor(typeof(IRepository<Foo>), BootStrapContainer);
 
-            Assert.That(registrationItem, Is.Not.Null);
-            Assert.That(registrationItem.ContractType, Is.EqualTo(typeof(IRepository<Foo>)));
-            Assert.That(registrationItem.ImplementationType, Is.EqualTo(typeof(Repository<Foo>)));
-            Assert.That(registrationItem.Activator, Is.TypeOf<ReflectionActivator>());
+            actual.Should().NotBeNull();
+            actual.ContractType.Should().BeAssignableTo<IRepository<Foo>>();
+            actual.ImplementationType.Should().BeAssignableTo<Repository<Foo>>();
+            actual.Activator.Should().BeOfType<ReflectionActivator>();
         }
     }
 }

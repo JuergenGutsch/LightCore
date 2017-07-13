@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Collections.Generic;
 
 using LightCore.ExtensionMethods.System;
@@ -45,12 +46,28 @@ namespace LightCore.Fluent
         /// <returns>The instance itself to get fluent working.</returns>
         public IFluentRegistration ControlledBy(Type type)
         {
-            if (!typeof(ILifecycle).IsAssignableFrom(type))
+            if (!typeof(ILifecycle).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
             {
                 throw new ArgumentException(Resources.PassedTypeDoesNotImplementILifecycleFormat.FormatWith(type));
             }
 
             this._registrationItem.Lifecycle = (ILifecycle)Activator.CreateInstance(type);
+            return this;
+        }
+
+        /// <summary>
+        /// Treat the current registration to use the passed lifecycle. (e.g. SingletonLifecycle, TrainsientLifecycle, ...).
+        /// </summary>
+        /// <param name="livecycle">The lifecycle instance</param>
+        /// <returns>The instance itself to get fluent working.</returns>
+        public IFluentRegistration ControlledBy(ILifecycle livecycle)
+        {
+            if (livecycle == null)
+            {
+                throw new ArgumentNullException(nameof(livecycle));
+            }
+
+            this._registrationItem.Lifecycle = livecycle;
             return this;
         }
 

@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using LightCore.Performance.UseCases;
 
 namespace LightCore.Performance
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            int iterations = 100000;
+            var iterations = 100000;
 
             Console.WriteLine("Running {0} iterations for each use case.", iterations);
 
-            int padding = 50;
+            var padding = 50;
 
             var useCases = new List<UseCase>
-                               {
-                                   new PlainUseCase(),
-                                   new FunqUseCase(),
-                                   new LightCoreUseCase(),
-                                   new UnityUseCase(),
-                                   new LightCoreDelegateUseCase(),
-                                   new NinjectUseCase(),
-                                   new AutofacUseCase()
-                               };
+            {
+                new PlainUseCase(),
+                new FunqUseCase(),
+                new LightCoreUseCase(),
+                new UnityUseCase(),
+                new LightCoreDelegateUseCase(),
+                new NinjectUseCase(),
+                new AutofacUseCase()
+            };
 
             useCases.ForEach(u => PerformUseCase(u, padding, iterations));
 
@@ -48,7 +47,7 @@ namespace LightCore.Performance
 
             var watch = Stopwatch.StartNew();
 
-            for (int i = 0; i < iterations; i++)
+            for (var i = 0; i < iterations; i++)
             {
                 action();
             }

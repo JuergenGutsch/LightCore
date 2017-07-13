@@ -5,7 +5,7 @@ namespace LightCore.Performance.UseCases
 {
     public class LightCoreDelegateUseCase : UseCase
     {
-        private readonly IContainer _container;
+        private readonly  IContainer _container;
 
         public LightCoreDelegateUseCase()
         {

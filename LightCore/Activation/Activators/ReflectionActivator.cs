@@ -40,9 +40,9 @@ namespace LightCore.Activation.Activators
         ///<param name="argumentCollector">The argument collector.</param>
         internal ReflectionActivator(Type implementationType, IConstructorSelector constructorSelector, IArgumentCollector argumentCollector)
         {
-            this._implementationType = implementationType;
-            this._constructorSelector = constructorSelector;
-            this._argumentCollector = argumentCollector;
+            _implementationType = implementationType;
+            _constructorSelector = constructorSelector;
+            _argumentCollector = argumentCollector;
         }
 
         /// <summary>
@@ -52,16 +52,16 @@ namespace LightCore.Activation.Activators
         /// <returns>The activated instance.</returns>
         public object ActivateInstance(ResolutionContext resolutionContext)
         {
-            if (this._container == null)
+            if (_container == null)
             {
-                this._container = resolutionContext.Container;
+                _container = resolutionContext.Container;
             }
 
             var constructors = _implementationType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-            var finalConstructor = this._constructorSelector.SelectConstructor(constructors, resolutionContext);
+            var finalConstructor = _constructorSelector.SelectConstructor(constructors, resolutionContext);
 
-            object[] finalArguments = this._argumentCollector.CollectArguments(
-                this._container.Resolve,
+            var finalArguments = _argumentCollector.CollectArguments(
+                _container.Resolve,
                 finalConstructor.GetParameters(),
                 resolutionContext);
 
@@ -69,8 +69,7 @@ namespace LightCore.Activation.Activators
             {
                 throw new ResolutionFailedException
                     (Resources.NoSuitableConstructorFoundFormat.FormatWith(_implementationType),
-                     this._implementationType);
-
+                     _implementationType);
             }
 
             return finalConstructor.Invoke(finalArguments);

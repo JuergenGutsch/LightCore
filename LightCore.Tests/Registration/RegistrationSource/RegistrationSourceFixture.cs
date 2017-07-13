@@ -12,14 +12,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
         {
             var builder = new ContainerBuilder();
 
-            this.BootStrapContainer = builder.Build();
+            BootStrapContainer = builder.Build();
         }
 
-        internal IContainer BootStrapContainer
-        {
-            get;
-            set;
-        }
+        internal IContainer BootStrapContainer { get; set; }
 
         internal IRegistrationSource GetConcreteRegistrationSource()
         {
@@ -29,10 +25,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
         internal IRegistrationSource GetEnumerableRegistrationSource()
         {
             return
-                new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource( new RegistrationContainer() );
+                new LightCore.Registration.RegistrationSource.EnumerableRegistrationSource(new RegistrationContainer());
         }
 
-        internal IRegistrationSource GetEnumerableRegistrationSource( Type typeToRegister )
+        internal IRegistrationSource GetEnumerableRegistrationSource(Type typeToRegister)
         {
             var registrationContainer = new RegistrationContainer();
             registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
@@ -43,10 +39,10 @@ namespace LightCore.Tests.Registration.RegistrationSource
         internal IRegistrationSource GetArrayRegistrationSource()
         {
             return
-                new LightCore.Registration.RegistrationSource.ArrayRegistrationSource( new RegistrationContainer() );
+                new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(new RegistrationContainer());
         }
 
-        internal IRegistrationSource GetArrayRegistrationSource( Type typeToRegister )
+        internal IRegistrationSource GetArrayRegistrationSource(Type typeToRegister)
         {
             var registrationContainer = new RegistrationContainer();
             registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
@@ -54,27 +50,27 @@ namespace LightCore.Tests.Registration.RegistrationSource
             return new LightCore.Registration.RegistrationSource.ArrayRegistrationSource(registrationContainer);
         }
 
-        internal IRegistrationSource GetFactoryRegistrationSource( Type typeToRegister )
+        internal IRegistrationSource GetFactoryRegistrationSource(Type typeToRegister)
         {
-                      var registrationContainer = new RegistrationContainer();
+            var registrationContainer = new RegistrationContainer();
             registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));
 
             return new LightCore.Registration.RegistrationSource.FactoryRegistrationSource(registrationContainer);
         }
 
-        internal IRegistrationSource GetOpenGenericRegistrationSource( Type contractType, Type implementationType )
+        internal IRegistrationSource GetOpenGenericRegistrationSource(Type contractType, Type implementationType)
         {
             var registrationContainer = new RegistrationContainer();
             registrationContainer.AddRegistration(new RegistrationItem(contractType)
-                                                      {
-                                                          ImplementationType = implementationType,
-                                                          Lifecycle = new TransientLifecycle()
-                                                      });
+            {
+                ImplementationType = implementationType,
+                Lifecycle = new TransientLifecycle()
+            });
 
             return new LightCore.Registration.RegistrationSource.OpenGenericRegistrationSource(registrationContainer);
         }
 
-        internal IRegistrationSource GetLazyRegistrationSource( Type typeToRegister )
+        internal IRegistrationSource GetLazyRegistrationSource(Type typeToRegister)
         {
             var registrationContainer = new RegistrationContainer();
             registrationContainer.AddRegistration(new RegistrationItem(typeToRegister));

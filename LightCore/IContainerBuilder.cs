@@ -54,7 +54,15 @@ namespace LightCore
         /// <typeparam name="TInstance">The type of the instance.</typeparam>
         /// <param name="instance">The instance to register.</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        IFluentRegistration Register<TInstance>(TInstance instance);
+        IFluentRegistration RegisterInstance<TInstance>(TInstance instance);
+
+        /// <summary>
+        /// Registers a type an instance.
+        /// </summary>
+        /// <param name="contractType">The type of the contract</param>
+        /// <param name="instance">Instance to return</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes fluent registration.</returns>
+        IFluentRegistration RegisterInstance(Type contractType, object instance);
 
         /// <summary>
         /// Registers a contract with an activator function.
@@ -62,7 +70,15 @@ namespace LightCore
         /// <typeparam name="TContract">The type of the contract.</typeparam>
         /// <param name="activatorFunction">The activator as function..</param>
         /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
-        IFluentRegistration Register<TContract>(Func<IContainer, TContract> activatorFunction);
+        IFluentRegistration RegisterFactory<TContract>(Func<IContainer, TContract> activatorFunction);
+
+        /// <summary>
+        /// Registers a contract with an activator function.
+        /// </summary>
+        /// <param name="contractType">The type of the contract</param>
+        /// <param name="activatorFunction">The activator as function..</param>
+        /// <returns>An instance of <see cref="IFluentRegistration"  /> that exposes a fluent interface for registration configuration.</returns>
+        IFluentRegistration RegisterFactory(Type contractType, Func<IContainer, object> activatorFunction);
 
         /// <summary>
         /// Registers a contract with its implementationtype.

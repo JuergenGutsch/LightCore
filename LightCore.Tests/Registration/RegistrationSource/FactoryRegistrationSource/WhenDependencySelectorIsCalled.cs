@@ -1,45 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using FluentAssertions;
 using LightCore.TestTypes;
-
-using NUnit.Framework;
+using Xunit;
 
 namespace LightCore.Tests.Registration.RegistrationSource.FactoryRegistrationSource
 {
-    [TestFixture]
     public class WhenDependencySelectorIsCalled : RegistrationSourceFixture
     {
-        [Test]
+        [Fact]
         public void WithNoFunctionType_TheSourceCannotHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(object));
+            var registrationSource = GetFactoryRegistrationSource(typeof (object));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(IEnumerable<object>)), Is.False);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (IEnumerable<object>));
+
+            actual.Should().BeFalse();
         }
 
-        [Test]
+        [Fact]
         public void WithFunctionType_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<IFoo>)), Is.True);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<IFoo>));
+
+            actual.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithFunctionTypePlusArguments_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<string, IFoo>)), Is.True);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<string, IFoo>));
+
+            actual.Should().BeTrue();
         }
 
-        [Test]
+        [Fact]
         public void WithFunctionTypePlusTwoArguments_TheSourceCanHandle()
         {
-            var registrationSource = this.GetFactoryRegistrationSource(typeof(IFoo));
+            var registrationSource = GetFactoryRegistrationSource(typeof (IFoo));
 
-            Assert.That(registrationSource.SourceSupportsTypeSelector(typeof(Func<string, bool, IFoo>)), Is.True);
+            var actual = registrationSource.SourceSupportsTypeSelector(typeof (Func<string, bool, IFoo>));
+
+            actual.Should().BeTrue();
         }
     }
 }
