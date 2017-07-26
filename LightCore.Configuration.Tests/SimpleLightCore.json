@@ -1,0 +1,15 @@
+﻿{
+  "Registrations": [
+    {
+      "Name": "MyRepository",
+      "ContractType": "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+      "ImplementationType": "LightCore.TestTypes.XmlFoo, LightCore.TestTypes"
+    },
+    {
+      "Name": "MyRepository",
+      "ContractType": "LightCore.TestTypes.IBar, LightCore.TestTypes",
+      "ImplementationType": "LightCore.TestTypes.XmlBar, LightCore.TestTypes"
+    }
+  ]
+
+}

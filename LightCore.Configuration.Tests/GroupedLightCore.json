@@ -1,0 +1,59 @@
+﻿{
+  "ActiveRegistrationGroups": [ "Xml, Test" ],
+  "RegistrationGroups": [
+    {
+      "Name": "Xml",
+      "Enabled": true,
+      "Registrations": [
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.XmlFoo, LightCore.TestTypes"
+        },
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.IBar, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.XmlBar, LightCore.TestTypes"
+        }
+      ]
+    },
+    {
+      "Name": "Sql",
+      "Enabled": true,
+      "Registrations": [
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.IFoo, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.SqlFoo, LightCore.TestTypes"
+        },
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.IBar, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.SqlBar, LightCore.TestTypes"
+        }
+      ]
+    },
+    {
+      "Name": "Lalala",
+      "Enabled": true,
+      "Registrations": [
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.ILorem, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.Lorem, LightCore.TestTypes"
+        }
+      ]
+    },
+    {
+      "Name": "Test",
+      "Enabled": true,
+      "Registrations": [
+        {
+          "Name": "MyRepository",
+          "ContractType": "LightCore.TestTypes.ILorem, LightCore.TestTypes",
+          "ImplementationType": "LightCore.TestTypes.TestLorem, LightCore.TestTypes"
+        }
+      ]
+    }
+  ]
+}
