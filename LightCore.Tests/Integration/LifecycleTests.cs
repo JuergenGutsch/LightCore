@@ -10,7 +10,7 @@ namespace LightCore.Tests.Integration
 {
     public class LifecycleTests
     {
-        [Fact(Skip = "Not yet threadd save")]
+        [Fact]
         public void ThreadSingletonShouldBecollectedwhenThreadFinished()
         {
             var builder = new ContainerBuilder();
@@ -64,14 +64,14 @@ namespace LightCore.Tests.Integration
             ReferenceEquals(foo1, foo2).Should().BeTrue();
         }
         
-        [Fact(Skip = "Not yet threadd save")]
+        [Fact]
         public void Instance_is_reused_on_same_thread_when_controlled_by_threadsingleton_lifecycle()
         {
             var builder = new ContainerBuilder();
 
-            builder.DefaultControlledBy<ThreadSingletonLifecycle>();
-            builder.Register<IFoo, Foo>();
-            builder.Register<IBar, Bar>();
+            //builder.DefaultControlledBy<ThreadSingletonLifecycle>();
+            builder.Register<IFoo, Foo>().ControlledBy(new ThreadSingletonLifecycle());
+            builder.Register<IBar, Bar>().ControlledBy(new ThreadSingletonLifecycle());
 
             var container = builder.Build();
 

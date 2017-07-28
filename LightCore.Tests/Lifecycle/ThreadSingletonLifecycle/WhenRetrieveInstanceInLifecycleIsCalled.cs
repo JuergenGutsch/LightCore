@@ -7,16 +7,15 @@ namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
     public class WhenRetrieveInstanceInLifecycleIsCalled : LifecycleFixture
     {
 
-        [Fact(Skip = "Not yet threadd save")]
+        [Fact]
         public void WithActivationFunction_DifferentObjectsPerThreadAreReturned()
         {
-            var lifecycle = new LightCore.Lifecycle.ThreadSingletonLifecycle();
             var factory = this.GetActivationFactory();
 
-            var threadData = new ThreadData(lifecycle, factory);
+            var threadData = new ThreadData(new LightCore.Lifecycle.ThreadSingletonLifecycle(), factory);
             var thread = new Thread(threadData.ResolveFoosWithLifecycle);
 
-            var threadDataTwo = new ThreadData(lifecycle, factory);
+            var threadDataTwo = new ThreadData(new LightCore.Lifecycle.ThreadSingletonLifecycle(), factory);
             var threadTwo = new Thread(threadDataTwo.ResolveFoosWithLifecycle);
 
             thread.Start();
