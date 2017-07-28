@@ -218,13 +218,8 @@ namespace LightCore.Configuration
             // Type could not be loaded, throw exception with detailed message.
             if (type == null)
             {
-#if false
-                throw new XamlRegistrationException(
-                    Resources.CouldNotLoadTypeFormat.FormatWith(typeName));
-#else
                 throw new JsonRegistrationException(
                     Resources.CouldNotLoadTypeFormat.FormatWith(typeName));
-#endif
             }
 
             // Return type to the caller.
