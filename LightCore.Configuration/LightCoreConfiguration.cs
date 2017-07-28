@@ -112,30 +112,5 @@ namespace LightCore.Configuration
             Registrations = new List<Registration>();
             RegistrationGroups = new List<RegistrationGroup>();
         }
-
-#if false
-        /// <summary>
-        /// Gets the configuration instance.
-        /// </summary>
-        /// <value>The configuration instance.</value>
-        internal static LightCoreConfiguration Instance
-        {
-            get
-            {
-                const string sectionName = "LightCoreConfiguration";
-
-                var mod = new JsonRegistrationModule();
-                
-                var configSectionHandler = (XamlConfigSectionHandler)ConfigurationManager.GetSection(sectionName);
-
-                if (configSectionHandler == null)
-                {
-                    throw new ArgumentException(string.Format(Resources.SectionNotFoundFormat, sectionName));
-                }
-
-                return configSectionHandler.GetInstance<LightCoreConfiguration>();
-            }
-        }
-#endif
     }
 }

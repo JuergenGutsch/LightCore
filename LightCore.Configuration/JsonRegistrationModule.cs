@@ -6,8 +6,6 @@ namespace LightCore.Configuration
 {
     public class JsonRegistrationModule : RegistrationModule
     {
-        private readonly LightCoreConfiguration _configuration;
-
         public JsonRegistrationModule(string configFilePath = "LightCore.json")
         {
             if (!File.Exists(configFilePath))
@@ -18,16 +16,18 @@ namespace LightCore.Configuration
             {
                 using (var sr = new StreamReader(stream))
                 {
-                    _configuration = JsonConvert.DeserializeObject<LightCoreConfiguration>(sr.ReadToEnd());
+                    Configuration = JsonConvert.DeserializeObject<LightCoreConfiguration>(sr.ReadToEnd());
                 }
             }
         }
+
+        public LightCoreConfiguration Configuration { get; }
 
         public override void Register(IContainerBuilder containerBuilder)
         {
             RegistrationLoader
                 .Instance
-                .Register(containerBuilder, _configuration);
+                .Register(containerBuilder, Configuration);
         }
     }
 }

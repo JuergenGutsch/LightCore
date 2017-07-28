@@ -1,5 +1,5 @@
 ﻿{
-  "ActiveRegistrationGroups": [ "Xml, Test" ],
+  "ActiveRegistrationGroups": "Xml,Test",
   "RegistrationGroups": [
     {
       "Name": "Xml",
