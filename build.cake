@@ -57,7 +57,7 @@ Task("DotNetPack")
 	});
 
 Task("Default")
-	.IsDependentOn("NuGetRestore")
+	.IsDependentOn("DotNetPack")
 	.Does(() =>
 	{
 	  Information("You build is done! :-)");
