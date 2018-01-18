@@ -53,11 +53,26 @@ Task("DotNetTest")
 Task("DotNetPack")
 	.IsDependentOn("DotNetTest")
 	.Does(() => {
-		// comming soon
+		
+		var settings = new DotNetCorePackSettings
+		{
+			Configuration = "Release",
+			OutputDirectory = "./artifacts/"
+		};
+
+		DotNetCorePack("./LightCore.sln", settings);
+	});
+
+Task("DotNetPush")
+	.IsDependentOn("DotNetPack")
+	.Does(() => {
+		
+		//
+
 	});
 
 Task("Default")
-	.IsDependentOn("DotNetPack")
+	.IsDependentOn("DotNetPush")
 	.Does(() =>
 	{
 	  Information("You build is done! :-)");
