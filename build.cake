@@ -1,8 +1,17 @@
 #tool "nuget:?package=xunit.runner.console"
 
+using Cake.Common.Tools.DotNetCore;
+
 var target = Argument("target", "Default");
 
+
+Task("Clean")
+	.Does(() => {
+		//DotNetCoreClean("./LightCore.sln");
+	});
+
 Task("NuGetRestore")
+	.IsDependentOn("Clean")
 	.Does(() => 
 	{	
 		// this hack is needed until 'dotnet restore' supports restoring
@@ -24,7 +33,7 @@ Task("NuGetRestore")
 		DotNetCoreRestore(); 
 	});
 
-Task("DotNetBuild")
+Task("Build")
 	.IsDependentOn("NuGetRestore")
 	.Does(() => 
 	{	
@@ -34,8 +43,8 @@ Task("DotNetBuild")
 		});
 	});
 
-Task("DotNetTest")
-	.IsDependentOn("DotNetBuild")
+Task("Test")
+	.IsDependentOn("Build")
 	.Does(() => {
 		var settings = new DotNetCoreTestSettings
 		{
@@ -50,14 +59,14 @@ Task("DotNetTest")
 		}
 	});
 
-Task("DotNetPack")
-	.IsDependentOn("DotNetTest")
+Task("Pack")
+	.IsDependentOn("Test")
 	.Does(() => {
 		// comming soon
 	});
 
 Task("Default")
-	.IsDependentOn("DotNetPack")
+	.IsDependentOn("Pack")
 	.Does(() =>
 	{
 	  Information("You build is done! :-)");
