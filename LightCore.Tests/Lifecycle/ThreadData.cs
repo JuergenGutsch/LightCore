@@ -26,16 +26,22 @@ namespace LightCore.Tests.Lifecycle
 
         public IFoo FooTwo { get; private set; }
 
-        public void ResolveFoosWithContainer()
+        public void ResolveFoo1WithContainer()
         {
             FooOne = _container.Resolve<IFoo>();
+        }
+        public void ResolveFoo2WithContainer()
+        {
             FooTwo = _container.Resolve<IFoo>();
         }
 
-        public void ResolveFoosWithLifecycle()
+        public void ResolveFoo1WithLifecycle()
         {
             FooOne = (IFoo) _lifecycle.ReceiveInstanceInLifecycle(_factory);
-            FooTwo = (IFoo) _lifecycle.ReceiveInstanceInLifecycle(_factory);
+        }
+        public void ResolveFoo2WithLifecycle()
+        {
+            FooTwo = (IFoo)_lifecycle.ReceiveInstanceInLifecycle(_factory);
         }
     }
 }

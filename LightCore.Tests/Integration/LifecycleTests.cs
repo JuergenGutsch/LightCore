@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using LightCore.Lifecycle;
 using LightCore.Tests.Lifecycle;
@@ -69,25 +70,24 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            //builder.DefaultControlledBy<ThreadSingletonLifecycle>();
             builder.Register<IFoo, Foo>().ControlledBy(new ThreadSingletonLifecycle());
             builder.Register<IBar, Bar>().ControlledBy(new ThreadSingletonLifecycle());
 
             var container = builder.Build();
 
-            var threadData = new ThreadData(container);
-            var thread = new Thread(threadData.ResolveFoosWithContainer);
+            var threadDataOne = new ThreadData(container);
+            var threadOne = new Thread(threadDataOne.ResolveFoo1WithContainer);
 
             var threadDataTwo = new ThreadData(container);
-            var threadTwo = new Thread(threadDataTwo.ResolveFoosWithContainer);
+            var threadTwo = new Thread(threadDataTwo.ResolveFoo2WithContainer);
 
-            thread.Start();
+            threadOne.Start();
             threadTwo.Start();
 
-            thread.Join();
+            threadOne.Join();
             threadTwo.Join();
 
-            threadData.FooOne.Should().BeSameAs(threadData.FooTwo);
+            threadDataOne.FooOne.Should().BeSameAs(threadDataOne.FooTwo);
         }
     }
 }

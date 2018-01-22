@@ -13,10 +13,10 @@ namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
             var factory = this.GetActivationFactory();
 
             var threadData = new ThreadData(new LightCore.Lifecycle.ThreadSingletonLifecycle(), factory);
-            var thread = new Thread(threadData.ResolveFoosWithLifecycle);
+            var thread = new Thread(threadData.ResolveFoo1WithLifecycle);
 
             var threadDataTwo = new ThreadData(new LightCore.Lifecycle.ThreadSingletonLifecycle(), factory);
-            var threadTwo = new Thread(threadDataTwo.ResolveFoosWithLifecycle);
+            var threadTwo = new Thread(threadDataTwo.ResolveFoo2WithLifecycle);
 
             thread.Start();
             threadTwo.Start();
@@ -24,7 +24,6 @@ namespace LightCore.Tests.Lifecycle.ThreadSingletonLifecycle
             thread.Join();
             threadTwo.Join();
 
-            threadData.FooOne.Should().Be(threadData.FooTwo);
             threadData.FooOne.Should().NotBe(threadDataTwo.FooOne);
         }
     }

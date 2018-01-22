@@ -46,32 +46,4 @@ namespace LightCore.Tests.Activation.Activators.DelegateActivator
             result.Bar.Should().NotBeNull();
         }
     }
-
-    //internal interface IFoo
-    //{
-    //    IBar Bar { get; }
-    //}
-
-    //internal class Bar : IBar
-    //{
-    //}
-
-    //internal interface IBar
-    //{
-    //}
-
-    //internal class Foo : IFoo
-    //{
-    //    private IBar _bar;
-
-    //    public Foo(IBar bar)
-    //    {
-    //        _bar = bar;
-    //    }
-
-    //    public IBar Bar
-    //    {
-    //        get => _bar;
-    //    }
-    //}
 }
