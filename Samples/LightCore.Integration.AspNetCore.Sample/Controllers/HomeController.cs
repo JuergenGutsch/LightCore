@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using LightCore.Integration.AspNetCore.Sample.Models;
 
-namespace LightCore.AspNetCore.IntegrationSample.Controllers
+namespace LightCore.Integration.AspNetCore.Sample.Controllers
 {
     public class HomeController : Controller
     {
@@ -29,7 +31,7 @@ namespace LightCore.AspNetCore.IntegrationSample.Controllers
 
         public IActionResult Error()
         {
-            return View();
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
