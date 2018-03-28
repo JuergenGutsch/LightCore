@@ -86,10 +86,9 @@ namespace LightCore.Registration.RegistrationSource
             var closedGenericRegistration = new RegistrationItem(contractType)
             {
                 Activator = new ReflectionActivator(
-                                                        implementationType,
-                                                        container.Resolve<IConstructorSelector>(),
-                                                        container.Resolve<IArgumentCollector>()
-                                                        ),
+                    implementationType,
+                    container.Resolve<IConstructorSelector>(),
+                    container.Resolve<IArgumentCollector>()),
                 ImplementationType = implementationType
             };
 

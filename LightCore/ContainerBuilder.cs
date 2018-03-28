@@ -91,14 +91,14 @@ namespace LightCore
         public IContainer Build()
         {
             var allRegistrationSources = new List<IRegistrationSource>()
-                                             {
-                                                 new OpenGenericRegistrationSource(this._registrationContainer),
-                                                 new EnumerableRegistrationSource(this._registrationContainer),
-                                                 new ArrayRegistrationSource(this._registrationContainer),
-                                                 new ConcreteTypeRegistrationSource()
-                                             };
-
-            allRegistrationSources.Add(new FactoryRegistrationSource(this._registrationContainer));
+            {
+                new OpenGenericRegistrationSource(this._registrationContainer),
+                new EnumerableRegistrationSource(this._registrationContainer),
+                new ArrayRegistrationSource(this._registrationContainer),
+                new ConcreteTypeRegistrationSource(),
+                new FactoryRegistrationSource(this._registrationContainer)
+            };
+            
 
             this._registrationContainer.RegistrationSources = allRegistrationSources;
 
@@ -317,9 +317,9 @@ namespace LightCore
             return this.AddToRegistrationFluent(new RegistrationItem(typeOfContract)
             {
                 Activator = new ReflectionActivator(
-                                                            typeOfImplementation,
-                                                            this._bootStrappingContainer.Resolve<IConstructorSelector>(),
-                                                            this._bootStrappingContainer.Resolve<IArgumentCollector>()),
+                    typeOfImplementation,
+                    this._bootStrappingContainer.Resolve<IConstructorSelector>(),
+                    this._bootStrappingContainer.Resolve<IArgumentCollector>()),
                 Lifecycle = this._defaultLifecycleFunction(),
                 ImplementationType = typeOfImplementation
             });

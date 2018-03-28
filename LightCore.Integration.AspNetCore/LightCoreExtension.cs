@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using LightCore.Integration.AspNetCore.Lifecycle;
 using LightCore.Lifecycle;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,11 @@ namespace LightCore.Integration.AspNetCore
 {
     public static class LightCoreExtension
     {
+        public static IServiceCollection AddLightCore(this IServiceCollection services, Action<ContainerBuilder> configurationAction = null)
+        {
+            return services.AddSingleton<IServiceProviderFactory<ContainerBuilder>>(new LightCoreServiceProviderFactory(configurationAction));
+        }
+
         public static void Populate(this IContainerBuilder builder, IServiceCollection services, IHttpContextAccessor httpContextAccessor)
         {
             builder.RegisterFactory<IServiceProvider>(container => new LightCoreServiceProvider(container))
@@ -39,8 +45,19 @@ namespace LightCore.Integration.AspNetCore
 
         private static void Register(IContainerBuilder builder, ServiceDescriptor serviceDescriptor, ILifecycle lifecycle)
         {
+
             if (serviceDescriptor.ImplementationType != null)
             {
+                var serviceTypeInfo = serviceDescriptor.ServiceType.GetTypeInfo();
+                if (serviceTypeInfo.IsGenericTypeDefinition)
+                {
+                }
+                else
+                {
+                }
+
+
+
                 builder.Register(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType)
                     .ControlledBy(lifecycle);
             }
