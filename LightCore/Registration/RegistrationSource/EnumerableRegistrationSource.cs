@@ -31,15 +31,8 @@ namespace LightCore.Registration.RegistrationSource
         {
             get
             {
-                return contractType => contractType.IsGenericEnumerable()
-                        &&
-                        ((this._registrationContainer.HasRegistration(
-                            contractType.GetGenericArguments().FirstOrDefault()))
-                         ||
-                         // Use ConcreteTypeRegistrationSource.
-                         (this._registrationContainer.IsSupportedByRegistrationSource(
-                             contractType.GetGenericArguments().FirstOrDefault())));
-
+                // Don't check the generic arguments, to ensure to create enumerables anyway.
+                return contractType => contractType.IsGenericEnumerable();
             }
         }
 
@@ -76,17 +69,18 @@ namespace LightCore.Registration.RegistrationSource
         private static IEnumerable ResolveEnumerable(Type contractType, IContainer container)
         {
             Type genericArgument = contractType.GetGenericArguments().FirstOrDefault();
-
-            object[] resolvedInstances = container.ResolveAll(genericArgument).ToArray();
-
             Type openListType = typeof(List<>);
             Type closedListType = openListType.MakeGenericType(genericArgument);
 
             var list = (IList)Activator.CreateInstance(closedListType);
 
-            foreach(var instance in resolvedInstances)
+            var resolvedInstances = container.ResolveAll(genericArgument).ToArray();
+            if (resolvedInstances != null)
             {
-                list.Add(instance);
+                foreach (var instance in resolvedInstances)
+                {
+                    list.Add(instance);
+                }
             }
 
             return list;

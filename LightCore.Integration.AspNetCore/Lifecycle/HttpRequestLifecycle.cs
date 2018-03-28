@@ -10,13 +10,6 @@ namespace LightCore.Integration.AspNetCore.Lifecycle
     /// </summary>
     public class HttpRequestLifecycle : ILifecycle
     {
-        private readonly IHttpContextAccessor _httpContext;
-
-        public HttpRequestLifecycle(IHttpContextAccessor httpContext)
-        {
-            _httpContext = httpContext;
-        }
-
         /// <summary>
         /// Contains the lock object for instance creation.
         /// </summary>
@@ -34,7 +27,8 @@ namespace LightCore.Integration.AspNetCore.Lifecycle
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
-            var context = _httpContext.HttpContext;
+            var httpContext = new HttpContextAccessor();
+            var context = httpContext.HttpContext;
 
             lock (_lock)
             {

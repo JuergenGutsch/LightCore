@@ -46,7 +46,7 @@ namespace LightCore.Integration.AspNetCore
         {
             var builder = new ContainerBuilder();
 
-            builder.Populate(services, null); //TODO: HttpContextAccessor
+            builder.Populate(services);
 
             _configurationAction(builder);
 
