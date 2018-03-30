@@ -1,24 +1,29 @@
 ﻿using System;
+using System.Reflection;
 using LightCore.Integration.AspNetCore.Lifecycle;
 using LightCore.Lifecycle;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LightCore.Integration.AspNetCore
 {
     public static class LightCoreExtension
     {
-        public static void Populate(this IContainerBuilder builder, IServiceCollection services, IHttpContextAccessor httpContextAccessor)
+        public static IServiceCollection AddLightCore(this IServiceCollection services, Action<ContainerBuilder> configurationAction = null)
+        {
+            return services.AddSingleton<IServiceProviderFactory<ContainerBuilder>>(new LightCoreServiceProviderFactory(configurationAction));
+        }
+
+        public static void Populate(this IContainerBuilder builder, IServiceCollection services)
         {
             builder.RegisterFactory<IServiceProvider>(container => new LightCoreServiceProvider(container))
                 .ControlledBy<SingletonLifecycle>();
             builder.RegisterFactory<IServiceScopeFactory>(container => new LightCoreServiceScopeFactory(container))
                 .ControlledBy<SingletonLifecycle>();
 
-            RegisterServices(builder, services, httpContextAccessor);
+            RegisterServices(builder, services);
         }
 
-        private static void RegisterServices(IContainerBuilder builder, IServiceCollection services, IHttpContextAccessor httpContextAccessor)
+        private static void RegisterServices(IContainerBuilder builder, IServiceCollection services)
         {
             foreach (var serviceDescriptor in services)
             {
@@ -28,7 +33,7 @@ namespace LightCore.Integration.AspNetCore
                         Register(builder, serviceDescriptor, new SingletonLifecycle());
                         break;
                     case ServiceLifetime.Scoped:
-                        Register(builder, serviceDescriptor, new HttpRequestLifecycle(httpContextAccessor));
+                        Register(builder, serviceDescriptor, new HttpRequestLifecycle());
                         break;
                     case ServiceLifetime.Transient:
                         Register(builder, serviceDescriptor, new TransientLifecycle());
@@ -39,6 +44,7 @@ namespace LightCore.Integration.AspNetCore
 
         private static void Register(IContainerBuilder builder, ServiceDescriptor serviceDescriptor, ILifecycle lifecycle)
         {
+
             if (serviceDescriptor.ImplementationType != null)
             {
                 builder.Register(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType)
