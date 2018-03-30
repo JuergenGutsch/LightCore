@@ -47,16 +47,6 @@ namespace LightCore.Integration.AspNetCore
 
             if (serviceDescriptor.ImplementationType != null)
             {
-                var serviceTypeInfo = serviceDescriptor.ServiceType.GetTypeInfo();
-                if (serviceTypeInfo.IsGenericTypeDefinition)
-                {
-                }
-                else
-                {
-                }
-
-
-
                 builder.Register(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType)
                     .ControlledBy(lifecycle);
             }
