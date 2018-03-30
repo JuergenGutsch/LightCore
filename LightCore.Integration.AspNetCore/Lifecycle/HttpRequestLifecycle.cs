@@ -10,6 +10,15 @@ namespace LightCore.Integration.AspNetCore.Lifecycle
     /// </summary>
     public class HttpRequestLifecycle : ILifecycle
     {
+        public HttpRequestLifecycle()
+        {
+
+        }
+
+        internal HttpRequestLifecycle(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
         /// <summary>
         /// Contains the lock object for instance creation.
         /// </summary>
@@ -19,7 +28,12 @@ namespace LightCore.Integration.AspNetCore.Lifecycle
         /// Represents an identifier for the current instance.
         /// </summary>
         private readonly string _instanceIdentifier = Guid.NewGuid().ToString();
-        
+
+        /// <summary>
+        /// Contains an instance of the HttpContextAccessor. Needed to identify the current http context
+        /// </summary>
+        private IHttpContextAccessor _httpContextAccessor;
+
         /// <summary>
         /// Handle the reuse of instances.
         /// One instance per http request (ASP.NET Core).
@@ -27,8 +41,11 @@ namespace LightCore.Integration.AspNetCore.Lifecycle
         /// <param name="newInstanceResolver">The resolve function for a new instance.</param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
-            var httpContext = new HttpContextAccessor();
-            var context = httpContext.HttpContext;
+            if (_httpContextAccessor == null)
+            {
+                _httpContextAccessor = new HttpContextAccessor();
+            }
+            var context = _httpContextAccessor.HttpContext;
 
             lock (_lock)
             {
