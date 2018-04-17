@@ -19,6 +19,8 @@ namespace LightCore.Integration.AspNetCore
                 .ControlledBy<SingletonLifecycle>();
             builder.RegisterFactory<IServiceScopeFactory>(container => new LightCoreServiceScopeFactory(container))
                 .ControlledBy<SingletonLifecycle>();
+            // Hack!! 
+
 
             RegisterServices(builder, services);
         }

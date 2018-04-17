@@ -19,18 +19,20 @@ namespace LightCore.Integration.AspNetCore.Sample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationInsightsTelemetry();
-            
+
             services.AddMvc();
 
-
+            //services.AddTransient<IService, MyService>();
         }
 
+        // This method gets called by LightCore. Use this method to add services to LightCore
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            // small hack because this cannot resolved yet. Lightcore wont resolve unknown types
-            builder.RegisterFactory<ITelemetryChannel>(c => null); 
-            
-            ////builder.Register<IService, MyService>();
+            // Small hack because this cannot resolved yet. 
+            // LightCore wont resolve unknown implementation types to null
+            builder.RegisterFactory<ITelemetryChannel>(c => null);
+
+            //builder.Register<IService, MyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,11 +57,5 @@ namespace LightCore.Integration.AspNetCore.Sample
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
-    }
-
-    internal class Person
-    {
-        public string FirstName { get; internal set; }
-        public string LastName { get; internal set; }
     }
 }
