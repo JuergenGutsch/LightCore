@@ -13,12 +13,12 @@ namespace LightCore.Lifecycle
         /// <summary>
         /// Contains the lock object for instance creation.
         /// </summary>
-        private static readonly object Lock = new object();
+        private readonly object Lock = new object();
 
         /// <summary>
         /// Holds an map with instances for different threads.
         /// </summary>
-        private static readonly IDictionary<int, WeakReference> InstanceMap = new Dictionary<int, WeakReference>();
+        private readonly IDictionary<int, WeakReference> InstanceMap = new Dictionary<int, WeakReference>();
 
         /// <summary>
         /// Initializes a new instance of <see cref="ThreadSingletonLifecycle" />.
@@ -34,10 +34,10 @@ namespace LightCore.Lifecycle
         /// <param name="newInstanceResolver">The function for lazy get an instance.</param>
         public object ReceiveInstanceInLifecycle(Func<object> newInstanceResolver)
         {
-            var threadId = Thread.CurrentThread.ManagedThreadId;
-
             lock (Lock)
             {
+                var threadId = Thread.CurrentThread.ManagedThreadId;
+
                 if (InstanceMap.ContainsKey(threadId))
                 {
                     return InstanceMap[threadId].Target;

@@ -69,7 +69,6 @@ namespace LightCore.Tests.Integration
         {
             var builder = new ContainerBuilder();
 
-            //builder.DefaultControlledBy<ThreadSingletonLifecycle>();
             builder.Register<IFoo, Foo>().ControlledBy(new ThreadSingletonLifecycle());
             builder.Register<IBar, Bar>().ControlledBy(new ThreadSingletonLifecycle());
 
