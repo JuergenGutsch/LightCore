@@ -58,7 +58,7 @@ namespace LightCore.Integration.Web.Tests.Mvc
         [Fact(Skip = "Doesn't work yet")]
         public void ControllerFactory_Throws_HttpException_On_Null_ControllerType()
         {
-            var controllerFactory = this.GetControllerFactory();
+            var controllerFactory = GetControllerFactory();
 
             Action a = () => controllerFactory.CreateControllerInternal(CreateRequestContext(), null);
             a.ShouldThrow<HttpException>();
@@ -72,9 +72,9 @@ namespace LightCore.Integration.Web.Tests.Mvc
 
             var container = builder.Build();
 
-            var factory = this.GetControllerFactory(container);
+            var factory = GetControllerFactory(container);
 
-            var controller = factory.CreateControllerInternal(this.CreateRequestContext(), typeof(FooController));
+            var controller = factory.CreateControllerInternal(CreateRequestContext(), typeof(FooController));
 
             controller.Should().BeOfType<FooController>();
         }
@@ -88,9 +88,9 @@ namespace LightCore.Integration.Web.Tests.Mvc
 
             var container = builder.Build();
 
-            var factory = this.GetControllerFactory(container);
+            var factory = GetControllerFactory(container);
 
-            var controller = factory.CreateControllerInternal(this.CreateRequestContext(), typeof(FooController));
+            var controller = factory.CreateControllerInternal(CreateRequestContext(), typeof(FooController));
 
             controller.Should().NotBeNull();
         }
@@ -119,8 +119,8 @@ namespace LightCore.Integration.Web.Tests.Mvc
             var container = builder.Build();
             var controllerFactory = new ControllerFactory(container);
 
-            var controller = controllerFactory.CreateControllerInternal(this.CreateRequestContext(), typeof(FooController));
-            var secondController = controllerFactory.CreateControllerInternal(this.CreateRequestContext(), typeof(FooController));
+            var controller = controllerFactory.CreateControllerInternal(CreateRequestContext(), typeof(FooController));
+            var secondController = controllerFactory.CreateControllerInternal(CreateRequestContext(), typeof(FooController));
             
             controller.Should().BeSameAs(secondController);
         }
