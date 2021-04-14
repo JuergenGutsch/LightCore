@@ -1,4 +1,4 @@
-#tool "nuget:?package=xunit.runner.console"
+#tool nuget:?package=xunit.runner.console&version=2.4.1
 
 var target = Argument("target", "Default");
 
@@ -60,7 +60,7 @@ Task("Default")
 	.IsDependentOn("DotNetPack")
 	.Does(() =>
 	{
-	  Information("You build is done! :-)");
+	  Information("Your build is done! :-)");
 	});
 
 RunTarget(target);
